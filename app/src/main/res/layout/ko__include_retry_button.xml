@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Button xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ko__view_state_retry_button"
+    style="@style/Ko__ButtonStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="16dp"
+    android:text="@string/ko__label_retry" />

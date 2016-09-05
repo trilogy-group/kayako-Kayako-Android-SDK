@@ -6,6 +6,7 @@ import com.kayako.sdk.helpcenter.category.Category;
 import com.kayako.sdk.helpcenter.section.Section;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -52,13 +53,21 @@ public class SectionByCategoryPresenter implements SectionByCategoryPageContract
     }
 
     @Override
+    public void reloadPage() {
+        mSectionByCategoryView.startBackgroundTask();
+    }
+
+    @Override
     public boolean loadDataInBackground() {
         try {
+            // TODO: Throw Exception in JAR. If it fails to load, do not return null - Shows empty view when it shouldn't
+            // TODO: Strangely, if there's an error on the first call, there's a null returned on the second call - CHECK WHY?
             categories = mSectionByCategoryRepo.getCategories(false);
             sectionsByCategory = mSectionByCategoryRepo.getSectionsByCategory(categories, false);
             return true;
         } catch (Exception e) {
             // TODO: Find a better way to catch exceptions. Throw likely exceptions in each method
+            // TODO: Throw custom errors? java.net.SocketException: Network is unreachable
             return false;
         }
     }
@@ -66,7 +75,7 @@ public class SectionByCategoryPresenter implements SectionByCategoryPageContract
     @Override
     public void onDataLoaded(boolean isSuccessful) {
         if (isSuccessful) {
-            setUpList(categories, sectionsByCategory);
+            setUpList(categories, sectionsByCategory); // TODO: Test empty
         } else {
             showErrorViewAndHideOthers();
         }

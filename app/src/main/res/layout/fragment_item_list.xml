@@ -15,10 +15,25 @@
         tools:context=".view.ListFragment"
         tools:listitem="@layout/ko__list_item_search_result" />
 
-    <include layout="@layout/ko__include_state_empty" />
+    <ViewStub
+        android:id="@+id/ko__stub_empty_state"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:inflatedId="@+id/ko__inflated_stub_empty_state"
+        android:layout="@layout/ko__include_state_empty" />
 
-    <include layout="@layout/ko__include_state_loading" />
+    <ViewStub
+        android:id="@+id/ko__stub_loading_state"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:inflatedId="@+id/ko__inflated_stub_loading_state"
+        android:layout="@layout/ko__include_state_loading" />
 
-    <include layout="@layout/ko__include_state_error" />
+    <ViewStub
+        android:id="@+id/ko__stub_error_state"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:inflatedId="@+id/ko__inflated_stub_error_state"
+        android:layout="@layout/ko__include_state_error" />
 
 </FrameLayout>

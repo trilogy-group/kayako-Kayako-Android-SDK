@@ -3,6 +3,7 @@
     <color name="colorPrimary">#9B9B9B</color>
     <color name="colorPrimaryDark">#7C7C7C</color>
     <color name="colorAccent">#3AA6C5</color>
+    <color name="white">#fff</color>
 
     <color name="ko__dark_text_color">#4A4A4A</color>
     <color name="ko__light_gray_background_colour">#F8F8F9</color>
@@ -24,5 +25,9 @@
     <color name="ko__list_search_item_title_text_color">@color/ko__dark_text_color</color>
     <color name="ko__list_search_item_subtitle_text_color">#747474</color>
     <color name="ko__list_item_background">#fff</color>
+
+    <color name="ko__retry_button_background_default">@color/colorPrimary</color>
+    <color name="ko__retry_button_background_pressed">@color/colorPrimary</color>
+    <color name="ko__retry_button_background_selected">@color/colorPrimaryDark</color>
 
 </resources>

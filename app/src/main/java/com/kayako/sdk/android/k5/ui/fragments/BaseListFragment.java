@@ -7,12 +7,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
+import android.widget.Button;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.ui.adapter.EndlessRecyclerViewScrollAdapter;
 import com.kayako.sdk.android.k5.ui.adapter.EndlessRecyclerViewScrollListener;
-
-import java.util.List;
 
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
@@ -21,12 +21,20 @@ public abstract class BaseListFragment extends Fragment {
 
     protected View mRoot;
     protected RecyclerView mRecyclerView;
+    private ViewStub mEmptyStubView;
+    private ViewStub mErrorStubView;
+    private ViewStub mLoadingStubView;
 
     @Override
     final public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRoot = inflater.inflate(R.layout.fragment_item_list, container, false);
+        mEmptyStubView = (ViewStub) mRoot.findViewById(R.id.ko__stub_empty_state);
+        mLoadingStubView = (ViewStub) mRoot.findViewById(R.id.ko__stub_loading_state);
+        mErrorStubView = (ViewStub) mRoot.findViewById(R.id.ko__stub_error_state);
         return mRoot;
     }
+
+    protected abstract void reloadPage();
 
     protected void showListView() {
         View view = mRoot.findViewById(R.id.ko__list);
@@ -39,33 +47,64 @@ public abstract class BaseListFragment extends Fragment {
     }
 
     protected void showEmptyView() {
-        View view = mRoot.findViewById(R.id.ko__view_state_empty);
-        view.setVisibility(View.VISIBLE);
+        if (mEmptyStubView != null) {
+            // After the stub is inflated, the stub is removed from the view hierarchy.
+            mEmptyStubView.setVisibility(View.VISIBLE);
+        }
+        mRoot.findViewById(R.id.ko__view_state_empty).setVisibility(View.VISIBLE);
     }
 
     protected void hideEmptyView() {
-        View view = mRoot.findViewById(R.id.ko__view_state_empty);
-        view.setVisibility(View.GONE);
+        if (mEmptyStubView != null) {
+            mEmptyStubView.setVisibility(View.GONE);
+        }
+        View inflatedView = mRoot.findViewById(R.id.ko__view_state_empty);
+        if (inflatedView != null) {
+            inflatedView.setVisibility(View.GONE);
+        }
     }
 
     protected void showErrorView() {
-        View view = mRoot.findViewById(R.id.ko__view_state_error);
-        view.setVisibility(View.VISIBLE);
+        if (mErrorStubView != null) {
+            mErrorStubView.setVisibility(View.VISIBLE);
+        }
+        mRoot.findViewById(R.id.ko__view_state_error).setVisibility(View.VISIBLE);
+        Button retryButton = (Button) (mRoot.findViewById(R.id.ko__error_retry_button));
+        retryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                reloadPage();
+            }
+        });
     }
 
     protected void hideErrorView() {
-        View view = mRoot.findViewById(R.id.ko__view_state_error);
-        view.setVisibility(View.GONE);
+        if (mErrorStubView != null) {
+            mErrorStubView.setVisibility(View.GONE);
+        }
+
+        View inflatedView = mRoot.findViewById(R.id.ko__view_state_error);
+        if (inflatedView != null) {
+            inflatedView.setVisibility(View.GONE);
+        }
     }
 
     protected void showLoadingView() {
-        View view = mRoot.findViewById(R.id.ko__view_state_loading);
-        view.setVisibility(View.VISIBLE);
+        if (mLoadingStubView != null) {
+            mLoadingStubView.setVisibility(View.VISIBLE);
+        }
+        mRoot.findViewById(R.id.ko__view_state_loading).setVisibility(View.VISIBLE);
     }
 
     protected void hideLoadingView() {
-        View view = mRoot.findViewById(R.id.ko__view_state_loading);
-        view.setVisibility(View.GONE);
+        if (mLoadingStubView != null) {
+            mLoadingStubView.setVisibility(View.GONE);
+        }
+
+        View inflatedView = mRoot.findViewById(R.id.ko__view_state_loading);
+        if (inflatedView != null) {
+            inflatedView.setVisibility(View.GONE);
+        }
     }
 
     protected void showEmptyViewAndHideOthers() {

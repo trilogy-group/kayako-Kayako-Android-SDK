@@ -15,15 +15,14 @@ import java.util.List;
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
-public class SectionByCategoryListFragment extends BaseListFragment implements SectionByCategoryPageContract.View {
+public class SectionByCategoryListFragment extends BaseListFragment implements SectionByCategoryPageContract.View, ListItemRecyclerViewAdapter.OnItemClickListener, SearchSectionAdapter.OnSearchClickListener {
 
     protected SectionByCategoryPageContract.Presenter mPresenter;
     protected AsyncTask mBackgroundTask;
     protected ListItemRecyclerViewAdapter listItemRecyclerViewAdapter;
 
     public static SectionByCategoryListFragment newInstance() {
-        SectionByCategoryListFragment fragment = new SectionByCategoryListFragment();
-        return fragment;
+        return new SectionByCategoryListFragment();
     }
 
     public SectionByCategoryListFragment() {
@@ -43,6 +42,11 @@ public class SectionByCategoryListFragment extends BaseListFragment implements S
 
     @Override
     public void startBackgroundTask() {
+        // Cancel pending tasks before starting new ones
+        if (mBackgroundTask != null && !mBackgroundTask.isCancelled()) {
+            mBackgroundTask.cancel(true);
+        }
+
         mBackgroundTask = new AsyncTask<Void, Void, Boolean>() {
             @Override
             protected Boolean doInBackground(Void... voids) {
@@ -71,17 +75,7 @@ public class SectionByCategoryListFragment extends BaseListFragment implements S
 
     @Override
     public void setUpList(final List<ListItem> items) {
-        listItemRecyclerViewAdapter = new SearchSectionAdapter(items, new ListItemRecyclerViewAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(ListItem listItem) {
-                mPresenter.onClickListItem(listItem);
-            }
-        }, new SearchSectionAdapter.OnSearchClickListener() {
-            @Override
-            public void onClickSearch() {
-                mPresenter.onClickSearch();
-            }
-        });
+        listItemRecyclerViewAdapter = new SearchSectionAdapter(items, this, this);
 
         EndlessRecyclerViewScrollAdapter.OnLoadMoreListener loadMoreListener = new EndlessRecyclerViewScrollAdapter.OnLoadMoreListener() {
             @Override
@@ -112,7 +106,7 @@ public class SectionByCategoryListFragment extends BaseListFragment implements S
 
                         listItemRecyclerViewAdapter.hideLoadMoreProgress();
                         listItemRecyclerViewAdapter.addData(items);
-                        // TODO: Error, items are added as duplicates
+                        // TODO: Error, items are added as duplicates - Fixed by stopping onLoadMore() after first successful load
                     }
                 }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
@@ -139,5 +133,20 @@ public class SectionByCategoryListFragment extends BaseListFragment implements S
     @Override
     public void showOnlyLoadingView() {
         showLoadingViewAndHideOthers();
+    }
+
+    @Override
+    protected void reloadPage() {
+        mPresenter.reloadPage();
+    }
+
+    @Override
+    public void onItemClick(ListItem listItem) {
+        mPresenter.onClickListItem(listItem);
+    }
+
+    @Override
+    public void onClickSearch() {
+        mPresenter.onClickSearch();
     }
 }

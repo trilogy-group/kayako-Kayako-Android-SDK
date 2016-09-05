@@ -45,6 +45,8 @@ public interface SectionByCategoryPageContract {
         void onClickListItem(ListItem listItem);
 
         void onClickSearch();
+
+        void reloadPage();
     }
 
 }
