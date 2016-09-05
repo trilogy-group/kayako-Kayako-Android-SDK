@@ -4,10 +4,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.kayako.sdk.android.k5.ui.BaseListFragment;
-import com.kayako.sdk.android.k5.ui.ListItem;
-import com.kayako.sdk.android.k5.ui.ListItemRecyclerViewAdapter;
+import com.kayako.sdk.android.k5.ui.fragments.BaseListFragment;
+import com.kayako.sdk.android.k5.ui.adapter.EndlessRecyclerViewScrollAdapter;
+import com.kayako.sdk.android.k5.ui.data.ListItem;
+import com.kayako.sdk.android.k5.ui.adapter.ListItemRecyclerViewAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,6 +19,7 @@ public class SectionByCategoryListFragment extends BaseListFragment implements S
 
     protected SectionByCategoryPageContract.Presenter mPresenter;
     protected AsyncTask mBackgroundTask;
+    protected ListItemRecyclerViewAdapter listItemRecyclerViewAdapter;
 
     public static SectionByCategoryListFragment newInstance() {
         SectionByCategoryListFragment fragment = new SectionByCategoryListFragment();
@@ -40,17 +43,19 @@ public class SectionByCategoryListFragment extends BaseListFragment implements S
 
     @Override
     public void startBackgroundTask() {
-        mBackgroundTask = new AsyncTask<Void, Void, Void>() {
+        mBackgroundTask = new AsyncTask<Void, Void, Boolean>() {
             @Override
-            protected Void doInBackground(Void... voids) {
-                mPresenter.loadDataInBackground();
-                return null;
+            protected Boolean doInBackground(Void... voids) {
+                return mPresenter.loadDataInBackground();
             }
 
             @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-                mPresenter.onDataLoaded();
+            protected void onPostExecute(Boolean isSuccessful) {
+                super.onPostExecute(isSuccessful);
+                if (isSuccessful == null) {
+                    isSuccessful = false;
+                }
+                mPresenter.onDataLoaded(isSuccessful);
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
@@ -66,12 +71,54 @@ public class SectionByCategoryListFragment extends BaseListFragment implements S
 
     @Override
     public void setUpList(final List<ListItem> items) {
-        initList(new ListItemRecyclerViewAdapter(items, new ListItemRecyclerViewAdapter.OnItemClickListener() {
+        listItemRecyclerViewAdapter = new SearchSectionAdapter(items, new ListItemRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(ListItem listItem) {
                 mPresenter.onClickListItem(listItem);
             }
-        }));
+        }, new SearchSectionAdapter.OnSearchClickListener() {
+            @Override
+            public void onClickSearch() {
+                mPresenter.onClickSearch();
+            }
+        });
+
+        EndlessRecyclerViewScrollAdapter.OnLoadMoreListener loadMoreListener = new EndlessRecyclerViewScrollAdapter.OnLoadMoreListener() {
+            @Override
+            public void loadMoreItems() {
+                // Show Progresss
+                listItemRecyclerViewAdapter.showLoadMoreProgress();
+
+//                 Run Background Thread // TODO: Rearrange properly
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... voids) {
+                        try {
+                            Thread.sleep(4000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        super.onPostExecute(aVoid);
+
+                        List<ListItem> items = new ArrayList<>();
+                        items.add(new ListItem(false, "More Data 1", "Data", null));
+                        items.add(new ListItem(false, "More Data 2", "Data", null));
+                        items.add(new ListItem(false, "More Data 3", "Data", null));
+
+                        listItemRecyclerViewAdapter.hideLoadMoreProgress();
+                        listItemRecyclerViewAdapter.addData(items);
+                        // TODO: Error, items are added as duplicates
+                    }
+                }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }
+        };
+
+        initList(listItemRecyclerViewAdapter, loadMoreListener);
     }
 
     @Override

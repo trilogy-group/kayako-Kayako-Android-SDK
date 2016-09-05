@@ -1,19 +1,19 @@
-package com.kayako.sdk.android.k5.ui;
+package com.kayako.sdk.android.k5.ui.data;
 
 import com.kayako.sdk.helpcenter.base.Resource;
 
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
-public class ListItem {
+public class ListItem extends LoadingItem {
 
     private boolean isHeader;
     private String title;
     private String subtitle;
-
     private Resource resource;
 
     public ListItem(boolean isHeader, String title, String subtitle, Resource resource) {
+        super(false);
         this.isHeader = isHeader;
         this.title = title;
         this.subtitle = subtitle;

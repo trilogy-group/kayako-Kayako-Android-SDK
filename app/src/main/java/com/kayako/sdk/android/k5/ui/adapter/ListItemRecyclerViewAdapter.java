@@ -1,4 +1,4 @@
-package com.kayako.sdk.android.k5.ui;
+package com.kayako.sdk.android.k5.ui.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,20 +7,20 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.kayako.sdk.android.k5.R;
+import com.kayako.sdk.android.k5.ui.data.ListItem;
 
 import java.util.List;
 
-public class ListItemRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ListItemRecyclerViewAdapter extends EndlessRecyclerViewScrollAdapter<ListItem> {
 
-    private static final int STATE_HEADER = 0;
-    private static final int STATE_ITEM = 1;
+    protected static final int STATE_HEADER = 0;
+    protected static final int STATE_ITEM = 1;
 
-    private final List<ListItem> mValues;
-    private OnItemClickListener mListener;
+    private OnItemClickListener mItemClickListener;
 
     public ListItemRecyclerViewAdapter(List<ListItem> items, OnItemClickListener listener) {
-        mValues = items;
-        mListener = listener;
+        super(items);
+        mItemClickListener = listener;
     }
 
     @Override
@@ -34,40 +34,50 @@ public class ListItemRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 View viewItem = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.ko__list_item_with_description, parent, false);
                 return new ItemViewHolder(viewItem);
+            default:
+                return super.onCreateViewHolder(parent, viewType);
         }
-        return null;
+
     }
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, int position) {
-
         switch (viewHolder.getItemViewType()) {
             case STATE_HEADER:
                 HeaderViewHolder headerViewHolder = (HeaderViewHolder) viewHolder;
-                headerViewHolder.mItem = mValues.get(position);
-                headerViewHolder.mTitle.setText(mValues.get(position).getTitle());
+                headerViewHolder.mItem = getData().get(position);
+                headerViewHolder.mTitle.setText(getData().get(position).getTitle());
+                headerViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mItemClickListener.onItemClick(getData().get(viewHolder.getAdapterPosition()));
+                    }
+                });
+
                 break;
             case STATE_ITEM:
                 ItemViewHolder itemViewHolder = (ItemViewHolder) viewHolder;
-                itemViewHolder.mItem = mValues.get(position);
-                itemViewHolder.mTitle.setText(mValues.get(position).getTitle());
-                itemViewHolder.mSubTitle.setText(mValues.get(position).getSubtitle());
+                itemViewHolder.mItem = getData().get(position);
+                itemViewHolder.mTitle.setText(getData().get(position).getTitle());
+                itemViewHolder.mSubTitle.setText(getData().get(position).getSubtitle());
+                itemViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mItemClickListener.onItemClick(getData().get(viewHolder.getAdapterPosition()));
+                    }
+                });
                 break;
+            default:
+                super.onBindViewHolder(viewHolder, position);
         }
-
-        ViewHolder commonViewHolder = (ViewHolder) viewHolder;
-        commonViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mListener.onItemClick(mValues.get(viewHolder.getAdapterPosition()));
-            }
-        });
     }
 
     @Override
     public int getItemViewType(int position) {
-        ListItem item = mValues.get(position);
-        if (item.isHeader()) {
+        ListItem item = getData().get(position);
+        if (item.isLoading()) {
+            return super.getItemViewType(position);
+        } else if (item.isHeader()) {
             return STATE_HEADER;
         } else {
             return STATE_ITEM;
@@ -75,9 +85,12 @@ public class ListItemRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
     @Override
-    public int getItemCount() {
-        return mValues.size();
+    public ListItem getLoadingFooterItem() {
+        ListItem item = new ListItem(false, null, null, null);
+        item.setLoading(true);
+        return item;
     }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public View mView;

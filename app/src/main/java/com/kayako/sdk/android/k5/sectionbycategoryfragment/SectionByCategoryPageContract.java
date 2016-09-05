@@ -1,8 +1,8 @@
 package com.kayako.sdk.android.k5.sectionbycategoryfragment;
 
-import com.kayako.sdk.android.k5.ui.BasePresenter;
-import com.kayako.sdk.android.k5.ui.BaseView;
-import com.kayako.sdk.android.k5.ui.ListItem;
+import com.kayako.sdk.android.k5.ui.mvp.BasePresenter;
+import com.kayako.sdk.android.k5.ui.mvp.BaseView;
+import com.kayako.sdk.android.k5.ui.data.ListItem;
 
 import java.util.List;
 
@@ -38,10 +38,13 @@ public interface SectionByCategoryPageContract {
 
         void initPage();
 
-        void loadDataInBackground();
+        boolean loadDataInBackground();
 
-        void onDataLoaded();
+        void onDataLoaded(boolean isSuccessful);
 
         void onClickListItem(ListItem listItem);
+
+        void onClickSearch();
     }
+
 }

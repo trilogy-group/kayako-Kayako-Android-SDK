@@ -1,6 +1,6 @@
 package com.kayako.sdk.android.k5.sectionbycategoryfragment;
 
-import com.kayako.sdk.android.k5.ui.ListItem;
+import com.kayako.sdk.android.k5.ui.data.ListItem;
 import com.kayako.sdk.helpcenter.base.Resource;
 import com.kayako.sdk.helpcenter.category.Category;
 import com.kayako.sdk.helpcenter.section.Section;
@@ -47,20 +47,30 @@ public class SectionByCategoryPresenter implements SectionByCategoryPageContract
     }
 
     @Override
-    public void loadDataInBackground() {
+    public void onClickSearch() {
+        // TODO: Open intent
+    }
+
+    @Override
+    public boolean loadDataInBackground() {
         try {
             categories = mSectionByCategoryRepo.getCategories(false);
             sectionsByCategory = mSectionByCategoryRepo.getSectionsByCategory(categories, false);
+            return true;
         } catch (Exception e) {
             // TODO: Find a better way to catch exceptions. Throw likely exceptions in each method
-            showErrorViewAndHideOthers();
+            return false;
         }
     }
 
     @Override
-    public void onDataLoaded() {
+    public void onDataLoaded(boolean isSuccessful) {
+        if (isSuccessful) {
+            setUpList(categories, sectionsByCategory);
+        } else {
+            showErrorViewAndHideOthers();
+        }
         // TODO: Check if categories loaded properly, and sectiosn - error?
-        setUpList(categories, sectionsByCategory);
     }
 
     private void setUpList(List<Category> categories, Map<Category, List<Section>> sectionsByCategory) {

@@ -1,4 +1,4 @@
-package com.kayako.sdk.android.k5.ui;
+package com.kayako.sdk.android.k5.ui.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kayako.sdk.android.k5.R;
+import com.kayako.sdk.android.k5.ui.adapter.EndlessRecyclerViewScrollAdapter;
+import com.kayako.sdk.android.k5.ui.adapter.EndlessRecyclerViewScrollListener;
+
+import java.util.List;
 
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
@@ -16,6 +20,7 @@ import com.kayako.sdk.android.k5.R;
 public abstract class BaseListFragment extends Fragment {
 
     protected View mRoot;
+    protected RecyclerView mRecyclerView;
 
     @Override
     final public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -91,9 +96,23 @@ public abstract class BaseListFragment extends Fragment {
         hideLoadingView();
     }
 
-    protected void initList(RecyclerView.Adapter adapter) {
-        RecyclerView recyclerView = (RecyclerView) mRoot.findViewById(R.id.ko__list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mRoot.getContext()));
-        recyclerView.setAdapter(adapter);
+    protected void initList(final EndlessRecyclerViewScrollAdapter adapter, final EndlessRecyclerViewScrollAdapter.OnLoadMoreListener loadMoreListener) {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mRoot.getContext());
+        mRecyclerView = (RecyclerView) mRoot.findViewById(R.id.ko__list);
+        mRecyclerView.setAdapter(adapter);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setNestedScrollingEnabled(false);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+
+        if (loadMoreListener != null) {
+            adapter.setHasMoreItems(true);
+            mRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager, adapter) {
+                @Override
+                public void onLoadMore(int page, int totalItemsCount) {
+                    loadMoreListener.loadMoreItems();
+//                    adapter.setHasMoreItems(false); // TODO: TESTING
+                }
+            });
+        }
     }
 }
