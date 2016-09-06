@@ -1,4 +1,4 @@
-package com.kayako.sdk.android.k5.ui.mvp;
+package com.kayako.sdk.android.k5.common.mvp;
 
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>

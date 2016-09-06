@@ -1,12 +1,11 @@
 package com.kayako.sdk.android.k5.sectionbycategoryfragment;
 
-import com.kayako.sdk.android.k5.ui.data.ListItem;
+import com.kayako.sdk.android.k5.common.data.ListItem;
 import com.kayako.sdk.helpcenter.base.Resource;
 import com.kayako.sdk.helpcenter.category.Category;
 import com.kayako.sdk.helpcenter.section.Section;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;

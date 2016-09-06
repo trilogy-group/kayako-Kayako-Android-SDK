@@ -1,4 +1,4 @@
-package com.kayako.sdk.android.k5.ui.data;
+package com.kayako.sdk.android.k5.common.data;
 
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>

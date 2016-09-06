@@ -1,4 +1,4 @@
-package com.kayako.sdk.android.k5.ui.adapter;
+package com.kayako.sdk.android.k5.common.adapter;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;

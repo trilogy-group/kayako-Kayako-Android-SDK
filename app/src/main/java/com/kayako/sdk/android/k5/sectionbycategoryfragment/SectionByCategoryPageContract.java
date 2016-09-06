@@ -1,8 +1,8 @@
 package com.kayako.sdk.android.k5.sectionbycategoryfragment;
 
-import com.kayako.sdk.android.k5.ui.mvp.BasePresenter;
-import com.kayako.sdk.android.k5.ui.mvp.BaseView;
-import com.kayako.sdk.android.k5.ui.data.ListItem;
+import com.kayako.sdk.android.k5.common.mvp.BasePresenter;
+import com.kayako.sdk.android.k5.common.mvp.BaseView;
+import com.kayako.sdk.android.k5.common.data.ListItem;
 
 import java.util.List;
 

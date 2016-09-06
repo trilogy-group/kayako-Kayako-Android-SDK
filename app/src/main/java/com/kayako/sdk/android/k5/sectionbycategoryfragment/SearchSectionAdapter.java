@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.kayako.sdk.android.k5.R;
-import com.kayako.sdk.android.k5.ui.adapter.ListItemRecyclerViewAdapter;
-import com.kayako.sdk.android.k5.ui.data.ListItem;
+import com.kayako.sdk.android.k5.common.adapter.ListItemRecyclerViewAdapter;
+import com.kayako.sdk.android.k5.common.data.ListItem;
 
 import java.util.List;
 

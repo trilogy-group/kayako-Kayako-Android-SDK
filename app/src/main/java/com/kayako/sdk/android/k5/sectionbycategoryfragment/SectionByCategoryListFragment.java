@@ -4,10 +4,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.kayako.sdk.android.k5.ui.fragments.BaseListFragment;
-import com.kayako.sdk.android.k5.ui.adapter.EndlessRecyclerViewScrollAdapter;
-import com.kayako.sdk.android.k5.ui.data.ListItem;
-import com.kayako.sdk.android.k5.ui.adapter.ListItemRecyclerViewAdapter;
+import com.kayako.sdk.android.k5.common.fragments.BaseListFragment;
+import com.kayako.sdk.android.k5.common.adapter.EndlessRecyclerViewScrollAdapter;
+import com.kayako.sdk.android.k5.common.data.ListItem;
+import com.kayako.sdk.android.k5.common.adapter.ListItemRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

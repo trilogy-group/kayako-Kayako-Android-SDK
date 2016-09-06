@@ -1,4 +1,4 @@
-package com.kayako.sdk.android.k5.ui.fragments;
+package com.kayako.sdk.android.k5.common.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,8 +11,8 @@ import android.view.ViewStub;
 import android.widget.Button;
 
 import com.kayako.sdk.android.k5.R;
-import com.kayako.sdk.android.k5.ui.adapter.EndlessRecyclerViewScrollAdapter;
-import com.kayako.sdk.android.k5.ui.adapter.EndlessRecyclerViewScrollListener;
+import com.kayako.sdk.android.k5.common.adapter.EndlessRecyclerViewScrollAdapter;
+import com.kayako.sdk.android.k5.common.adapter.EndlessRecyclerViewScrollListener;
 
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
