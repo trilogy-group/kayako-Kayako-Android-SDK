@@ -12,14 +12,14 @@ import java.util.Map;
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
-public class SectionByCategoryRepo {
+public class SectionByCategoryRepository implements SectionByCategoryPageContract.Data {
 
     private List<Category> mCategories = null;
     private Map<Category, List<Section>> mSectionsByCategory = null;
 
     private HelpCenter mHelpCenter;
 
-    public SectionByCategoryRepo(String helpCenterUrl, Locale locale) {
+    public SectionByCategoryRepository(String helpCenterUrl, Locale locale) {
         mHelpCenter = new HelpCenter(helpCenterUrl, locale);
     }
 

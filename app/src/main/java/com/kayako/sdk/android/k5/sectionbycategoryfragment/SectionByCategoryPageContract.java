@@ -1,22 +1,25 @@
 package com.kayako.sdk.android.k5.sectionbycategoryfragment;
 
+import com.kayako.sdk.android.k5.common.mvp.BaseData;
 import com.kayako.sdk.android.k5.common.mvp.BasePresenter;
 import com.kayako.sdk.android.k5.common.mvp.BaseView;
 import com.kayako.sdk.android.k5.common.data.ListItem;
+import com.kayako.sdk.helpcenter.category.Category;
+import com.kayako.sdk.helpcenter.section.Section;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
 public interface SectionByCategoryPageContract {
 
-// TODO: Interface for Repo class (so that it can replaced with caching alternatives?
-//    interface Data  {
-//
-//        List<Category> getCategories();
-//    }
+    interface Data extends BaseData {
+        List<Category> getCategories(boolean forceNetwork);
 
+        Map<Category, List<Section>> getSectionsByCategory(List<Category> categories, boolean forceNetwork);
+    }
 
     interface View extends BaseView {
 

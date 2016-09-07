@@ -16,13 +16,13 @@ import java.util.Map;
 public class SectionByCategoryPresenter implements SectionByCategoryPageContract.Presenter {
 
     private SectionByCategoryPageContract.View mSectionByCategoryView;
-    private SectionByCategoryRepo mSectionByCategoryRepo;
+    private SectionByCategoryPageContract.Data mSectionByCategoryData;
     private List<Category> categories;
     private Map<Category, List<Section>> sectionsByCategory;
 
     public SectionByCategoryPresenter(SectionByCategoryPageContract.View mWelcomePageView) {
         this.mSectionByCategoryView = mWelcomePageView;
-        mSectionByCategoryRepo = new SectionByCategoryRepo("https://support.kayako.com", new Locale("en", "us"));
+        mSectionByCategoryData = SectionByCategoryPageFactory.getDataSource("https://support.kayako.com", new Locale("en", "us"));
         // TODO: Figure out the best way to handle HelpCenter later.
     }
 
@@ -61,8 +61,8 @@ public class SectionByCategoryPresenter implements SectionByCategoryPageContract
         try {
             // TODO: Throw Exception in JAR. If it fails to load, do not return null - Shows empty view when it shouldn't
             // TODO: Strangely, if there's an error on the first call, there's a null returned on the second call - CHECK WHY?
-            categories = mSectionByCategoryRepo.getCategories(false);
-            sectionsByCategory = mSectionByCategoryRepo.getSectionsByCategory(categories, false);
+            categories = mSectionByCategoryData.getCategories(false);
+            sectionsByCategory = mSectionByCategoryData.getSectionsByCategory(categories, false);
             return true;
         } catch (Exception e) {
             // TODO: Find a better way to catch exceptions. Throw likely exceptions in each method

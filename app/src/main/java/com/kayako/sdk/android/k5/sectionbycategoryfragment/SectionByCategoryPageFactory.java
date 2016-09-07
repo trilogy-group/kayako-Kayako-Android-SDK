@@ -1,5 +1,7 @@
 package com.kayako.sdk.android.k5.sectionbycategoryfragment;
 
+import java.util.Locale;
+
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
@@ -14,5 +16,9 @@ public class SectionByCategoryPageFactory {
             mSectionByCategoryPresenter.setView(view);
             return mSectionByCategoryPresenter;
         }
+    }
+
+    public static SectionByCategoryPageContract.Data getDataSource(String helpCenterUrl, Locale locale) {
+        return new SectionByCategoryRepository(helpCenterUrl, locale);
     }
 }
