@@ -1,4 +1,4 @@
-package com.kayako.sdk.android.k5.sectionbycategoryfragment;
+package com.kayako.sdk.android.k5.sectionbycategorypage;
 
 import java.util.Locale;
 

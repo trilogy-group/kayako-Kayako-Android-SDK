@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.kayako.sdk.android.k5.R;
-import com.kayako.sdk.android.k5.sectionbycategoryfragment.SectionByCategoryListFragment;
+import com.kayako.sdk.android.k5.sectionbycategorypage.SectionByCategoryListFragment;
 
 public class HelpCenterActivity extends AppCompatActivity {
 
