@@ -1,6 +1,9 @@
 package com.kayako.sdk.android.k5.common.fragments;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,7 +30,7 @@ public abstract class BaseListFragment extends Fragment {
 
     @Override
     final public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mRoot = inflater.inflate(R.layout.fragment_item_list, container, false);
+        mRoot = inflater.inflate(R.layout.ko__fragment_item_list, container, false);
         mEmptyStubView = (ViewStub) mRoot.findViewById(R.id.ko__stub_empty_state);
         mLoadingStubView = (ViewStub) mRoot.findViewById(R.id.ko__stub_loading_state);
         mErrorStubView = (ViewStub) mRoot.findViewById(R.id.ko__stub_error_state);
@@ -148,7 +151,15 @@ public abstract class BaseListFragment extends Fragment {
             mRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager, adapter) {
                 @Override
                 public void onLoadMore(int page, int totalItemsCount) {
-                    loadMoreListener.loadMoreItems();
+                    // Using a handler because it will cause IllegalStateException: Scroll callbacks should not be used to change the structure of the RecyclerView or the adapter contents.
+                    Handler loadMoreHandler = new Handler(Looper.getMainLooper()) {
+                        @Override
+                        public void handleMessage(Message inputMessage) {
+                            loadMoreListener.loadMoreItems();
+                        }
+                    };
+
+                    loadMoreHandler.sendEmptyMessage(0);
 //                    adapter.setHasMoreItems(false); // TODO: TESTING
                 }
             });
