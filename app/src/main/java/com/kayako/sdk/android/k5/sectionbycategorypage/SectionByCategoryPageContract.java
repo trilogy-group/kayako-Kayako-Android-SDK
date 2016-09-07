@@ -35,6 +35,8 @@ public interface SectionByCategoryPageContract {
 
         void startBackgroundTask();
 
+        void openArticleListingPage(long sectionId);
+
     }
 
     interface Presenter extends BasePresenter<SectionByCategoryPageContract.View> {

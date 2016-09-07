@@ -1,5 +1,6 @@
 package com.kayako.sdk.android.k5.sectionbycategorypage;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,6 +8,7 @@ import android.support.annotation.Nullable;
 import com.kayako.sdk.android.k5.common.adapter.ListItemRecyclerViewAdapter;
 import com.kayako.sdk.android.k5.common.data.ListItem;
 import com.kayako.sdk.android.k5.common.fragments.BaseListFragment;
+import com.kayako.sdk.android.k5.welcomepage.ActivityNavigationInterface;
 
 import java.util.List;
 
@@ -18,12 +20,19 @@ public class SectionByCategoryListFragment extends BaseListFragment implements S
     protected SectionByCategoryPageContract.Presenter mPresenter;
     protected AsyncTask mBackgroundTask;
     protected ListItemRecyclerViewAdapter listItemRecyclerViewAdapter;
+    protected ActivityNavigationInterface mActivityNavigation;
 
     public static SectionByCategoryListFragment newInstance() {
         return new SectionByCategoryListFragment();
     }
 
     public SectionByCategoryListFragment() {
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mActivityNavigation = ((ActivityNavigationInterface) getActivity());
     }
 
     @Override
@@ -63,12 +72,23 @@ public class SectionByCategoryListFragment extends BaseListFragment implements S
     }
 
     @Override
+    public void openArticleListingPage(long sectionId) {
+        mActivityNavigation.openNextPage(sectionId);
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         if (mBackgroundTask != null && !mBackgroundTask.isCancelled()) {
             mBackgroundTask.cancel(true);
             mBackgroundTask = null;
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mActivityNavigation = null;
     }
 
     @Override

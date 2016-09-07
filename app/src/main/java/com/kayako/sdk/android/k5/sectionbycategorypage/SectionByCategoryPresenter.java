@@ -40,8 +40,7 @@ public class SectionByCategoryPresenter implements SectionByCategoryPageContract
     public void onClickListItem(ListItem listItem) {
         Resource resource = listItem.getResource();
         if (resource instanceof Section) {
-            System.out.println(((Section) resource).getId());
-            // TODO: Intent should open new Activity by passing Section id
+            mSectionByCategoryView.openArticleListingPage(((Section) resource).getId());
         }
     }
 

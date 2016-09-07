@@ -34,6 +34,7 @@ public abstract class BaseListFragment extends Fragment {
         mEmptyStubView = (ViewStub) mRoot.findViewById(R.id.ko__stub_empty_state);
         mLoadingStubView = (ViewStub) mRoot.findViewById(R.id.ko__stub_loading_state);
         mErrorStubView = (ViewStub) mRoot.findViewById(R.id.ko__stub_error_state);
+        mRecyclerView = (RecyclerView) mRoot.findViewById(R.id.ko__list);
         return mRoot;
     }
 
@@ -148,7 +149,6 @@ public abstract class BaseListFragment extends Fragment {
      */
     protected void initList(final EndlessRecyclerViewScrollAdapter adapter, final EndlessRecyclerViewScrollAdapter.OnLoadMoreListener loadMoreListener) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mRoot.getContext());
-        mRecyclerView = (RecyclerView) mRoot.findViewById(R.id.ko__list);
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setNestedScrollingEnabled(false);
