@@ -17,8 +17,7 @@ public class SectionByCategoryPresenter implements SectionByCategoryPageContract
 
     private SectionByCategoryPageContract.View mSectionByCategoryView;
     private SectionByCategoryPageContract.Data mSectionByCategoryData;
-    private List<Category> categories;
-    private Map<Category, List<Section>> sectionsByCategory;
+    private List<ListItem> mListItems;
 
     public SectionByCategoryPresenter(SectionByCategoryPageContract.View mWelcomePageView) {
         this.mSectionByCategoryView = mWelcomePageView;
@@ -61,8 +60,10 @@ public class SectionByCategoryPresenter implements SectionByCategoryPageContract
         try {
             // TODO: Throw Exception in JAR. If it fails to load, do not return null - Shows empty view when it shouldn't
             // TODO: Strangely, if there's an error on the first call, there's a null returned on the second call - CHECK WHY?
-            categories = mSectionByCategoryData.getCategories(false);
-            sectionsByCategory = mSectionByCategoryData.getSectionsByCategory(categories, false);
+            // TODO: Test empty
+            List<Category> categories = mSectionByCategoryData.getCategories(false);
+            Map<Category, List<Section>> sectionsByCategory = mSectionByCategoryData.getSectionsByCategory(categories, false);
+            mListItems = setUpList(categories, sectionsByCategory);
             return true;
         } catch (Exception e) {
             // TODO: Find a better way to catch exceptions. Throw likely exceptions in each method
@@ -74,16 +75,18 @@ public class SectionByCategoryPresenter implements SectionByCategoryPageContract
     @Override
     public void onDataLoaded(boolean isSuccessful) {
         if (isSuccessful) {
-            setUpList(categories, sectionsByCategory); // TODO: Test empty
+            mSectionByCategoryView.setUpList(mListItems);
+            showDataViewAndHideOthers();
         } else {
             showErrorViewAndHideOthers();
         }
         // TODO: Check if categories loaded properly, and sectiosn - error?
     }
 
-    private void setUpList(List<Category> categories, Map<Category, List<Section>> sectionsByCategory) {
+    private List<ListItem> setUpList(List<Category> categories, Map<Category, List<Section>> sectionsByCategory) {
         if (categories.size() == 0) {
             showEmptyViewAndHideOthers();
+            return new ArrayList<>();
         } else {
             List<ListItem> items = new ArrayList<>();
 
@@ -94,8 +97,7 @@ public class SectionByCategoryPresenter implements SectionByCategoryPageContract
                 }
             }
 
-            mSectionByCategoryView.setUpList(items);
-            showDataViewAndHideOthers();
+            return items;
         }
     }
 

@@ -7,14 +7,14 @@ import java.util.Locale;
  */
 public class SectionByCategoryPageFactory {
 
-    private static SectionByCategoryPresenter mSectionByCategoryPresenter;
+    private static SectionByCategoryPresenter sSectionByCategoryPresenter;
 
     public static SectionByCategoryPageContract.Presenter getPresenter(SectionByCategoryPageContract.View view) {
-        if (mSectionByCategoryPresenter == null) {
-            return mSectionByCategoryPresenter = new SectionByCategoryPresenter(view);
+        if (sSectionByCategoryPresenter == null) {
+            return sSectionByCategoryPresenter = new SectionByCategoryPresenter(view);
         } else {
-            mSectionByCategoryPresenter.setView(view);
-            return mSectionByCategoryPresenter;
+            sSectionByCategoryPresenter.setView(view);
+            return sSectionByCategoryPresenter;
         }
     }
 
