@@ -27,7 +27,7 @@ public class SectionByCategoryRepo {
         if (mCategories != null && !forceNetwork) {
             return mCategories;
         } else {
-            return mCategories = mHelpCenter.getCategories();
+            return mCategories = mHelpCenter.getCategories(0, 999); // hack to load all categories
         }
     }
 
@@ -38,7 +38,7 @@ public class SectionByCategoryRepo {
         } else {
             mSectionsByCategory = new HashMap<>();
             for (Category category : categories) {
-                List<Section> sections = mHelpCenter.getSections(category.getId());
+                List<Section> sections = mHelpCenter.getSections(category.getId(), 0, 999); // hack to load all sections
                 if (sections != null && sections.size() > 0) {
                     mSectionsByCategory.put(category, sections);
                 }

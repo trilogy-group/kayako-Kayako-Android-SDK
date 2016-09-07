@@ -138,6 +138,14 @@ public abstract class BaseListFragment extends Fragment {
         hideLoadingView();
     }
 
+    /**
+     * Initialize the RecyclerView, Adapter and ScrollListener.
+     * <p/>
+     * If loadMoreListener is set as null, it implies that there is no more items to load when user scrolls to bottom of list (disable load more listener)
+     *
+     * @param adapter
+     * @param loadMoreListener
+     */
     protected void initList(final EndlessRecyclerViewScrollAdapter adapter, final EndlessRecyclerViewScrollAdapter.OnLoadMoreListener loadMoreListener) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mRoot.getContext());
         mRecyclerView = (RecyclerView) mRoot.findViewById(R.id.ko__list);
@@ -146,7 +154,7 @@ public abstract class BaseListFragment extends Fragment {
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
-        if (loadMoreListener != null) {
+        if (loadMoreListener != null) { // only enable scroll listener if needed
             adapter.setHasMoreItems(true);
             mRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager, adapter) {
                 @Override
