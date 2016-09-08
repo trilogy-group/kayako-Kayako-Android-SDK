@@ -15,4 +15,5 @@ public class ArticleListAdapter extends ListItemRecyclerViewAdapter {
     }
 
     // TODO: Override  onBindViewHolder(final RecyclerView.ViewHolder viewHolder, int position) to use Image Spans to show the Pinned Icon
+    // TODO: Add a header - section description
 }

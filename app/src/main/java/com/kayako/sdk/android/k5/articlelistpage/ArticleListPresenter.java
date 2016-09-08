@@ -50,8 +50,12 @@ public class ArticleListPresenter implements ArticleListContract.Presenter {
     @Override
     public void onDataLoaded(boolean isSuccessful) {
         if (isSuccessful) {
-            mView.showOnlyListView();
-            mView.setUpList(mListItems);
+            if (mListItems.size() == 0) {
+                mView.showOnlyEmptyView();
+            } else {
+                mView.showOnlyListView();
+                mView.setUpList(mListItems);
+            }
         } else {
             mView.showOnlyErrorView();
         }
@@ -84,7 +88,7 @@ public class ArticleListPresenter implements ArticleListContract.Presenter {
                     contentsWithoutHtml = Html.fromHtml(article.getContents()).toString();
                 }
 
-                ListItem item = new ListItem(false, article.getTitle(), Html.fromHtml(article.getContents()).toString(), article);
+                ListItem item = new ListItem(false, article.getTitle(), contentsWithoutHtml, article);
                 items.add(item);
             }
             return items;
