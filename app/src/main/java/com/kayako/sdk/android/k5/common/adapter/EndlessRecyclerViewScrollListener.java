@@ -20,6 +20,8 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
     // Sets the starting page index
     private int startingPageIndex = 0;
 
+    private boolean mShouldLoadMoreWithoutScroll = true; // To ensure onLoadMore is called at least once. This was added because large screen sizes and smaller limits create a situation where more data will never be loaded.
+
     RecyclerView.LayoutManager mLayoutManager;
     EndlessRecyclerViewScrollAdapter mAdapter;
 
@@ -51,8 +53,9 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
     @Override
     public void onScrolled(RecyclerView view, int dx, int dy) {
         // Only consider scrolling when when there's a vertical scroll
-        // TODO: Check if negative values mean scroll in opposite direction?
-        if (dy <= 0 || !mAdapter.hasMoreItems()) {
+        // Negative values mean scroll in opposite direction?
+        if ((!mShouldLoadMoreWithoutScroll && dy <= 0) || !mAdapter.hasMoreItems()) {
+            mShouldLoadMoreWithoutScroll = false;
             return;
         }
 

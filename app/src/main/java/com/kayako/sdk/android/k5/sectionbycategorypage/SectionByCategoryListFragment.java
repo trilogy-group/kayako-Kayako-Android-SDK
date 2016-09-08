@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import com.kayako.sdk.android.k5.common.adapter.ListItemRecyclerViewAdapter;
 import com.kayako.sdk.android.k5.common.data.ListItem;
 import com.kayako.sdk.android.k5.common.fragments.BaseListFragment;
+import com.kayako.sdk.android.k5.common.task.BackgroundTask;
 import com.kayako.sdk.android.k5.welcomepage.ActivityNavigationInterface;
 
 import java.util.List;
@@ -54,20 +55,17 @@ public class SectionByCategoryListFragment extends BaseListFragment implements S
             mBackgroundTask.cancel(true);
         }
 
-        mBackgroundTask = new AsyncTask<Void, Void, Boolean>() {
+        mBackgroundTask = new BackgroundTask(getActivity()) {
             @Override
-            protected Boolean doInBackground(Void... voids) {
+            protected boolean performInBackground() {
                 return mPresenter.loadDataInBackground();
             }
 
             @Override
-            protected void onPostExecute(Boolean isSuccessful) {
-                super.onPostExecute(isSuccessful);
-                if (isSuccessful == null) {
-                    isSuccessful = false;
-                }
+            protected void performOnCompletion(boolean isSuccessful) {
                 mPresenter.onDataLoaded(isSuccessful);
             }
+
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 

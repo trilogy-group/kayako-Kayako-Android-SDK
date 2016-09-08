@@ -29,21 +29,36 @@ public interface ArticleListContract {
 
         void showOnlyLoadingView();
 
-        void startBackgroundTask();
+        void startBackgroundTaskToLoadData();
 
+        void startBackgroundTaskToLoadMoreData();
+
+        void addItemsToList(List<ListItem> items);
+
+        void showLoadingMoreItemsProgress();
+
+        void hideLoadingMoreItemsProgress();
+
+        void setListHasMoreItems(boolean hasMoreItems);
     }
 
     interface Presenter extends BasePresenter<ArticleListContract.View> {
 
         void initPage(long sectionId);
 
-        boolean loadDataInBackground();
+        boolean fetchDataInBackground();
 
         void onDataLoaded(boolean isSuccessful);
+
+        boolean fetchMoreDataInBackground();
+
+        void onMoreDataLoaded(boolean isSuccessful);
 
         void onClickListItem(ListItem listItem);
 
         void reloadPage();
+
+        void loadMoreData();
     }
 
 }

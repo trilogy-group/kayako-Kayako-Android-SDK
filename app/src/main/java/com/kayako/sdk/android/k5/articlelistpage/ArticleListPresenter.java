@@ -14,10 +14,16 @@ import java.util.Locale;
  */
 public class ArticleListPresenter implements ArticleListContract.Presenter {
 
+    private static final int REQUEST_LIMIT = 20;
+    private int mOffset = 0;
+
     private ArticleListContract.View mView;
     private ArticleListContract.Data mData;
+
     private List<ListItem> mListItems;
+    private List<ListItem> mMoreItems;
     private long mSectionId;
+
 
     public ArticleListPresenter(ArticleListContract.View view) {
         mView = view;
@@ -25,20 +31,17 @@ public class ArticleListPresenter implements ArticleListContract.Presenter {
         // TODO: Figure out the best way to handle HelpCenterUrl data and locale later.
     }
 
-    // TODO: Get sectionId
-
     @Override
     public void initPage(long sectionId) {
         mSectionId = sectionId;
         mView.showOnlyLoadingView();
-        mView.startBackgroundTask();
+        mView.startBackgroundTaskToLoadData();
     }
 
     @Override
-    public boolean loadDataInBackground() {
-        // TODO: Add flags to load more or refresh page
+    public boolean fetchDataInBackground() {
         try {
-            List<Article> articles = mData.getArticles(mSectionId, 0, 20);
+            List<Article> articles = mData.getArticles(mSectionId, mOffset = 0, REQUEST_LIMIT);
             mListItems = convertToListItems(articles);
             return true;
         } catch (Exception e) {
@@ -55,10 +58,40 @@ public class ArticleListPresenter implements ArticleListContract.Presenter {
             } else {
                 mView.showOnlyListView();
                 mView.setUpList(mListItems);
+                mView.setListHasMoreItems(true);
             }
         } else {
             mView.showOnlyErrorView();
         }
+    }
+
+    @Override
+    public boolean fetchMoreDataInBackground() {
+        try {
+            List<Article> articles = mData.getArticles(mSectionId, mOffset + REQUEST_LIMIT, REQUEST_LIMIT);
+            mMoreItems = convertToListItems(articles);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public void onMoreDataLoaded(boolean isSuccessful) {
+        if (isSuccessful) {
+            mOffset += REQUEST_LIMIT;
+            if (mMoreItems.size() == 0) {
+                // TODO: Note that there are no more items to load.
+                mView.setListHasMoreItems(false);
+            } else {
+                mView.addItemsToList(mMoreItems);
+            }
+        } else {
+            // TODO: Show error message? Show toast instead of replacing whole screen with error.
+        }
+
+        mView.hideLoadingMoreItemsProgress();
     }
 
     @Override
@@ -68,7 +101,15 @@ public class ArticleListPresenter implements ArticleListContract.Presenter {
 
     @Override
     public void reloadPage() {
-        // TODO
+        mView.showOnlyLoadingView();
+        mView.startBackgroundTaskToLoadData();
+        // TODO: Cancel any ongoing tasks?
+    }
+
+    @Override
+    public void loadMoreData() {
+        mView.showLoadingMoreItemsProgress();
+        mView.startBackgroundTaskToLoadMoreData();
     }
 
     @Override
