@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/ko__list_item_background"
-    android:orientation="vertical"
-    tools:context="com.kayako.sdk.android.k5.MainActivity">
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/fragment_listing"

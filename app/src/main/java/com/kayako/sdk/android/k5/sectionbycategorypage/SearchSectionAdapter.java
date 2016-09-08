@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.ListItemRecyclerViewAdapter;
@@ -66,13 +67,13 @@ public class SearchSectionAdapter extends ListItemRecyclerViewAdapter {
     }
 
     public class SearchSectionViewHolder extends ViewHolder {
-        public EditText searchEditText;
+        public TextView searchEditText;
 
         public SearchSectionViewHolder(View view) {
             super(view);
             mView = view;
             mItem = null;
-            searchEditText = (EditText) view.findViewById(R.id.ko__search_edittext);
+            searchEditText = (TextView) view.findViewById(R.id.ko__search_edittext);
         }
     }
 

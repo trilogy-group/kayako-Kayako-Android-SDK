@@ -29,5 +29,7 @@
     <color name="ko__retry_button_background_default">@color/colorPrimary</color>
     <color name="ko__retry_button_background_pressed">@color/colorPrimary</color>
     <color name="ko__retry_button_background_selected">@color/colorPrimaryDark</color>
+    <color name="ko__toolbar_search_background">#fff</color>
 
+    <color name="ko__toolbar_search_text_color">#000</color>
 </resources>

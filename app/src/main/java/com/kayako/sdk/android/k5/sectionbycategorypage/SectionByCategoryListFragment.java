@@ -1,6 +1,7 @@
 package com.kayako.sdk.android.k5.sectionbycategorypage;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,7 +10,8 @@ import com.kayako.sdk.android.k5.common.adapter.ListItemRecyclerViewAdapter;
 import com.kayako.sdk.android.k5.common.data.ListItem;
 import com.kayako.sdk.android.k5.common.fragments.BaseListFragment;
 import com.kayako.sdk.android.k5.common.task.BackgroundTask;
-import com.kayako.sdk.android.k5.welcomepage.ActivityNavigationInterface;
+import com.kayako.sdk.android.k5.common.fragments.IActivityNavigation;
+import com.kayako.sdk.android.k5.welcomepage.KayakoSearchArticleActivity;
 
 import java.util.List;
 
@@ -21,7 +23,7 @@ public class SectionByCategoryListFragment extends BaseListFragment implements S
     protected SectionByCategoryPageContract.Presenter mPresenter;
     protected AsyncTask mBackgroundTask;
     protected ListItemRecyclerViewAdapter listItemRecyclerViewAdapter;
-    protected ActivityNavigationInterface mActivityNavigation;
+    protected IActivityNavigation mActivityNavigation;
 
     public static SectionByCategoryListFragment newInstance() {
         return new SectionByCategoryListFragment();
@@ -33,7 +35,7 @@ public class SectionByCategoryListFragment extends BaseListFragment implements S
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mActivityNavigation = ((ActivityNavigationInterface) getActivity());
+        mActivityNavigation = ((IActivityNavigation) getActivity());
     }
 
     @Override
@@ -72,6 +74,11 @@ public class SectionByCategoryListFragment extends BaseListFragment implements S
     @Override
     public void openArticleListingPage(long sectionId) {
         mActivityNavigation.openNextPage(sectionId);
+    }
+
+    @Override
+    public void openSearchPage() {
+        startActivity(new Intent(getContext(), KayakoSearchArticleActivity.class));
     }
 
     @Override

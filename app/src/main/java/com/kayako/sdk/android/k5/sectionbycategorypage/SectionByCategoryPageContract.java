@@ -37,6 +37,7 @@ public interface SectionByCategoryPageContract {
 
         void openArticleListingPage(long sectionId);
 
+        void openSearchPage();
     }
 
     interface Presenter extends BasePresenter<SectionByCategoryPageContract.View> {

@@ -7,9 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.articlelistpage.ArticleListFragment;
+import com.kayako.sdk.android.k5.common.fragments.IActivityNavigation;
 import com.kayako.sdk.android.k5.sectionbycategorypage.SectionByCategoryListFragment;
 
-public class KayakoHelpCenterActivity extends AppCompatActivity implements ActivityNavigationInterface {
+public class KayakoHelpCenterIActivity extends AppCompatActivity implements IActivityNavigation {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

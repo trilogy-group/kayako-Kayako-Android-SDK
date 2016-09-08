@@ -5,6 +5,7 @@ import com.kayako.sdk.android.k5.common.mvp.BaseData;
 import com.kayako.sdk.android.k5.common.mvp.BasePresenter;
 import com.kayako.sdk.android.k5.common.mvp.BaseView;
 import com.kayako.sdk.helpcenter.articles.Article;
+import com.kayako.sdk.helpcenter.search.SearchArticle;
 
 import java.util.List;
 
@@ -14,12 +15,12 @@ import java.util.List;
 public interface SearchArticleContract {
 
     interface Data extends BaseData {
-        List<Article> searchArticles(String query, int offset, int limit);
+        List<SearchArticle> searchArticles(String query, int offset, int limit);
     }
 
     interface View extends BaseView {
 
-        void setUpList(List<ListItem> items);
+        // change state methods
 
         void showOnlyListView();
 
@@ -29,13 +30,31 @@ public interface SearchArticleContract {
 
         void showOnlyLoadingView();
 
-        void startBackgroundTask();
+        // show content methods
+
+        void startBackgroundTask(String searchQuery);
+
+        void cancelBackgroundTask();
+
+        void setUpList(List<ListItem> items);
+
+        // Load more methods
+
+        void addItemsToList(List<ListItem> items);
+
+        void showLoadingMoreItemsProgress();
+
+        void hideLoadingMoreItemsProgress();
+
+        void setListHasMoreItems(boolean hasMoreItems);
 
     }
 
     interface Presenter extends BasePresenter<SearchArticleContract.View> {
 
         void initPage(long sectionId);
+
+        void searchArticles(String query);
 
         boolean loadDataInBackground();
 
