@@ -42,6 +42,14 @@ public class SearchArticleResultFragment extends BaseListFragment implements Sea
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        cancelBackgroundTasks();
+        mSearchTask = null;
+        mLoadMoreTask = null;
+    }
+
+    @Override
     protected void reloadPage() {
         mPresenter.reloadPage();
     }
@@ -78,8 +86,8 @@ public class SearchArticleResultFragment extends BaseListFragment implements Sea
     @Override
     public void startSearchTask() {
         // Cancel any previous search task and start a new one
-        if (mSearchTask != null && !mSearchTask.isCancelled()) {
-            mSearchTask.cancel(true);
+        if (mSearchTask != null) {
+            mSearchTask.cancelTask();
         }
         mSearchTask = new BackgroundTask(getActivity()) {
             @Override
@@ -115,11 +123,11 @@ public class SearchArticleResultFragment extends BaseListFragment implements Sea
 
     @Override
     public void cancelBackgroundTasks() {
-        if (mSearchTask != null && !mSearchTask.isCancelled()) {
-            mSearchTask.cancel(true);
+        if (mSearchTask != null) {
+            mSearchTask.cancelTask();
         }
-        if (mLoadMoreTask != null && !mLoadMoreTask.isCancelled()) {
-            mLoadMoreTask.cancel(true);
+        if (mLoadMoreTask != null) {
+            mLoadMoreTask.cancelTask();
         }
     }
 

@@ -21,6 +21,10 @@ public abstract class BackgroundTask extends AsyncTask<Void, Void, Boolean> {
         return performInBackground();
     }
 
+    /**
+     * Ensures that status is a boolean value (never null) and UI tasks will not run if the reference to the Activity is null
+     * @param aBoolean
+     */
     @Override
     final protected void onPostExecute(Boolean aBoolean) {
         if (aBoolean == null) {
@@ -32,6 +36,15 @@ public abstract class BackgroundTask extends AsyncTask<Void, Void, Boolean> {
         }
 
         mActivityReference = null;
+    }
+
+    /**
+     * Performs the necessary checks ensuring the task is cancelled only if it can be cancelled
+     */
+    public void cancelTask() {
+        if (!isCancelled() && getStatus() != Status.FINISHED) {
+            cancel(true);
+        }
     }
 
     protected abstract boolean performInBackground();

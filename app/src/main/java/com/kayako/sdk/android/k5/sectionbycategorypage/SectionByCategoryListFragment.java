@@ -21,7 +21,7 @@ import java.util.List;
 public class SectionByCategoryListFragment extends BaseListFragment implements SectionByCategoryPageContract.View, ListItemRecyclerViewAdapter.OnItemClickListener, SearchSectionAdapter.OnSearchClickListener {
 
     protected SectionByCategoryPageContract.Presenter mPresenter;
-    protected AsyncTask mBackgroundTask;
+    protected BackgroundTask mBackgroundTask;
     protected ListItemRecyclerViewAdapter listItemRecyclerViewAdapter;
     protected IActivityNavigation mActivityNavigation;
 
@@ -53,11 +53,11 @@ public class SectionByCategoryListFragment extends BaseListFragment implements S
     @Override
     public void startBackgroundTask() {
         // Cancel pending tasks before starting new ones
-        if (mBackgroundTask != null && !mBackgroundTask.isCancelled()) {
-            mBackgroundTask.cancel(true);
+        if (mBackgroundTask != null) {
+            mBackgroundTask.cancelTask();
         }
 
-        mBackgroundTask = new BackgroundTask(getActivity()) {
+        mBackgroundTask = (BackgroundTask) new BackgroundTask(getActivity()) {
             @Override
             protected boolean performInBackground() {
                 return mPresenter.loadDataInBackground();
@@ -84,10 +84,8 @@ public class SectionByCategoryListFragment extends BaseListFragment implements S
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (mBackgroundTask != null && !mBackgroundTask.isCancelled()) {
-            mBackgroundTask.cancel(true);
-            mBackgroundTask = null;
-        }
+        cancelBackgroundTasks();
+        mBackgroundTask = null;
     }
 
     @Override
@@ -172,5 +170,11 @@ public class SectionByCategoryListFragment extends BaseListFragment implements S
     @Override
     public void onClickSearch() {
         mPresenter.onClickSearch();
+    }
+
+    protected void cancelBackgroundTasks() {
+        if (mBackgroundTask != null) {
+            mBackgroundTask.cancelTask();
+        }
     }
 }

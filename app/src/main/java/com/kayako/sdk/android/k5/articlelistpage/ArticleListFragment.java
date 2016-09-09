@@ -19,8 +19,8 @@ public class ArticleListFragment extends BaseListFragment implements ArticleList
 
     public static final String ARG_SECTION_ID = "section-id";
 
-    private AsyncTask mTaskToLoadData;
-    private AsyncTask mTaskToLoadMoreData;
+    private BackgroundTask mTaskToLoadData;
+    private BackgroundTask mTaskToLoadMoreData;
 
     public static ArticleListFragment newInstance(long sectionId) {
         Bundle bundle = new Bundle();
@@ -56,6 +56,7 @@ public class ArticleListFragment extends BaseListFragment implements ArticleList
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        cancelBackgroundTasks();
         mTaskToLoadData = null;
         mTaskToLoadMoreData = null;
     }
@@ -95,7 +96,7 @@ public class ArticleListFragment extends BaseListFragment implements ArticleList
     public void startBackgroundTaskToLoadData() {
         cancelTask(mTaskToLoadData);
 
-        mTaskToLoadData = new BackgroundTask(getActivity()) {
+        mTaskToLoadData = (BackgroundTask) new BackgroundTask(getActivity()) {
             @Override
             protected boolean performInBackground() {
                 return mPresenter.fetchDataInBackground();
@@ -113,7 +114,7 @@ public class ArticleListFragment extends BaseListFragment implements ArticleList
     public void startBackgroundTaskToLoadMoreData() {
         // TODO How many times would this be called? load more should be called one at a time
         // TODO: How do ensure that the order is maintained. SERIAL EXECUTOR?
-        mTaskToLoadMoreData = new BackgroundTask(getActivity()) {
+        mTaskToLoadMoreData = (BackgroundTask) new BackgroundTask(getActivity()) {
             @Override
             protected boolean performInBackground() {
                 return mPresenter.fetchMoreDataInBackground();
@@ -156,10 +157,15 @@ public class ArticleListFragment extends BaseListFragment implements ArticleList
         // TODO: Open Article List Page
     }
 
-    private void cancelTask(AsyncTask task) {
-        // Ensure only one
-        if (task != null && !task.isCancelled()) {
-            task.cancel(true);
+    private void cancelTask(BackgroundTask task) {
+        if (task != null) {
+            task.cancelTask();
         }
     }
+
+    protected void cancelBackgroundTasks() {
+        cancelTask(mTaskToLoadData);
+        cancelTask(mTaskToLoadMoreData);
+    }
+
 }
