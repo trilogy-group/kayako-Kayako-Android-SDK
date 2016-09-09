@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/ko__list_item_background"
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/fragment_listing"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="vertical" />
+        android:orientation="vertical">
 
-    <include layout="@layout/ko__include_separator" />
+        <LinearLayout
+            android:id="@+id/fragment_listing"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical" />
 
-    <include layout="@layout/ko__include_footer" />
+        <include layout="@layout/ko__include_separator" />
 
-</LinearLayout>
+        <include layout="@layout/ko__include_footer" />
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>
