@@ -5,4 +5,10 @@
     <string name="ko__label_search_hint">Search here...</string>
     <string name="ko__action_ok">Ok</string>
     <string name="ko__error_type_at_least_three_characters_to_search">Please type at least 3 characters to search!</string>
+    <string name="ko__label_empty_view_title">Whoops!</string>
+    <string name="ko__label_empty_view_description">Looks like there\'s nothing to show</string>
+    <string name="ko__label_error_view_title">Something went wrong</string>
+    <string name="ko__label_error_view_description">Something went wrong on our side. Please try again later.</string>
+    <string name="ko__label_error_view_network_title">Something went wrong</string>
+    <string name="ko__label_error_view_network_description">Unable to connect to server. Please check your network connection. </string>
 </resources>

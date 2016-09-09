@@ -3,7 +3,9 @@ package com.kayako.sdk.android.k5.articlelistpage;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 
+import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.EndlessRecyclerViewScrollAdapter;
 import com.kayako.sdk.android.k5.common.adapter.ListItemRecyclerViewAdapter;
 import com.kayako.sdk.android.k5.common.data.ListItem;
@@ -87,7 +89,6 @@ public class ArticleListFragment extends BaseListFragment implements ArticleList
         super.setHasMoreItems(hasMoreItems);
     }
 
-    @Override
     protected void reloadPage() {
         mPresenter.reloadPage();
     }
@@ -134,12 +135,17 @@ public class ArticleListFragment extends BaseListFragment implements ArticleList
 
     @Override
     public void showOnlyEmptyView() {
-        super.showEmptyViewAndHideOthers();
+        super.showEmptyViewAndHideOthers(null, null);
     }
 
     @Override
     public void showOnlyErrorView() {
-        super.showErrorViewAndHideOthers();
+        super.showErrorViewAndHideOthers(null, null, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                reloadPage();
+            }
+        });
     }
 
     @Override

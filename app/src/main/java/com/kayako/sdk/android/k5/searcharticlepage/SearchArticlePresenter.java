@@ -27,8 +27,7 @@ public class SearchArticlePresenter implements SearchArticleContract.Presenter {
 
     @Override
     public void initPage() {
-        mView.showOnlyEmptyView();
-//        mView.showBlankView();
+        mView.showBlankView();
     }
 
     @Override

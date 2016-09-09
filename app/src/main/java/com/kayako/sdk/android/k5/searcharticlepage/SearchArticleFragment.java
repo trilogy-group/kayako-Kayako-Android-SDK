@@ -3,6 +3,7 @@ package com.kayako.sdk.android.k5.searcharticlepage;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import com.kayako.sdk.android.k5.common.adapter.EndlessRecyclerViewScrollAdapter;
 import com.kayako.sdk.android.k5.common.adapter.ListItemRecyclerViewAdapter;
@@ -48,7 +49,6 @@ public class SearchArticleFragment extends BaseListFragment implements SearchArt
         mLoadMoreTask = null;
     }
 
-    @Override
     protected void reloadPage() {
         mPresenter.reloadPage();
     }
@@ -60,12 +60,18 @@ public class SearchArticleFragment extends BaseListFragment implements SearchArt
 
     @Override
     public void showOnlyEmptyView() {
-        super.showEmptyViewAndHideOthers();
+        super.showEmptyViewAndHideOthers(null, null);
     }
 
     @Override
     public void showOnlyErrorView() {
-        super.showErrorViewAndHideOthers();
+        // TODO: Customize error messages - Network, others
+        super.showErrorViewAndHideOthers(null, null, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                reloadPage();
+            }
+        });
     }
 
     @Override

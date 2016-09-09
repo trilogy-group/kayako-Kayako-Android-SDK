@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import com.kayako.sdk.android.k5.common.adapter.ListItemRecyclerViewAdapter;
 import com.kayako.sdk.android.k5.common.data.ListItem;
@@ -144,22 +145,23 @@ public class SectionByCategoryListFragment extends BaseListFragment implements S
 
     @Override
     public void showOnlyEmptyView() {
-        showEmptyViewAndHideOthers();
+        showEmptyViewAndHideOthers(null, null);
     }
 
     @Override
     public void showOnlyErrorView() {
-        showErrorViewAndHideOthers();
+        // TODO: Customize error messages - Network, others
+        showErrorViewAndHideOthers(null, null, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPresenter.reloadPage();
+            }
+        });
     }
 
     @Override
     public void showOnlyLoadingView() {
         showLoadingViewAndHideOthers();
-    }
-
-    @Override
-    protected void reloadPage() {
-        mPresenter.reloadPage();
     }
 
     @Override

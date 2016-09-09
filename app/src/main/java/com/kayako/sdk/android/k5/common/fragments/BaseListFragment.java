@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.EndlessRecyclerViewScrollAdapter;
@@ -43,8 +46,6 @@ public abstract class BaseListFragment extends Fragment {
         return mRoot;
     }
 
-    protected abstract void reloadPage();
-
     protected void showListView() {
         View view = mRoot.findViewById(R.id.ko__list);
         view.setVisibility(View.VISIBLE);
@@ -55,36 +56,43 @@ public abstract class BaseListFragment extends Fragment {
         view.setVisibility(View.GONE);
     }
 
-    protected void showEmptyView() {
+    protected void showEmptyView(@Nullable String title, @Nullable String description) {
         if (mEmptyStubView != null) {
             // After the stub is inflated, the stub is removed from the view hierarchy.
             mEmptyStubView.setVisibility(View.VISIBLE);
         }
-        mRoot.findViewById(R.id.ko__view_state_empty).setVisibility(View.VISIBLE);
+
+        if (title == null) title = getString(R.string.ko__label_empty_view_title);
+        if (description == null) description = getString(R.string.ko__label_empty_view_description);
+
+        mRoot.findViewById(R.id.ko__inflated_stub_empty_state).setVisibility(View.VISIBLE);
+        ((TextView) mRoot.findViewById(R.id.ko__empty_state_title)).setText(title);
+        ((TextView) mRoot.findViewById(R.id.ko__empty_state_description)).setText(description);
     }
 
     protected void hideEmptyView() {
         if (mEmptyStubView != null) {
             mEmptyStubView.setVisibility(View.GONE);
         }
-        View inflatedView = mRoot.findViewById(R.id.ko__view_state_empty);
+        View inflatedView = mRoot.findViewById(R.id.ko__inflated_stub_empty_state);
         if (inflatedView != null) {
             inflatedView.setVisibility(View.GONE);
         }
     }
 
-    protected void showErrorView() {
+    // TODO Ensure
+    protected void showErrorView(@Nullable String title, @Nullable String description, @NonNull View.OnClickListener onClickListener) {
         if (mErrorStubView != null) {
             mErrorStubView.setVisibility(View.VISIBLE);
         }
-        mRoot.findViewById(R.id.ko__view_state_error).setVisibility(View.VISIBLE);
-        Button retryButton = (Button) (mRoot.findViewById(R.id.ko__error_retry_button));
-        retryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                reloadPage();
-            }
-        });
+
+        if (title == null) title = getString(R.string.ko__label_error_view_title);
+        if (description == null) description = getString(R.string.ko__label_error_view_description);
+
+        mRoot.findViewById(R.id.ko__inflated_stub_error_state).setVisibility(View.VISIBLE);
+        ((TextView) mRoot.findViewById(R.id.ko__error_state_title)).setText(title);
+        ((TextView) mRoot.findViewById(R.id.ko__error_state_description)).setText(description);
+        ((Button) mRoot.findViewById(R.id.ko__error_retry_button)).setOnClickListener(onClickListener);
     }
 
     protected void hideErrorView() {
@@ -92,7 +100,7 @@ public abstract class BaseListFragment extends Fragment {
             mErrorStubView.setVisibility(View.GONE);
         }
 
-        View inflatedView = mRoot.findViewById(R.id.ko__view_state_error);
+        View inflatedView = mRoot.findViewById(R.id.ko__inflated_stub_error_state);
         if (inflatedView != null) {
             inflatedView.setVisibility(View.GONE);
         }
@@ -102,7 +110,7 @@ public abstract class BaseListFragment extends Fragment {
         if (mLoadingStubView != null) {
             mLoadingStubView.setVisibility(View.VISIBLE);
         }
-        mRoot.findViewById(R.id.ko__view_state_loading).setVisibility(View.VISIBLE);
+        mRoot.findViewById(R.id.ko__inflated_stub_loading_state).setVisibility(View.VISIBLE);
     }
 
     protected void hideLoadingView() {
@@ -110,14 +118,14 @@ public abstract class BaseListFragment extends Fragment {
             mLoadingStubView.setVisibility(View.GONE);
         }
 
-        View inflatedView = mRoot.findViewById(R.id.ko__view_state_loading);
+        View inflatedView = mRoot.findViewById(R.id.ko__inflated_stub_loading_state);
         if (inflatedView != null) {
             inflatedView.setVisibility(View.GONE);
         }
     }
 
-    protected void showEmptyViewAndHideOthers() {
-        showEmptyView();
+    protected void showEmptyViewAndHideOthers(@Nullable String title, @Nullable String description) {
+        showEmptyView(title, description);
         hideErrorView();
         hideLoadingView();
         hideListView();
@@ -130,8 +138,8 @@ public abstract class BaseListFragment extends Fragment {
         hideListView();
     }
 
-    protected void showErrorViewAndHideOthers() {
-        showErrorView();
+    protected void showErrorViewAndHideOthers(@Nullable String title, @Nullable String description, @NonNull View.OnClickListener onClickRetryListener) {
+        showErrorView(title, description, onClickRetryListener);
         hideEmptyView();
         hideLoadingView();
         hideListView();
@@ -146,7 +154,7 @@ public abstract class BaseListFragment extends Fragment {
 
     /**
      * Initialize the RecyclerView, Adapter and ScrollListener.
-     * <p>
+     * <p/>
      * If loadMoreListener is set as null, it implies that there is no more items to load when user scrolls to bottom of list (disable load more listener)
      *
      * @param adapter
