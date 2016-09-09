@@ -15,6 +15,8 @@ public class SearchArticleContainerPresenter implements SearchArticleContainerCo
     public void onTextEntered(String query) {
         if (query != null && query.length() > 3) {
             mView.showSearchResults(query);
+        } else {
+            mView.clearSearchResults();
         }
     }
 
@@ -22,7 +24,7 @@ public class SearchArticleContainerPresenter implements SearchArticleContainerCo
     public void onEnterPressed(String query) {
         if (query != null && query.length() > 3) {
             mView.showSearchResults(query);
-        }else {
+        } else {
             mView.showLessCharactersTypedErrorMessage();
         }
     }

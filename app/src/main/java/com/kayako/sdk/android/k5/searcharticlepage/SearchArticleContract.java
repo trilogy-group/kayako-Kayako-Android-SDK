@@ -60,6 +60,8 @@ public interface SearchArticleContract {
 
         void searchArticles(String query);
 
+        void clearSearchResults();
+
         boolean loadDataInBackground();
 
         void onDataLoaded(boolean isSuccessful);

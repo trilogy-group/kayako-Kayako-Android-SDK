@@ -50,6 +50,11 @@ public class SearchArticlePresenter implements SearchArticleContract.Presenter {
     }
 
     @Override
+    public void clearSearchResults() {
+        mView.showBlankView();
+    }
+
+    @Override
     public boolean loadDataInBackground() {
         try {
             List<SearchArticle> searchArticleList = mData.searchArticles(mQuery, mOffset, REQUEST_LIMIT);

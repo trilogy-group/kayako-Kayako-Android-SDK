@@ -121,4 +121,9 @@ public class SearchArticleContainerFragment extends Fragment implements SearchAr
     public void showSearchResults(String query) {
         mSearchArticleResult.showSearchResults(query);
     }
+
+    @Override
+    public void clearSearchResults() {
+        mSearchArticleResult.clearSearchResults();
+    }
 }

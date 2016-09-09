@@ -13,6 +13,8 @@ public interface SearchArticleContainerContract {
         void showLessCharactersTypedErrorMessage();
 
         void showSearchResults(String query);
+
+        void clearSearchResults();
     }
 
     interface Presenter extends BasePresenter<SearchArticleContainerContract.View> {

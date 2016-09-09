@@ -3,7 +3,6 @@ package com.kayako.sdk.android.k5.searcharticlepage;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 
 import com.kayako.sdk.android.k5.common.adapter.EndlessRecyclerViewScrollAdapter;
 import com.kayako.sdk.android.k5.common.adapter.ListItemRecyclerViewAdapter;
@@ -16,7 +15,7 @@ import java.util.List;
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
-public class SearchArticleResultFragment extends BaseListFragment implements SearchArticleContract.View, SearchCallback, ListItemRecyclerViewAdapter.OnItemClickListener, EndlessRecyclerViewScrollAdapter.OnLoadMoreListener {
+public class SearchArticleResultFragment extends BaseListFragment implements SearchArticleContract.View, SearchResultCallback, ListItemRecyclerViewAdapter.OnItemClickListener, EndlessRecyclerViewScrollAdapter.OnLoadMoreListener {
 
     private SearchArticleContract.Presenter mPresenter;
     private BackgroundTask mSearchTask;
@@ -169,5 +168,10 @@ public class SearchArticleResultFragment extends BaseListFragment implements Sea
     @Override
     public void showSearchResults(String query) {
         mPresenter.searchArticles(query);
+    }
+
+    @Override
+    public void clearSearchResults() {
+        mPresenter.clearSearchResults();
     }
 }
