@@ -6,13 +6,19 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.kayako.sdk.android.k5.R;
-import com.kayako.sdk.android.k5.articlelistpage.ArticleListFragment;
 
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
@@ -21,6 +27,8 @@ public class SearchArticleContainerFragment extends Fragment {
 
     private View mRoot;
     private Toolbar mToolbar;
+    private EditText mSearchEditText;
+    private SearchArticleResultFragment mSearchArticleResult;
 
     public static Fragment newInstance() {
         return new SearchArticleContainerFragment();
@@ -36,6 +44,7 @@ public class SearchArticleContainerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mRoot = inflater.inflate(R.layout.ko__fragment_search, null);
+        mSearchArticleResult = (SearchArticleResultFragment) getChildFragmentManager().findFragmentById(R.id.container_search_results);
         setUpToolbar();
         return mRoot;
     }
@@ -43,7 +52,11 @@ public class SearchArticleContainerFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        showSearchResultFragment();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
     }
 
     private void setUpToolbar() {
@@ -53,10 +66,43 @@ public class SearchArticleContainerFragment extends Fragment {
         mActionBar.setHomeButtonEnabled(true);
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setTitle(null);
-    }
 
-    private void showSearchResultFragment() {
-        getChildFragmentManager().beginTransaction().replace(R.id.container, ArticleListFragment.newInstance(243)).commit();
+        mSearchEditText = (EditText) mToolbar.findViewById(R.id.search_edittext);
+        mSearchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String query = mSearchEditText.getText().toString();
+                if (!TextUtils.isEmpty(query)) {
+                    mSearchArticleResult.showSearchResults(query);
+                }
+            }
+        });
+
+        mSearchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_GO || event.equals(KeyEvent.KEYCODE_ENTER)) {
+                    String query = mSearchEditText.getText().toString();
+                    if (!TextUtils.isEmpty(query)) {
+                        mSearchArticleResult.showSearchResults(query);
+                    } else {
+                        // TODO: Show toast message - invalid search query
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -68,7 +114,4 @@ public class SearchArticleContainerFragment extends Fragment {
         }
         return false;
     }
-
-    // TODO: Inflate view
-    // TODO: Set up listeners for the edit text in search
 }

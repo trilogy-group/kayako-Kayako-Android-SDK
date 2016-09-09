@@ -22,6 +22,8 @@ public interface SearchArticleContract {
 
         // change state methods
 
+        void showBlankView();
+
         void showOnlyListView();
 
         void showOnlyEmptyView();
@@ -32,9 +34,11 @@ public interface SearchArticleContract {
 
         // show content methods
 
-        void startBackgroundTask(String searchQuery);
+        void startSearchTask();
 
-        void cancelBackgroundTask();
+        void startLoadMoreTask();
+
+        void cancelBackgroundTasks();
 
         void setUpList(List<ListItem> items);
 
@@ -52,7 +56,7 @@ public interface SearchArticleContract {
 
     interface Presenter extends BasePresenter<SearchArticleContract.View> {
 
-        void initPage(long sectionId);
+        void initPage();
 
         void searchArticles(String query);
 
@@ -60,9 +64,14 @@ public interface SearchArticleContract {
 
         void onDataLoaded(boolean isSuccessful);
 
+        boolean loadMoreDataInBackground();
+
+        void onMoreDataLoaded(boolean isSuccessful);
+
         void onClickListItem(ListItem listItem);
 
         void reloadPage();
-    }
 
+        void loadMoreData();
+    }
 }
