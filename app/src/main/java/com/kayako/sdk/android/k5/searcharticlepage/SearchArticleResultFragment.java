@@ -133,7 +133,7 @@ public class SearchArticleResultFragment extends BaseListFragment implements Sea
 
     @Override
     public void setUpList(List<ListItem> items) {
-        super.initList(new ListItemRecyclerViewAdapter(items, this), this);
+        super.initList(new SearchArticleAdapter(items, this), this);
     }
 
     @Override

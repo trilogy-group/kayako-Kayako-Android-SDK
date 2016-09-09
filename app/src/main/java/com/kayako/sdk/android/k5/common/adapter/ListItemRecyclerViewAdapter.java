@@ -16,7 +16,7 @@ public class ListItemRecyclerViewAdapter extends EndlessRecyclerViewScrollAdapte
     protected static final int STATE_HEADER = 0;
     protected static final int STATE_ITEM = 1;
 
-    private OnItemClickListener mItemClickListener;
+    protected OnItemClickListener mItemClickListener;
 
     public ListItemRecyclerViewAdapter(List<ListItem> items, OnItemClickListener listener) {
         super(items);
@@ -37,7 +37,6 @@ public class ListItemRecyclerViewAdapter extends EndlessRecyclerViewScrollAdapte
             default:
                 return super.onCreateViewHolder(parent, viewType);
         }
-
     }
 
     @Override

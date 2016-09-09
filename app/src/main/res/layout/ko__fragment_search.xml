@@ -12,10 +12,17 @@
         android:id="@+id/container_search_results"
         android:name="com.kayako.sdk.android.k5.searcharticlepage.SearchArticleResultFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
-    <include layout="@layout/ko__include_separator" />
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="vertical">-->
 
-    <include layout="@layout/ko__include_footer" />
+        <include layout="@layout/ko__include_separator" />
+
+        <include layout="@layout/ko__include_footer" />
+    <!--</LinearLayout>-->
 
 </LinearLayout>

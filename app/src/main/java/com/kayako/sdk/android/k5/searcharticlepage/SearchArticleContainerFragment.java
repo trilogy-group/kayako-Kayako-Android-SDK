@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.utils.ViewUtils;
@@ -113,7 +114,7 @@ public class SearchArticleContainerFragment extends Fragment implements SearchAr
 
     @Override
     public void showLessCharactersTypedErrorMessage() {
-        ViewUtils.showSnackBar(mRoot, getString(R.string.ko__error_type_at_least_three_characters_to_search));
+        ViewUtils.showToastMessage(mRoot.getContext(), getString(R.string.ko__error_type_at_least_three_characters_to_search), Toast.LENGTH_LONG);
     }
 
     @Override
