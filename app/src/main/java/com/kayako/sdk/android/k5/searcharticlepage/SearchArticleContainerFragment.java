@@ -79,13 +79,12 @@ public class SearchArticleContainerFragment extends Fragment implements SearchAr
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                String query = mSearchEditText.getText().toString();
+                mPresenter.onTextEntered(query);
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-                String query = mSearchEditText.getText().toString();
-                mPresenter.onTextEntered(query);
             }
         });
 
