@@ -7,7 +7,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -19,16 +18,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.kayako.sdk.android.k5.R;
+import com.kayako.sdk.android.k5.common.utils.ViewUtils;
 
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
-public class SearchArticleContainerFragment extends Fragment {
+public class SearchArticleContainerFragment extends Fragment implements SearchArticleContainerContract.View {
 
     private View mRoot;
     private Toolbar mToolbar;
     private EditText mSearchEditText;
     private SearchArticleResultFragment mSearchArticleResult;
+    private SearchArticleContainerContract.Presenter mPresenter;
 
     public static Fragment newInstance() {
         return new SearchArticleContainerFragment();
@@ -39,6 +40,7 @@ public class SearchArticleContainerFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         setRetainInstance(true);
+        mPresenter = SearchArticleContainerFactory.getPresenter(this);
     }
 
     @Override
@@ -82,9 +84,7 @@ public class SearchArticleContainerFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 String query = mSearchEditText.getText().toString();
-                if (!TextUtils.isEmpty(query)) {
-                    mSearchArticleResult.showSearchResults(query);
-                }
+                mPresenter.onTextEntered(query);
             }
         });
 
@@ -93,11 +93,7 @@ public class SearchArticleContainerFragment extends Fragment {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_GO || event.equals(KeyEvent.KEYCODE_ENTER)) {
                     String query = mSearchEditText.getText().toString();
-                    if (!TextUtils.isEmpty(query)) {
-                        mSearchArticleResult.showSearchResults(query);
-                    } else {
-                        // TODO: Show toast message - invalid search query
-                    }
+                    mPresenter.onEnterPressed(query);
                     return true;
                 }
                 return false;
@@ -113,5 +109,15 @@ public class SearchArticleContainerFragment extends Fragment {
                 return true;
         }
         return false;
+    }
+
+    @Override
+    public void showLessCharactersTypedErrorMessage() {
+        ViewUtils.showSnackBar(mRoot, getString(R.string.ko__error_type_at_least_three_characters_to_search));
+    }
+
+    @Override
+    public void showSearchResults(String query) {
+        mSearchArticleResult.showSearchResults(query);
     }
 }

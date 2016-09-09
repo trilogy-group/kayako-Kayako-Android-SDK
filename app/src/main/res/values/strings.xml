@@ -3,4 +3,6 @@
     <string name="ko__search_bar_how_can_we_help_you">How can we help you?</string>
     <string name="ko__label_retry">Retry</string>
     <string name="ko__label_search_hint">Search here...</string>
+    <string name="ko__action_ok">Ok</string>
+    <string name="ko__error_type_at_least_three_characters_to_search">Please type at least 3 characters to search!</string>
 </resources>

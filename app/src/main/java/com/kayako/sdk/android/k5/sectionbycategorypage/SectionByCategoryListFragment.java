@@ -82,16 +82,16 @@ public class SectionByCategoryListFragment extends BaseListFragment implements S
     }
 
     @Override
+    public void onDetach() {
+        super.onDetach();
+        mActivityNavigation = null;
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         cancelBackgroundTasks();
         mBackgroundTask = null;
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mActivityNavigation = null;
     }
 
     @Override
