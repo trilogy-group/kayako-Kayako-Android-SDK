@@ -11,4 +11,5 @@
     <string name="ko__label_error_view_description">Something went wrong on our side. Please try again later.</string>
     <string name="ko__label_error_view_network_title">Something went wrong</string>
     <string name="ko__label_error_view_network_description">Unable to connect to server. Please check your network connection. </string>
+    <string name="ko__msg_unable_to_load_more_items">Something went wrong. Unable to load more items.</string>
 </resources>

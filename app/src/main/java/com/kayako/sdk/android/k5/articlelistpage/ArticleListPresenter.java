@@ -55,6 +55,11 @@ public class ArticleListPresenter implements ArticleListContract.Presenter {
         if (isSuccessful) {
             if (mListItems.size() == 0) {
                 mView.showOnlyEmptyView();
+                mView.setListHasMoreItems(false);
+            } else if (mListItems.size() < REQUEST_LIMIT) {
+                mView.showOnlyListView();
+                mView.setUpList(mListItems);
+                mView.setListHasMoreItems(false);
             } else {
                 mView.showOnlyListView();
                 mView.setUpList(mListItems);
@@ -82,7 +87,9 @@ public class ArticleListPresenter implements ArticleListContract.Presenter {
         if (isSuccessful) {
             mOffset += REQUEST_LIMIT;
             if (mMoreItems.size() == 0) {
-                // TODO: Note that there are no more items to load.
+                mView.setListHasMoreItems(false);
+            } else if (mMoreItems.size() < REQUEST_LIMIT) {
+                mView.addItemsToList(mMoreItems);
                 mView.setListHasMoreItems(false);
             } else {
                 mView.addItemsToList(mMoreItems);

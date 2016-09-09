@@ -18,6 +18,7 @@ public class SearchArticlePresenter implements SearchArticleContract.Presenter {
     private SearchArticleContract.Data mData;
     private String mQuery;
     private List<ListItem> mListItems;
+    private List<ListItem> mMoreItems;
 
     public SearchArticlePresenter(SearchArticleContract.View view) {
         this.mView = view;
@@ -43,7 +44,8 @@ public class SearchArticlePresenter implements SearchArticleContract.Presenter {
         mView.cancelBackgroundTasks();
         mView.showOnlyLoadingView();
 
-        // Start Search task
+        // Start new search task
+        mOffset = 0;
         mQuery = query;
         mView.startSearchTask();
     }
@@ -56,7 +58,7 @@ public class SearchArticlePresenter implements SearchArticleContract.Presenter {
     @Override
     public boolean loadDataInBackground() {
         try {
-            List<SearchArticle> searchArticleList = mData.searchArticles(mQuery, mOffset, REQUEST_LIMIT);
+            List<SearchArticle> searchArticleList = mData.searchArticles(mQuery, 0, REQUEST_LIMIT);
             mListItems = convertToListItems(searchArticleList);
             return true;
         } catch (Exception e) {
@@ -70,9 +72,14 @@ public class SearchArticlePresenter implements SearchArticleContract.Presenter {
         if (isSuccessful) {
             if (mListItems.size() == 0) {
                 mView.showOnlyEmptyView();
+            } else if (mListItems.size() < REQUEST_LIMIT) {
+                mView.showOnlyListView();
+                mView.setUpList(mListItems);
+                mView.setListHasMoreItems(false);
             } else {
                 mView.setUpList(mListItems);
                 mView.showOnlyListView();
+                mView.setListHasMoreItems(true);
             }
         } else {
             mView.showOnlyErrorView();
@@ -81,27 +88,53 @@ public class SearchArticlePresenter implements SearchArticleContract.Presenter {
 
     @Override
     public boolean loadMoreDataInBackground() {
-        return false; // TODO
+        try {
+            List<SearchArticle> searchArticleList = mData.searchArticles(mQuery, mOffset + REQUEST_LIMIT, REQUEST_LIMIT);
+            mMoreItems = convertToListItems(searchArticleList);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
     public void onMoreDataLoaded(boolean isSuccessful) {
-        // TODO
+        if (isSuccessful) {
+            mOffset += REQUEST_LIMIT;
+            if (mMoreItems.size() == 0) {
+                mView.setListHasMoreItems(false);
+            } else if (mMoreItems.size() < REQUEST_LIMIT) {
+                mView.addItemsToList(mMoreItems);
+                mView.setListHasMoreItems(false);
+            } else {
+                mView.addItemsToList(mMoreItems);
+            }
+        } else {
+            mView.showErrorToLoadMoreMessage();
+        }
+
+        mView.hideLoadingMoreItemsProgress();
     }
 
     @Override
     public void onClickListItem(ListItem listItem) {
-        //TODO
+        //TODO Open Article Page
     }
 
     @Override
     public void reloadPage() {
-        // TODO
+        mView.cancelBackgroundTasks();
+        mView.showBlankView();
+        mOffset = 0;
+        mMoreItems = null;
+        mListItems = null;
     }
 
     @Override
     public void loadMoreData() {
-//        mView.startLoadMoreTask(); // TODO
+        mView.showLoadingMoreItemsProgress();
+        mView.startLoadMoreTask();
     }
 
     @Override

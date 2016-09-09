@@ -26,7 +26,12 @@ public class SearchArticleAdapter extends ListItemRecyclerViewAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        return STATE_SEARCH_ITEM;
+        int selectedViewType = super.getItemViewType(position);
+        if (selectedViewType == STATE_ITEM) {
+            return STATE_SEARCH_ITEM;
+        } else {
+            return selectedViewType;
+        }
     }
 
     @Override
@@ -37,7 +42,7 @@ public class SearchArticleAdapter extends ListItemRecyclerViewAdapter {
                         .inflate(R.layout.ko__list_item_search_result, parent, false);
                 return new SearchedItemViewHolder(viewItem);
             default:
-                return null;
+                return super.onCreateViewHolder(parent, viewType);
         }
     }
 
@@ -55,6 +60,8 @@ public class SearchArticleAdapter extends ListItemRecyclerViewAdapter {
                         mItemClickListener.onItemClick(getData().get(viewHolder.getAdapterPosition()));
                     }
                 });
+            default:
+                super.onBindViewHolder(viewHolder, position);
         }
     }
 

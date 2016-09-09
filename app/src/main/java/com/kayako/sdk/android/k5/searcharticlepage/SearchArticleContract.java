@@ -52,6 +52,7 @@ public interface SearchArticleContract {
 
         void setListHasMoreItems(boolean hasMoreItems);
 
+        void showErrorToLoadMoreMessage();
     }
 
     interface Presenter extends BasePresenter<SearchArticleContract.View> {

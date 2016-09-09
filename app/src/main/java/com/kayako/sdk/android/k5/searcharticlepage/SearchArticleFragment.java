@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.EndlessRecyclerViewScrollAdapter;
 import com.kayako.sdk.android.k5.common.adapter.ListItemRecyclerViewAdapter;
 import com.kayako.sdk.android.k5.common.data.ListItem;
 import com.kayako.sdk.android.k5.common.fragments.BaseListFragment;
 import com.kayako.sdk.android.k5.common.task.BackgroundTask;
+import com.kayako.sdk.android.k5.common.utils.ViewUtils;
 
 import java.util.List;
 
@@ -159,6 +161,11 @@ public class SearchArticleFragment extends BaseListFragment implements SearchArt
     @Override
     public void setListHasMoreItems(boolean hasMoreItems) {
         super.setHasMoreItems(hasMoreItems);
+    }
+
+    @Override
+    public void showErrorToLoadMoreMessage() {
+        ViewUtils.showSnackBar(mRoot, getString(R.string.ko__msg_unable_to_load_more_items));
     }
 
     @Override
