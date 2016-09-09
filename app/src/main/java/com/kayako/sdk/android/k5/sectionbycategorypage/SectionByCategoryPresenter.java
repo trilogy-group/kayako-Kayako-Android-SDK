@@ -46,7 +46,6 @@ public class SectionByCategoryPresenter implements SectionByCategoryPageContract
 
     @Override
     public void onClickSearch() {
-        // TODO: Open intent
         mSectionByCategoryView.openSearchPage();
     }
 

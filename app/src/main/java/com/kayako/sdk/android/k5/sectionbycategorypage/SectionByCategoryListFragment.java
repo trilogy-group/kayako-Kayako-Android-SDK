@@ -10,8 +10,8 @@ import com.kayako.sdk.android.k5.common.adapter.ListItemRecyclerViewAdapter;
 import com.kayako.sdk.android.k5.common.data.ListItem;
 import com.kayako.sdk.android.k5.common.fragments.BaseListFragment;
 import com.kayako.sdk.android.k5.common.task.BackgroundTask;
-import com.kayako.sdk.android.k5.common.fragments.IActivityNavigation;
-import com.kayako.sdk.android.k5.welcomepage.KayakoSearchArticleActivity;
+import com.kayako.sdk.android.k5.common.fragments.ActivityNavigationCallback;
+import com.kayako.sdk.android.k5.activities.KayakoSearchArticleActivity;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class SectionByCategoryListFragment extends BaseListFragment implements S
     protected SectionByCategoryPageContract.Presenter mPresenter;
     protected BackgroundTask mBackgroundTask;
     protected ListItemRecyclerViewAdapter listItemRecyclerViewAdapter;
-    protected IActivityNavigation mActivityNavigation;
+    protected ActivityNavigationCallback mActivityNavigation;
 
     public static SectionByCategoryListFragment newInstance() {
         return new SectionByCategoryListFragment();
@@ -35,7 +35,7 @@ public class SectionByCategoryListFragment extends BaseListFragment implements S
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mActivityNavigation = ((IActivityNavigation) getActivity());
+        mActivityNavigation = ((ActivityNavigationCallback) getActivity());
     }
 
     @Override

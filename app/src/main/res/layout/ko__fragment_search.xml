@@ -10,7 +10,7 @@
 
     <fragment
         android:id="@+id/container_search_results"
-        android:name="com.kayako.sdk.android.k5.searcharticlepage.SearchArticleResultFragment"
+        android:name="com.kayako.sdk.android.k5.searcharticlepage.SearchArticleFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />

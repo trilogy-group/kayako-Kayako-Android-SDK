@@ -29,7 +29,7 @@ public class SearchArticleContainerFragment extends Fragment implements SearchAr
     private View mRoot;
     private Toolbar mToolbar;
     private EditText mSearchEditText;
-    private SearchArticleResultFragment mSearchArticleResult;
+    private SearchArticleFragment mSearchArticleResult;
     private SearchArticleContainerContract.Presenter mPresenter;
 
     public static Fragment newInstance() {
@@ -47,7 +47,7 @@ public class SearchArticleContainerFragment extends Fragment implements SearchAr
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mRoot = inflater.inflate(R.layout.ko__fragment_search, null);
-        mSearchArticleResult = (SearchArticleResultFragment) getChildFragmentManager().findFragmentById(R.id.container_search_results);
+        mSearchArticleResult = (SearchArticleFragment) getChildFragmentManager().findFragmentById(R.id.container_search_results);
         setUpToolbar();
         return mRoot;
     }

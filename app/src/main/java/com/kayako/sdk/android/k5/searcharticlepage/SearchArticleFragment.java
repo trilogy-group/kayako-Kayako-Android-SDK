@@ -15,17 +15,17 @@ import java.util.List;
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
-public class SearchArticleResultFragment extends BaseListFragment implements SearchArticleContract.View, SearchResultCallback, ListItemRecyclerViewAdapter.OnItemClickListener, EndlessRecyclerViewScrollAdapter.OnLoadMoreListener {
+public class SearchArticleFragment extends BaseListFragment implements SearchArticleContract.View, SearchResultCallback, ListItemRecyclerViewAdapter.OnItemClickListener, EndlessRecyclerViewScrollAdapter.OnLoadMoreListener {
 
     private SearchArticleContract.Presenter mPresenter;
     private BackgroundTask mSearchTask;
     private BackgroundTask mLoadMoreTask;
 
-    public static SearchArticleResultFragment newInstance() {
-        return new SearchArticleResultFragment();
+    public static SearchArticleFragment newInstance() {
+        return new SearchArticleFragment();
     }
 
-    public SearchArticleResultFragment() {
+    public SearchArticleFragment() {
     }
 
     @Override
