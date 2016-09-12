@@ -14,7 +14,6 @@ import com.bumptech.glide.Glide;
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.fragments.BaseStateFragment;
 import com.kayako.sdk.android.k5.common.view.CropCircleTransformation;
-import com.kayako.sdk.android.k5.common.view.RoundedCornersTransformation;
 import com.kayako.sdk.helpcenter.articles.Article;
 import com.kayako.sdk.helpcenter.category.Category;
 import com.kayako.sdk.helpcenter.section.Section;
