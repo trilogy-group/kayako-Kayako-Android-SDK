@@ -1,9 +1,11 @@
 <resources>
 
-    <style name="Ko__AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Ko__AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionModeBackground">@color/colorPrimary</item>
+        <item name="android:windowBackground">@color/white</item>
     </style>
 
     <style name="Ko__SearchArticlePageTheme" parent="Theme.AppCompat.NoActionBar">
@@ -17,7 +19,15 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="Ko__ToolbarStyle" parent="@style/Theme.AppCompat.Light">
+    <!--<style name="Ko__DefaultToolbarStyle" parent="ThemeOverlay.AppCompat.Dark.ActionBar">-->
+        <!--<item name="colorPrimary">@color/colorPrimary</item>-->
+        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+        <!--<item name="actionMenuTextColor">@android:color/white</item>-->
+        <!--<item name="windowActionModeOverlay">true</item>-->
+        <!--<item name="android:windowActionModeOverlay">true</item>-->
+    <!--</style>-->
+
+    <style name="Ko__SearchToolbarStyle" parent="@style/Theme.AppCompat.Light">
         <item name="android:textColorPrimary">@color/ko__toolbar_search_background</item>
         <item name="actionMenuTextColor">@color/ko__toolbar_search_text_color</item>
         <item name="colorAccent">@color/colorAccent</item>

@@ -6,9 +6,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.kayako.sdk.android.k5.R;
-import com.kayako.sdk.android.k5.articlelistpage.ArticleListFragment;
+import com.kayako.sdk.android.k5.articlelistpage.ArticleListContainerFragment;
 import com.kayako.sdk.android.k5.common.fragments.ActivityNavigationCallback;
-import com.kayako.sdk.android.k5.sectionbycategorypage.SectionByCategoryListFragment;
+import com.kayako.sdk.android.k5.sectionbycategorypage.SectionByCategoryContainerFragment;
 
 public class KayakoHelpCenterActivity extends AppCompatActivity implements ActivityNavigationCallback {
 
@@ -17,16 +17,15 @@ public class KayakoHelpCenterActivity extends AppCompatActivity implements Activ
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help_center_main);
 
-        Fragment newFragment = SectionByCategoryListFragment.newInstance();
+        Fragment newFragment = SectionByCategoryContainerFragment.newInstance();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_listing, newFragment);
-        transaction.addToBackStack(null);
         transaction.commit();
     }
 
     @Override
     public void openNextPage(long id) {
-        Fragment newFragment = ArticleListFragment.newInstance(id);
+        Fragment newFragment = ArticleListContainerFragment.newInstance(id);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_listing, newFragment);
         transaction.addToBackStack(null);

@@ -6,7 +6,7 @@
     android:layout_height="?android:attr/actionBarSize"
     android:elevation="2dp"
     android:gravity="center"
-    app:theme="@style/Ko__ToolbarStyle">
+    app:theme="@style/Ko__SearchToolbarStyle">
 
     <LinearLayout
         android:layout_width="match_parent"
