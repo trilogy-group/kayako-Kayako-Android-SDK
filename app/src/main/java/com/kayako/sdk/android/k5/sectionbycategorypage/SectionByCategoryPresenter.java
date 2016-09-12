@@ -32,7 +32,7 @@ public class SectionByCategoryPresenter implements SectionByCategoryPageContract
 
     @Override
     public void initPage() {
-        showLoadingViewAndHideOthers();
+        mSectionByCategoryView.showOnlyLoadingView();
         mSectionByCategoryView.startBackgroundTask();
     }
 
@@ -51,6 +51,7 @@ public class SectionByCategoryPresenter implements SectionByCategoryPageContract
 
     @Override
     public void reloadPage() {
+        mSectionByCategoryView.showOnlyLoadingView();
         mSectionByCategoryView.startBackgroundTask();
     }
 
@@ -75,16 +76,16 @@ public class SectionByCategoryPresenter implements SectionByCategoryPageContract
     public void onDataLoaded(boolean isSuccessful) {
         if (isSuccessful) {
             mSectionByCategoryView.setUpList(mListItems);
-            showDataViewAndHideOthers();
+            mSectionByCategoryView.showOnlyListView();
         } else {
-            showErrorViewAndHideOthers();
+            mSectionByCategoryView.showOnlyErrorView();
         }
         // TODO: Check if categories loaded properly, and sectiosn - error?
     }
 
     private List<ListItem> setUpList(List<Category> categories, Map<Category, List<Section>> sectionsByCategory) {
         if (categories.size() == 0) {
-            showEmptyViewAndHideOthers();
+            mSectionByCategoryView.showOnlyEmptyView();
             return new ArrayList<>();
         } else {
             List<ListItem> items = new ArrayList<>();
@@ -100,19 +101,6 @@ public class SectionByCategoryPresenter implements SectionByCategoryPageContract
         }
     }
 
-    private void showEmptyViewAndHideOthers() {
-        mSectionByCategoryView.showOnlyEmptyView();
-    }
 
-    private void showLoadingViewAndHideOthers() {
-        mSectionByCategoryView.showOnlyLoadingView();
-    }
 
-    private void showErrorViewAndHideOthers() {
-        mSectionByCategoryView.showOnlyErrorView();
-    }
-
-    private void showDataViewAndHideOthers() {
-        mSectionByCategoryView.showOnlyListView();
-    }
 }
