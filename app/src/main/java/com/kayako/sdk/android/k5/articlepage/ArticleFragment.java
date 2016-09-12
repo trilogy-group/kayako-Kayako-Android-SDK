@@ -15,22 +15,15 @@ import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.fragments.BaseStateFragment;
 import com.kayako.sdk.android.k5.common.view.CropCircleTransformation;
 import com.kayako.sdk.helpcenter.articles.Article;
-import com.kayako.sdk.helpcenter.category.Category;
-import com.kayako.sdk.helpcenter.section.Section;
 
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
-public class ArticleFragment extends BaseStateFragment {
+public class ArticleFragment extends BaseStateFragment implements ArticlePageContract.View {
 
     public static final String ARG_ARTICLE = "article";
     private View mRoot;
-
-    private TextView articleTitle;
-    private TextView articleDirectoryPath;
-    private WebView articleContent;
-    private ImageView authorAvatar;
-    private TextView authorName;
+    private ArticlePageContract.Presenter mPresenter;
 
     public static ArticleFragment newInstance(Article article) {
         Bundle bundle = new Bundle();
@@ -38,6 +31,12 @@ public class ArticleFragment extends BaseStateFragment {
         ArticleFragment articleFragment = new ArticleFragment();
         articleFragment.setArguments(bundle);
         return articleFragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mPresenter = ArticleFactory.getPresenter(this);
     }
 
     @Override
@@ -50,31 +49,40 @@ public class ArticleFragment extends BaseStateFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         Article article = (Article) getArguments().getSerializable(ARG_ARTICLE);
+        mPresenter.initPage(article);
+    }
 
-        articleTitle = (TextView) mRoot.findViewById(R.id.ko__article_title);
-        articleTitle.setText(article.getTitle());
+    @Override
+    public void setAuthorName(String name) {
+        ((TextView) mRoot.findViewById(R.id.ko__article_author_name)).setText(name);
+    }
 
-        Section section = article.getSection();
-        Category category = section.getCategory();
-        articleDirectoryPath = (TextView) mRoot.findViewById(R.id.ko__article_directory);
-        articleDirectoryPath.setText(category.getTitle() + " > " + section.getTitle());
-
-        articleContent = (WebView) mRoot.findViewById(R.id.ko__article_webview);
-        articleContent.loadData(article.getContents(), "text/html; charset=utf-8", "UTF-8");
-        articleContent.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-
-        authorName = (TextView) mRoot.findViewById(R.id.ko__article_author_name);
-        authorName.setText(article.getAuthor().getFullName());
-
-        // Show Image
-        authorAvatar = (ImageView) mRoot.findViewById(R.id.ko__article_author_avatar); // TODO: Glide
+    @Override
+    public void setAuthorAvatar(String avatarUrl) {
+        ImageView authorAvatar = (ImageView) mRoot.findViewById(R.id.ko__article_author_avatar); // TODO: Glide
         Glide.with(getContext())
-                .load(article.getAuthor().getAvatarUrl())
+                .load(avatarUrl)
                 .bitmapTransform(new CropCircleTransformation(getContext()))
                 .placeholder(R.color.ko__dark_gray_image_background)
                 .into(authorAvatar);
+    }
+
+    @Override
+    public void setArticleTitle(String title) {
+        ((TextView) mRoot.findViewById(R.id.ko__article_title)).setText(title);
+    }
+
+    @Override
+    public void setArticleDirectoryPath(String path) {
+        ((TextView) mRoot.findViewById(R.id.ko__article_directory)).setText(path);
+    }
+
+    @Override
+    public void setArticleContent(String htmlContent) {
+        WebView articleContent = (WebView) mRoot.findViewById(R.id.ko__article_webview);
+        articleContent.loadData(htmlContent, "text/html; charset=utf-8", "UTF-8");
+        articleContent.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
 
     }
 }
