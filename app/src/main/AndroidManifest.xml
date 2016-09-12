@@ -11,7 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/Ko__AppTheme">
 
-        <activity android:name=".activities.KayakoHelpCenterActivity">
+        <activity
+            android:name=".activities.KayakoHelpCenterActivity"
+            android:theme="@style/Ko__AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
