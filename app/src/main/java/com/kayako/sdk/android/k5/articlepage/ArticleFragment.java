@@ -70,9 +70,10 @@ public class ArticleFragment extends BaseStateFragment {
 
         // Show Image
         authorAvatar = (ImageView) mRoot.findViewById(R.id.ko__article_author_avatar); // TODO: Glide
-        Glide.with(getContext()).load(article.getAuthor().getAvatarUrl())
-                .placeholder(R.color.ko__dark_gray_image_background) // TODO: Repalce wi
+        Glide.with(getContext())
+                .load(article.getAuthor().getAvatarUrl())
                 .bitmapTransform(new CropCircleTransformation(getContext()))
+                .placeholder(R.color.ko__dark_gray_image_background)
                 .into(authorAvatar);
 
     }
