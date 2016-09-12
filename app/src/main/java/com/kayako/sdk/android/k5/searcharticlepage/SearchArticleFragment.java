@@ -1,17 +1,20 @@
 package com.kayako.sdk.android.k5.searcharticlepage;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.kayako.sdk.android.k5.R;
+import com.kayako.sdk.android.k5.activities.KayakoArticleActivity;
 import com.kayako.sdk.android.k5.common.adapter.EndlessRecyclerViewScrollAdapter;
 import com.kayako.sdk.android.k5.common.adapter.ListItemRecyclerViewAdapter;
 import com.kayako.sdk.android.k5.common.data.ListItem;
 import com.kayako.sdk.android.k5.common.fragments.BaseListFragment;
 import com.kayako.sdk.android.k5.common.task.BackgroundTask;
 import com.kayako.sdk.android.k5.common.utils.ViewUtils;
+import com.kayako.sdk.helpcenter.articles.Article;
 
 import java.util.List;
 
@@ -166,6 +169,11 @@ public class SearchArticleFragment extends BaseListFragment implements SearchArt
     @Override
     public void showErrorToLoadMoreMessage() {
         ViewUtils.showSnackBar(mRoot, getString(R.string.ko__msg_unable_to_load_more_items));
+    }
+
+    @Override
+    public void openArticleActivity(Article article) {
+        startActivity(KayakoArticleActivity.getIntent(getContext(), article));
     }
 
     @Override

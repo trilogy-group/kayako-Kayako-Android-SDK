@@ -35,7 +35,7 @@ public abstract class BaseListFragment extends BaseStateFragment {
 
     @Override
     final public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mRoot = inflater.inflate(R.layout.ko__fragment_item_list, container, false);
+        mRoot = inflater.inflate(R.layout.ko__fragment_list, container, false);
         mRecyclerView = (RecyclerView) mRoot.findViewById(R.id.ko__list);
         super.initStateViews(mRoot);
         return mRoot;
