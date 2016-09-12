@@ -10,6 +10,6 @@ public class KayakoSearchArticleActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ko__activity_search);
+        setContentView(R.layout.ko__activity_search_container);
     }
 }

@@ -1,6 +1,7 @@
 package com.kayako.sdk.android.k5.searcharticlepage;
 
 import com.kayako.sdk.android.k5.common.data.ListItem;
+import com.kayako.sdk.helpcenter.articles.Article;
 import com.kayako.sdk.helpcenter.search.SearchArticle;
 
 import java.util.ArrayList;
@@ -119,7 +120,8 @@ public class SearchArticlePresenter implements SearchArticleContract.Presenter {
 
     @Override
     public void onClickListItem(ListItem listItem) {
-        //TODO Open Article Page
+        SearchArticle searchArticle = (SearchArticle) listItem.getResource();
+        mView.openArticleActivity(searchArticle.getOriginalArticle());
     }
 
     @Override

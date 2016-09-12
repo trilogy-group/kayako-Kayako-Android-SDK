@@ -15,7 +15,7 @@ public class KayakoHelpCenterActivity extends AppCompatActivity implements Activ
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_help_center_main);
+        setContentView(R.layout.ko__activity_help_center);
 
         Fragment newFragment = SectionByCategoryContainerFragment.newInstance();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

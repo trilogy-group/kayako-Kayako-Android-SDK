@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/ko__list_item_background"
+    android:gravity="center"
     android:orientation="vertical">
 
     <LinearLayout
@@ -13,7 +14,7 @@
         <LinearLayout
             android:id="@+id/fragment_listing"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="vertical" />
 

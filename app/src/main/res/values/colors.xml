@@ -9,6 +9,7 @@
     <color name="ko__dark_gray_text_color">#4A4A4A</color>
     <color name="ko__light_gray_text_color">#757575</color>
     <color name="ko__light_gray_background_colour">#F8F8F9</color>
+    <color name="ko__section_background_colour">#F7F8F9</color>
 
     <color name="ko__footer_background_color">@color/ko__light_gray_background_colour</color>
     <color name="ko__search_section_background_color">@color/ko__light_gray_background_colour

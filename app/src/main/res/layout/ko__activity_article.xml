@@ -4,10 +4,10 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <fragment
-        android:id="@+id/container"
-        android:name="com.kayako.sdk.android.k5."
+    <LinearLayout
+        android:id="@+id/container_article"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -102,7 +102,7 @@ public class ArticleListPresenter implements ArticleListContract.Presenter {
 
     @Override
     public void onClickListItem(ListItem listItem) {
-        // TODO: Open Activity to show Article Details
+        mView.openArticleActivity((Article) listItem.getResource());
     }
 
     @Override

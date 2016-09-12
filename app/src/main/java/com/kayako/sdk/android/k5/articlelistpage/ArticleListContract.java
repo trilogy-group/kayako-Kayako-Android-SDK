@@ -40,6 +40,8 @@ public interface ArticleListContract {
         void hideLoadingMoreItemsProgress();
 
         void setListHasMoreItems(boolean hasMoreItems);
+
+        void openArticleActivity(Article article);
     }
 
     interface Presenter extends BasePresenter<ArticleListContract.View> {
