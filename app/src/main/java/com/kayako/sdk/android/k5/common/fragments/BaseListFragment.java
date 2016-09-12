@@ -26,23 +26,18 @@ import java.util.List;
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
-public abstract class BaseListFragment extends Fragment {
+public abstract class BaseListFragment extends BaseStateFragment {
 
-    protected View mRoot;
     protected RecyclerView mRecyclerView;
-    private ViewStub mEmptyStubView;
-    private ViewStub mErrorStubView;
-    private ViewStub mLoadingStubView;
+    protected View mRoot;
     private EndlessRecyclerViewScrollAdapter<ListItem> mAdapter;
     private EndlessRecyclerViewScrollListener mScrollListener;
 
     @Override
     final public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRoot = inflater.inflate(R.layout.ko__fragment_item_list, container, false);
-        mEmptyStubView = (ViewStub) mRoot.findViewById(R.id.ko__stub_empty_state);
-        mLoadingStubView = (ViewStub) mRoot.findViewById(R.id.ko__stub_loading_state);
-        mErrorStubView = (ViewStub) mRoot.findViewById(R.id.ko__stub_error_state);
         mRecyclerView = (RecyclerView) mRoot.findViewById(R.id.ko__list);
+        super.initStateViews(mRoot);
         return mRoot;
     }
 
@@ -54,74 +49,6 @@ public abstract class BaseListFragment extends Fragment {
     protected void hideListView() {
         View view = mRoot.findViewById(R.id.ko__list);
         view.setVisibility(View.GONE);
-    }
-
-    protected void showEmptyView(@Nullable String title, @Nullable String description) {
-        if (mEmptyStubView != null) {
-            // After the stub is inflated, the stub is removed from the view hierarchy.
-            mEmptyStubView.setVisibility(View.VISIBLE);
-        }
-
-        if (title == null) title = getString(R.string.ko__label_empty_view_title);
-        if (description == null) description = getString(R.string.ko__label_empty_view_description);
-
-        mRoot.findViewById(R.id.ko__inflated_stub_empty_state).setVisibility(View.VISIBLE);
-        ((TextView) mRoot.findViewById(R.id.ko__empty_state_title)).setText(title);
-        ((TextView) mRoot.findViewById(R.id.ko__empty_state_description)).setText(description);
-    }
-
-    protected void hideEmptyView() {
-        if (mEmptyStubView != null) {
-            mEmptyStubView.setVisibility(View.GONE);
-        }
-        View inflatedView = mRoot.findViewById(R.id.ko__inflated_stub_empty_state);
-        if (inflatedView != null) {
-            inflatedView.setVisibility(View.GONE);
-        }
-    }
-
-    // TODO Ensure
-    protected void showErrorView(@Nullable String title, @Nullable String description, @NonNull View.OnClickListener onClickListener) {
-        if (mErrorStubView != null) {
-            mErrorStubView.setVisibility(View.VISIBLE);
-        }
-
-        if (title == null) title = getString(R.string.ko__label_error_view_title);
-        if (description == null) description = getString(R.string.ko__label_error_view_description);
-
-        mRoot.findViewById(R.id.ko__inflated_stub_error_state).setVisibility(View.VISIBLE);
-        ((TextView) mRoot.findViewById(R.id.ko__error_state_title)).setText(title);
-        ((TextView) mRoot.findViewById(R.id.ko__error_state_description)).setText(description);
-        ((Button) mRoot.findViewById(R.id.ko__error_retry_button)).setOnClickListener(onClickListener);
-    }
-
-    protected void hideErrorView() {
-        if (mErrorStubView != null) {
-            mErrorStubView.setVisibility(View.GONE);
-        }
-
-        View inflatedView = mRoot.findViewById(R.id.ko__inflated_stub_error_state);
-        if (inflatedView != null) {
-            inflatedView.setVisibility(View.GONE);
-        }
-    }
-
-    protected void showLoadingView() {
-        if (mLoadingStubView != null) {
-            mLoadingStubView.setVisibility(View.VISIBLE);
-        }
-        mRoot.findViewById(R.id.ko__inflated_stub_loading_state).setVisibility(View.VISIBLE);
-    }
-
-    protected void hideLoadingView() {
-        if (mLoadingStubView != null) {
-            mLoadingStubView.setVisibility(View.GONE);
-        }
-
-        View inflatedView = mRoot.findViewById(R.id.ko__inflated_stub_loading_state);
-        if (inflatedView != null) {
-            inflatedView.setVisibility(View.GONE);
-        }
     }
 
     protected void showEmptyViewAndHideOthers(@Nullable String title, @Nullable String description) {

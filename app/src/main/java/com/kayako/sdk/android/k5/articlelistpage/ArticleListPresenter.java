@@ -55,7 +55,6 @@ public class ArticleListPresenter implements ArticleListContract.Presenter {
         if (isSuccessful) {
             if (mListItems.size() == 0) {
                 mView.showOnlyEmptyView();
-                mView.setListHasMoreItems(false);
             } else if (mListItems.size() < REQUEST_LIMIT) {
                 mView.showOnlyListView();
                 mView.setUpList(mListItems);

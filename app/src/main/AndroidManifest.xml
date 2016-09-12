@@ -29,6 +29,8 @@
             android:theme="@style/Ko__SearchArticlePageTheme"
             android:windowSoftInputMode="adjustPan|stateVisible" />
 
+        <activity android:name=".activities.KayakoArticleActivity" />
+
     </application>
 
 </manifest>
