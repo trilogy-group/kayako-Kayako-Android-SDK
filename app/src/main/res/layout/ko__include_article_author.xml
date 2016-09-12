@@ -9,11 +9,11 @@
     android:padding="16dp">
 
     <ImageView
+        android:id="@+id/ko__article_author_avatar"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_gravity="center"
         android:layout_marginRight="16dp"
-        android:background="@color/colorPrimaryDark"
         android:scaleType="center" />
 
     <LinearLayout
@@ -23,6 +23,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/ko__article_author_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
@@ -32,25 +33,29 @@
             android:textStyle="bold"
             tools:text="Neil Mathew" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:textColor="@color/ko__dark_gray_text_color"
-            android:textSize="14sp"
-            tools:text="Posted 2 years ago" />
+        <!-- TODO: Add support for ISO Times - dates -->
 
         <TextView
+            android:id="@+id/ko__article_last_updated"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:ellipsize="end"
             android:singleLine="true"
+            android:text="Posted 2 years ago"
             android:textColor="@color/ko__dark_gray_text_color"
-            android:textSize="14sp"
-            tools:text="Updated 3 months ago" />
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/ko__article_last_created"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="Updated 3 months ago"
+            android:textColor="@color/ko__dark_gray_text_color"
+            android:textSize="14sp" />
 
     </LinearLayout>
 </LinearLayout>
