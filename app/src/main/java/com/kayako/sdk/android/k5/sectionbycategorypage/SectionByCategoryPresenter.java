@@ -1,5 +1,6 @@
 package com.kayako.sdk.android.k5.sectionbycategorypage;
 
+import com.kayako.sdk.android.k5.common.core.HelpCenterPref;
 import com.kayako.sdk.android.k5.common.data.ListItem;
 import com.kayako.sdk.helpcenter.base.Resource;
 import com.kayako.sdk.helpcenter.category.Category;
@@ -21,8 +22,7 @@ public class SectionByCategoryPresenter implements SectionByCategoryContract.Pre
 
     public SectionByCategoryPresenter(SectionByCategoryContract.View mWelcomePageView) {
         this.mSectionByCategoryView = mWelcomePageView;
-        mSectionByCategoryData = SectionByCategoryFactory.getDataSource("https://support.kayako.com", new Locale("en", "us"));
-        // TODO: Figure out the best way to handle HelpCenter later.
+        mSectionByCategoryData = SectionByCategoryFactory.getDataSource(HelpCenterPref.getInstance().getHelpCenterUrl(), HelpCenterPref.getInstance().getLocale());
     }
 
     @Override

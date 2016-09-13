@@ -4,7 +4,7 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <include layout="@layout/ko__toolbar_spinner" />
+    <include layout="@layout/ko__toolbar_help_center" />
 
     <include layout="@layout/ko__include_separator" />
 

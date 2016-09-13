@@ -2,6 +2,7 @@ package com.kayako.sdk.android.k5.articlelistpage;
 
 import android.text.Html;
 
+import com.kayako.sdk.android.k5.common.core.HelpCenterPref;
 import com.kayako.sdk.android.k5.common.data.ListItem;
 import com.kayako.sdk.helpcenter.articles.Article;
 
@@ -27,8 +28,7 @@ public class ArticleListPresenter implements ArticleListContract.Presenter {
 
     public ArticleListPresenter(ArticleListContract.View view) {
         mView = view;
-        mData = ArticleListFactory.getDataSource("https://support.kayako.com", new Locale("en", "us"));
-        // TODO: Figure out the best way to handle HelpCenterUrl data and locale later.
+        mData = ArticleListFactory.getDataSource(HelpCenterPref.getInstance().getHelpCenterUrl(), HelpCenterPref.getInstance().getLocale());
     }
 
     @Override
