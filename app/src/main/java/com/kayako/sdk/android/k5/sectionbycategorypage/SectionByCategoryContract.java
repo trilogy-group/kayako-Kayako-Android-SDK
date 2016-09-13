@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
-public interface SectionByCategoryPageContract {
+public interface SectionByCategoryContract {
 
     interface Data extends BaseData {
         List<Category> getCategories(boolean forceNetwork);
@@ -40,7 +40,7 @@ public interface SectionByCategoryPageContract {
         void openSearchPage();
     }
 
-    interface Presenter extends BasePresenter<SectionByCategoryPageContract.View> {
+    interface Presenter extends BasePresenter<SectionByCategoryContract.View> {
 
         void initPage();
 

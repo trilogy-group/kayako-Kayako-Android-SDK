@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
-public class SectionByCategoryRepository implements SectionByCategoryPageContract.Data {
+public class SectionByCategoryRepository implements SectionByCategoryContract.Data {
 
     private List<Category> mCategories = null;
     private Map<Category, List<Section>> mSectionsByCategory = null;
