@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.articlelistpage.ArticleListContainerFragment;
+import com.kayako.sdk.android.k5.common.core.HelpCenterPref;
 import com.kayako.sdk.android.k5.common.fragments.ActivityNavigationCallback;
 import com.kayako.sdk.android.k5.sectionbycategorypage.SectionByCategoryContainerFragment;
 
@@ -16,6 +17,10 @@ public class KayakoHelpCenterActivity extends AppCompatActivity implements Activ
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ko__activity_help_center);
+
+        // TODO: Write steps for users to include this in their Application class
+        // TODO: Temporarily using in Activity for testing.
+        HelpCenterPref.createInstance(this);
 
         Fragment newFragment = SectionByCategoryContainerFragment.newInstance();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -32,13 +37,5 @@ public class KayakoHelpCenterActivity extends AppCompatActivity implements Activ
         transaction.commit();
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        // TODO: Check backstack and close (empty blank page seen)
-    }
-
-    // TODO: New Presenter for this page
     // TODO: Presenter-View #1: Search Section - hide and show menu options
-    // TODO: Presenter-View #2: Toolbar to select Locales
 }

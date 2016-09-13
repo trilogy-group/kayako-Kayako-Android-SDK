@@ -1,5 +1,6 @@
 package com.kayako.sdk.android.k5.searcharticlepage;
 
+import com.kayako.sdk.android.k5.common.core.HelpCenterPref;
 import com.kayako.sdk.android.k5.common.data.ListItem;
 import com.kayako.sdk.helpcenter.articles.Article;
 import com.kayako.sdk.helpcenter.search.SearchArticle;
@@ -23,8 +24,7 @@ public class SearchArticlePresenter implements SearchArticleContract.Presenter {
 
     public SearchArticlePresenter(SearchArticleContract.View view) {
         this.mView = view;
-        mData = SearchArticleFactory.getDataSource("https://support.kayako.com", new Locale("en", "us"));
-        // TODO: Figure out the best way to handle HelpCenter later.
+        mData = SearchArticleFactory.getDataSource(HelpCenterPref.getInstance().getHelpCenterUrl(), HelpCenterPref.getInstance().getLocale());
     }
 
     @Override

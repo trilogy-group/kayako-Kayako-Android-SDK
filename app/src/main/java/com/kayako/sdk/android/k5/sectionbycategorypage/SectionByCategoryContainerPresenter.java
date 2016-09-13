@@ -1,5 +1,6 @@
 package com.kayako.sdk.android.k5.sectionbycategorypage;
 
+import com.kayako.sdk.android.k5.common.core.HelpCenterPref;
 import com.kayako.sdk.android.k5.common.data.SpinnerItem;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class SectionByCategoryContainerPresenter implements SectionByCategoryCon
 
     public SectionByCategoryContainerPresenter(SectionByCategoryContainerContract.View view) {
         mView = view;
-        mData = SectionByCategoryContainerFactory.getDataSource("https://support.kayako.com", new java.util.Locale("en-us"));
+        mData = SectionByCategoryContainerFactory.getDataSource(HelpCenterPref.getInstance().getHelpCenterUrl(), HelpCenterPref.getInstance().getLocale());
     }
 
     @Override
