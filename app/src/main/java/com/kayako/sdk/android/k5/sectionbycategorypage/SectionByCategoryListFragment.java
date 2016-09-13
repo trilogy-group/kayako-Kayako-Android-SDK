@@ -19,9 +19,9 @@ import java.util.List;
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
-public class SectionByCategoryListFragment extends BaseListFragment implements SectionByCategoryPageContract.View, ListItemRecyclerViewAdapter.OnItemClickListener, SearchSectionAdapter.OnSearchClickListener {
+public class SectionByCategoryListFragment extends BaseListFragment implements SectionByCategoryContract.View, ListItemRecyclerViewAdapter.OnItemClickListener, SearchSectionAdapter.OnSearchClickListener {
 
-    protected SectionByCategoryPageContract.Presenter mPresenter;
+    protected SectionByCategoryContract.Presenter mPresenter;
     protected BackgroundTask mBackgroundTask;
     protected ListItemRecyclerViewAdapter listItemRecyclerViewAdapter;
     protected ActivityNavigationCallback mActivityNavigation;
@@ -42,7 +42,7 @@ public class SectionByCategoryListFragment extends BaseListFragment implements S
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPresenter = SectionByCategoryPageFactory.getPresenter(this);
+        mPresenter = SectionByCategoryFactory.getPresenter(this);
     }
 
     @Override

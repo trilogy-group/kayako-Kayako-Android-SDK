@@ -13,20 +13,20 @@ import java.util.Map;
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
-public class SectionByCategoryPresenter implements SectionByCategoryPageContract.Presenter {
+public class SectionByCategoryPresenter implements SectionByCategoryContract.Presenter {
 
-    private SectionByCategoryPageContract.View mSectionByCategoryView;
-    private SectionByCategoryPageContract.Data mSectionByCategoryData;
+    private SectionByCategoryContract.View mSectionByCategoryView;
+    private SectionByCategoryContract.Data mSectionByCategoryData;
     private List<ListItem> mListItems;
 
-    public SectionByCategoryPresenter(SectionByCategoryPageContract.View mWelcomePageView) {
+    public SectionByCategoryPresenter(SectionByCategoryContract.View mWelcomePageView) {
         this.mSectionByCategoryView = mWelcomePageView;
-        mSectionByCategoryData = SectionByCategoryPageFactory.getDataSource("https://support.kayako.com", new Locale("en", "us"));
+        mSectionByCategoryData = SectionByCategoryFactory.getDataSource("https://support.kayako.com", new Locale("en", "us"));
         // TODO: Figure out the best way to handle HelpCenter later.
     }
 
     @Override
-    public void setView(SectionByCategoryPageContract.View view) {
+    public void setView(SectionByCategoryContract.View view) {
         this.mSectionByCategoryView = view;
     }
 

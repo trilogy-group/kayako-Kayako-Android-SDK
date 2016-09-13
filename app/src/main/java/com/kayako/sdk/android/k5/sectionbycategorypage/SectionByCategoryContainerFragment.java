@@ -1,5 +1,6 @@
 package com.kayako.sdk.android.k5.sectionbycategorypage;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,32 +11,43 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.kayako.sdk.android.k5.R;
-import com.kayako.sdk.android.k5.searcharticlepage.SearchArticleContainerFragment;
+import com.kayako.sdk.android.k5.common.data.SpinnerItem;
+import com.kayako.sdk.android.k5.common.task.BackgroundTask;
+
+import java.util.List;
 
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
-public class SectionByCategoryContainerFragment extends Fragment {
+public class SectionByCategoryContainerFragment extends Fragment implements AdapterView.OnItemSelectedListener, SectionByCategoryContainerContract.View {
 
     private View mRoot;
     private Toolbar mToolbar;
+    private BackgroundTask mBackgroundTask;
 
     public static Fragment newInstance() {
         return new SectionByCategoryContainerFragment();
     }
+
+    SectionByCategoryContainerContract.Presenter mPresenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         setRetainInstance(true);
+        mPresenter = SectionByCategoryContainerFactory.getPresenter(this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mRoot = inflater.inflate(R.layout.ko__fragment_default, null);
+        mRoot = inflater.inflate(R.layout.ko__fragment_help_center, null);
         setUpToolbar();
         return mRoot;
     }
@@ -45,20 +57,22 @@ public class SectionByCategoryContainerFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         SectionByCategoryListFragment sectionByCategoryListFragment = SectionByCategoryListFragment.newInstance();
         getChildFragmentManager().beginTransaction().replace(R.id.container, sectionByCategoryListFragment).commit();
+        reloadSectionsByCategory();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        mPresenter.initPage();
     }
 
-    private void setUpToolbar() {
-        mToolbar = (Toolbar) mRoot.findViewById(R.id.ko__toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
-        ActionBar mActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        mActionBar.setHomeButtonEnabled(true);
-        mActionBar.setDisplayHomeAsUpEnabled(true);
-        mActionBar.setTitle(R.string.ko__helpcenter_title); // TODO: Replace with spinner
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mBackgroundTask != null) {
+            mBackgroundTask.cancelTask();
+            mBackgroundTask = null;
+        }
     }
 
     @Override
@@ -69,5 +83,78 @@ public class SectionByCategoryContainerFragment extends Fragment {
                 return true;
         }
         return false;
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        mPresenter.onSpinnerItemSelected((SpinnerItem) adapterView.getSelectedItem());
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+    }
+
+    @Override
+    public void setToolbarSpinner(List<SpinnerItem> items) {
+        Spinner spinner = (Spinner) mToolbar.findViewById(R.id.ko__toolbar_spinner);
+        spinner.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, items));
+        spinner.setOnItemSelectedListener(this);
+    }
+
+    @Override
+    public void showToolbarSpinner() {
+        (mToolbar.findViewById(R.id.ko__toolbar_spinner)).setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideToolbarSpinner() {
+        (mToolbar.findViewById(R.id.ko__toolbar_spinner)).setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showToolbarTitle() {
+        (mToolbar.findViewById(R.id.ko__toolbar_title)).setVisibility(View.GONE);
+
+    }
+
+    @Override
+    public void hideToolbarTitle() {
+        (mToolbar.findViewById(R.id.ko__toolbar_title)).setVisibility(View.GONE);
+    }
+
+    @Override
+    public void setToolbarTitle(String title) {
+        ((TextView) mToolbar.findViewById(R.id.ko__toolbar_title)).setText(title);
+
+    }
+
+    @Override
+    public void reloadSectionsByCategory() {
+        SectionByCategoryListFragment sectionByCategoryListFragment = SectionByCategoryListFragment.newInstance();
+        getChildFragmentManager().beginTransaction().replace(R.id.container, sectionByCategoryListFragment).commitAllowingStateLoss();
+    }
+
+    @Override
+    public void startBackgroundTask() {
+        mBackgroundTask = (BackgroundTask) new BackgroundTask(getActivity()) {
+            @Override
+            protected boolean performInBackground() {
+                return mPresenter.loadDataInBackground();
+            }
+
+            @Override
+            protected void performOnCompletion(boolean isSuccessful) {
+                mPresenter.onDataLoaded(isSuccessful);
+            }
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private void setUpToolbar() {
+        mToolbar = (Toolbar) mRoot.findViewById(R.id.ko__toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+        ActionBar mActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        mActionBar.setHomeButtonEnabled(true);
+        mActionBar.setDisplayHomeAsUpEnabled(true);
+        mActionBar.setTitle(null);
     }
 }
