@@ -66,6 +66,7 @@ public class SectionByCategoryPresenter implements SectionByCategoryContract.Pre
             mListItems = setUpList(categories, sectionsByCategory);
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             // TODO: Find a better way to catch exceptions. Throw likely exceptions in each method
             // TODO: Throw custom errors? java.net.SocketException: Network is unreachable
             return false;
@@ -92,15 +93,17 @@ public class SectionByCategoryPresenter implements SectionByCategoryContract.Pre
 
             for (Category category : categories) {
                 items.add(new ListItem(true, category.getTitle(), null, category));
-                for (Section section : sectionsByCategory.get(category)) {
-                    items.add(new ListItem(false, section.getTitle(), section.getDescription(), section));
+
+                if (sectionsByCategory.containsKey(category)) {
+                    for (Section section : sectionsByCategory.get(category)) {
+                        items.add(new ListItem(false, section.getTitle(), section.getDescription(), section));
+                    }
                 }
             }
 
             return items;
         }
     }
-
 
 
 }

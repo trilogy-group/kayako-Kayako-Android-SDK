@@ -7,15 +7,8 @@ import java.util.Locale;
  */
 public class SectionByCategoryFactory {
 
-    private static SectionByCategoryPresenter sSectionByCategoryPresenter;
-
     public static SectionByCategoryContract.Presenter getPresenter(SectionByCategoryContract.View view) {
-        if (sSectionByCategoryPresenter == null) {
-            return sSectionByCategoryPresenter = new SectionByCategoryPresenter(view);
-        } else {
-            sSectionByCategoryPresenter.setView(view);
-            return sSectionByCategoryPresenter;
-        }
+        return new SectionByCategoryPresenter(view);
     }
 
     public static SectionByCategoryContract.Data getDataSource(String helpCenterUrl, Locale locale) {
