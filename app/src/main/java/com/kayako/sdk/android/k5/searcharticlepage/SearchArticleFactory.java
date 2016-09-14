@@ -11,15 +11,8 @@ import java.util.Locale;
  */
 public class SearchArticleFactory {
 
-    private static SearchArticleContract.Presenter sPresenter;
-
     public static SearchArticleContract.Presenter getPresenter(SearchArticleContract.View view) {
-        if (sPresenter == null) {
-            return sPresenter = new SearchArticlePresenter(view);
-        } else {
-            sPresenter.setView(view);
-            return sPresenter;
-        }
+        return new SearchArticlePresenter(view);
     }
 
     public static SearchArticleContract.Data getDataSource(String helpCenterUrl, Locale locale) {
