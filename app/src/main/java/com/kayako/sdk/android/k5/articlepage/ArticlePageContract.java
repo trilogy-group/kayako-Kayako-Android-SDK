@@ -21,10 +21,18 @@ public interface ArticlePageContract {
 
         void setArticleContent(String htmlContent);
 
+        void showArticleContent();
+
+        void hideArticleContent();
+
+        void hideContentScrollbarsWhileAllowingScroll();
+
     }
 
     interface Presenter extends BasePresenter<ArticlePageContract.View> {
 
         void initPage(Article article);
+
+        void onContentLoaded();
     }
 }
