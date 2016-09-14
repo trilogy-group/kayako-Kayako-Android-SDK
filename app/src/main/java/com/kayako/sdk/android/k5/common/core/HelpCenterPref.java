@@ -28,8 +28,8 @@ public class HelpCenterPref {
     }
 
     private HelpCenterPref(Context context) {
+        mContext = context.getApplicationContext();
         if (mPrefs == null) {
-            mContext = context.getApplicationContext();
             mPrefs = mContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         }
     }
