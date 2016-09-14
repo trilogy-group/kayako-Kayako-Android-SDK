@@ -20,8 +20,6 @@ import com.kayako.sdk.helpcenter.articles.Article;
  */
 public class ArticleContainerFragment extends Fragment {
 
-    // TODO: Reusable class for simple toolbar
-
     private static final String ARG_ARTICLE = "article";
     private View mRoot;
     private Toolbar mToolbar;

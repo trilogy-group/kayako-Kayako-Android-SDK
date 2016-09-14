@@ -80,9 +80,11 @@ public class ArticleFragment extends BaseStateFragment implements ArticlePageCon
 
     @Override
     public void setArticleContent(String htmlContent) {
+        // TODO: Add test to ensure that if there are large tables, horizontal scroll is enabled. Else, it's only vertical scroll.
+        // The webview is formatted with the CSS file available in assets folder
         WebView articleContent = (WebView) mRoot.findViewById(R.id.ko__article_webview);
-        articleContent.loadData(htmlContent, "text/html; charset=utf-8", "UTF-8");
+        String styledHtmlData = "<link rel=\"stylesheet\" type=\"text/css\" href=\"kayako-style.css\" />" + htmlContent;
+        articleContent.loadDataWithBaseURL("file:///android_asset/", styledHtmlData, "text/html; charset=utf-8", "UTF-8", null);
         articleContent.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-
     }
 }

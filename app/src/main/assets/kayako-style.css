@@ -1,0 +1,207 @@
+*, *:before, *:after {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+
+/* Keeps image inside container and center aligned */
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.5em auto;
+}
+
+html {
+    color: #5F6C73;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+
+a {
+    color: #4eafcb;
+    text-decoration: none;
+}
+
+a:focus {
+    outline: thin dotted;
+}
+
+ol, ul {
+    margin: 0.5em 0 1em 1.5em;
+    padding: 0;
+}
+
+label {
+    display: block;
+}
+
+
+/* Table style */
+table {
+    border: 1px solid #dfe4e6;
+    font-size: 15px;
+    text-align: left;
+    border-collapse: collapse;
+}
+
+tr {
+    border-bottom: 1px solid #dfe4e6;
+}
+
+th, td {
+    padding: 0.5em;
+    border-right: 1px solid #dfe4e6;
+}
+
+
+/* Removes touch delay on touch screens */
+a, button, input, select, textarea, label, summary {
+    touch-action: manipulation;
+}
+
+q {
+    quotes: "\201C" "\201D" "\2018" "\2019";
+}
+
+
+/* ============================
+           Form elements
+   ============================ */
+
+
+/* Textfields */
+input[type="text"], input[type="email"], textarea {
+    background-color: white;
+    border: 1px solid #d1d5d7;
+    border-radius: 2px;
+    box-shadow: inset 1px 1.732px 1px 0px rgba(0, 0, 0, 0.04);
+    color: #2d3138;
+    font-size: 15px;
+    font-weight: normal;
+    margin-bottom: 0.3em;
+    padding: 0.4em 0.7em;
+    width: 100%;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+}
+
+input[type="text"]:focus, input[type="email"]:focus, textarea:focus {
+    border-color: #4eafcb;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075), 0 0 5px rgba(81, 167, 232, 0.5);
+    outline-color: transparent;
+    outline-width: 0;
+}
+
+
+/* Button style */
+button, input[type="button"], input[type="submit"] {
+    -webkit-appearance: none;
+    background-color: #4eafcb;
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.04), rgba(255, 255, 255, 0.04) 57%);
+    border-radius: 2px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.18), inset 0 1px rgba(255, 255, 255, 0.16), inset 0 0 0px rgba(255, 255, 255, 0.35);
+    border: 1px solid rgba(0, 0, 0, 0.16);
+    ;
+    color: #ffffff;
+    display: block;
+    font-size: 15px;
+    height: 30px;
+    padding: 0 1.35em 0.1em;
+    text-align: center;
+}
+
+button[disabled], input[type="button"][disabled], input[type="submit"][disabled] {
+    opacity: 0.6;
+}
+
+
+/* iframe */
+iframe {
+    max-width: 100%;
+    border: 0;
+}
+
+
+/* ============================
+           Typography
+   ============================ */
+
+
+/* Headings */
+h1, h2, h3, h4 {
+    color: #2d3138;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+}
+
+h1 {
+    font-size: 30px;
+    font-weight: 300;
+    margin-bottom: 0.6em;
+}
+
+h2 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 0.4em;
+}
+
+h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0.2em 0;
+}
+
+h4 {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin: 0 0 0.2em;
+}
+
+
+/* Paragraph */
+p {
+    margin: 0 0 0.5em;
+}
+
+
+/* Bold text */
+b, strong {
+    font-weight: 600;
+}
+
+
+/* Code style */
+code, kbd, pre, samp {
+    font-family: monospace, serif;
+    font-size: 15px;
+}
+
+pre {
+    background: #f7f8f9;
+    border-radius: 2px;
+    border: 1px solid #ebeef0;
+    color: #505357;
+    display: block;
+    margin-bottom: 0.8em;
+    margin-top: 0.7em;
+    overflow-x: auto;
+    padding: 0.4em 0.7em;
+    white-space: pre;
+    word-wrap: initial;
+}
+
+code {
+    background-color: #f9f2f4;
+    border-radius: 2px;
+    color: #c7254e;
+    padding: 0 0.3em;
+}
