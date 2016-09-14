@@ -5,8 +5,11 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -86,5 +89,37 @@ public class ArticleFragment extends BaseStateFragment implements ArticlePageCon
         String styledHtmlData = "<link rel=\"stylesheet\" type=\"text/css\" href=\"kayako-style.css\" />" + htmlContent;
         articleContent.loadDataWithBaseURL("file:///android_asset/", styledHtmlData, "text/html; charset=utf-8", "UTF-8", null);
         articleContent.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        articleContent.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                // TODO: -Use WebChromeClient instead? - onPageFinished will not be called until all of the assets (css/js/images) have finished loading for that page.
+                super.onPageFinished(view, url);
+                mPresenter.onContentLoaded();
+            }
+
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                super.onReceivedError(view, request, error);
+                // TODO Show Error Page?
+            }
+        });
+    }
+
+
+    @Override
+    public void hideContentScrollbarsWhileAllowingScroll() {
+        WebView articleContent = (WebView) mRoot.findViewById(R.id.ko__article_webview);
+        articleContent.setVerticalScrollBarEnabled(false);
+        articleContent.setHorizontalScrollBarEnabled(false);
+    }
+
+    @Override
+    public void showArticleContent() {
+        mRoot.findViewById(R.id.ko__article_webview).setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideArticleContent() {
+        mRoot.findViewById(R.id.ko__article_webview).setVisibility(View.GONE);
     }
 }
