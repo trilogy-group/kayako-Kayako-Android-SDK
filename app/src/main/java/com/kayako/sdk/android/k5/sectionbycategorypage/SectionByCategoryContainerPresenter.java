@@ -59,12 +59,12 @@ public class SectionByCategoryContainerPresenter implements SectionByCategoryCon
 
     @Override
     public void onSpinnerItemSelected(SpinnerItem spinnerItem) {
-
+        mView.reloadSectionsByCategory();
     }
 
     @Override
     public void setView(SectionByCategoryContainerContract.View view) {
-
+        mView = view;
     }
 
     private List<SpinnerItem> convertToSpinnerItems(List<com.kayako.sdk.helpcenter.locale.Locale> locales) {
