@@ -33,7 +33,7 @@ public class SectionByCategoryPresenter implements SectionByCategoryContract.Pre
     @Override
     public void initPage() {
         invalidateOldValues();
-        if (!mSectionByCategoryData.isCached()) { // Creates a visual flicker when going back
+        if (!mSectionByCategoryData.isCached()) { // Avoid showing a visual flicker when navigating between pages
             mSectionByCategoryView.showOnlyLoadingView();
         }
         mSectionByCategoryView.startBackgroundTask();
