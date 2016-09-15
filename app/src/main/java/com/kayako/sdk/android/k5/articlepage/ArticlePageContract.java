@@ -25,6 +25,10 @@ public interface ArticlePageContract {
 
         void hideArticleContent();
 
+        void showLoading();
+
+        void hideLoading();
+
         void hideContentScrollbarsWhileAllowingScroll();
 
     }

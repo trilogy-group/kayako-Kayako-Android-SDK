@@ -23,19 +23,29 @@ public class ArticlePresenter implements ArticlePageContract.Presenter {
         mView.setAuthorName(article.getAuthor().getFullName());
         mView.setAuthorAvatar(article.getAuthor().getAvatarUrl());
         mView.setArticleTitle(article.getTitle());
-        mView.setArticleDirectoryPath(category.getTitle() + " > " + section.getTitle());
-        mView.hideArticleContent();
+        mView.setArticleDirectoryPath(String.format("%s > %s", category.getTitle(), section.getTitle()));
         mView.setArticleContent(article.getContents());
+        showOnlyLoading();
     }
 
     @Override
     public void onContentLoaded() {
         mView.hideContentScrollbarsWhileAllowingScroll();
-        mView.showArticleContent();
+        showOnlyArticleContent();
     }
 
     @Override
     public void setView(ArticlePageContract.View view) {
         mView = view;
+    }
+
+    private void showOnlyArticleContent(){
+        mView.showArticleContent();
+        mView.hideLoading();
+    }
+
+    private void showOnlyLoading(){
+        mView.hideArticleContent();
+        mView.showLoading();
     }
 }
