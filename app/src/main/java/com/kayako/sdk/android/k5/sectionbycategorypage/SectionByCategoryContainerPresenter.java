@@ -23,7 +23,7 @@ public class SectionByCategoryContainerPresenter implements SectionByCategoryCon
 
     @Override
     public void initPage() {
-        mView.showToolbarTitle();
+        mView.showToolbarTitle(); // TODO: Remove title idea. BAD.
         mView.hideToolbarSpinner();
         mView.startBackgroundTask();
     }

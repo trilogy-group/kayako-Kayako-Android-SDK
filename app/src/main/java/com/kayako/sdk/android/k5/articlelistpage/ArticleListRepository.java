@@ -22,4 +22,9 @@ public class ArticleListRepository implements ArticleListContract.Data {
         // TODO: Force Network
         return mHelpCenter.getArticles(sectionId, offset, limit);
     }
+
+    @Override
+    public boolean isCached() {
+        return false; // TODO:
+    }
 }

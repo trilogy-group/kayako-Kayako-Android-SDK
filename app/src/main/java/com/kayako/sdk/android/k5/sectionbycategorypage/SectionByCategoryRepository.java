@@ -45,4 +45,10 @@ public class SectionByCategoryRepository implements SectionByCategoryContract.Da
             return mSectionsByCategory;
         }
     }
+
+    @Override
+    public boolean isCached() {
+        return (mCategories == null || mCategories.size() == 0) &&
+                (mSectionsByCategory == null || mSectionsByCategory.size() == 0);
+    }
 }
