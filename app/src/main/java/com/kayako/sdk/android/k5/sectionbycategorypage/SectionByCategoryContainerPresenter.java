@@ -2,6 +2,8 @@ package com.kayako.sdk.android.k5.sectionbycategorypage;
 
 import com.kayako.sdk.android.k5.common.core.HelpCenterPref;
 import com.kayako.sdk.android.k5.common.data.SpinnerItem;
+import com.kayako.sdk.android.k5.common.utils.LocaleUtils;
+import com.kayako.sdk.helpcenter.locale.Locale;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,13 +15,13 @@ public class SectionByCategoryContainerPresenter implements SectionByCategoryCon
 
     private SectionByCategoryContainerContract.View mView;
     private SectionByCategoryContainerContract.Data mData;
+    private java.util.Locale mActiveLocale; // Ensure that during spinner setup, the page is not unnecessarily loaded due to spinner onItemSelected() being called.
 
     private List<SpinnerItem> mSpinnerItems;
-    private boolean mShouldReloadSectionsByCategory; // Ensure that during spinner setup, the page is not unnecessarily loaded due to spinner onItemSelected() being called.
 
     public SectionByCategoryContainerPresenter(SectionByCategoryContainerContract.View view) {
         mView = view;
-        mData = SectionByCategoryContainerFactory.getDataSource(HelpCenterPref.getInstance().getHelpCenterUrl(), HelpCenterPref.getInstance().getLocale());
+        mData = SectionByCategoryContainerFactory.getDataSource(HelpCenterPref.getInstance().getHelpCenterUrl(), mActiveLocale = HelpCenterPref.getInstance().getLocale());
     }
 
     @Override
@@ -52,7 +54,6 @@ public class SectionByCategoryContainerPresenter implements SectionByCategoryCon
                 mView.setToolbarSpinner(mSpinnerItems);
                 mView.showToolbarSpinner();
                 mView.hideToolbarTitle();
-                mShouldReloadSectionsByCategory = true;
             }
         } else {
             mView.hideToolbarSpinner();
@@ -62,7 +63,9 @@ public class SectionByCategoryContainerPresenter implements SectionByCategoryCon
 
     @Override
     public void onSpinnerItemSelected(SpinnerItem spinnerItem) {
-        if (mShouldReloadSectionsByCategory) { // Reload only if it's not the first time.
+        Locale kayakoLocale = (Locale) spinnerItem.getResource();
+        java.util.Locale selectedLocale = LocaleUtils.getLocale(kayakoLocale);
+        if (!mActiveLocale.equals(selectedLocale)) { // Reload only if it's not the first time
             mView.reloadSectionsByCategory();
         }
     }
@@ -85,6 +88,5 @@ public class SectionByCategoryContainerPresenter implements SectionByCategoryCon
 
     private void invalidateOldValues() {
         mSpinnerItems = null;
-        mShouldReloadSectionsByCategory = false;
     }
 }
