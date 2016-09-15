@@ -15,6 +15,7 @@ public class SectionByCategoryContainerPresenter implements SectionByCategoryCon
     private SectionByCategoryContainerContract.Data mData;
 
     private List<SpinnerItem> mSpinnerItems;
+    private boolean mShouldReloadSectionsByCategory; // Ensure that during spinner setup, the page is not unnecessarily loaded due to spinner onItemSelected() being called.
 
     public SectionByCategoryContainerPresenter(SectionByCategoryContainerContract.View view) {
         mView = view;
@@ -50,6 +51,7 @@ public class SectionByCategoryContainerPresenter implements SectionByCategoryCon
                 mView.setToolbarSpinner(mSpinnerItems);
                 mView.showToolbarSpinner();
                 mView.hideToolbarTitle();
+                mShouldReloadSectionsByCategory = true;
             }
         } else {
             mView.hideToolbarSpinner();
@@ -59,7 +61,9 @@ public class SectionByCategoryContainerPresenter implements SectionByCategoryCon
 
     @Override
     public void onSpinnerItemSelected(SpinnerItem spinnerItem) {
-        mView.reloadSectionsByCategory();
+        if(mShouldReloadSectionsByCategory) { // Reload only if it's not the first time.
+            mView.reloadSectionsByCategory();
+        }
     }
 
     @Override
