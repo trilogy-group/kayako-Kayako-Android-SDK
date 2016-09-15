@@ -19,6 +19,8 @@ public interface SectionByCategoryContract {
         List<Category> getCategories(boolean useCacheIfAvailable);
 
         Map<Category, List<Section>> getSectionsByCategory(List<Category> categories, boolean useCacheIfAvailable);
+
+        boolean isCached();
     }
 
     interface View extends BaseView {

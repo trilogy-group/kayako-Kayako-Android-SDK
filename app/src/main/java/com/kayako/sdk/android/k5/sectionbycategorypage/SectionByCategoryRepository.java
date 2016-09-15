@@ -46,9 +46,8 @@ public class SectionByCategoryRepository implements SectionByCategoryContract.Da
         }
     }
 
-    @Override
     public boolean isCached() {
-        return (mCategories == null || mCategories.size() == 0) &&
-                (mSectionsByCategory == null || mSectionsByCategory.size() == 0);
+        return mCategories != null && mCategories.size() != 0 &&
+                mSectionsByCategory != null && mSectionsByCategory.size() != 0;
     }
 }

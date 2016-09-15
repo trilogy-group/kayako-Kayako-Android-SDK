@@ -32,6 +32,7 @@ public class SectionByCategoryPresenter implements SectionByCategoryContract.Pre
 
     @Override
     public void initPage() {
+        invalidateOldValues();
         if (!mSectionByCategoryData.isCached()) { // Creates a visual flicker when going back
             mSectionByCategoryView.showOnlyLoadingView();
         }
@@ -107,5 +108,7 @@ public class SectionByCategoryPresenter implements SectionByCategoryContract.Pre
         }
     }
 
-
+    private void invalidateOldValues() {
+        mListItems = null;
+    }
 }

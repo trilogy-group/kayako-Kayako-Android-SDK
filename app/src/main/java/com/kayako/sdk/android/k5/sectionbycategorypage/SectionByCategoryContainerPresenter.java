@@ -24,6 +24,7 @@ public class SectionByCategoryContainerPresenter implements SectionByCategoryCon
 
     @Override
     public void initPage() {
+        invalidateOldValues();
         mView.showToolbarTitle(); // TODO: Remove title idea. BAD.
         mView.hideToolbarSpinner();
         mView.startBackgroundTask();
@@ -61,7 +62,7 @@ public class SectionByCategoryContainerPresenter implements SectionByCategoryCon
 
     @Override
     public void onSpinnerItemSelected(SpinnerItem spinnerItem) {
-        if(mShouldReloadSectionsByCategory) { // Reload only if it's not the first time.
+        if (mShouldReloadSectionsByCategory) { // Reload only if it's not the first time.
             mView.reloadSectionsByCategory();
         }
     }
@@ -80,5 +81,10 @@ public class SectionByCategoryContainerPresenter implements SectionByCategoryCon
             items.add(item);
         }
         return items;
+    }
+
+    private void invalidateOldValues() {
+        mSpinnerItems = null;
+        mShouldReloadSectionsByCategory = false;
     }
 }

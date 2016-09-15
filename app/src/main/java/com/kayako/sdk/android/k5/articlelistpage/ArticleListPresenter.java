@@ -35,8 +35,11 @@ public class ArticleListPresenter implements ArticleListContract.Presenter {
 
     @Override
     public void initPage(long sectionId) {
+        invalidateOldValues(); // when presenter is reused for different fragments with different sectionIds, the older values should be cleared
         mSectionId = sectionId;
-        mView.showOnlyLoadingView();
+        if (!mData.isCached(mSectionId)) { // show loading only if data not cached
+            mView.showOnlyLoadingView();
+        }
         mView.startBackgroundTaskToLoadData();
         // TODO: Retrieve Section data (title, description) via Repository
     }
@@ -46,14 +49,16 @@ public class ArticleListPresenter implements ArticleListContract.Presenter {
         mSectionId = section.getId();
         mSectionTitle = section.getTitle();
         mSectionDescription = section.getDescription();
-        mView.showOnlyLoadingView();
+        if (!mData.isCached(mSectionId)) {
+            mView.showOnlyLoadingView();
+        } // show loading only if data not cached
         mView.startBackgroundTaskToLoadData();
     }
 
     @Override
     public boolean fetchDataInBackground() {
         try {
-            List<Article> articles = mData.getArticles(mSectionId, mOffset = 0, REQUEST_LIMIT);
+            List<Article> articles = mData.getArticles(mSectionId, mOffset = 0, REQUEST_LIMIT, true);
             mListItems = convertToListItems(articles);
             return true;
         } catch (Exception e) {
@@ -84,7 +89,7 @@ public class ArticleListPresenter implements ArticleListContract.Presenter {
     @Override
     public boolean fetchMoreDataInBackground() {
         try {
-            List<Article> articles = mData.getArticles(mSectionId, mOffset + REQUEST_LIMIT, REQUEST_LIMIT);
+            List<Article> articles = mData.getArticles(mSectionId, mOffset + REQUEST_LIMIT, REQUEST_LIMIT, false);
             mMoreItems = convertToListItems(articles);
             return true;
         } catch (Exception e) {
@@ -152,5 +157,14 @@ public class ArticleListPresenter implements ArticleListContract.Presenter {
             }
             return items;
         }
+    }
+
+    private void invalidateOldValues() {
+        mListItems = null;
+        mMoreItems = null;
+        mSectionId = 0L;
+        mSectionTitle = null;
+        mSectionDescription = null;
+        mOffset = 0;
     }
 }

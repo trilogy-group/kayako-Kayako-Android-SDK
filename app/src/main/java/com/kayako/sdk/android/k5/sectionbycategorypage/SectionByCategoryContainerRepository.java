@@ -42,7 +42,6 @@ public class SectionByCategoryContainerRepository implements SectionByCategoryCo
         }
     }
 
-    @Override
     public boolean isCached() {
         return mLocales == null;
     }
