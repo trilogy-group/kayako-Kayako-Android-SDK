@@ -41,5 +41,7 @@ public class KayakoHelpCenterActivity extends AppCompatActivity implements Activ
 
     }
 
+    // TODO: Save instance for orientation change
+
     // TODO: Presenter-View #1: Search Section - hide and show menu options
 }

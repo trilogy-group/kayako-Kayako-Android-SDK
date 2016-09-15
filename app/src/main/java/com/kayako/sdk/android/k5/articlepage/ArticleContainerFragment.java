@@ -66,7 +66,7 @@ public class ArticleContainerFragment extends Fragment {
         ActionBar mActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         mActionBar.setHomeButtonEnabled(true);
         mActionBar.setDisplayHomeAsUpEnabled(true);
-        mActionBar.setTitle(title);
+        mActionBar.setTitle(null);
     }
 
     @Override

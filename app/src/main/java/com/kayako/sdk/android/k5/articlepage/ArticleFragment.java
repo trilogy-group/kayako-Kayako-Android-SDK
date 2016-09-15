@@ -85,7 +85,7 @@ public class ArticleFragment extends BaseStateFragment implements ArticlePageCon
     public void setArticleContent(String htmlContent) {
         // TODO: Add test to ensure that if there are large tables, horizontal scroll is enabled. Else, it's only vertical scroll.
         // The webview is formatted with the CSS file available in assets folder
-        WebView articleContent = (WebView) mRoot.findViewById(R.id.ko__article_webview);
+        WebView articleContent = (WebView) mRoot.findViewById(R.id.ko__article_web_view);
         String styledHtmlData = "<link rel=\"stylesheet\" type=\"text/css\" href=\"kayako-style.css\" />" + htmlContent;
         articleContent.loadDataWithBaseURL("file:///android_asset/", styledHtmlData, "text/html; charset=utf-8", "UTF-8", null);
         articleContent.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
@@ -108,18 +108,28 @@ public class ArticleFragment extends BaseStateFragment implements ArticlePageCon
 
     @Override
     public void hideContentScrollbarsWhileAllowingScroll() {
-        WebView articleContent = (WebView) mRoot.findViewById(R.id.ko__article_webview);
+        WebView articleContent = (WebView) mRoot.findViewById(R.id.ko__article_web_view);
         articleContent.setVerticalScrollBarEnabled(false);
         articleContent.setHorizontalScrollBarEnabled(false);
     }
 
     @Override
     public void showArticleContent() {
-        mRoot.findViewById(R.id.ko__article_webview).setVisibility(View.VISIBLE);
+        mRoot.findViewById(R.id.ko__article_web_view).setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideArticleContent() {
-        mRoot.findViewById(R.id.ko__article_webview).setVisibility(View.GONE);
+        mRoot.findViewById(R.id.ko__article_web_view).setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showLoading() {
+        super.showLoadingView();
+    }
+
+    @Override
+    public void hideLoading() {
+        super.hideLoadingView();
     }
 }
