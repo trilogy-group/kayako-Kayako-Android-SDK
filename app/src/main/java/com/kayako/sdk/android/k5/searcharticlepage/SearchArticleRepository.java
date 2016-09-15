@@ -21,4 +21,9 @@ public class SearchArticleRepository implements SearchArticleContract.Data {
     public List<SearchArticle> searchArticles(String query, int offset, int limit) {
         return mHelpCenter.getSearchArticles(query, offset, limit);
     }
+
+    @Override
+    public boolean isCached() {
+        return false; // Never cache the searched articles
+    }
 }

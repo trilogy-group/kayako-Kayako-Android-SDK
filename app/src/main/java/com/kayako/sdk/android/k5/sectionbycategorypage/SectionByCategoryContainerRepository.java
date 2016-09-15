@@ -41,4 +41,9 @@ public class SectionByCategoryContainerRepository implements SectionByCategoryCo
             return publicLocales;
         }
     }
+
+    @Override
+    public boolean isCached() {
+        return mLocales == null;
+    }
 }
