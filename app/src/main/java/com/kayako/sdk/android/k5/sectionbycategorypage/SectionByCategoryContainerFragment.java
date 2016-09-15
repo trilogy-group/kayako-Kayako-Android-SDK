@@ -57,7 +57,6 @@ public class SectionByCategoryContainerFragment extends Fragment implements Adap
         super.onViewCreated(view, savedInstanceState);
         SectionByCategoryListFragment sectionByCategoryListFragment = SectionByCategoryListFragment.newInstance();
         getChildFragmentManager().beginTransaction().replace(R.id.container, sectionByCategoryListFragment).commit();
-        reloadSectionsByCategory();
     }
 
     @Override
