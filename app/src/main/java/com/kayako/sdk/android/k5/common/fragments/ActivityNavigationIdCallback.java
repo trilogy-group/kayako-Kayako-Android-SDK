@@ -1,5 +1,5 @@
 package com.kayako.sdk.android.k5.common.fragments;
 
-public interface ActivityNavigationCallback {
+public interface ActivityNavigationIdCallback {
     void openNextPage(long id);
 }

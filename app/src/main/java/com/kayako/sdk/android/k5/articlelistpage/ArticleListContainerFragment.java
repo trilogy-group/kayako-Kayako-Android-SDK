@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kayako.sdk.android.k5.R;
+import com.kayako.sdk.helpcenter.base.Resource;
+import com.kayako.sdk.helpcenter.section.Section;
 
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
@@ -19,16 +21,28 @@ import com.kayako.sdk.android.k5.R;
 public class ArticleListContainerFragment extends Fragment {
 
     private static final String ARG_ID = "id";
+    private static final String ARG_RESOURCE = "resource";
+
     private View mRoot;
     private Toolbar mToolbar;
 
-    public static Fragment newInstance(long id) {
+//    public static Fragment newInstance(long id) {
+//        Bundle bundle = new Bundle();
+//        bundle.putLong(ARG_ID, id);
+//        ArticleListContainerFragment articleListContainerFragment = new ArticleListContainerFragment();
+//        articleListContainerFragment.setArguments(bundle);
+//        return articleListContainerFragment;
+//    }
+
+    public static ArticleListContainerFragment newInstance(Section section) {
         Bundle bundle = new Bundle();
-        bundle.putLong(ARG_ID, id);
-        ArticleListContainerFragment articleListContainerFragment = new ArticleListContainerFragment();
-        articleListContainerFragment.setArguments(bundle);
-        return articleListContainerFragment;
+        bundle.putSerializable(ARG_RESOURCE, section);
+
+        ArticleListContainerFragment articleListFragment = new ArticleListContainerFragment();
+        articleListFragment.setArguments(bundle);
+        return articleListFragment;
     }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,8 +61,9 @@ public class ArticleListContainerFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        long id = getArguments().getLong(ARG_ID);
-        ArticleListFragment articleListFragment = ArticleListFragment.newInstance(id);
+
+        Section section = (Section) getArguments().getSerializable(ARG_RESOURCE);
+        ArticleListFragment articleListFragment = ArticleListFragment.newInstance(section);
         getChildFragmentManager().beginTransaction().replace(R.id.container, articleListFragment).commit();
     }
 

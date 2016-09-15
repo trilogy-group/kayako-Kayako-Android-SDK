@@ -5,6 +5,7 @@ import android.text.Html;
 import com.kayako.sdk.android.k5.common.core.HelpCenterPref;
 import com.kayako.sdk.android.k5.common.data.ListItem;
 import com.kayako.sdk.helpcenter.articles.Article;
+import com.kayako.sdk.helpcenter.section.Section;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,8 @@ public class ArticleListPresenter implements ArticleListContract.Presenter {
     private List<ListItem> mListItems;
     private List<ListItem> mMoreItems;
     private long mSectionId;
-
+    private String mSectionTitle;
+    private String mSectionDescription;
 
     public ArticleListPresenter(ArticleListContract.View view) {
         mView = view;
@@ -34,6 +36,16 @@ public class ArticleListPresenter implements ArticleListContract.Presenter {
     @Override
     public void initPage(long sectionId) {
         mSectionId = sectionId;
+        mView.showOnlyLoadingView();
+        mView.startBackgroundTaskToLoadData();
+        // TODO: Retrieve Section data (title, description) via Repository
+    }
+
+    @Override
+    public void initPage(Section section) {
+        mSectionId = section.getId();
+        mSectionTitle = section.getTitle();
+        mSectionDescription = section.getDescription();
         mView.showOnlyLoadingView();
         mView.startBackgroundTaskToLoadData();
     }
@@ -57,11 +69,11 @@ public class ArticleListPresenter implements ArticleListContract.Presenter {
                 mView.showOnlyEmptyView();
             } else if (mListItems.size() < REQUEST_LIMIT) {
                 mView.showOnlyListView();
-                mView.setUpList(mListItems);
+                mView.setUpList(mListItems, mSectionTitle, mSectionDescription);
                 mView.setListHasMoreItems(false);
             } else {
                 mView.showOnlyListView();
-                mView.setUpList(mListItems);
+                mView.setUpList(mListItems, mSectionTitle, mSectionDescription);
                 mView.setListHasMoreItems(true);
             }
         } else {

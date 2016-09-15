@@ -1,12 +1,10 @@
 package com.kayako.sdk.android.k5.articlelistpage;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.activities.KayakoArticleActivity;
 import com.kayako.sdk.android.k5.common.adapter.EndlessRecyclerViewScrollAdapter;
 import com.kayako.sdk.android.k5.common.adapter.ListItemRecyclerViewAdapter;
@@ -14,6 +12,7 @@ import com.kayako.sdk.android.k5.common.data.ListItem;
 import com.kayako.sdk.android.k5.common.fragments.BaseListFragment;
 import com.kayako.sdk.android.k5.common.task.BackgroundTask;
 import com.kayako.sdk.helpcenter.articles.Article;
+import com.kayako.sdk.helpcenter.section.Section;
 
 import java.util.List;
 
@@ -22,14 +21,24 @@ import java.util.List;
  */
 public class ArticleListFragment extends BaseListFragment implements ArticleListContract.View, EndlessRecyclerViewScrollAdapter.OnLoadMoreListener, ListItemRecyclerViewAdapter.OnItemClickListener {
 
-    public static final String ARG_SECTION_ID = "section-id";
+//    public static final String ARG_SECTION_ID = "section-id";
+    public static final String ARG_SECTION = "section";
 
     private BackgroundTask mTaskToLoadData;
     private BackgroundTask mTaskToLoadMoreData;
 
-    public static ArticleListFragment newInstance(long sectionId) {
+//    public static ArticleListFragment newInstance(long sectionId) {
+//        Bundle bundle = new Bundle();
+//        bundle.putLong(ARG_SECTION_ID, sectionId);
+//
+//        ArticleListFragment articleListFragment = new ArticleListFragment();
+//        articleListFragment.setArguments(bundle);
+//        return articleListFragment;
+//    }
+
+    public static ArticleListFragment newInstance(Section section) {
         Bundle bundle = new Bundle();
-        bundle.putLong(ARG_SECTION_ID, sectionId);
+        bundle.putSerializable(ARG_SECTION, section);
 
         ArticleListFragment articleListFragment = new ArticleListFragment();
         articleListFragment.setArguments(bundle);
@@ -50,9 +59,10 @@ public class ArticleListFragment extends BaseListFragment implements ArticleList
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        if (getArguments() != null && getArguments().containsKey(ARG_SECTION_ID)) {
-            mPresenter.initPage(getArguments().getLong(ARG_SECTION_ID));
+        if (getArguments() != null && getArguments().containsKey(ARG_SECTION)) {
+            mPresenter.initPage((Section) getArguments().getSerializable(ARG_SECTION));
+//        } else if (getArguments() != null && getArguments().containsKey(ARG_SECTION_ID)) {
+//            mPresenter.initPage(getArguments().getLong(ARG_SECTION_ID));
         } else {
             // TODO: Throw Exception or close activity???
         }
@@ -67,9 +77,9 @@ public class ArticleListFragment extends BaseListFragment implements ArticleList
     }
 
     @Override
-    public void setUpList(List<ListItem> items) {
-        ArticleListAdapter articleListAdapter = new ArticleListAdapter(items, this);
-        initList(articleListAdapter, this);
+    public void setUpList(List<ListItem> items, String title, String description) {
+        SectionInfoAdapter sectionInfoAdapter = new SectionInfoAdapter(items, this, title, description);
+        initList(sectionInfoAdapter, this);
     }
 
     @Override
@@ -168,7 +178,7 @@ public class ArticleListFragment extends BaseListFragment implements ArticleList
 
     @Override
     public void openArticleActivity(Article article) {
-        startActivity(KayakoArticleActivity.getIntent(getContext(),article));
+        startActivity(KayakoArticleActivity.getIntent(getContext(), article));
     }
 
 

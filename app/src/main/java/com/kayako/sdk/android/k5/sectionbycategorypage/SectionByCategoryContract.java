@@ -35,7 +35,7 @@ public interface SectionByCategoryContract {
 
         void startBackgroundTask();
 
-        void openArticleListingPage(long sectionId);
+        void openArticleListingPage(Section section);
 
         void openSearchPage();
     }

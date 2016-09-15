@@ -34,7 +34,6 @@ public class SectionByCategoryRepository implements SectionByCategoryContract.Da
     public Map<Category, List<Section>> getSectionsByCategory(List<Category> categories, boolean forceNetwork) {
         if (mSectionsByCategory != null && !forceNetwork) {
             return mSectionsByCategory;
-
         } else {
             mSectionsByCategory = new HashMap<>();
             for (Category category : categories) {

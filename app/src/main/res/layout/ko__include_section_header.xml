@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/ko__section_background_colour"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/ko__section_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        tools:text="Getting Started with the All New Kayako" />
+
+    <TextView
+        android:id="@+id/ko__section_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:scrollHorizontally="true"
+        android:textColor="@color/ko__light_gray_text_color"
+        android:textSize="14sp"
+        tools:text="If you’re new to Kayako, this is the place to be. Let’s go up and keep you running. That’s right… This message is long." />
+
+
+</LinearLayout>
