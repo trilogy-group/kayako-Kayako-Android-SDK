@@ -15,7 +15,9 @@ import java.util.List;
 public interface ArticleListContract {
 
     interface Data extends BaseData {
-        List<Article> getArticles(long sectionId, int offset, int limit);
+        List<Article> getArticles(long sectionId, int offset, int limit, boolean useCache);
+
+        boolean isCached(long sectionId);
     }
 
     interface View extends BaseView {

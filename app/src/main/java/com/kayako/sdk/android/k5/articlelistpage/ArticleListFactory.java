@@ -7,8 +7,15 @@ import java.util.Locale;
  */
 public class ArticleListFactory {
 
+    private static ArticleListContract.Presenter mPresenter;
+
     public static ArticleListContract.Presenter getPresenter(ArticleListContract.View view) {
-        return new ArticleListPresenter(view);
+        if (mPresenter == null) {
+            return mPresenter = new ArticleListPresenter(view);
+        } else {
+            mPresenter.setView(view);
+            return mPresenter;
+        }
     }
 
     public static ArticleListContract.Data getDataSource(String helpCenterUrl, Locale locale) {

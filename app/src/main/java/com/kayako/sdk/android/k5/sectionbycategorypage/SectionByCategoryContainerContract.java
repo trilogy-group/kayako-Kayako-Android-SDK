@@ -15,6 +15,8 @@ public interface SectionByCategoryContainerContract {
 
     interface Data extends BaseData {
         List<Locale> getPublicLocales(boolean useCache);
+
+        boolean isCached();
     }
 
     interface View extends BaseView {
