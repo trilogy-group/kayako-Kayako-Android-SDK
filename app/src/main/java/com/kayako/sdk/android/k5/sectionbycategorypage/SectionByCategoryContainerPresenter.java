@@ -31,7 +31,7 @@ public class SectionByCategoryContainerPresenter implements SectionByCategoryCon
     @Override
     public boolean loadDataInBackground() {
         try {
-            List<com.kayako.sdk.helpcenter.locale.Locale> localeList = mData.getPublicLocales();
+            List<com.kayako.sdk.helpcenter.locale.Locale> localeList = mData.getPublicLocales(true);
             mSpinnerItems = convertToSpinnerItems(localeList);
             return true;
         } catch (Exception e) {

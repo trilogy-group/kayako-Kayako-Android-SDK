@@ -14,7 +14,7 @@ import java.util.List;
 public interface SectionByCategoryContainerContract {
 
     interface Data extends BaseData {
-        List<Locale> getPublicLocales();
+        List<Locale> getPublicLocales(boolean useCache);
     }
 
     interface View extends BaseView {
