@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/ko__action_search"
+        android:icon="@drawable/ko__ic_search"
+        app:showAsAction="always"
+        android:title="@string/ko__action_search" />
+
+    <item
+        android:id="@+id/ko__action_contact"
+        android:icon="@drawable/ko__ic_contact"
+        app:showAsAction="always"
+        android:title="@string/ko__action_contact" />
+</menu>
