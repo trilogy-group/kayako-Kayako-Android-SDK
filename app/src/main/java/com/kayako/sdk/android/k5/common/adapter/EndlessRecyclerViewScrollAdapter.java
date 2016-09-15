@@ -19,7 +19,7 @@ public abstract class EndlessRecyclerViewScrollAdapter<T extends LoadingItem> ex
 
     private static final int STATE_LOAD_MORE = -10;
 
-    private List<T> mValues;
+    protected List<T> mValues;
     private T mProgressItem = getLoadingFooterItem();
     private boolean mHasMoreItems = false;
 

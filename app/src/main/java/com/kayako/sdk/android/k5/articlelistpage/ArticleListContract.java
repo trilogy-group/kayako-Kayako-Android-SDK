@@ -5,6 +5,7 @@ import com.kayako.sdk.android.k5.common.mvp.BaseData;
 import com.kayako.sdk.android.k5.common.mvp.BasePresenter;
 import com.kayako.sdk.android.k5.common.mvp.BaseView;
 import com.kayako.sdk.helpcenter.articles.Article;
+import com.kayako.sdk.helpcenter.section.Section;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public interface ArticleListContract {
 
     interface View extends BaseView {
 
-        void setUpList(List<ListItem> items);
+        void setUpList(List<ListItem> items, String title, String description);
 
         void showOnlyListView();
 
@@ -47,6 +48,8 @@ public interface ArticleListContract {
     interface Presenter extends BasePresenter<ArticleListContract.View> {
 
         void initPage(long sectionId);
+
+        void initPage(Section section);
 
         boolean fetchDataInBackground();
 

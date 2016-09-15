@@ -41,7 +41,7 @@ public class HelpCenterPref {
 
     public String getHelpCenterUrl() {
         // TODO: Testing
-        return "https://support.kayakostage.net";
+        return "https://support.kayako.com";
 //        return mPrefs.getString(KEY_HELP_CENTER_URL, null);
         // TODO: Retrieve default help center url from, say, Android Manifest meta tag?
     }

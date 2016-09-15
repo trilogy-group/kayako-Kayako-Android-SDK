@@ -9,10 +9,12 @@ import android.view.View;
 
 import com.kayako.sdk.android.k5.common.adapter.ListItemRecyclerViewAdapter;
 import com.kayako.sdk.android.k5.common.data.ListItem;
+import com.kayako.sdk.android.k5.common.fragments.ActivityNavigationResourceCallback;
 import com.kayako.sdk.android.k5.common.fragments.BaseListFragment;
 import com.kayako.sdk.android.k5.common.task.BackgroundTask;
-import com.kayako.sdk.android.k5.common.fragments.ActivityNavigationCallback;
+import com.kayako.sdk.android.k5.common.fragments.ActivityNavigationIdCallback;
 import com.kayako.sdk.android.k5.activities.KayakoSearchArticleActivity;
+import com.kayako.sdk.helpcenter.section.Section;
 
 import java.util.List;
 
@@ -24,7 +26,7 @@ public class SectionByCategoryListFragment extends BaseListFragment implements S
     protected SectionByCategoryContract.Presenter mPresenter;
     protected BackgroundTask mBackgroundTask;
     protected ListItemRecyclerViewAdapter listItemRecyclerViewAdapter;
-    protected ActivityNavigationCallback mActivityNavigation;
+    protected ActivityNavigationResourceCallback mActivityNavigation;
 
     public static SectionByCategoryListFragment newInstance() {
         return new SectionByCategoryListFragment();
@@ -36,7 +38,7 @@ public class SectionByCategoryListFragment extends BaseListFragment implements S
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mActivityNavigation = ((ActivityNavigationCallback) getActivity());
+        mActivityNavigation = ((ActivityNavigationResourceCallback) getActivity());
     }
 
     @Override
@@ -73,8 +75,8 @@ public class SectionByCategoryListFragment extends BaseListFragment implements S
     }
 
     @Override
-    public void openArticleListingPage(long sectionId) {
-        mActivityNavigation.openNextPage(sectionId);
+    public void openArticleListingPage(Section section) {
+        mActivityNavigation.openNextPage(section);
     }
 
     @Override

@@ -40,7 +40,7 @@ public class SectionByCategoryPresenter implements SectionByCategoryContract.Pre
     public void onClickListItem(ListItem listItem) {
         Resource resource = listItem.getResource();
         if (resource instanceof Section) {
-            mSectionByCategoryView.openArticleListingPage(((Section) resource).getId());
+            mSectionByCategoryView.openArticleListingPage(((Section) resource));
         }
     }
 
