@@ -96,7 +96,7 @@ public class SectionByCategoryContainerFragment extends Fragment implements Adap
     @Override
     public void setToolbarSpinner(List<SpinnerItem> items) {
         Spinner spinner = (Spinner) mToolbar.findViewById(R.id.ko__toolbar_spinner);
-        spinner.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, items));
+        spinner.setAdapter(new ArrayAdapter<>(getContext(), R.layout.ko__spinner_item, items));
         spinner.setOnItemSelectedListener(this);
     }
 

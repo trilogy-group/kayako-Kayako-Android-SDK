@@ -22,7 +22,7 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <TextView
+        <com.kayako.sdk.android.k5.common.view.BoldTextView
             android:id="@+id/ko__article_author_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,12 +30,11 @@
             android:singleLine="true"
             android:textColor="@color/black"
             android:textSize="14sp"
-            android:textStyle="bold"
             tools:text="Neil Mathew" />
 
         <!-- TODO: Add support for ISO Times - dates -->
 
-        <TextView
+        <com.kayako.sdk.android.k5.common.view.RegularTextView
             android:id="@+id/ko__article_last_updated"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,7 +45,7 @@
             android:textColor="@color/ko__dark_gray_text_color"
             android:textSize="14sp" />
 
-        <TextView
+        <com.kayako.sdk.android.k5.common.view.RegularTextView
             android:id="@+id/ko__article_last_created"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
