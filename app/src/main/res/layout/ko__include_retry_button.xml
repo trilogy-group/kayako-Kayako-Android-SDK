@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Button xmlns:android="http://schemas.android.com/apk/res/android"
+<com.kayako.sdk.android.k5.common.view.BoldButton xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ko__view_state_retry_button"
     style="@style/Ko__ButtonStyle"
     android:layout_width="match_parent"

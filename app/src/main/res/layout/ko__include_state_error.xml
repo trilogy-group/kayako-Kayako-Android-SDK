@@ -24,7 +24,7 @@
             android:scaleType="centerInside"
             android:src="@drawable/catinbox" />
 
-        <TextView
+        <com.kayako.sdk.android.k5.common.view.RegularTextView
             android:id="@+id/ko__error_state_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,11 +32,10 @@
             android:gravity="center"
             android:text="@string/ko__label_error_view_title"
             android:textColor="@color/ko__light_gray_text_color"
-
             android:textSize="32sp"
             tools:text="Whoops!" />
 
-        <TextView
+        <com.kayako.sdk.android.k5.common.view.LightTextView
             android:id="@+id/ko__error_state_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:gravity="center_vertical">
 
-        <EditText
+        <com.kayako.sdk.android.k5.common.view.RegularEditText
             android:id="@+id/search_edittext"
             android:layout_width="0dp"
             android:layout_height="match_parent"

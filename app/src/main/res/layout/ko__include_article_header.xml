@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -8,8 +7,9 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <!-- TODO Horizontal ScrollView -->
 
-    <TextView
+    <com.kayako.sdk.android.k5.common.view.RegularTextView
         android:id="@+id/ko__article_directory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,14 +18,13 @@
         android:textSize="14sp"
         tools:text="Getting Started > Zapier Integration" />
 
-    <TextView
+    <com.kayako.sdk.android.k5.common.view.BoldTextView
         android:id="@+id/ko__article_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:textColor="@color/black"
-        android:textSize="18sp"
-        android:textStyle="bold"
+        android:textSize="20sp"
         tools:text="How do I use Zapier to make something do something else?" />
 
 </LinearLayout>
