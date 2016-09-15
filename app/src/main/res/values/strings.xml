@@ -13,4 +13,6 @@
     <string name="ko__label_error_view_network_description">Unable to connect to server. Please check your network connection. </string>
     <string name="ko__msg_unable_to_load_more_items">Something went wrong. Unable to load more items.</string>
     <string name="ko__helpcenter_title">Help</string>
+    <string name="ko__action_contact">Contact</string>
+    <string name="ko__action_search">Search</string>
 </resources>
