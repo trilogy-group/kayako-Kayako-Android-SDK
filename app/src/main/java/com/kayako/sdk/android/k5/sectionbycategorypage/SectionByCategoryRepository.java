@@ -23,16 +23,16 @@ public class SectionByCategoryRepository implements SectionByCategoryContract.Da
         mHelpCenter = new HelpCenter(helpCenterUrl, locale);
     }
 
-    public List<Category> getCategories(boolean forceNetwork) {
-        if (mCategories != null && !forceNetwork) {
+    public List<Category> getCategories(boolean useCache) {
+        if (useCache && mCategories != null && mCategories.size() != 0) {
             return mCategories;
         } else {
             return mCategories = mHelpCenter.getCategories(0, 999); // hack to load all categories
         }
     }
 
-    public Map<Category, List<Section>> getSectionsByCategory(List<Category> categories, boolean forceNetwork) {
-        if (mSectionsByCategory != null && !forceNetwork) {
+    public Map<Category, List<Section>> getSectionsByCategory(List<Category> categories, boolean useCache) {
+        if (useCache && mSectionsByCategory != null && mSectionsByCategory.size() != 0) { // Also check size - since hashmap is instantiated before the network call can fail
             return mSectionsByCategory;
         } else {
             mSectionsByCategory = new HashMap<>();

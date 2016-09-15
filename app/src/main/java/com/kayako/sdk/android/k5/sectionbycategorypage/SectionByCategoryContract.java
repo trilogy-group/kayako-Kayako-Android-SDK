@@ -16,9 +16,9 @@ import java.util.Map;
 public interface SectionByCategoryContract {
 
     interface Data extends BaseData {
-        List<Category> getCategories(boolean forceNetwork);
+        List<Category> getCategories(boolean useCacheIfAvailable);
 
-        Map<Category, List<Section>> getSectionsByCategory(List<Category> categories, boolean forceNetwork);
+        Map<Category, List<Section>> getSectionsByCategory(List<Category> categories, boolean useCacheIfAvailable);
     }
 
     interface View extends BaseView {

@@ -61,8 +61,8 @@ public class SectionByCategoryPresenter implements SectionByCategoryContract.Pre
             // TODO: Throw Exception in JAR. If it fails to load, do not return null - Shows empty view when it shouldn't
             // TODO: Strangely, if there's an error on the first call, there's a null returned on the second call - CHECK WHY?
             // TODO: Test empty
-            List<Category> categories = mSectionByCategoryData.getCategories(false);
-            Map<Category, List<Section>> sectionsByCategory = mSectionByCategoryData.getSectionsByCategory(categories, false);
+            List<Category> categories = mSectionByCategoryData.getCategories(true);
+            Map<Category, List<Section>> sectionsByCategory = mSectionByCategoryData.getSectionsByCategory(categories, true);
             mListItems = setUpList(categories, sectionsByCategory);
             return true;
         } catch (Exception e) {

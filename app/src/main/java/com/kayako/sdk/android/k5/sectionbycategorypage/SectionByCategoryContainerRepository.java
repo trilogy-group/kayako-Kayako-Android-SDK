@@ -1,14 +1,10 @@
 package com.kayako.sdk.android.k5.sectionbycategorypage;
 
 import com.kayako.sdk.helpcenter.HelpCenter;
-import com.kayako.sdk.helpcenter.category.Category;
-import com.kayako.sdk.helpcenter.section.Section;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
@@ -26,13 +22,17 @@ public class SectionByCategoryContainerRepository implements SectionByCategoryCo
     // TODO: Force Refresh? Caching?
 
     @Override
-    public List<com.kayako.sdk.helpcenter.locale.Locale> getPublicLocales() {
-        List<com.kayako.sdk.helpcenter.locale.Locale> locales = mHelpCenter.getLocales();
-        if (locales == null || locales.size() == 0) {
-            return locales;
+    public List<com.kayako.sdk.helpcenter.locale.Locale> getPublicLocales(boolean useCacheIfAvailable) {
+
+        if (!useCacheIfAvailable || mLocales == null) {
+            mLocales = mHelpCenter.getLocales();
+        }
+
+        if (mLocales == null || mLocales.size() == 0) {
+            return mLocales;
         } else {
             List<com.kayako.sdk.helpcenter.locale.Locale> publicLocales = new ArrayList<>();
-            for (com.kayako.sdk.helpcenter.locale.Locale locale : locales) {
+            for (com.kayako.sdk.helpcenter.locale.Locale locale : mLocales) {
                 if (locale.isPublic()) {
                     publicLocales.add(locale);
                 }
