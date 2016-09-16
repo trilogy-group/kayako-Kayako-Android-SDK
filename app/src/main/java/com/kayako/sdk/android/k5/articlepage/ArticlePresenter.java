@@ -25,8 +25,8 @@ public class ArticlePresenter implements ArticleContract.Presenter {
         mView.setArticleTitle(article.getTitle());
         mView.setArticleDirectoryPath(String.format("%s > %s", category.getTitle(), section.getTitle()));
         mView.setArticleContent(article.getContents());
-        mView.setArticleLastUpdated(String.format("Updated %s",mView.formatTime(article.getLastUpdated())));
-        mView.setArticleLastPosted(String.format("Posted %s",mView.formatTime(article.getLastPosted())));
+        mView.setArticleLastUpdated(String.format("Updated %s", mView.formatTime(article.getLastUpdated())));
+        mView.setArticleLastPosted(String.format("Posted %s", mView.formatTime(article.getLastPosted())));
         showOnlyLoading();
     }
 
@@ -34,6 +34,11 @@ public class ArticlePresenter implements ArticleContract.Presenter {
     public void onContentLoaded() {
         mView.hideContentScrollbarsWhileAllowingScroll();
         showOnlyArticleContent();
+    }
+
+    @Override
+    public void onClickLinkInArticle(String url) {
+        mView.openUrlIntent(url);
     }
 
     @Override

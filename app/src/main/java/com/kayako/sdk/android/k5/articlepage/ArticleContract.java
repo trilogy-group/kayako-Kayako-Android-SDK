@@ -37,6 +37,8 @@ public interface ArticleContract {
 
         void hideContentScrollbarsWhileAllowingScroll();
 
+        void openUrlIntent(String url);
+
     }
 
     interface Presenter extends BasePresenter<ArticleContract.View> {
@@ -44,5 +46,7 @@ public interface ArticleContract {
         void initPage(Article article);
 
         void onContentLoaded();
+
+        void onClickLinkInArticle(String url);
     }
 }
