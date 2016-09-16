@@ -7,11 +7,11 @@ import com.kayako.sdk.helpcenter.section.Section;
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
-public class ArticlePresenter implements ArticlePageContract.Presenter {
+public class ArticlePresenter implements ArticleContract.Presenter {
 
-    private ArticlePageContract.View mView;
+    private ArticleContract.View mView;
 
-    public ArticlePresenter(ArticlePageContract.View view) {
+    public ArticlePresenter(ArticleContract.View view) {
         mView = view;
     }
 
@@ -35,7 +35,7 @@ public class ArticlePresenter implements ArticlePageContract.Presenter {
     }
 
     @Override
-    public void setView(ArticlePageContract.View view) {
+    public void setView(ArticleContract.View view) {
         mView = view;
     }
 

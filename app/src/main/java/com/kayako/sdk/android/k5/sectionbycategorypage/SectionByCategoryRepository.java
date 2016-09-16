@@ -24,7 +24,7 @@ public class SectionByCategoryRepository implements SectionByCategoryContract.Da
     }
 
     public List<Category> getCategories(boolean useCache) {
-        if (useCache && mCategories != null && mCategories.size() != 0) {
+        if (useCache && mCategories != null && mCategories.size() > 0) {
             return mCategories;
         } else {
             return mCategories = mHelpCenter.getCategories(0, 999); // hack to load all categories

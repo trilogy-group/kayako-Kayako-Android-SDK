@@ -3,7 +3,6 @@ package com.kayako.sdk.android.k5.articlelistpage;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,12 +15,13 @@ import android.view.ViewGroup;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.activities.KayakoSearchArticleActivity;
+import com.kayako.sdk.android.k5.common.fragments.BaseContainerFragment;
 import com.kayako.sdk.helpcenter.section.Section;
 
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
-public class ArticleListContainerFragment extends Fragment implements ArticleListContainerContract.View {
+public class ArticleListContainerFragment extends BaseContainerFragment implements ArticleListContainerContract.View {
 
     private static final String ARG_RESOURCE = "resource";
 
@@ -41,7 +41,6 @@ public class ArticleListContainerFragment extends Fragment implements ArticleLis
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
         setRetainInstance(true);
         mPresenter = ArticleListContainerFactory.getPresenter(this);
     }
@@ -55,16 +54,9 @@ public class ArticleListContainerFragment extends Fragment implements ArticleLis
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
         Section section = (Section) getArguments().getSerializable(ARG_RESOURCE);
         ArticleListFragment articleListFragment = ArticleListFragment.newInstance(section);
         getChildFragmentManager().beginTransaction().replace(R.id.container, articleListFragment).commit();
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
     }
 
     private void setUpToolbar() {
@@ -78,34 +70,32 @@ public class ArticleListContainerFragment extends Fragment implements ArticleLis
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.ko__menu_default, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                getActivity().onBackPressed();
-                return true;
-
-            case R.id.ko__action_search:
+        super.onCreateOptionsMenu(menu, inflater);
+        showSearchIcon();
+        showContactIcon();
+        setContactClickListener(new OnMenuClickListener() {
+            @Override
+            public void OnMenuClick(MenuItem menuItem) {
                 mPresenter.clickSearchAction();
-                return true;
+            }
+        });
 
-            case R.id.ko__action_contact:
+        setSearchIconClickListener(new OnMenuClickListener() {
+            @Override
+            public void OnMenuClick(MenuItem menuItem) {
                 mPresenter.clickContactPage();
-                return true;
-        }
-        return false;
+            }
+        });
+        refreshOptionsMenu();
     }
 
     @Override
     public void openSearchPage() {
-        startActivity(new Intent(getContext(), KayakoSearchArticleActivity.class));
+        super.openSearchPage();
     }
 
     @Override
     public void openContactPage() {
-        // TODO: Open Email or callback specified by Developer
+        super.openContactPage();
     }
 }

@@ -8,6 +8,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.data.SpinnerItem;
+import com.kayako.sdk.android.k5.common.fragments.BaseContainerFragment;
 import com.kayako.sdk.android.k5.common.task.BackgroundTask;
 
 import java.util.List;
@@ -25,7 +28,7 @@ import java.util.List;
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
-public class SectionByCategoryContainerFragment extends Fragment implements AdapterView.OnItemSelectedListener, SectionByCategoryContainerContract.View {
+public class SectionByCategoryContainerFragment extends BaseContainerFragment implements AdapterView.OnItemSelectedListener, SectionByCategoryContainerContract.View {
 
     private View mRoot;
     private Toolbar mToolbar;
@@ -40,7 +43,6 @@ public class SectionByCategoryContainerFragment extends Fragment implements Adap
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
         setRetainInstance(true);
         mPresenter = SectionByCategoryContainerFactory.getPresenter(this);
     }
@@ -66,22 +68,25 @@ public class SectionByCategoryContainerFragment extends Fragment implements Adap
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        showContactIcon();
+        setContactClickListener(new OnMenuClickListener() {
+            @Override
+            public void OnMenuClick(MenuItem menuItem) {
+                mPresenter.onClickContact();
+            }
+        });
+        refreshOptionsMenu();
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         if (mBackgroundTask != null) {
             mBackgroundTask.cancelTask();
             mBackgroundTask = null;
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                getActivity().onBackPressed();
-                return true;
-        }
-        return false;
     }
 
     @Override
@@ -146,6 +151,11 @@ public class SectionByCategoryContainerFragment extends Fragment implements Adap
                 mPresenter.onDataLoaded(isSuccessful);
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    @Override
+    public void openContactPage() {
+        super.openContactPage();
     }
 
     private void setUpToolbar() {
