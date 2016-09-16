@@ -9,14 +9,21 @@
 
     <!-- TODO Horizontal ScrollView -->
 
-    <com.kayako.sdk.android.k5.common.view.RegularTextView
-        android:id="@+id/ko__article_directory"
+    <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollHorizontally="true"
-        android:singleLine="true"
-        android:textSize="14sp"
-        tools:text="Getting Started > Zapier Integration" />
+        android:scrollbars="none">
+
+        <com.kayako.sdk.android.k5.common.view.RegularTextView
+            android:id="@+id/ko__article_directory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:textSize="14sp"
+            tools:text="Getting Started > Zapier Integration" />
+
+    </HorizontalScrollView>
 
     <com.kayako.sdk.android.k5.common.view.BoldTextView
         android:id="@+id/ko__article_title"
