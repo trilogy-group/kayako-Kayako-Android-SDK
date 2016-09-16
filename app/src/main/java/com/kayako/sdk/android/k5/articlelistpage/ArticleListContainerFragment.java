@@ -76,14 +76,13 @@ public class ArticleListContainerFragment extends BaseContainerFragment implemen
         setContactClickListener(new OnMenuClickListener() {
             @Override
             public void OnMenuClick(MenuItem menuItem) {
-                mPresenter.clickSearchAction();
+                mPresenter.clickContactPage();
             }
         });
-
         setSearchIconClickListener(new OnMenuClickListener() {
             @Override
             public void OnMenuClick(MenuItem menuItem) {
-                mPresenter.clickContactPage();
+                mPresenter.clickSearchAction();
             }
         });
         refreshOptionsMenu();
