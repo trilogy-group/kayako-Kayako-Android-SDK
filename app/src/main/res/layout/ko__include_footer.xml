@@ -6,9 +6,11 @@
     android:gravity="center_horizontal|center_vertical"
     android:orientation="vertical">
 
-    <ImageView
+    <com.kayako.sdk.android.k5.common.view.BoldTextView
         android:layout_width="match_parent"
-        android:layout_height="15dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/footer" />
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Powered by Kayako"
+        android:textSize="12sp" />
+
 </LinearLayout>
