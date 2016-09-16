@@ -1,5 +1,7 @@
 package com.kayako.sdk.android.k5.articlepage;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.format.DateUtils;
@@ -103,6 +105,19 @@ public class ArticleFragment extends BaseStateFragment implements ArticleContrac
                 super.onReceivedError(view, request, error);
                 // TODO Show Error Page?
             }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                String url = view.getUrl();
+                mPresenter.onClickLinkInArticle(url);
+                return true;
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                mPresenter.onClickLinkInArticle(url);
+                return true;
+            }
         });
     }
 
@@ -126,6 +141,13 @@ public class ArticleFragment extends BaseStateFragment implements ArticleContrac
         WebView articleContent = (WebView) mRoot.findViewById(R.id.ko__article_web_view);
         articleContent.setVerticalScrollBarEnabled(false);
         articleContent.setHorizontalScrollBarEnabled(false);
+    }
+
+    @Override
+    public void openUrlIntent(String url) {
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
     }
 
     @Override
