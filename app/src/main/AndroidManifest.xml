@@ -24,7 +24,7 @@
         <activity
             android:name=".activities.KayakoSearchArticleActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:theme="@style/Ko__SearchArticlePageTheme"
             android:windowSoftInputMode="adjustPan|stateVisible" />
 
