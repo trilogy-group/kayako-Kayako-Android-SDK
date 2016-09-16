@@ -7,7 +7,7 @@ import com.kayako.sdk.helpcenter.articles.Article;
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
-public interface ArticlePageContract {
+public interface ArticleContract {
 
     interface View extends BaseView {
 
@@ -33,7 +33,7 @@ public interface ArticlePageContract {
 
     }
 
-    interface Presenter extends BasePresenter<ArticlePageContract.View> {
+    interface Presenter extends BasePresenter<ArticleContract.View> {
 
         void initPage(Article article);
 

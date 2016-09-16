@@ -7,22 +7,28 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.kayako.sdk.android.k5.R;
+import com.kayako.sdk.android.k5.articlelistpage.ArticleListContainerFactory;
 import com.kayako.sdk.android.k5.articlelistpage.ArticleListFragment;
+import com.kayako.sdk.android.k5.common.fragments.BaseContainerFragment;
+import com.kayako.sdk.android.k5.searcharticlepage.SearchArticleContainerContract;
 import com.kayako.sdk.helpcenter.articles.Article;
 
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
-public class ArticleContainerFragment extends Fragment {
+public class ArticleContainerFragment extends BaseContainerFragment implements ArticleContainerContract.View {
 
     private static final String ARG_ARTICLE = "article";
     private View mRoot;
     private Toolbar mToolbar;
+    private ArticleContainerContract.Presenter mPresenter;
 
     public static Fragment newInstance(Article article) {
         Bundle bundle = new Bundle();
@@ -35,8 +41,8 @@ public class ArticleContainerFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
         setRetainInstance(true);
+        mPresenter = ArticleContainerFactory.getPresenter(this);
     }
 
     @Override
@@ -55,9 +61,36 @@ public class ArticleContainerFragment extends Fragment {
         getChildFragmentManager().beginTransaction().replace(R.id.container, articleFragment).commit();
     }
 
+
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        showSearchIcon();
+        showContactIcon();
+        setContactClickListener(new OnMenuClickListener() {
+            @Override
+            public void OnMenuClick(MenuItem menuItem) {
+                mPresenter.onClickContact();
+            }
+        });
+
+        setSearchIconClickListener(new OnMenuClickListener() {
+            @Override
+            public void OnMenuClick(MenuItem menuItem) {
+                mPresenter.onClickSearch();
+            }
+        });
+        refreshOptionsMenu();
+    }
+
+    @Override
+    public void openSearchActivity() {
+        super.openSearchPage();
+    }
+
+    @Override
+    public void openContactActivity() {
+        super.openContactPage();
     }
 
     private void setUpToolbar(String title) {
@@ -67,15 +100,5 @@ public class ArticleContainerFragment extends Fragment {
         mActionBar.setHomeButtonEnabled(true);
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setTitle(null);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                getActivity().onBackPressed();
-                return true;
-        }
-        return false;
     }
 }

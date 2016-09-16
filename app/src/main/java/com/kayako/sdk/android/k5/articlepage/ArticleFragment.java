@@ -22,11 +22,11 @@ import com.kayako.sdk.helpcenter.articles.Article;
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
-public class ArticleFragment extends BaseStateFragment implements ArticlePageContract.View {
+public class ArticleFragment extends BaseStateFragment implements ArticleContract.View {
 
     public static final String ARG_ARTICLE = "article";
     private View mRoot;
-    private ArticlePageContract.Presenter mPresenter;
+    private ArticleContract.Presenter mPresenter;
 
     public static ArticleFragment newInstance(Article article) {
         Bundle bundle = new Bundle();

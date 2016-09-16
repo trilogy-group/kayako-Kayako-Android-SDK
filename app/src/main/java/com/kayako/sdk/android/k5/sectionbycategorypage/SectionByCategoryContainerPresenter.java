@@ -71,6 +71,11 @@ public class SectionByCategoryContainerPresenter implements SectionByCategoryCon
     }
 
     @Override
+    public void onClickContact() {
+        mView.openContactPage();
+    }
+
+    @Override
     public void setView(SectionByCategoryContainerContract.View view) {
         mView = view;
     }
