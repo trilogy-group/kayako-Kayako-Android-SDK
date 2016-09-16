@@ -21,6 +21,12 @@ public interface ArticleContract {
 
         void setArticleContent(String htmlContent);
 
+        void setArticleLastUpdated(String lastUpdated);
+
+        void setArticleLastPosted(String lastPosted);
+
+        String formatTime(long timeInMilliseconds);
+
         void showArticleContent();
 
         void hideArticleContent();

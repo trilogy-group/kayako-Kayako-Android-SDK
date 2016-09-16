@@ -2,6 +2,7 @@ package com.kayako.sdk.android.k5.articlepage;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,6 +106,20 @@ public class ArticleFragment extends BaseStateFragment implements ArticleContrac
         });
     }
 
+    @Override
+    public void setArticleLastUpdated(String lastUpdated) {
+        ((TextView) mRoot.findViewById(R.id.ko__article_last_updated)).setText(lastUpdated);
+    }
+
+    @Override
+    public void setArticleLastPosted(String lastPosted) {
+        ((TextView) mRoot.findViewById(R.id.ko__article_last_created)).setText(lastPosted);
+    }
+
+    @Override
+    public String formatTime(long timeInMilliseconds) {
+        return DateUtils.getRelativeTimeSpanString(timeInMilliseconds, System.currentTimeMillis(), DateUtils.DAY_IN_MILLIS).toString();
+    }
 
     @Override
     public void hideContentScrollbarsWhileAllowingScroll() {
