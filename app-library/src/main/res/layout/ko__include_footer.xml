@@ -10,5 +10,5 @@
         android:layout_width="match_parent"
         android:layout_height="15dp"
         android:scaleType="centerInside"
-        android:src="@drawable/footer" />
+        android:src="@drawable/ko__footer" />
 </LinearLayout>

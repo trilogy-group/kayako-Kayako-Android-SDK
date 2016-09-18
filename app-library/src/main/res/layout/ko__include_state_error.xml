@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="160dp"
             android:scaleType="centerInside"
-            android:src="@drawable/catinbox" />
+            android:src="@drawable/ko__cat_in_box" />
 
         <com.kayako.sdk.android.k5.common.view.RegularTextView
             android:id="@+id/ko__error_state_title"

@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:scaleType="centerInside"
-        android:src="@drawable/emptybusstop" />
+        android:src="@drawable/ko__empty_bus_stop" />
 
     <com.kayako.sdk.android.k5.common.view.RegularTextView
         android:id="@+id/ko__empty_state_title"
