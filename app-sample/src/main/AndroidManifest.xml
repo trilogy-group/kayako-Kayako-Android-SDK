@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.kayako.sample">
+
+    <application
+        android:name=".MyApplication"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Add the following lines to use the SDK -->
+        <activity
+            android:name="com.kayako.sdk.android.k5.activities.KayakoHelpCenterActivity"
+            android:theme="@style/HelpCenterTheme" />
+
+        <activity
+            android:name="com.kayako.sdk.android.k5.activities.KayakoSearchArticleActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/Ko__SearchArticlePageTheme"
+            android:windowSoftInputMode="adjustPan|stateVisible" />
+
+        <activity
+            android:name="com.kayako.sdk.android.k5.activities.KayakoArticleActivity"
+            android:theme="@style/HelpCenterTheme" />
+
+    </application>
+
+</manifest>
