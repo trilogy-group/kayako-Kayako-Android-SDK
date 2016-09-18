@@ -4,7 +4,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.kayako.sdk.android.k5.R;
@@ -73,7 +72,7 @@ public class SearchSectionAdapter extends ListItemRecyclerViewAdapter {
             super(view);
             mView = view;
             mItem = null;
-            searchEditText = (TextView) view.findViewById(R.id.ko__search_edittext);
+            searchEditText = (TextView) view.findViewById(R.id.ko__search_bar);
         }
     }
 

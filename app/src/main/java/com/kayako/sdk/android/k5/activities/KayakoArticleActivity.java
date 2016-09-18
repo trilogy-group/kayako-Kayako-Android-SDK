@@ -28,6 +28,6 @@ public class KayakoArticleActivity extends AppCompatActivity {
         setContentView(R.layout.ko__activity_article);
 
         Article article = (Article) getIntent().getExtras().getSerializable(ARG_ARTICLE);
-        getSupportFragmentManager().beginTransaction().replace(R.id.container_article, ArticleContainerFragment.newInstance(article)).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.ko__container_article, ArticleContainerFragment.newInstance(article)).commit();
     }
 }

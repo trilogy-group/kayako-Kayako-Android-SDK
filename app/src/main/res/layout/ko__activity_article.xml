@@ -5,7 +5,7 @@
     android:fitsSystemWindows="true">
 
     <LinearLayout
-        android:id="@+id/container_article"
+        android:id="@+id/ko__container_article"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" />
