@@ -58,7 +58,7 @@ public class SectionByCategoryContainerFragment extends BaseContainerFragment im
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         SectionByCategoryListFragment sectionByCategoryListFragment = SectionByCategoryListFragment.newInstance();
-        getChildFragmentManager().beginTransaction().replace(R.id.container, sectionByCategoryListFragment).commit();
+        getChildFragmentManager().beginTransaction().replace(R.id.ko__container, sectionByCategoryListFragment).commit();
     }
 
     @Override
@@ -135,7 +135,7 @@ public class SectionByCategoryContainerFragment extends BaseContainerFragment im
     @Override
     public void reloadSectionsByCategory() {
         SectionByCategoryListFragment sectionByCategoryListFragment = SectionByCategoryListFragment.newInstance();
-        getChildFragmentManager().beginTransaction().replace(R.id.container, sectionByCategoryListFragment).commitAllowingStateLoss();
+        getChildFragmentManager().beginTransaction().replace(R.id.ko__container, sectionByCategoryListFragment).commitAllowingStateLoss();
     }
 
     @Override

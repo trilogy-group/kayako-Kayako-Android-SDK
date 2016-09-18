@@ -14,10 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kayako.sdk.android.k5.R;
-import com.kayako.sdk.android.k5.articlelistpage.ArticleListContainerFactory;
-import com.kayako.sdk.android.k5.articlelistpage.ArticleListFragment;
 import com.kayako.sdk.android.k5.common.fragments.BaseContainerFragment;
-import com.kayako.sdk.android.k5.searcharticlepage.SearchArticleContainerContract;
 import com.kayako.sdk.helpcenter.articles.Article;
 
 /**
@@ -58,7 +55,7 @@ public class ArticleContainerFragment extends BaseContainerFragment implements A
         super.onViewCreated(view, savedInstanceState);
         Article article = (Article) getArguments().getSerializable(ARG_ARTICLE);
         ArticleFragment articleFragment = ArticleFragment.newInstance(article);
-        getChildFragmentManager().beginTransaction().replace(R.id.container, articleFragment).commit();
+        getChildFragmentManager().beginTransaction().replace(R.id.ko__container, articleFragment).commit();
     }
 
 

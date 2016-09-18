@@ -1,6 +1,5 @@
 package com.kayako.sdk.android.k5.articlelistpage;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -14,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kayako.sdk.android.k5.R;
-import com.kayako.sdk.android.k5.activities.KayakoSearchArticleActivity;
 import com.kayako.sdk.android.k5.common.fragments.BaseContainerFragment;
 import com.kayako.sdk.helpcenter.section.Section;
 
@@ -56,7 +54,7 @@ public class ArticleListContainerFragment extends BaseContainerFragment implemen
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         Section section = (Section) getArguments().getSerializable(ARG_RESOURCE);
         ArticleListFragment articleListFragment = ArticleListFragment.newInstance(section);
-        getChildFragmentManager().beginTransaction().replace(R.id.container, articleListFragment).commit();
+        getChildFragmentManager().beginTransaction().replace(R.id.ko__container, articleListFragment).commit();
     }
 
     private void setUpToolbar() {

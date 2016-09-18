@@ -27,7 +27,6 @@ import com.kayako.sdk.android.k5.common.utils.ViewUtils;
 public class SearchArticleContainerFragment extends Fragment implements SearchArticleContainerContract.View {
 
     private View mRoot;
-    private Toolbar mToolbar;
     private EditText mSearchEditText;
     private SearchArticleFragment mSearchArticleResult;
     private SearchArticleContainerContract.Presenter mPresenter;
@@ -47,7 +46,7 @@ public class SearchArticleContainerFragment extends Fragment implements SearchAr
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mRoot = inflater.inflate(R.layout.ko__fragment_search, null);
-        mSearchArticleResult = (SearchArticleFragment) getChildFragmentManager().findFragmentById(R.id.container_search_results);
+        mSearchArticleResult = (SearchArticleFragment) getChildFragmentManager().findFragmentById(R.id.ko__container_search_results);
         setUpToolbar();
         return mRoot;
     }
@@ -63,14 +62,14 @@ public class SearchArticleContainerFragment extends Fragment implements SearchAr
     }
 
     private void setUpToolbar() {
-        mToolbar = (Toolbar) mRoot.findViewById(R.id.ko__search_toolbar);
+        Toolbar mToolbar = (Toolbar) mRoot.findViewById(R.id.ko__search_toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
         ActionBar mActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         mActionBar.setHomeButtonEnabled(true);
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setTitle(null);
 
-        mSearchEditText = (EditText) mToolbar.findViewById(R.id.search_edittext);
+        mSearchEditText = (EditText) mToolbar.findViewById(R.id.ko__toolbar_search_edittext);
         mSearchEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
