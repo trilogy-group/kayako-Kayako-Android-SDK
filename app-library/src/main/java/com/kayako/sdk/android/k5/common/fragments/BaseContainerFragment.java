@@ -59,11 +59,12 @@ public abstract class BaseContainerFragment extends Fragment {
                 mClickSearchListener.OnMenuClick(item);
             }
             return true;
-        } else if (i == R.id.ko__action_contact) {
-            if (mClickContactListener != null) {
-                mClickContactListener.OnMenuClick(item);
-            }
-            return true;
+// TODO: Uncomment when messenger complete
+//        } else if (i == R.id.ko__action_contact) {
+//            if (mClickContactListener != null) {
+//                mClickContactListener.OnMenuClick(item);
+//            }
+//            return true;
         }
         return false;
     }
@@ -92,27 +93,29 @@ public abstract class BaseContainerFragment extends Fragment {
     }
 
     protected void showContactIcon() {
-        if (mMenu != null) {
-            MenuItem item = mMenu.findItem(R.id.ko__action_contact);
-            item.setVisible(showContact = true);
-        }
+// TODO: Uncomment when messenger complete
+//        if (mMenu != null) {
+//            MenuItem item = mMenu.findItem(R.id.ko__action_contact);
+//            item.setVisible(showContact = true);
+//        }
     }
 
     protected void hideContactIcon() {
-        if (mMenu != null) {
-            MenuItem item = mMenu.findItem(R.id.ko__action_contact);
-            item.setVisible(showContact = false);
-        }
+// TODO: Uncomment when messenger complete
+//        if (mMenu != null) {
+//            MenuItem item = mMenu.findItem(R.id.ko__action_contact);
+//            item.setVisible(showContact = false);
+//        }
+    }
+
+    protected void setContactClickListener(OnMenuClickListener listener) {
+        mClickContactListener = listener;
     }
 
     protected void refreshOptionsMenu() {
         if (getActivity() != null) {
             getActivity().invalidateOptionsMenu();
         }
-    }
-
-    protected void setContactClickListener(OnMenuClickListener listener) {
-        mClickContactListener = listener;
     }
 
     protected void openSearchPage() {
