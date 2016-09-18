@@ -8,9 +8,9 @@
         app:showAsAction="always"
         android:title="@string/ko__action_search" />
 
-    <item
-        android:id="@+id/ko__action_contact"
-        android:icon="@drawable/ko__ic_contact"
-        app:showAsAction="always"
-        android:title="@string/ko__action_contact" />
+    <!--<item-->
+        <!--android:id="@+id/ko__action_contact"-->
+        <!--android:icon="@drawable/ko__ic_contact"-->
+        <!--app:showAsAction="always"-->
+        <!--android:title="@string/ko__action_contact" />-->
 </menu>
