@@ -34,10 +34,6 @@ public class KayakoHC {
         return mInstance;
     }
 
-    public HelpCenterPref getPreferences() {
-        return HelpCenterPref.getInstance();
-    }
-
     public void openHelpCenter(Context context) {
         context.startActivity(new Intent(context, KayakoHelpCenterActivity.class));
     }

@@ -20,7 +20,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
 @RunWith(AndroidJUnit4.class)
-public class KayakoHCActivityTest {
+public class KayakoHelpCenterActivityTest {
 
     public static void checkIfArticleListingPageDisplayed() {
         onView(withId(R.id.ko__section_title)).check(matches(isDisplayed()));
