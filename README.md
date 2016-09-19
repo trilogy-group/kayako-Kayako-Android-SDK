@@ -4,7 +4,7 @@ This SDK wraps the Kayako Developer APIs and is provided as an Android Library p
 
 # Integration Guide
 
-## Version Requriemennts
+## Version Requirements
 
 |Property|Version No.|
 |---|---|
@@ -136,52 +136,40 @@ For example:
 
 ## String Customization 
 
-**strings.xml**
+You can override the following strings by overriding them in your *res/values/strings.xml* file. 
 
-```
-    <string name="ko__search_bar_how_can_we_help_you">How can we help you?</string>
-    <string name="ko__label_retry">Retry</string>
-    <string name="ko__label_search_hint">Search here...</string>
-    <string name="ko__action_ok">Ok</string>
-    <string name="ko__error_type_at_least_three_characters_to_search">Please type at least 3 characters to search!</string>
-    <string name="ko__label_empty_view_title">Whoops!</string>
-    <string name="ko__label_empty_view_description">Looks like there\'s nothing to show</string>
-    <string name="ko__label_error_view_title">Uh Oh.</string>
-    <string name="ko__label_error_view_description">Something went wrong on our side. Please try again later.</string>
-    <string name="ko__label_error_view_network_title">Uh Oh.</string>
-    <string name="ko__label_error_view_network_description">Unable to connect to server. Please check your network connection. </string>
-    <string name="ko__msg_unable_to_load_more_items">Something went wrong. Unable to load more items.</string>
-    <string name="ko__helpcenter_title">Help</string>
-    <string name="ko__action_contact">Contact</string>
-    <string name="ko__action_search">Search</string>
-```    
-
-|Id | Description |
-|---|---|
-|ko__search_bar_how_can_we_help_you|Title of Knowledge Base page|
-|ko__label_retry|Title of Navigate Articles page|
-|ko__title_search_articles|Title of Search Articles page|
-|ko__title_article|Title of Article Detail Page|
-|ko_label_welcome_message|Welcome message displayed in the Search Section in KnowledgeBase Page|
-|ko_info_search| Hint when long pressing search|
-|ko_info_was_this_article_helpful| Text asking for whether article was helpful|
-|ko_error_title_no_internet|Error Message informing no internet connection|
-|ko_error_desc_no_internet|Error Message Description informing user what steps to take next|
-|ko_error_title_empty|Error Message title of having no items in the list|
-|ko_error_desc_empty|Error Message description informing of actions steps|
-|ko_error_title_error|Error Message title informing when server error faced|
-|ko_error_desc_error|Error Message description when server error is faced|
-|ko_button_retry|Button label to retry request|
-|ko_button_login_facebook|Button label to login to facebook|
-|ko_button_login_twitter|Button label to login to twitter|
-|ko_button_login_kayako|Button label to login to kayako|
-|ko_button_sign_up|Button label to sign up|
-|ko_message_sign_in | Button label to sign in using Kayako Credentials|
+|Id |Description |Default Value|
+|---|---|---|
+|ko__title_above_search_bar|Title used above the search header on Help Center page|How can we help you?|
+|ko__title_help_center|Title on Help Center Toolbar if there are no public locales|Help|
+|ko__label_search_hint|Hint on the Search Toolbar|Search here...|
+|ko__label_retry|Label used for the Error Page button to reload page|Retry|
+|ko__label_empty_view_title| Label used for the title in the empty view|Whoops!|
+|ko__label_empty_view_description| Label used for the description in the empty view|Looks like there\'s nothing to show|
+|ko__label_error_view_title| Label used for the title in the error view|Uh Oh.|
+|ko__label_error_view_description|Label used for the description in the error view|Something went wrong. Please try again later.|
+|ko__action_contact|Label for the Contact Menu Button|Contact|
+|ko__action_search|Label for the Search Menu Button|Search|
+|ko__msg_error_type_at_least_three_characters_to_search|Error message when less than 3 characters used for search|Please type at least 3 characters to search!|
+|ko__msg_error_unable_to_load_more_items|Error message when loading more items in a list fails|Something went wrong. Unable to load more items.|
 
 
+You can use the images below to see the most significant strings used in the app.
+
+![Item 1: Strings](images/strings-item1.png "Strings used in Search Header")
+
+![Item 2: Strings](images/strings-item2.png "Strings used in Search Toolbar")
+
+![Item 3: Strings](images/strings-item3.png "Strings used in Empty Page")
+
+![Item 4: Strings](images/strings-item4.png "Strings used in Error Page")
+
+
+## Localization
 
 You can add localizations of your language of choice. Just use the above strings and organize it in a separate folder.
 For example, values-ru for russian.
+
 ```
 .
 ├── res
@@ -192,7 +180,6 @@ For example, values-ru for russian.
 ```
 
 ## Design
-
 
 ### Simple Customization
 
@@ -209,34 +196,33 @@ For simple customization, you only need to add the material colors (*res/values/
 For a more advanced customization, you can override the following colors in your HelpCenterTheme (Step 2 of Getting Started). 
 
 ![Page 1: Colors](images/colors-page1.png "Colors used in Help Center Page")
+
 ![Page 2: Colors](images/colors-page2.png "Colors used in Article Listing Page")
+
 ![Page 3: Colors](images/colors-page3.png "Colors used in Search Articles Page")
+
 ![Page 4: Colors](images/colors-page4.png "Colors used in Article Page")
+
 ![Page 5: Colors](images/colors-page5.png "Colors used in Error Page")
 
+For example, you can make changes to the HelpCenterTheme in the following manner:
 
-# APIs
+```
+    <style name="HelpCenterTheme" parent="Ko__AppTheme">
+    
+        <!-- Simple Customization -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        
+        <!-- Advanced Customization -->
+        <item name="ko__section_info_background_color">@color/blue</item>
+        <item name="ko__section_info_title_text_color">@color/white</item>
+        <item name="ko__section_info_subtitle_text_color">@color/white</item>
 
-Use the methods available available in the HelpCenter class.
+    </style>
 
-|Class Name | Description |
-|---|---|
-|com.kayako.sdk.android.k5.KayakoHelpCenter|com.kayako.sdk.android.k5.KayakoHelpCenter|
-
-## Help Center APIs
-
-Contains all the methods to interact with the help center from opening the knowledge base, searching articles and opening a specific article.
-
-#### Sample Example of opening the Help Center
-
-Contains all the methods to interact with the help center from opening the knowledge base, searching articles and opening a specific article.
-
-|Return Type | Method Signature | Description |
-|---|---|---|
-|void|searchHelpCenter(Context context, String query)|Opens the search articles page with the query string prefiled and
-|void|openArticle(Context context, long articleId)|Opens the helpcenter page
-|void|openHelpCenter(Context context)|Opens the helpcenter activity
-
+```
 
 ## Trouble Shooting
 
