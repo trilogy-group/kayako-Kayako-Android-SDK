@@ -12,7 +12,8 @@ import java.util.Locale;
 public class HelpCenterPref {
     final private String PREF_NAME = "kayako_help_center_info";
     final private String KEY_HELP_CENTER_URL = "help_center_url";
-    final private String KEY_LOCALE = "locale";
+    final private String KEY_LOCALE_LANGUAGE = "locale_language";
+    final private String KEY_LOCALE_REGION = "locale_region";
 
     private static HelpCenterPref mInstance;
     private static SharedPreferences mPrefs;
@@ -46,16 +47,18 @@ public class HelpCenterPref {
     }
 
     public void setLocale(Locale locale) {
-        mPrefs.edit().putString(KEY_LOCALE, locale.getISO3Language()).apply();
+        mPrefs.edit().putString(KEY_LOCALE_LANGUAGE, locale.getLanguage()).apply();
+        mPrefs.edit().putString(KEY_LOCALE_REGION, locale.getCountry()).apply();
     }
 
     public Locale getLocale() {
-        String selectedLanguage = mPrefs.getString(KEY_LOCALE, null);
+        String selectedLanguage = mPrefs.getString(KEY_LOCALE_LANGUAGE, null);
+        String selectedRegion = mPrefs.getString(KEY_LOCALE_REGION, null);
 
         if (TextUtils.isEmpty(selectedLanguage)) {
-            return mContext.getResources().getConfiguration().locale;
+            return mContext.getResources().getConfiguration().locale; // return device locale as default
         } else {
-            return new Locale(selectedLanguage);
+            return new Locale(selectedLanguage, selectedRegion);
         }
     }
 }
