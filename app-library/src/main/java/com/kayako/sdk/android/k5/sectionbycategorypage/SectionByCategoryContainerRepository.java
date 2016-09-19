@@ -1,5 +1,6 @@
 package com.kayako.sdk.android.k5.sectionbycategorypage;
 
+import com.kayako.sdk.android.k5.core.HelpCenterPref;
 import com.kayako.sdk.helpcenter.HelpCenter;
 
 import java.util.ArrayList;
@@ -14,9 +15,11 @@ public class SectionByCategoryContainerRepository implements SectionByCategoryCo
     private List<com.kayako.sdk.helpcenter.locale.Locale> mLocales = null;
 
     private HelpCenter mHelpCenter;
+    private String mHelpCenterUrl;
 
     public SectionByCategoryContainerRepository(String helpCenterUrl, Locale locale) {
         mHelpCenter = new HelpCenter(helpCenterUrl, locale);
+        mHelpCenterUrl = helpCenterUrl;
     }
 
     // TODO: Force Refresh? Caching?
@@ -43,6 +46,6 @@ public class SectionByCategoryContainerRepository implements SectionByCategoryCo
     }
 
     public boolean isCached() {
-        return mLocales == null;
+        return mLocales == null && HelpCenterPref.getInstance().getHelpCenterUrl().equals(mHelpCenterUrl);
     }
 }

@@ -15,17 +15,19 @@ public class SectionByCategoryContainerPresenter implements SectionByCategoryCon
 
     private SectionByCategoryContainerContract.View mView;
     private SectionByCategoryContainerContract.Data mData;
-    private java.util.Locale mActiveLocale; // Ensure that during spinner setup, the page is not unnecessarily loaded due to spinner onItemSelected() being called.
 
     private List<SpinnerItem> mSpinnerItems;
+    private String mHelpCenterUrl;
+    private java.util.Locale mActiveLocale; // Ensure that during spinner setup, the page is not unnecessarily loaded due to spinner onItemSelected() being called.
 
     public SectionByCategoryContainerPresenter(SectionByCategoryContainerContract.View view) {
         mView = view;
-        mData = SectionByCategoryContainerFactory.getDataSource(HelpCenterPref.getInstance().getHelpCenterUrl(), mActiveLocale = HelpCenterPref.getInstance().getLocale());
+        setUpData();
     }
 
     @Override
     public void initPage() {
+        resetDataIfHelpCenterValuesHaveChanged();
         invalidateOldValues();
         mView.showToolbarTitle(); // TODO: Remove title idea. BAD.
         mView.hideToolbarSpinner();
@@ -93,5 +95,20 @@ public class SectionByCategoryContainerPresenter implements SectionByCategoryCon
 
     private void invalidateOldValues() {
         mSpinnerItems = null;
+    }
+
+
+    private void resetDataIfHelpCenterValuesHaveChanged() {
+        String currentHelpCenterUrl = HelpCenterPref.getInstance().getHelpCenterUrl();
+        java.util.Locale currentLocale = HelpCenterPref.getInstance().getLocale();
+        if (!mHelpCenterUrl.equals(currentHelpCenterUrl) || !mActiveLocale.equals(currentLocale)) {
+            setUpData();
+        }
+    }
+
+    private void setUpData() {
+        mHelpCenterUrl = HelpCenterPref.getInstance().getHelpCenterUrl();
+        mActiveLocale = HelpCenterPref.getInstance().getLocale();
+        mData = SectionByCategoryContainerFactory.getDataSource(mHelpCenterUrl, mActiveLocale);
     }
 }

@@ -8,6 +8,7 @@ import com.kayako.sdk.helpcenter.section.Section;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -19,9 +20,12 @@ public class SectionByCategoryPresenter implements SectionByCategoryContract.Pre
     private SectionByCategoryContract.Data mSectionByCategoryData;
     private List<ListItem> mListItems;
 
+    private String mHelpCenterUrl;
+    private Locale mLocale;
+
     public SectionByCategoryPresenter(SectionByCategoryContract.View mWelcomePageView) {
         this.mSectionByCategoryView = mWelcomePageView;
-        mSectionByCategoryData = SectionByCategoryFactory.getDataSource(HelpCenterPref.getInstance().getHelpCenterUrl(), HelpCenterPref.getInstance().getLocale());
+        setUpData();
     }
 
     @Override
@@ -31,6 +35,8 @@ public class SectionByCategoryPresenter implements SectionByCategoryContract.Pre
 
     @Override
     public void initPage() {
+        resetDataIfHelpCenterValuesHaveChanged();
+
         invalidateOldValues();
         if (!mSectionByCategoryData.isCached()) { // Avoid showing a visual flicker when navigating between pages
             mSectionByCategoryView.showOnlyLoadingView();
@@ -109,5 +115,19 @@ public class SectionByCategoryPresenter implements SectionByCategoryContract.Pre
 
     private void invalidateOldValues() {
         mListItems = null;
+    }
+
+    private void resetDataIfHelpCenterValuesHaveChanged() {
+        String currentHelpCenterUrl = HelpCenterPref.getInstance().getHelpCenterUrl();
+        Locale currentLocale = HelpCenterPref.getInstance().getLocale();
+        if (!mHelpCenterUrl.equals(currentHelpCenterUrl) || !mLocale.equals(currentLocale)) {
+            setUpData();
+        }
+    }
+
+    private void setUpData() {
+        mHelpCenterUrl = HelpCenterPref.getInstance().getHelpCenterUrl();
+        mLocale = HelpCenterPref.getInstance().getLocale();
+        mSectionByCategoryData = SectionByCategoryFactory.getDataSource(mHelpCenterUrl, mLocale);
     }
 }

@@ -23,8 +23,10 @@ public class HelpCenterPref {
     }
 
     public static HelpCenterPref getInstance() {
+        if (mInstance == null) {
+            throw new NullPointerException("Please call KayakoHC.initialize() in your Application class");
+        }
         return mInstance;
-        // TODO: Throw error?
     }
 
     private HelpCenterPref(Context context) {
@@ -40,10 +42,7 @@ public class HelpCenterPref {
     }
 
     public String getHelpCenterUrl() {
-        // TODO: Testing
-        return "https://support.kayako.com";
-//        return mPrefs.getString(KEY_HELP_CENTER_URL, null);
-        // TODO: Retrieve default help center url from, say, Android Manifest meta tag?
+        return mPrefs.getString(KEY_HELP_CENTER_URL, null);
     }
 
     public void setLocale(Locale locale) {

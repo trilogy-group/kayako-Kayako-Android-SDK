@@ -15,12 +15,9 @@ public class KayakoHC {
     private Context mAppContext;
     private static KayakoHC mInstance;
 
-    public static void initialize(Context applicationContext, String helpCenterUrl, Locale defaultLocale) {
+    public static void initialize(Context applicationContext) {
         mInstance = new KayakoHC(applicationContext);
         HelpCenterPref.createInstance(applicationContext);
-
-        HelpCenterPref.getInstance().setHelpCenterUrl(helpCenterUrl);
-        HelpCenterPref.getInstance().setLocale(defaultLocale);
     }
 
     public KayakoHC(Context mAppContext) {
@@ -34,7 +31,9 @@ public class KayakoHC {
         return mInstance;
     }
 
-    public void openHelpCenter(Context context) {
+    public void openHelpCenter(Context context, String helpCenterUrl, Locale defaultLocale) {
+        HelpCenterPref.getInstance().setHelpCenterUrl(helpCenterUrl);
+        HelpCenterPref.getInstance().setLocale(defaultLocale);
         context.startActivity(new Intent(context, KayakoHelpCenterActivity.class));
     }
 }

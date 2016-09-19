@@ -14,6 +14,6 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        KayakoHC.initialize(this, "https://support.kayakostage.net", new Locale("en", "us"));
+        KayakoHC.initialize(this);
     }
 }

@@ -3,17 +3,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/ko__activity_vertical_margin"
     android:paddingLeft="@dimen/ko__activity_horizontal_margin"
     android:paddingRight="@dimen/ko__activity_horizontal_margin"
     android:paddingTop="@dimen/ko__activity_vertical_margin"
-    android:orientation="vertical"
     tools:context="com.kayako.sample.MainActivity">
 
+    <EditText
+        android:id="@+id/edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="8dp"
+        android:singleLine="true"
+        android:text="https://support.kayako.com" />
+
     <Button
+        android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/open_kayako_help_center"
         android:layout_gravity="center"
-        android:id="@+id/button" />
+        android:layout_marginTop="8dp"
+        android:text="@string/open_kayako_help_center" />
 </LinearLayout>

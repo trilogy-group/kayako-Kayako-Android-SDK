@@ -15,7 +15,7 @@
             </intent-filter>
         </activity>
 
-        <!-- Add the following lines to use the SDK -->
+        <!-- Add the following activities to use the SDK -->
         <activity
             android:name="com.kayako.sdk.android.k5.activities.KayakoHelpCenterActivity"
             android:theme="@style/HelpCenterTheme" />
