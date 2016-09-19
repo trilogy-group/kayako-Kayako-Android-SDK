@@ -22,7 +22,7 @@ To get started, please follow the instructions below:
 Add the following lines to your Android Manifest:
 
 
-```
+```xml
         <!-- Paste this inside the Application tags -->
         <activity
             android:name="com.kayako.sdk.android.k5.activities.KayakoHelpCenterActivity"
@@ -43,7 +43,7 @@ Add the following lines to your Android Manifest:
 
 Paste the following lines to your res/values/styles.xml file. 
 
-```
+```xml
     <style name="HelpCenterTheme" parent="Ko__AppTheme">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -58,7 +58,7 @@ Note: For advanced customization, read the later sections.
 
 Add the following lines to your Gradle dependency:
 
-```
+```gradle
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -82,7 +82,7 @@ dependencies {
 
 In your Application class, add the following:
 
-```
+```java
     KayakoHC.initialize(this);
 ```
 
@@ -90,7 +90,7 @@ In your Application class, add the following:
 
 If you’re using progaurd, please add the following the code to your progaurd-project.txt file
 
-```
+```groovy
 # OkHttp3
 -keepattributes Signature
 -keepattributes *Annotation*
@@ -123,12 +123,12 @@ _For more information on progaurd, access the progaurd documentation: [http://de
 
 Place the following lines of code where you want the Help Center to be opened:
 
-```
+```java
     KayakoHC.getInstance().openHelpCenter(context, helpCenterUrl, defaultLocale);
 ```
 
 For example:
-```
+```java
     KayakoHC.getInstance().openHelpCenter(getContext(), "https://support.kayako.com", new Locale("en","us");
 ```
 
@@ -185,7 +185,7 @@ For example, values-ru for russian.
 
 For simple customization, you only need to add the material colors (*res/values/colors.xml*) for the help center to match your application's theme. 
 
-```
+```xml
 <color name="colorPrimary"></color>
 <color name="colorPrimaryDark">#7C7C7C</color>
 <color name="colorAccent">#3AA6C5</color>
@@ -207,7 +207,7 @@ For a more advanced customization, you can override the following colors in your
 
 For example, you can make changes to the HelpCenterTheme in the following manner:
 
-```
+```xml
     <style name="HelpCenterTheme" parent="Ko__AppTheme">
     
         <!-- Simple Customization -->
