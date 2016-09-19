@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center_vertical|left"
-        android:text="@string/ko__helpcenter_title"
+        android:text="@string/ko__title_help_center"
         android:textSize="16sp"
         tools:text="Hello" />
 

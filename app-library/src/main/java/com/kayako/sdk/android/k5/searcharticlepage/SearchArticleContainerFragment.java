@@ -112,7 +112,7 @@ public class SearchArticleContainerFragment extends Fragment implements SearchAr
 
     @Override
     public void showLessCharactersTypedErrorMessage() {
-        ViewUtils.showToastMessage(mRoot.getContext(), getString(R.string.ko__error_type_at_least_three_characters_to_search), Toast.LENGTH_LONG);
+        ViewUtils.showToastMessage(mRoot.getContext(), getString(R.string.ko__msg_error_type_at_least_three_characters_to_search), Toast.LENGTH_LONG);
     }
 
     @Override

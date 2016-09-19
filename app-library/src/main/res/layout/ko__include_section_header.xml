@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/ko__section_background_colour"
+    android:background="@color/ko__section_info_background_color"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -11,7 +11,7 @@
         android:id="@+id/ko__section_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
+        android:textColor="@color/ko__section_info_title_text_color"
         android:textSize="24sp"
         tools:text="Getting Started with the All New Kayako" />
 
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:scrollHorizontally="true"
-        android:textColor="@color/ko__light_gray_text_color"
+        android:textColor="@color/ko__section_info_subtitle_text_color"
         android:textSize="14sp"
         tools:text="If you’re new to Kayako, this is the place to be. Let’s go up and keep you running. That’s right… This message is long." />
 

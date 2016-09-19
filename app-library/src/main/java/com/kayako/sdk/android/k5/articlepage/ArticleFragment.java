@@ -70,7 +70,7 @@ public class ArticleFragment extends BaseStateFragment implements ArticleContrac
         Glide.with(getContext())
                 .load(avatarUrl)
                 .bitmapTransform(new CropCircleTransformation(getContext()))
-                .placeholder(R.color.ko__dark_gray_image_background)
+                .placeholder(R.color.ko__avatar_image_background)
                 .into(authorAvatar);
     }
 

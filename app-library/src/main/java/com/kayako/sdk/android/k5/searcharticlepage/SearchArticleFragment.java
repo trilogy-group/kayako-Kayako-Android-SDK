@@ -1,6 +1,5 @@
 package com.kayako.sdk.android.k5.searcharticlepage;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -168,7 +167,7 @@ public class SearchArticleFragment extends BaseListFragment implements SearchArt
 
     @Override
     public void showErrorToLoadMoreMessage() {
-        ViewUtils.showSnackBar(mRoot, getString(R.string.ko__msg_unable_to_load_more_items));
+        ViewUtils.showSnackBar(mRoot, getString(R.string.ko__msg_error_unable_to_load_more_items));
     }
 
     @Override

@@ -5,7 +5,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="actionModeBackground">@color/colorPrimary</item>
-        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowBackground">@color/ko__white</item>
     </style>
 
     <style name="Ko__SearchArticlePageTheme" parent="Theme.AppCompat.NoActionBar">
@@ -15,7 +15,7 @@
 
     <style name="Ko__ButtonStyle">
         <item name="android:background">@drawable/ko__retry_button_background</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/ko__white</item>
         <item name="android:textStyle">bold</item>
     </style>
 

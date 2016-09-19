@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/ko__section_background_colour"
+    android:background="@color/ko__article_author_background_color"
     android:orientation="horizontal"
     android:padding="16dp">
 
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:singleLine="true"
-            android:textColor="@color/black"
+            android:textColor="@color/ko__article_author_name_text_color"
             android:textSize="14sp"
             tools:text="Neil Mathew" />
 
@@ -42,7 +42,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:text="Posted 2 years ago"
-            android:textColor="@color/ko__dark_gray_text_color"
+            android:textColor="@color/ko__article_author_last_updated"
             android:textSize="14sp" />
 
         <com.kayako.sdk.android.k5.common.view.RegularTextView
@@ -53,7 +53,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:text="Updated 3 months ago"
-            android:textColor="@color/ko__dark_gray_text_color"
+            android:textColor="@color/ko__article_author_last_created"
             android:textSize="14sp" />
 
     </LinearLayout>

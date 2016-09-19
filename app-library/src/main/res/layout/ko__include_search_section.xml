@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal|center_vertical"
         android:singleLine="true"
-        android:text="@string/ko__search_bar_how_can_we_help_you"
+        android:text="@string/ko__title_above_search_bar"
         android:textColor="@color/ko__search_bar_welcome_text_color"
         android:textSize="20sp" />
 
