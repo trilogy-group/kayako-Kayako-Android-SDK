@@ -13,75 +13,80 @@ This SDK wraps the Kayako Developer APIs and is provided as an Android Library p
 |buildToolsVersion|23|
 |minSDKVersion|14|
 
-## External Dependencies
+# Getting Started
+
+To get started, please follow the instructions below:
+
+### Step 1: Android Manifest
+
+Add the following lines to your Android Manifest:
+
+
+```
+        <!-- Paste this inside the Application tags -->
+        <activity
+            android:name="com.kayako.sdk.android.k5.activities.KayakoHelpCenterActivity"
+            android:theme="@style/HelpCenterTheme" />
+
+        <activity
+            android:name="com.kayako.sdk.android.k5.activities.KayakoSearchArticleActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/Ko__SearchArticlePageTheme"
+            android:windowSoftInputMode="adjustPan|stateVisible" />
+
+        <activity
+            android:name="com.kayako.sdk.android.k5.activities.KayakoArticleActivity"
+            android:theme="@style/HelpCenterTheme" />
+```
+
+### Step 2: Styles
+
+Paste the following lines to your res/values/styles.xml file. 
+
+```
+    <style name="HelpCenterTheme" parent="Ko__AppTheme">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+```
+
+You can modify the three colours to style the help center activities to match with your own app theme. 
+Note: For advanced customization, read the later sections.  
+
+### Step 3: Gradle Build Dependencies
+
+Add the following lines to your Gradle dependency:
 
 ```
 dependencies {
-    compile ‘com.kayako.sdk.android.k5:1.0.0'
-    compile 'com.android.support:appcompat-v7:23.2.1’ // backward compatibility support
-    compile 'com.android.support:support-v13:23.2.1’ // backward compatibility support
-    compile 'com.android.support:recyclerview-v7:23.2.1’ // listing of articles
-    compile 'com.android.support:design:23.2.1’ // support for material design
-    compile 'com.squareup.okhttp3:okhttp:3.3.1' // used for networking
-    compile 'com.github.bumptech.glide:glide:3.7.0' // used for image loading and caching
-    compile 'uk.co.chrisjenx:calligraphy:2.1.0' // used for fonts
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Add the following dependencies to get the Support SDK to work
+    compile 'com.android.support:appcompat-v7:24.2.0'
+    compile 'com.android.support:recyclerview-v7:24.2.0'
+    compile 'com.android.support:support-v4:24.2.0'
+    compile 'com.android.support:design:24.2.0'
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'
+    compile 'com.squareup.okio:okio:1.9.0'
+    compile 'com.google.code.gson:gson:2.4'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    
+    // The following jar files are required for the Kayako Help Center
+    compile 'com.kayako.sdk.android:1.0.0' 
+    compile 'com.kayako.sdk.java:1.0.0'
 }
 ```
 
-## Build Systems
+### Step 4: Application
 
-Currently there is support for only the Gradle Build System. We'll be adding samples for the Maven and Ant build soon. 
-
-# Getting Started
-
-## Android Manifest
-
-Add the following lines to your Android Manifest. Make sure to replace the help center url with your own. 
-
+In your Application class, add the following:
 
 ```
-<activity
-            android:name=“com.kayako.sdk.android.k5.activity.HelpCenter"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/title_helpcenter" />
-
-      <activity
-            android:name=“com.kayako.sdk.android.k5.activity.NavigateArticles"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/title_search" />
-
-      <activity
-            android:name=“com.kayako.sdk.android.k5.activity.SearchActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/title_search" />
-
-      <activity
-            android:name=“com.kayako.sdk.android.k5.activity.Article"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/title_search" />
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http" />
-                <data android:scheme="https" />
-                <data android:host=“____PASTE_HELP_DESK_URL___" />
-                <data android:pathPattern=“/.*/article/.*" />
-            </intent-filter>
-        </activity>
+    KayakoHC.initialize(this);
 ```
 
-_Deep Linking has been added to allow a smooth in-app experience when clicking articles links mentioned in other articles._
-
-## Application
-
-Paste the following in your Application class. Replace the help center url with your own. 
-
-```
-KayakoCore.init(this, __PASTE_HELP_DESK_URL_HERE);
-```
-
-## Progaurd
+### Step 5: Progaurd
 
 If you’re using progaurd, please add the following the code to your progaurd-project.txt file
 
@@ -114,28 +119,18 @@ If you’re using progaurd, please add the following the code to your progaurd-p
 
 _For more information on progaurd, access the progaurd documentation: [http://developer.android.com/tools/help/proguard.html](http://developer.android.com/tools/help/proguard.html)_
 
+### Step 6: Open Intent
 
-# APIs
+Place the following lines of code where you want the Help Center to be opened:
 
-Use the methods available available in the HelpCenter class.
-|Class Name | Description |
-|---|---|
-|com.kayako.sdk.android.k5.KayakoHelpCenter|com.kayako.sdk.android.k5.KayakoHelpCenter|
+```
+    KayakoHC.getInstance().openHelpCenter(context, helpCenterUrl, defaultLocale);
+```
 
-## Help Center APIs
-
-Contains all the methods to interact with the help center from opening the knowledge base, searching articles and opening a specific article.
-
-#### Sample Example of opening the Help Center
-
-Contains all the methods to interact with the help center from opening the knowledge base, searching articles and opening a specific article.
-
-|Return Type | Method Signature | Description |
-|---|---|---|
-|void|searchHelpCenter(Context context, String query)|Opens the search articles page with the query string prefiled and
-|void|openArticle(Context context, long articleId)|Opens the helpcenter page
-|void|openHelpCenter(Context context)|Opens the helpcenter activity
-
+For example:
+```
+    KayakoHC.getInstance().openHelpCenter(getContext(), "https://support.kayako.com", new Locale("en","us");
+```
 
 # Customization
 
@@ -143,10 +138,28 @@ Contains all the methods to interact with the help center from opening the knowl
 
 **strings.xml**
 
+```
+    <string name="ko__search_bar_how_can_we_help_you">How can we help you?</string>
+    <string name="ko__label_retry">Retry</string>
+    <string name="ko__label_search_hint">Search here...</string>
+    <string name="ko__action_ok">Ok</string>
+    <string name="ko__error_type_at_least_three_characters_to_search">Please type at least 3 characters to search!</string>
+    <string name="ko__label_empty_view_title">Whoops!</string>
+    <string name="ko__label_empty_view_description">Looks like there\'s nothing to show</string>
+    <string name="ko__label_error_view_title">Uh Oh.</string>
+    <string name="ko__label_error_view_description">Something went wrong on our side. Please try again later.</string>
+    <string name="ko__label_error_view_network_title">Uh Oh.</string>
+    <string name="ko__label_error_view_network_description">Unable to connect to server. Please check your network connection. </string>
+    <string name="ko__msg_unable_to_load_more_items">Something went wrong. Unable to load more items.</string>
+    <string name="ko__helpcenter_title">Help</string>
+    <string name="ko__action_contact">Contact</string>
+    <string name="ko__action_search">Search</string>
+```    
+
 |Id | Description |
 |---|---|
-|ko__title_knowledge_base|Title of Knowledge Base page|
-|ko__title_navigate_articles|Title of Navigate Articles page|
+|ko__search_bar_how_can_we_help_you|Title of Knowledge Base page|
+|ko__label_retry|Title of Navigate Articles page|
 |ko__title_search_articles|Title of Search Articles page|
 |ko__title_article|Title of Article Detail Page|
 |ko_label_welcome_message|Welcome message displayed in the Search Section in KnowledgeBase Page|
@@ -165,6 +178,8 @@ Contains all the methods to interact with the help center from opening the knowl
 |ko_button_sign_up|Button label to sign up|
 |ko_message_sign_in | Button label to sign in using Kayako Credentials|
 
+
+
 You can add localizations of your language of choice. Just use the above strings and organize it in a separate folder.
 For example, values-ru for russian.
 ```
@@ -178,36 +193,50 @@ For example, values-ru for russian.
 
 ## Design
 
-**bool.xml**
 
-|id|description|
+### Simple Customization
+
+For simple customization, you only need to add the material colors (*res/values/colors.xml*) for the help center to match your application's theme. 
+
+```
+<color name="colorPrimary"></color>
+<color name="colorPrimaryDark">#7C7C7C</color>
+<color name="colorAccent">#3AA6C5</color>
+```
+
+### Advanced Customization
+
+For a more advanced customization, you can override the following colors in your HelpCenterTheme (Step 2 of Getting Started). 
+
+![Page 1: Colors](images/colors-page1.png "Colors used in Help Center Page")
+![Page 2: Colors](images/colors-page2.png "Colors used in Article Listing Page")
+![Page 3: Colors](images/colors-page3.png "Colors used in Search Articles Page")
+![Page 4: Colors](images/colors-page4.png "Colors used in Article Page")
+![Page 5: Colors](images/colors-page5.png "Colors used in Error Page")
+
+
+# APIs
+
+Use the methods available available in the HelpCenter class.
+
+|Class Name | Description |
 |---|---|
-|ko__showSearchBarSection|Show the giant search bar or hide it based on true/false value specified here|
+|com.kayako.sdk.android.k5.KayakoHelpCenter|com.kayako.sdk.android.k5.KayakoHelpCenter|
 
-**colors.xml**
+## Help Center APIs
 
-|id|description|
-|---|---|
-|ko__search_section_bg|background color of search area on knowledge base page|
-|ko__search_section_text|colour of search area text|
-|ko__category_bg|background color of category|
-|ko__cateogy_text|colour of category text|
-|ko__section_bg|background color of section|
-|ko__section_text|colour of section text|
-|ko__section_desc|colour of section description|
-|ko__article_list_bg|background color of article listing page|
-|ko__article_list_text|colour of article list text|
-|ko__article_list_desc|colour of article description text|
-|ko__article_details_header_breadcrumb_text|colour of breadcrumb text in article details page|
-|ko__article_details_header_bg|background color of header in article details page|
-|ko__article_details_header_title|color of article title under header in article details page|
-|ko__article_details_content_bg|background color of article detail page’s content area|
+Contains all the methods to interact with the help center from opening the knowledge base, searching articles and opening a specific article.
 
-These can be used in addition to the android system colors:
-- colorPrimary
-- colorPrimaryDark
-- colorAccent
-- windowBackground
+#### Sample Example of opening the Help Center
+
+Contains all the methods to interact with the help center from opening the knowledge base, searching articles and opening a specific article.
+
+|Return Type | Method Signature | Description |
+|---|---|---|
+|void|searchHelpCenter(Context context, String query)|Opens the search articles page with the query string prefiled and
+|void|openArticle(Context context, long articleId)|Opens the helpcenter page
+|void|openHelpCenter(Context context)|Opens the helpcenter activity
+
 
 ## Trouble Shooting
 
