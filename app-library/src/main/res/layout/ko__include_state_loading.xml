@@ -8,7 +8,7 @@
     android:orientation="vertical"
     app:theme="@style/Ko__AppTheme">
 
-    <ProgressBar xmlns:android="http://schemas.android.com/apk/res/android"
+    <ProgressBar
         android:id="@+id/ko__view_state_loading"
         android:layout_width="64dp"
         android:layout_height="64dp"

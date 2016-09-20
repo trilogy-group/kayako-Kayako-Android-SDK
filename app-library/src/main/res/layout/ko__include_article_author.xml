@@ -41,7 +41,7 @@
             android:layout_marginTop="6dp"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="Posted 2 years ago"
+            tools:text="Posted 2 years ago"
             android:textColor="@color/ko__article_author_last_updated"
             android:textSize="14sp" />
 
@@ -52,7 +52,7 @@
             android:layout_marginTop="6dp"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="Updated 3 months ago"
+            tools:text="Updated 3 months ago"
             android:textColor="@color/ko__article_author_last_created"
             android:textSize="14sp" />
 
