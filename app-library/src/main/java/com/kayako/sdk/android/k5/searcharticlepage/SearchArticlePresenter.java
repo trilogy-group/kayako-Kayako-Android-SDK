@@ -20,9 +20,9 @@ public class SearchArticlePresenter implements SearchArticleContract.Presenter {
     private List<ListItem> mListItems;
     private List<ListItem> mMoreItems;
 
-    public SearchArticlePresenter(SearchArticleContract.View view) {
+    public SearchArticlePresenter(SearchArticleContract.View view, SearchArticleContract.Data data) {
         this.mView = view;
-        mData = SearchArticleFactory.getDataSource(HelpCenterPref.getInstance().getHelpCenterUrl(), HelpCenterPref.getInstance().getLocale());
+        this.mData = data;
     }
 
     @Override

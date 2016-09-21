@@ -27,9 +27,14 @@ public class ArticleListPresenter implements ArticleListContract.Presenter {
     private String mSectionTitle;
     private String mSectionDescription;
 
-    public ArticleListPresenter(ArticleListContract.View view) {
+    public ArticleListPresenter(ArticleListContract.View view, ArticleListContract.Data data) {
         mView = view;
-        mData = ArticleListFactory.getDataSource(HelpCenterPref.getInstance().getHelpCenterUrl(), HelpCenterPref.getInstance().getLocale());
+        mData = data;
+    }
+
+    @Override
+    public void setData(ArticleListContract.Data data) {
+        mData = data;
     }
 
     @Override

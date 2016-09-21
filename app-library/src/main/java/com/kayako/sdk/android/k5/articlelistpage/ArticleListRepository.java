@@ -1,5 +1,6 @@
 package com.kayako.sdk.android.k5.articlelistpage;
 
+import com.kayako.sdk.android.k5.core.HelpCenterPref;
 import com.kayako.sdk.helpcenter.HelpCenter;
 import com.kayako.sdk.helpcenter.articles.Article;
 
@@ -15,8 +16,13 @@ public class ArticleListRepository implements ArticleListContract.Data {
     private List<Article> mArticles;
     private long mSectionId;
 
+    private String mHelpCenterUrl;
+    private Locale mLocale;
+
     public ArticleListRepository(String helpCenterUrl, Locale locale) {
         mHelpCenter = new HelpCenter(helpCenterUrl, locale);
+        mHelpCenterUrl = helpCenterUrl;
+        mLocale = locale;
     }
 
     @Override
@@ -36,6 +42,12 @@ public class ArticleListRepository implements ArticleListContract.Data {
      */
     public boolean isCached(long sectionId) {
         return mArticles != null && mArticles.size() != 0 && mSectionId == sectionId;
+    }
+
+    @Override
+    public boolean doesHelpCenterPreferencesMatch() {
+        return mHelpCenterUrl.equals(HelpCenterPref.getInstance().getHelpCenterUrl())
+                && mLocale.equals(HelpCenterPref.getInstance().getLocale());
     }
 
 }

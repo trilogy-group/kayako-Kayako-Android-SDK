@@ -18,6 +18,8 @@ public interface ArticleListContract {
         List<Article> getArticles(long sectionId, int offset, int limit, boolean useCache);
 
         boolean isCached(long sectionId);
+
+        boolean doesHelpCenterPreferencesMatch();
     }
 
     interface View extends BaseView {
@@ -48,6 +50,8 @@ public interface ArticleListContract {
     }
 
     interface Presenter extends BasePresenter<ArticleListContract.View> {
+
+        void setData(Data data);
 
         void initPage(long sectionId);
 
