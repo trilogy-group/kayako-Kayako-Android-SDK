@@ -81,7 +81,7 @@ public class SectionByCategoryListFragment extends BaseListFragment implements S
 
     @Override
     public void openSearchPage() {
-        startActivity(new Intent(getContext(), KayakoSearchArticleActivity.class));
+        startActivity(KayakoSearchArticleActivity.getIntent(getContext()));
     }
 
     @Override

@@ -84,7 +84,7 @@ public abstract class BaseContainerFragment extends Fragment {
     }
 
     protected void openSearchPage() {
-        startActivity(new Intent(getContext(), KayakoSearchArticleActivity.class));
+        startActivity(KayakoSearchArticleActivity.getIntent(getContext()));
     }
 
     public interface OnMenuClickListener {

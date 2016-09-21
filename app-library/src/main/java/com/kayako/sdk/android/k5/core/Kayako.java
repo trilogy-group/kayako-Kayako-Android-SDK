@@ -44,6 +44,7 @@ public class Kayako {
 
         HelpCenterPref.getInstance().setHelpCenterUrl(helpCenterUrl);
         HelpCenterPref.getInstance().setLocale(defaultLocale);
-        context.startActivity(new Intent(context, KayakoHelpCenterActivity.class));
+
+        context.startActivity(KayakoHelpCenterActivity.getIntent(context));
     }
 }
