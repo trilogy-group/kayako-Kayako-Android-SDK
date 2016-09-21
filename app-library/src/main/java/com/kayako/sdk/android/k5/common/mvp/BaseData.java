@@ -5,5 +5,4 @@ package com.kayako.sdk.android.k5.common.mvp;
  */
 public interface BaseData {
 
-
 }

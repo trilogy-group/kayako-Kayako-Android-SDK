@@ -16,51 +16,51 @@ import java.util.Map;
  */
 public class SectionByCategoryPresenter implements SectionByCategoryContract.Presenter {
 
-    private SectionByCategoryContract.View mSectionByCategoryView;
-    private SectionByCategoryContract.Data mSectionByCategoryData;
+    private SectionByCategoryContract.View mView;
+    private SectionByCategoryContract.Data mData;
     private List<ListItem> mListItems;
 
-    private String mHelpCenterUrl;
-    private Locale mLocale;
-
-    public SectionByCategoryPresenter(SectionByCategoryContract.View mWelcomePageView) {
-        this.mSectionByCategoryView = mWelcomePageView;
-        setUpData();
+    public SectionByCategoryPresenter(SectionByCategoryContract.View mWelcomePageView, SectionByCategoryContract.Data data) {
+        this.mView = mWelcomePageView;
+        this.mData = data;
     }
 
     @Override
     public void setView(SectionByCategoryContract.View view) {
-        this.mSectionByCategoryView = view;
+        mView = view;
     }
 
     @Override
     public void initPage() {
-        resetDataIfHelpCenterValuesHaveChanged();
-
         invalidateOldValues();
-        if (!mSectionByCategoryData.isCached()) { // Avoid showing a visual flicker when navigating between pages
-            mSectionByCategoryView.showOnlyLoadingView();
+        if (!mData.isCached()) { // Avoid showing a visual flicker when navigating between pages
+            mView.showOnlyLoadingView();
         }
-        mSectionByCategoryView.startBackgroundTask();
+        mView.startBackgroundTask();
     }
 
     @Override
     public void onClickListItem(ListItem listItem) {
         Resource resource = listItem.getResource();
         if (resource instanceof Section) {
-            mSectionByCategoryView.openArticleListingPage(((Section) resource));
+            mView.openArticleListingPage(((Section) resource));
         }
     }
 
     @Override
     public void onClickSearch() {
-        mSectionByCategoryView.openSearchPage();
+        mView.openSearchPage();
     }
 
     @Override
     public void reloadPage() {
-        mSectionByCategoryView.showOnlyLoadingView();
-        mSectionByCategoryView.startBackgroundTask();
+        mView.showOnlyLoadingView();
+        mView.startBackgroundTask();
+    }
+
+    @Override
+    public void setData(SectionByCategoryContract.Data data) {
+        this.mData = data;
     }
 
     @Override
@@ -69,8 +69,8 @@ public class SectionByCategoryPresenter implements SectionByCategoryContract.Pre
             // TODO: Throw Exception in JAR. If it fails to load, do not return null - Shows empty view when it shouldn't
             // TODO: Strangely, if there's an error on the first call, there's a null returned on the second call - CHECK WHY?
             // TODO: Test empty
-            List<Category> categories = mSectionByCategoryData.getCategories(true);
-            Map<Category, List<Section>> sectionsByCategory = mSectionByCategoryData.getSectionsByCategory(categories, true);
+            List<Category> categories = mData.getCategories(true);
+            Map<Category, List<Section>> sectionsByCategory = mData.getSectionsByCategory(categories, true);
             mListItems = setUpList(categories, sectionsByCategory);
             return true;
         } catch (Exception e) {
@@ -84,17 +84,17 @@ public class SectionByCategoryPresenter implements SectionByCategoryContract.Pre
     @Override
     public void onDataLoaded(boolean isSuccessful) {
         if (isSuccessful) {
-            mSectionByCategoryView.setUpList(mListItems);
-            mSectionByCategoryView.showOnlyListView();
+            mView.setUpList(mListItems);
+            mView.showOnlyListView();
         } else {
-            mSectionByCategoryView.showOnlyErrorView();
+            mView.showOnlyErrorView();
         }
         // TODO: Check if categories loaded properly, and sectiosn - error?
     }
 
     private List<ListItem> setUpList(List<Category> categories, Map<Category, List<Section>> sectionsByCategory) {
         if (categories.size() == 0) {
-            mSectionByCategoryView.showOnlyEmptyView();
+            mView.showOnlyEmptyView();
             return new ArrayList<>();
         } else {
             List<ListItem> items = new ArrayList<>();
@@ -117,17 +117,4 @@ public class SectionByCategoryPresenter implements SectionByCategoryContract.Pre
         mListItems = null;
     }
 
-    private void resetDataIfHelpCenterValuesHaveChanged() {
-        String currentHelpCenterUrl = HelpCenterPref.getInstance().getHelpCenterUrl();
-        Locale currentLocale = HelpCenterPref.getInstance().getLocale();
-        if (!mHelpCenterUrl.equals(currentHelpCenterUrl) || !mLocale.equals(currentLocale)) {
-            setUpData();
-        }
-    }
-
-    private void setUpData() {
-        mHelpCenterUrl = HelpCenterPref.getInstance().getHelpCenterUrl();
-        mLocale = HelpCenterPref.getInstance().getLocale();
-        mSectionByCategoryData = SectionByCategoryFactory.getDataSource(mHelpCenterUrl, mLocale);
-    }
 }

@@ -17,10 +17,12 @@ public interface SectionByCategoryContainerContract {
         List<Locale> getPublicLocales(boolean useCache);
 
         boolean isCached();
+
+        boolean doHelpCenterPreferencesMatch();
     }
 
     interface View extends BaseView {
-        void setToolbarSpinner(List<SpinnerItem> items);
+        void setToolbarSpinner(List<SpinnerItem> items, int defaultPosition);
 
         void showToolbarSpinner();
 
@@ -40,6 +42,9 @@ public interface SectionByCategoryContainerContract {
     }
 
     interface Presenter extends BasePresenter<SectionByCategoryContainerContract.View> {
+
+        void setData(SectionByCategoryContainerContract.Data data);
+
         void initPage();
 
         boolean loadDataInBackground();

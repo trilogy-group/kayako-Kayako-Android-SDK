@@ -9,9 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.kayako.sdk.android.k5.core.KayakoHC;
-
-import org.w3c.dom.Text;
+import com.kayako.sdk.android.k5.core.Kayako;
 
 import java.util.Locale;
 
@@ -37,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 String url = editText.getText().toString();
-                KayakoHC.getInstance().openHelpCenter(MainActivity.this, url, new Locale("en", "us"));
+                Kayako.getInstance().openHelpCenter(MainActivity.this, url, new Locale("en", "us"));
             }
         });
 

@@ -10,7 +10,12 @@ public class LocaleUtils {
     public static java.util.Locale getLocale(Locale kayakoLocale) {
         String language = getLanguage(kayakoLocale);
         String region = kayakoLocale.getRegion();
-        return new java.util.Locale(language, region);
+
+        if (region == null) {
+            return new java.util.Locale(language);
+        } else {
+            return new java.util.Locale(language, region);
+        }
     }
 
     private static String getLanguage(Locale kayakoLocale) {
@@ -26,5 +31,10 @@ public class LocaleUtils {
             }
         }
         return kayakoLocale.getLocale();
+    }
+
+    public static boolean areLocalesTheSame(Locale kayakoLocale, java.util.Locale secondLocale) {
+        java.util.Locale firstLocale = getLocale(kayakoLocale);
+        return firstLocale.equals(secondLocale);
     }
 }

@@ -28,4 +28,19 @@ public class SpinnerItem {
     public String toString() {
         return label;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof SpinnerItem) {
+            SpinnerItem otherItem = (SpinnerItem) obj;
+            return resource != null && otherItem.getResource() != null && resource.equals(otherItem.getResource());
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return resource.hashCode();
+    }
 }

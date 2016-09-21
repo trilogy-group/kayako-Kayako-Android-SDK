@@ -1,8 +1,8 @@
 package com.kayako.sdk.android.k5.sectionbycategorypage;
 
-import com.kayako.sdk.android.k5.core.HelpCenterPref;
 import com.kayako.sdk.android.k5.common.data.SpinnerItem;
 import com.kayako.sdk.android.k5.common.utils.LocaleUtils;
+import com.kayako.sdk.android.k5.core.HelpCenterPref;
 import com.kayako.sdk.helpcenter.locale.Locale;
 
 import java.util.ArrayList;
@@ -17,17 +17,16 @@ public class SectionByCategoryContainerPresenter implements SectionByCategoryCon
     private SectionByCategoryContainerContract.Data mData;
 
     private List<SpinnerItem> mSpinnerItems;
-    private String mHelpCenterUrl;
-    private java.util.Locale mActiveLocale; // Ensure that during spinner setup, the page is not unnecessarily loaded due to spinner onItemSelected() being called.
+    private SpinnerItem mSelectedItem;
+    // Ensure that during spinner setup, the page is not unnecessarily loaded due to spinner onItemSelected() being called.
 
-    public SectionByCategoryContainerPresenter(SectionByCategoryContainerContract.View view) {
+    public SectionByCategoryContainerPresenter(SectionByCategoryContainerContract.View view, SectionByCategoryContainerContract.Data data) {
         mView = view;
-        setUpData();
+        mData = data;
     }
 
     @Override
     public void initPage() {
-        resetDataIfHelpCenterValuesHaveChanged();
         invalidateOldValues();
         mView.showToolbarTitle(); // TODO: Remove title idea. BAD.
         mView.hideToolbarSpinner();
@@ -53,7 +52,9 @@ public class SectionByCategoryContainerPresenter implements SectionByCategoryCon
                 mView.hideToolbarSpinner();
                 mView.showToolbarTitle();
             } else {
-                mView.setToolbarSpinner(mSpinnerItems);
+                int position = getPositionOfDefaultLocale(mSpinnerItems);
+                mSelectedItem = mSpinnerItems.get(position);
+                mView.setToolbarSpinner(mSpinnerItems, position);
                 mView.showToolbarSpinner();
                 mView.hideToolbarTitle();
             }
@@ -63,11 +64,29 @@ public class SectionByCategoryContainerPresenter implements SectionByCategoryCon
         }
     }
 
+    private int getPositionOfDefaultLocale(List<SpinnerItem> items) {
+        java.util.Locale defaultLocale = HelpCenterPref.getInstance().getLocale();
+
+        int position = 0;
+        for (SpinnerItem item : items) {
+            if (LocaleUtils.areLocalesTheSame(((Locale) item.getResource()), defaultLocale)) {
+                return position;
+            }
+            position++;
+        }
+
+        return 0;
+    }
+
     @Override
     public void onSpinnerItemSelected(SpinnerItem spinnerItem) {
         Locale kayakoLocale = (Locale) spinnerItem.getResource();
         java.util.Locale selectedLocale = LocaleUtils.getLocale(kayakoLocale);
-        if (!mActiveLocale.equals(selectedLocale)) { // Reload only if it's not the first time
+
+        HelpCenterPref.getInstance().setLocale(selectedLocale);
+
+        if (!mSelectedItem.equals(spinnerItem)) { // Reload only if it's current locale has been changed
+            mSelectedItem = spinnerItem;
             mView.reloadSectionsByCategory();
         }
     }
@@ -75,6 +94,11 @@ public class SectionByCategoryContainerPresenter implements SectionByCategoryCon
     @Override
     public void onClickContact() {
         mView.openContactPage();
+    }
+
+    @Override
+    public void setData(SectionByCategoryContainerContract.Data data) {
+        mData = data;
     }
 
     @Override
@@ -98,17 +122,4 @@ public class SectionByCategoryContainerPresenter implements SectionByCategoryCon
     }
 
 
-    private void resetDataIfHelpCenterValuesHaveChanged() {
-        String currentHelpCenterUrl = HelpCenterPref.getInstance().getHelpCenterUrl();
-        java.util.Locale currentLocale = HelpCenterPref.getInstance().getLocale();
-        if (!mHelpCenterUrl.equals(currentHelpCenterUrl) || !mActiveLocale.equals(currentLocale)) {
-            setUpData();
-        }
-    }
-
-    private void setUpData() {
-        mHelpCenterUrl = HelpCenterPref.getInstance().getHelpCenterUrl();
-        mActiveLocale = HelpCenterPref.getInstance().getLocale();
-        mData = SectionByCategoryContainerFactory.getDataSource(mHelpCenterUrl, mActiveLocale);
-    }
 }

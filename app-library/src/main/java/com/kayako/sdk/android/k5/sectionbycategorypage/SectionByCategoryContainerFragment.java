@@ -24,6 +24,7 @@ import com.kayako.sdk.android.k5.common.fragments.BaseContainerFragment;
 import com.kayako.sdk.android.k5.common.task.BackgroundTask;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
@@ -99,9 +100,10 @@ public class SectionByCategoryContainerFragment extends BaseContainerFragment im
     }
 
     @Override
-    public void setToolbarSpinner(List<SpinnerItem> items) {
+    public void setToolbarSpinner(List<SpinnerItem> items,int defaultPosition) {
         Spinner spinner = (Spinner) mToolbar.findViewById(R.id.ko__toolbar_spinner);
         spinner.setAdapter(new ArrayAdapter<>(getContext(), R.layout.ko__spinner_item, items));
+        spinner.setSelection(defaultPosition);
         spinner.setOnItemSelectedListener(this);
     }
 

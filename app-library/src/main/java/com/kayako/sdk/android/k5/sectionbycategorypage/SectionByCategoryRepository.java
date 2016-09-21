@@ -1,9 +1,11 @@
 package com.kayako.sdk.android.k5.sectionbycategorypage;
 
+import com.kayako.sdk.android.k5.core.HelpCenterPref;
 import com.kayako.sdk.helpcenter.HelpCenter;
 import com.kayako.sdk.helpcenter.category.Category;
 import com.kayako.sdk.helpcenter.section.Section;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -18,13 +20,17 @@ public class SectionByCategoryRepository implements SectionByCategoryContract.Da
     private Map<Category, List<Section>> mSectionsByCategory = null;
 
     private HelpCenter mHelpCenter;
+    private String mHelpCenterUrl;
+    private Locale mLocale;
 
     public SectionByCategoryRepository(String helpCenterUrl, Locale locale) {
         mHelpCenter = new HelpCenter(helpCenterUrl, locale);
+        mHelpCenterUrl = helpCenterUrl;
+        mLocale = locale;
     }
 
     public List<Category> getCategories(boolean useCache) {
-        if (useCache && mCategories != null && mCategories.size() > 0) {
+        if (useCache && areCategoriesCached()) {
             return mCategories;
         } else {
             return mCategories = mHelpCenter.getCategories(0, 999); // hack to load all categories
@@ -32,7 +38,11 @@ public class SectionByCategoryRepository implements SectionByCategoryContract.Da
     }
 
     public Map<Category, List<Section>> getSectionsByCategory(List<Category> categories, boolean useCache) {
-        if (useCache && mSectionsByCategory != null && mSectionsByCategory.size() != 0) { // Also check size - since hashmap is instantiated before the network call can fail
+        if (!areCategoriesCached()) {
+            throw new NullPointerException("Categories have not been fetched yet. Please call getCategories() first");
+        }
+
+        if (useCache && areSectionsByCategoryCached()) { // Also check size - since hashmap is instantiated before the network call can fail
             return mSectionsByCategory;
         } else {
             mSectionsByCategory = new HashMap<>();
@@ -40,6 +50,8 @@ public class SectionByCategoryRepository implements SectionByCategoryContract.Da
                 List<Section> sections = mHelpCenter.getSections(category.getId(), 0, 999); // hack to load all sections
                 if (sections != null && sections.size() > 0) {
                     mSectionsByCategory.put(category, sections);
+                } else {
+                    mSectionsByCategory.put(category, new ArrayList<Section>());
                 }
             }
             return mSectionsByCategory;
@@ -47,7 +59,23 @@ public class SectionByCategoryRepository implements SectionByCategoryContract.Da
     }
 
     public boolean isCached() {
-        return mCategories != null && mCategories.size() != 0 &&
-                mSectionsByCategory != null && mSectionsByCategory.size() != 0;
+        return areSectionsByCategoryCached();
     }
+
+    private boolean areCategoriesCached() {
+        return mCategories != null
+                && mCategories.size() > 0;
+    }
+
+    private boolean areSectionsByCategoryCached() {
+        return areCategoriesCached()
+                && mSectionsByCategory != null
+                && mSectionsByCategory.size() == mCategories.size();
+    }
+
+    public boolean doHelpCenterPreferencesMatch() {
+        return mHelpCenterUrl.equals(HelpCenterPref.getInstance().getHelpCenterUrl())
+                && mLocale.equals(HelpCenterPref.getInstance().getLocale());
+    }
+
 }

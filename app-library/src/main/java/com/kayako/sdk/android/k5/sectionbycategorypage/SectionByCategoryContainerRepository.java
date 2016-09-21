@@ -16,10 +16,12 @@ public class SectionByCategoryContainerRepository implements SectionByCategoryCo
 
     private HelpCenter mHelpCenter;
     private String mHelpCenterUrl;
+    private Locale mCurrentLocale;
 
     public SectionByCategoryContainerRepository(String helpCenterUrl, Locale locale) {
         mHelpCenter = new HelpCenter(helpCenterUrl, locale);
         mHelpCenterUrl = helpCenterUrl;
+        mCurrentLocale = locale;
     }
 
     // TODO: Force Refresh? Caching?
@@ -46,6 +48,12 @@ public class SectionByCategoryContainerRepository implements SectionByCategoryCo
     }
 
     public boolean isCached() {
-        return mLocales == null && HelpCenterPref.getInstance().getHelpCenterUrl().equals(mHelpCenterUrl);
+        // Data is considered cached only if it's of the same help center url and locale
+        return mLocales != null;
+    }
+
+    public boolean doHelpCenterPreferencesMatch() {
+        return mHelpCenterUrl.equals(HelpCenterPref.getInstance().getHelpCenterUrl())
+                && mCurrentLocale.equals(HelpCenterPref.getInstance().getLocale());
     }
 }

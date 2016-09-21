@@ -21,6 +21,8 @@ public interface SectionByCategoryContract {
         Map<Category, List<Section>> getSectionsByCategory(List<Category> categories, boolean useCacheIfAvailable);
 
         boolean isCached();
+
+        boolean doHelpCenterPreferencesMatch();
     }
 
     interface View extends BaseView {
@@ -43,6 +45,8 @@ public interface SectionByCategoryContract {
     }
 
     interface Presenter extends BasePresenter<SectionByCategoryContract.View> {
+
+        void setData(SectionByCategoryContract.Data data);
 
         void initPage();
 
