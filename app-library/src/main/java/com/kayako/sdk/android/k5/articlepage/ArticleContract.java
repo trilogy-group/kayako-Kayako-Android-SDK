@@ -39,6 +39,7 @@ public interface ArticleContract {
 
         void openUrlIntent(String url);
 
+        void showFailedToLoadErrorMessage();
     }
 
     interface Presenter extends BasePresenter<ArticleContract.View> {
@@ -48,5 +49,7 @@ public interface ArticleContract {
         void onContentLoaded();
 
         void onClickLinkInArticle(String url);
+
+        void onFailureToLoadContent();
     }
 }

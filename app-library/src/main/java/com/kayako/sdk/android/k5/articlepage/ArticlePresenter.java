@@ -42,6 +42,11 @@ public class ArticlePresenter implements ArticleContract.Presenter {
     }
 
     @Override
+    public void onFailureToLoadContent() {
+        mView.showFailedToLoadErrorMessage();
+    }
+
+    @Override
     public void setView(ArticleContract.View view) {
         mView = view;
     }

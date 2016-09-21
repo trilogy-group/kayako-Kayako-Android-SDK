@@ -5,22 +5,24 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 
-// TODO: Make sure all cases are handled
-// TODO: Check arguments - remove unnecessary ones
-
 public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnScrollListener {
-    // The minimum amount of items to have below your current scroll position before loading more.
+    // The minimum amount of items to have below your current scroll position before loading more
     private int visibleThreshold = 5;
+
     // The current offset index of data you have loaded
     private int currentPage = 0;
+
     // The total number of items in the dataset after the last load
     private int previousTotalItemCount = 0;
+
     // True if we are still waiting for the last set of data to load.
     private boolean loading = true;
+
     // Sets the starting page index
     private int startingPageIndex = 0;
 
-    private boolean mShouldLoadMoreWithoutScroll = true; // To ensure onLoadMore is called at least once. This was added because large screen sizes and smaller limits create a situation where more data will never be loaded.
+    // Ensure onLoadMore is called at least once. This was added because large screen sizes and smaller limits create a situation where more data will never be loaded.
+    private boolean mShouldLoadMoreWithoutScroll = true;
 
     RecyclerView.LayoutManager mLayoutManager;
     EndlessRecyclerViewScrollAdapter mAdapter;
@@ -53,7 +55,7 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
     @Override
     public void onScrolled(RecyclerView view, int dx, int dy) {
         // Only consider scrolling when when there's a vertical scroll
-        // Negative values mean scroll in opposite direction?
+        // Negative values mean scroll in opposite direction
         if ((!mShouldLoadMoreWithoutScroll && dy <= 0) || !mAdapter.hasMoreItems()) {
             mShouldLoadMoreWithoutScroll = false;
             return;

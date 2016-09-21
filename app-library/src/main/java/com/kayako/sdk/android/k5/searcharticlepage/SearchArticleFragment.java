@@ -69,7 +69,6 @@ public class SearchArticleFragment extends BaseListFragment implements SearchArt
 
     @Override
     public void showOnlyErrorView() {
-        // TODO: Customize error messages - Network, others
         super.showErrorViewAndHideOthers(null, null, new View.OnClickListener() {
             @Override
             public void onClick(View view) {

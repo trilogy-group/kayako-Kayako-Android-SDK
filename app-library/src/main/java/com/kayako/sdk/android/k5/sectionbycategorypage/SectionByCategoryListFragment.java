@@ -115,7 +115,6 @@ public class SectionByCategoryListFragment extends BaseListFragment implements S
 
     @Override
     public void showOnlyErrorView() {
-        // TODO: Customize error messages - Network, others
         showErrorViewAndHideOthers(null, null, new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -11,6 +11,7 @@
 
     <string name="ko__msg_error_type_at_least_three_characters_to_search">Please type at least 3 characters to search!</string>
     <string name="ko__msg_error_unable_to_load_more_items">Something went wrong. Unable to load more items.</string>
+    <string name="ko__msg_error_unable_to_article">Something went wrong. Unable to load Articles.</string>
 
     <string name="ko__action_contact">Contact</string>
     <string name="ko__action_search">Search</string>

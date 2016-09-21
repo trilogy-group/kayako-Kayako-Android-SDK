@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.fragments.BaseStateFragment;
+import com.kayako.sdk.android.k5.common.utils.ViewUtils;
 import com.kayako.sdk.android.k5.common.view.CropCircleTransformation;
 import com.kayako.sdk.helpcenter.articles.Article;
 
@@ -101,7 +102,7 @@ public class ArticleFragment extends BaseStateFragment implements ArticleContrac
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 super.onReceivedError(view, request, error);
-                // TODO Show Error Page?
+                mPresenter.onFailureToLoadContent();
             }
 
             @Override
@@ -146,6 +147,11 @@ public class ArticleFragment extends BaseStateFragment implements ArticleContrac
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         startActivity(i);
+    }
+
+    @Override
+    public void showFailedToLoadErrorMessage() {
+        ViewUtils.showSnackBar(mRoot, getString(R.string.ko__msg_error_unable_to_article));
     }
 
     @Override
