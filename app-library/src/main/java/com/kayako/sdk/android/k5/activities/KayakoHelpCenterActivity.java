@@ -15,18 +15,22 @@ import com.kayako.sdk.helpcenter.section.Section;
 
 public class KayakoHelpCenterActivity extends AppCompatActivity implements ActivityNavigationResourceCallback {
 
+    private static final String FRAGMENT_TAG = "current_fragment";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ko__activity_help_center);
 
-        // TODO: Write steps for users to include this in their Application class
-        // TODO: Temporarily using in Activity for testing.
-        HelpCenterPref.createInstance(this);
+        if (savedInstanceState == null) {
+            openFirstPage();
+        }
+    }
 
+    private void openFirstPage() {
         Fragment newFragment = SectionByCategoryContainerFragment.newInstance();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.ko__fragment_listing, newFragment);
+        transaction.replace(R.id.ko__fragment_listing, newFragment, FRAGMENT_TAG);
         transaction.commit();
     }
 
@@ -34,10 +38,9 @@ public class KayakoHelpCenterActivity extends AppCompatActivity implements Activ
     public void openNextPage(Resource resource) {
         Fragment newFragment = ArticleListContainerFragment.newInstance((Section) resource);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.ko__fragment_listing, newFragment);
+        transaction.replace(R.id.ko__fragment_listing, newFragment, FRAGMENT_TAG);
         transaction.addToBackStack(null);
         transaction.commit();
     }
 
-    // TODO: Save instance for orientation change
 }
