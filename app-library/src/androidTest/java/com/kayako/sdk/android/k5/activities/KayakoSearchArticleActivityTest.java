@@ -6,7 +6,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.kayako.sdk.android.k5.R;
-import com.kayako.sdk.android.k5.core.KayakoHC;
+import com.kayako.sdk.android.k5.core.Kayako;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -36,7 +36,7 @@ public class KayakoSearchArticleActivityTest {
 
     @Before
     public void setUp() throws Exception {
-        KayakoHC.initialize(mActivityRule.getActivity().getApplicationContext());
+        Kayako.initialize(mActivityRule.getActivity().getApplicationContext());
     }
 
 

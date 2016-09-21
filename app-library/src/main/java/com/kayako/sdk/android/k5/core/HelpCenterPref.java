@@ -25,7 +25,7 @@ public class HelpCenterPref {
 
     public static HelpCenterPref getInstance() {
         if (mInstance == null) {
-            throw new NullPointerException("Please call KayakoHC.initialize() in your Application class");
+            throw new NullPointerException("Please call Kayako.initialize() in your Application class");
         }
         return mInstance;
     }

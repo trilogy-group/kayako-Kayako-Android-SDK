@@ -10,23 +10,23 @@ import java.util.Locale;
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
-public class KayakoHC {
+public class Kayako {
 
     private Context mAppContext;
-    private static KayakoHC mInstance;
+    private static Kayako mInstance;
 
     public static void initialize(Context applicationContext) {
-        mInstance = new KayakoHC(applicationContext);
+        mInstance = new Kayako(applicationContext);
         HelpCenterPref.createInstance(applicationContext);
     }
 
-    public KayakoHC(Context mAppContext) {
+    public Kayako(Context mAppContext) {
         this.mAppContext = mAppContext;
     }
 
-    public static KayakoHC getInstance() {
+    public static Kayako getInstance() {
         if (mInstance == null) {
-            throw new NullPointerException("Please call KayakoHC.initialize() in your Application class");
+            throw new NullPointerException("Please call Kayako.initialize() in your Application class");
         }
         return mInstance;
     }

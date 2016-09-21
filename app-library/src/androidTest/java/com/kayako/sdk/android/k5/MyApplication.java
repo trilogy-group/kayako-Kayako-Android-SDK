@@ -3,7 +3,7 @@ package com.kayako.sdk.android.k5;
 import android.app.Application;
 
 import com.kayako.sdk.android.k5.core.HelpCenterPref;
-import com.kayako.sdk.android.k5.core.KayakoHC;
+import com.kayako.sdk.android.k5.core.Kayako;
 
 import java.util.Locale;
 
@@ -15,7 +15,7 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        KayakoHC.initialize(this);
+        Kayako.initialize(this);
 
         // Since OpenHelpCenter() is never called, set the HelpCenterPrefs before running tests
         HelpCenterPref.createInstance(this);

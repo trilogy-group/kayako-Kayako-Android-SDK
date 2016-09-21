@@ -6,7 +6,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.TestUtils;
-import com.kayako.sdk.android.k5.core.KayakoHC;
+import com.kayako.sdk.android.k5.core.Kayako;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -30,7 +30,7 @@ public class KayakoHelpCenterActivityTest {
 
     @Before
     public void setUp() throws Exception {
-        KayakoHC.initialize(mActivityRule.getActivity());
+        Kayako.initialize(mActivityRule.getActivity());
     }
 
     public static void checkIfArticleListingPageDisplayed() {
@@ -68,7 +68,7 @@ public class KayakoHelpCenterActivityTest {
 
     @Test
     public void ensureArticleListingPageIsDisplayedOnOrientationChange() {
-        KayakoHC.initialize(mActivityRule.getActivity());
+        Kayako.initialize(mActivityRule.getActivity());
         navigateToArticleListingPage();
         TestUtils.changeOrientationToLandscapeMode(mActivityRule.getActivity());
         checkIfArticleListingPageDisplayed();
