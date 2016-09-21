@@ -32,7 +32,6 @@ public abstract class EndlessRecyclerViewScrollAdapter<T extends LoadingItem> ex
     }
 
     public void setData(List<T> newData) {
-        // TODO: Test
         if (newData == null) {
             newData = new ArrayList<>();
         }

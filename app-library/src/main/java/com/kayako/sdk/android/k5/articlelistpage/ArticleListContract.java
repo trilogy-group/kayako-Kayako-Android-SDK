@@ -38,6 +38,8 @@ public interface ArticleListContract {
 
         void startBackgroundTaskToLoadMoreData();
 
+        void cancelBackgroundTasks();
+
         void addItemsToList(List<ListItem> items);
 
         void showLoadingMoreItemsProgress();
@@ -47,6 +49,8 @@ public interface ArticleListContract {
         void setListHasMoreItems(boolean hasMoreItems);
 
         void openArticleActivity(Article article);
+
+        void showLoadMoreErrorMessage();
     }
 
     interface Presenter extends BasePresenter<ArticleListContract.View> {

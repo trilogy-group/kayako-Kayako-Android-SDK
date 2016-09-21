@@ -2,7 +2,6 @@ package com.kayako.sdk.android.k5.articlelistpage;
 
 import android.text.Html;
 
-import com.kayako.sdk.android.k5.core.HelpCenterPref;
 import com.kayako.sdk.android.k5.common.data.ListItem;
 import com.kayako.sdk.helpcenter.articles.Article;
 import com.kayako.sdk.helpcenter.section.Section;
@@ -45,7 +44,6 @@ public class ArticleListPresenter implements ArticleListContract.Presenter {
             mView.showOnlyLoadingView();
         }
         mView.startBackgroundTaskToLoadData();
-        // TODO: Retrieve Section data (title, description) via Repository
     }
 
     @Override
@@ -115,7 +113,7 @@ public class ArticleListPresenter implements ArticleListContract.Presenter {
                 mView.addItemsToList(mMoreItems);
             }
         } else {
-            // TODO: Show error message? Show toast instead of replacing whole screen with error.
+            mView.showLoadMoreErrorMessage();
         }
 
         mView.hideLoadingMoreItemsProgress();
@@ -128,9 +126,9 @@ public class ArticleListPresenter implements ArticleListContract.Presenter {
 
     @Override
     public void reloadPage() {
+        mView.cancelBackgroundTasks();
         mView.showOnlyLoadingView();
         mView.startBackgroundTaskToLoadData();
-        // TODO: Cancel any ongoing tasks?
     }
 
     @Override

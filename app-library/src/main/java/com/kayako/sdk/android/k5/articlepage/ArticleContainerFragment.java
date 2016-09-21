@@ -63,14 +63,6 @@ public class ArticleContainerFragment extends BaseContainerFragment implements A
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         showSearchIcon();
-        showContactIcon();
-        setContactClickListener(new OnMenuClickListener() {
-            @Override
-            public void OnMenuClick(MenuItem menuItem) {
-                mPresenter.onClickContact();
-            }
-        });
-
         setSearchIconClickListener(new OnMenuClickListener() {
             @Override
             public void OnMenuClick(MenuItem menuItem) {
@@ -83,11 +75,6 @@ public class ArticleContainerFragment extends BaseContainerFragment implements A
     @Override
     public void openSearchActivity() {
         super.openSearchPage();
-    }
-
-    @Override
-    public void openContactActivity() {
-        super.openContactPage();
     }
 
     private void setUpToolbar(String title) {

@@ -2,6 +2,8 @@ package com.kayako.sdk.android.k5.core;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
+import android.webkit.URLUtil;
 
 import com.kayako.sdk.android.k5.activities.KayakoHelpCenterActivity;
 
@@ -32,6 +34,14 @@ public class Kayako {
     }
 
     public void openHelpCenter(Context context, String helpCenterUrl, Locale defaultLocale) {
+        if (!URLUtil.isValidUrl(helpCenterUrl)) {
+            throw new IllegalArgumentException("Help Center Url provided is not valid");
+        }
+
+        if (TextUtils.isEmpty(helpCenterUrl) || defaultLocale == null) {
+            throw new NullPointerException("helpCenterUrl and defaultLocale are mandatory non-null arguments and need to be provided.");
+        }
+
         HelpCenterPref.getInstance().setHelpCenterUrl(helpCenterUrl);
         HelpCenterPref.getInstance().setLocale(defaultLocale);
         context.startActivity(new Intent(context, KayakoHelpCenterActivity.class));

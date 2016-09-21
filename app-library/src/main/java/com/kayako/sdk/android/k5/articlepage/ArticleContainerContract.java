@@ -12,14 +12,10 @@ public interface ArticleContainerContract {
     interface View extends BaseView {
 
         void openSearchActivity();
-
-        void openContactActivity();
     }
 
     interface Presenter extends BasePresenter<ArticleContainerContract.View> {
 
         void onClickSearch();
-
-        void onClickContact();
     }
 }

@@ -3,6 +3,7 @@ package com.kayako.sdk.android.k5.core;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
+import android.webkit.URLUtil;
 
 import java.util.Locale;
 
@@ -37,7 +38,6 @@ public class HelpCenterPref {
         }
     }
 
-    // TODO: Validate URL provided by user?
     public void setHelpCenterUrl(String url) {
         mPrefs.edit().putString(KEY_HELP_CENTER_URL, url).apply();
     }

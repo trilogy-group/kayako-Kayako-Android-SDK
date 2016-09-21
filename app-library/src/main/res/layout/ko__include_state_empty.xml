@@ -36,7 +36,4 @@
         android:text="@string/ko__label_empty_view_description"
         android:textSize="16sp" />
 
-
-    <!--TODO: Use images from sketch -->
-
 </LinearLayout>

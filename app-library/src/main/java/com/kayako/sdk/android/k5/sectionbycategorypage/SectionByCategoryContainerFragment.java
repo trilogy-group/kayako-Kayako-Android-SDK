@@ -71,13 +71,6 @@ public class SectionByCategoryContainerFragment extends BaseContainerFragment im
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        showContactIcon();
-        setContactClickListener(new OnMenuClickListener() {
-            @Override
-            public void OnMenuClick(MenuItem menuItem) {
-                mPresenter.onClickContact();
-            }
-        });
         refreshOptionsMenu();
     }
 
@@ -153,11 +146,6 @@ public class SectionByCategoryContainerFragment extends BaseContainerFragment im
                 mPresenter.onDataLoaded(isSuccessful);
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-    }
-
-    @Override
-    public void openContactPage() {
-        super.openContactPage();
     }
 
     private void setUpToolbar() {

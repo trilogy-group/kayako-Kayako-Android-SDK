@@ -4,13 +4,16 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.Toast;
 
+import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.activities.KayakoArticleActivity;
 import com.kayako.sdk.android.k5.common.adapter.EndlessRecyclerViewScrollAdapter;
 import com.kayako.sdk.android.k5.common.adapter.ListItemRecyclerViewAdapter;
 import com.kayako.sdk.android.k5.common.data.ListItem;
 import com.kayako.sdk.android.k5.common.fragments.BaseListFragment;
 import com.kayako.sdk.android.k5.common.task.BackgroundTask;
+import com.kayako.sdk.android.k5.common.utils.ViewUtils;
 import com.kayako.sdk.helpcenter.articles.Article;
 import com.kayako.sdk.helpcenter.section.Section;
 
@@ -21,20 +24,10 @@ import java.util.List;
  */
 public class ArticleListFragment extends BaseListFragment implements ArticleListContract.View, EndlessRecyclerViewScrollAdapter.OnLoadMoreListener, ListItemRecyclerViewAdapter.OnItemClickListener {
 
-//    public static final String ARG_SECTION_ID = "section-id";
     public static final String ARG_SECTION = "section";
 
     private BackgroundTask mTaskToLoadData;
     private BackgroundTask mTaskToLoadMoreData;
-
-//    public static ArticleListFragment newInstance(long sectionId) {
-//        Bundle bundle = new Bundle();
-//        bundle.putLong(ARG_SECTION_ID, sectionId);
-//
-//        ArticleListFragment articleListFragment = new ArticleListFragment();
-//        articleListFragment.setArguments(bundle);
-//        return articleListFragment;
-//    }
 
     public static ArticleListFragment newInstance(Section section) {
         Bundle bundle = new Bundle();
@@ -61,10 +54,8 @@ public class ArticleListFragment extends BaseListFragment implements ArticleList
         super.onActivityCreated(savedInstanceState);
         if (getArguments() != null && getArguments().containsKey(ARG_SECTION)) {
             mPresenter.initPage((Section) getArguments().getSerializable(ARG_SECTION));
-//        } else if (getArguments() != null && getArguments().containsKey(ARG_SECTION_ID)) {
-//            mPresenter.initPage(getArguments().getLong(ARG_SECTION_ID));
         } else {
-            // TODO: Throw Exception or close activity???
+            ViewUtils.showToastMessage(getContext(), "Invalid arguments!", Toast.LENGTH_SHORT);
         }
     }
 
@@ -126,8 +117,6 @@ public class ArticleListFragment extends BaseListFragment implements ArticleList
 
     @Override
     public void startBackgroundTaskToLoadMoreData() {
-        // TODO How many times would this be called? load more should be called one at a time
-        // TODO: How do ensure that the order is maintained. SERIAL EXECUTOR?
         mTaskToLoadMoreData = (BackgroundTask) new BackgroundTask(getActivity()) {
             @Override
             protected boolean performInBackground() {
@@ -140,6 +129,13 @@ public class ArticleListFragment extends BaseListFragment implements ArticleList
             }
         }.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
+
+    @Override
+    public void cancelBackgroundTasks() {
+        cancelTask(mTaskToLoadData);
+        cancelTask(mTaskToLoadMoreData);
+    }
+
 
     @Override
     public void showOnlyListView() {
@@ -181,17 +177,15 @@ public class ArticleListFragment extends BaseListFragment implements ArticleList
         startActivity(KayakoArticleActivity.getIntent(getContext(), article));
     }
 
+    @Override
+    public void showLoadMoreErrorMessage() {
+        ViewUtils.showSnackBar(mRoot, getString(R.string.ko__msg_error_unable_to_load_more_items));
+    }
 
     private void cancelTask(BackgroundTask task) {
         if (task != null) {
             task.cancelTask();
         }
     }
-
-    protected void cancelBackgroundTasks() {
-        cancelTask(mTaskToLoadData);
-        cancelTask(mTaskToLoadMoreData);
-    }
-
 
 }

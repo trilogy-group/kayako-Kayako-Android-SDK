@@ -66,7 +66,7 @@ public class ArticleFragment extends BaseStateFragment implements ArticleContrac
 
     @Override
     public void setAuthorAvatar(String avatarUrl) {
-        ImageView authorAvatar = (ImageView) mRoot.findViewById(R.id.ko__article_author_avatar); // TODO: Glide
+        ImageView authorAvatar = (ImageView) mRoot.findViewById(R.id.ko__article_author_avatar);
         Glide.with(getContext())
                 .load(avatarUrl)
                 .bitmapTransform(new CropCircleTransformation(getContext()))
@@ -86,7 +86,6 @@ public class ArticleFragment extends BaseStateFragment implements ArticleContrac
 
     @Override
     public void setArticleContent(String htmlContent) {
-        // TODO: Add test to ensure that if there are large tables, horizontal scroll is enabled. Else, it's only vertical scroll.
         // The webview is formatted with the CSS file available in assets folder
         WebView articleContent = (WebView) mRoot.findViewById(R.id.ko__article_web_view);
         String styledHtmlData = "<link rel=\"stylesheet\" type=\"text/css\" href=\"kayako-style.css\" />" + htmlContent;
@@ -95,7 +94,6 @@ public class ArticleFragment extends BaseStateFragment implements ArticleContrac
         articleContent.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
-                // TODO: -Use WebChromeClient instead? - onPageFinished will not be called until all of the assets (css/js/images) have finished loading for that page.
                 super.onPageFinished(view, url);
                 mPresenter.onContentLoaded();
             }

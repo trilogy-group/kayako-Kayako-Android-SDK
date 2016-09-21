@@ -37,8 +37,6 @@
 
         <include layout="@layout/ko__include_article_author" />
 
-        <!-- TODO: Show comments -->
-
         <include layout="@layout/ko__include_separator" />
 
         <include layout="@layout/ko__include_footer" />

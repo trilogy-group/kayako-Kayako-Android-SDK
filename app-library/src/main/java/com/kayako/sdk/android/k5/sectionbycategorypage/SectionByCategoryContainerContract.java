@@ -38,7 +38,6 @@ public interface SectionByCategoryContainerContract {
 
         void startBackgroundTask();
 
-        void openContactPage();
     }
 
     interface Presenter extends BasePresenter<SectionByCategoryContainerContract.View> {
@@ -53,6 +52,5 @@ public interface SectionByCategoryContainerContract {
 
         void onSpinnerItemSelected(SpinnerItem spinnerItem);
 
-        void onClickContact();
     }
 }

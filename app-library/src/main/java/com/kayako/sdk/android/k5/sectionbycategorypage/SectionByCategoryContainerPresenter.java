@@ -28,7 +28,6 @@ public class SectionByCategoryContainerPresenter implements SectionByCategoryCon
     @Override
     public void initPage() {
         invalidateOldValues();
-        mView.showToolbarTitle(); // TODO: Remove title idea. BAD.
         mView.hideToolbarSpinner();
         mView.startBackgroundTask();
     }
@@ -89,11 +88,6 @@ public class SectionByCategoryContainerPresenter implements SectionByCategoryCon
             mSelectedItem = spinnerItem;
             mView.reloadSectionsByCategory();
         }
-    }
-
-    @Override
-    public void onClickContact() {
-        mView.openContactPage();
     }
 
     @Override

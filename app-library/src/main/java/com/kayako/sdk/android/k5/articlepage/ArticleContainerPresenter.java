@@ -17,11 +17,6 @@ public class ArticleContainerPresenter implements ArticleContainerContract.Prese
     }
 
     @Override
-    public void onClickContact() {
-        mView.openContactActivity();
-    }
-
-    @Override
     public void setView(ArticleContainerContract.View view) {
         mView = view;
     }

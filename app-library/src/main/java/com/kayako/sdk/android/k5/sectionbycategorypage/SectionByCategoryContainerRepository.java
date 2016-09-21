@@ -24,8 +24,6 @@ public class SectionByCategoryContainerRepository implements SectionByCategoryCo
         mCurrentLocale = locale;
     }
 
-    // TODO: Force Refresh? Caching?
-
     @Override
     public List<com.kayako.sdk.helpcenter.locale.Locale> getPublicLocales(boolean useCacheIfAvailable) {
 

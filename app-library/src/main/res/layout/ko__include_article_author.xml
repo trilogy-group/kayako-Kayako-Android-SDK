@@ -32,8 +32,6 @@
             android:textSize="14sp"
             tools:text="Neil Mathew" />
 
-        <!-- TODO: Add support for ISO Times - dates -->
-
         <com.kayako.sdk.android.k5.common.view.RegularTextView
             android:id="@+id/ko__article_last_updated"
             android:layout_width="match_parent"

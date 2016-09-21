@@ -25,16 +25,5 @@
             android:singleLine="true"
             android:textColor="@color/ko__toolbar_search_text_color"/>
 
-        <!--
-        TODO: Clear icon
-                <ImageButton
-                    android:id="@+id/button_clear"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:background="?android:selectableItemBackground"
-                    android:padding="16dp"
-                    />
-        -->
-
     </LinearLayout>
 </android.support.v7.widget.Toolbar>

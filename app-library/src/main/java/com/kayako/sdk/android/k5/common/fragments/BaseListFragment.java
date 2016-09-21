@@ -108,7 +108,6 @@ public abstract class BaseListFragment extends BaseStateFragment {
                 };
 
                 loadMoreHandler.sendEmptyMessage(0);
-//                    adapter.setHasMoreItems(false); // TODO: TESTING
             }
         };
 

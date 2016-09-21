@@ -100,43 +100,6 @@ public class SectionByCategoryListFragment extends BaseListFragment implements S
     @Override
     public void setUpList(final List<ListItem> items) {
         listItemRecyclerViewAdapter = new SearchSectionAdapter(items, this, this);
-
-// TODO: Testing load more - not required for this page
-//        EndlessRecyclerViewScrollAdapter.OnLoadMoreListener loadMoreListener = new EndlessRecyclerViewScrollAdapter.OnLoadMoreListener() {
-//            @Override
-//            public void loadMoreItems() {
-//                // Show Progresss
-//                listItemRecyclerViewAdapter.showLoadMoreProgress();
-//
-//                 Run Background Thread // TODO: Rearrange properly
-//                new AsyncTask<Void, Void, Void>() {
-//                    @Override
-//                    protected Void doInBackground(Void... voids) {
-//                        try {
-//                            Thread.sleep(4000);
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
-//                        return null;
-//                    }
-//
-//                    @Override
-//                    protected void onPostExecute(Void aVoid) {
-//                        super.onPostExecute(aVoid);
-//
-//                        List<ListItem> items = new ArrayList<>();
-//                        items.add(new ListItem(false, "More Data 1", "Data", null));
-//                        items.add(new ListItem(false, "More Data 2", "Data", null));
-//                        items.add(new ListItem(false, "More Data 3", "Data", null));
-//
-//                        listItemRecyclerViewAdapter.hideLoadMoreProgress();
-//                        listItemRecyclerViewAdapter.addData(items);
-//                        // TODO: Error, items are added as duplicates - Fixed by stopping onLoadMore() after first successful load
-//                    }
-//                }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-//            }
-//        };
-
         initList(listItemRecyclerViewAdapter, null);
     }
 

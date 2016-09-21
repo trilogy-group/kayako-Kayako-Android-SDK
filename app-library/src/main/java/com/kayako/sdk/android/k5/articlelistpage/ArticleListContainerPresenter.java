@@ -17,11 +17,6 @@ public class ArticleListContainerPresenter implements ArticleListContainerContra
     }
 
     @Override
-    public void clickContactPage() {
-        mView.openContactPage();
-    }
-
-    @Override
     public void setView(ArticleListContainerContract.View view) {
         mView = view;
     }

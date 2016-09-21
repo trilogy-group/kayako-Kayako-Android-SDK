@@ -21,9 +21,6 @@ public abstract class BaseContainerFragment extends Fragment {
     private boolean showSearch;
     private OnMenuClickListener mClickSearchListener;
 
-    private boolean showContact;
-    private OnMenuClickListener mClickContactListener;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,12 +37,6 @@ public abstract class BaseContainerFragment extends Fragment {
         } else {
             hideSearchIcon();
         }
-
-        if (showContact) {
-            showContactIcon();
-        } else {
-            hideContactIcon();
-        }
     }
 
     @Override
@@ -59,12 +50,6 @@ public abstract class BaseContainerFragment extends Fragment {
                 mClickSearchListener.OnMenuClick(item);
             }
             return true;
-// TODO: Uncomment when messenger complete
-//        } else if (i == R.id.ko__action_contact) {
-//            if (mClickContactListener != null) {
-//                mClickContactListener.OnMenuClick(item);
-//            }
-//            return true;
         }
         return false;
     }
@@ -92,26 +77,6 @@ public abstract class BaseContainerFragment extends Fragment {
         mClickSearchListener = listener;
     }
 
-    protected void showContactIcon() {
-// TODO: Uncomment when messenger complete
-//        if (mMenu != null) {
-//            MenuItem item = mMenu.findItem(R.id.ko__action_contact);
-//            item.setVisible(showContact = true);
-//        }
-    }
-
-    protected void hideContactIcon() {
-// TODO: Uncomment when messenger complete
-//        if (mMenu != null) {
-//            MenuItem item = mMenu.findItem(R.id.ko__action_contact);
-//            item.setVisible(showContact = false);
-//        }
-    }
-
-    protected void setContactClickListener(OnMenuClickListener listener) {
-        mClickContactListener = listener;
-    }
-
     protected void refreshOptionsMenu() {
         if (getActivity() != null) {
             getActivity().invalidateOptionsMenu();
@@ -120,10 +85,6 @@ public abstract class BaseContainerFragment extends Fragment {
 
     protected void openSearchPage() {
         startActivity(new Intent(getContext(), KayakoSearchArticleActivity.class));
-    }
-
-    protected void openContactPage() {
-        // TODO: Email Intent
     }
 
     public interface OnMenuClickListener {

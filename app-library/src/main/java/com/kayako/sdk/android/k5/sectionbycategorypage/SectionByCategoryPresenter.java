@@ -20,8 +20,8 @@ public class SectionByCategoryPresenter implements SectionByCategoryContract.Pre
     private SectionByCategoryContract.Data mData;
     private List<ListItem> mListItems;
 
-    public SectionByCategoryPresenter(SectionByCategoryContract.View mWelcomePageView, SectionByCategoryContract.Data data) {
-        this.mView = mWelcomePageView;
+    public SectionByCategoryPresenter(SectionByCategoryContract.View view, SectionByCategoryContract.Data data) {
+        this.mView = view;
         this.mData = data;
     }
 
@@ -66,17 +66,12 @@ public class SectionByCategoryPresenter implements SectionByCategoryContract.Pre
     @Override
     public boolean loadDataInBackground() {
         try {
-            // TODO: Throw Exception in JAR. If it fails to load, do not return null - Shows empty view when it shouldn't
-            // TODO: Strangely, if there's an error on the first call, there's a null returned on the second call - CHECK WHY?
-            // TODO: Test empty
             List<Category> categories = mData.getCategories(true);
             Map<Category, List<Section>> sectionsByCategory = mData.getSectionsByCategory(categories, true);
             mListItems = setUpList(categories, sectionsByCategory);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            // TODO: Find a better way to catch exceptions. Throw likely exceptions in each method
-            // TODO: Throw custom errors? java.net.SocketException: Network is unreachable
             return false;
         }
     }
@@ -89,7 +84,6 @@ public class SectionByCategoryPresenter implements SectionByCategoryContract.Pre
         } else {
             mView.showOnlyErrorView();
         }
-        // TODO: Check if categories loaded properly, and sectiosn - error?
     }
 
     private List<ListItem> setUpList(List<Category> categories, Map<Category, List<Section>> sectionsByCategory) {
