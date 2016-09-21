@@ -5,7 +5,10 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.kayako.sdk.android.k5.R;
+import com.kayako.sdk.android.k5.TestUtils;
+import com.kayako.sdk.android.k5.core.KayakoHC;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,12 +25,26 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 @RunWith(AndroidJUnit4.class)
 public class KayakoHelpCenterActivityTest {
 
+    @Rule
+    public ActivityTestRule<KayakoHelpCenterActivity> mActivityRule = new ActivityTestRule<>(KayakoHelpCenterActivity.class);
+
+    @Before
+    public void setUp() throws Exception {
+        KayakoHC.initialize(mActivityRule.getActivity());
+    }
+
     public static void checkIfArticleListingPageDisplayed() {
         onView(withId(R.id.ko__section_title)).check(matches(isDisplayed()));
     }
 
-    @Rule
-    public ActivityTestRule<KayakoHelpCenterActivity> mActivityRule = new ActivityTestRule<>(KayakoHelpCenterActivity.class);
+    public static void checkIfSectionsByCategoryPageIsDisplayed() {
+        onView(withId(R.id.ko__search_bar)).check(matches(isDisplayed()));
+    }
+
+    private static void navigateToArticleListingPage() {
+        onView(withId(R.id.ko__list))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(3, click()));
+    }
 
     @Test
     public void clickSearchBarToOpenSearchActivity() throws Exception {
@@ -45,9 +62,16 @@ public class KayakoHelpCenterActivityTest {
     @Test
     public void clickArticleItemToOpenArticlePage() throws Exception {
         clickSectionItemToOpenArticleListingPage();
-        onView(withId(R.id.ko__list))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(3, click()));
+        navigateToArticleListingPage();
         KayakoArticleActivityTest.checkIfArticlePageDisplayed();
+    }
+
+    @Test
+    public void ensureArticleListingPageIsDisplayedOnOrientationChange() {
+        KayakoHC.initialize(mActivityRule.getActivity());
+        navigateToArticleListingPage();
+        TestUtils.changeOrientationToLandscapeMode(mActivityRule.getActivity());
+        checkIfArticleListingPageDisplayed();
     }
 
 }

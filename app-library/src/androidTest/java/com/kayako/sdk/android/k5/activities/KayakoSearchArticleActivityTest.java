@@ -6,7 +6,9 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.kayako.sdk.android.k5.R;
+import com.kayako.sdk.android.k5.core.KayakoHC;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,6 +33,12 @@ public class KayakoSearchArticleActivityTest {
     @Rule
     public ActivityTestRule<KayakoSearchArticleActivity> mActivityRule = new ActivityTestRule<>(
             KayakoSearchArticleActivity.class);
+
+    @Before
+    public void setUp() throws Exception {
+        KayakoHC.initialize(mActivityRule.getActivity().getApplicationContext());
+    }
+
 
     public static void checkIfSearchActivityDisplayed() {
         onView(withHint(R.string.ko__label_search_hint)).check(matches(isDisplayed()));
