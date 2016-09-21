@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.kayako.sample">
+
+    <application android:name="com.kayako.sdk.android.k5.MyApplication">
+
+        <activity
+            android:name="com.kayako.sdk.android.k5.activities.KayakoHelpCenterActivity"
+            android:theme="@style/Ko__AppTheme" />
+
+        <activity
+            android:name="com.kayako.sdk.android.k5.activities.KayakoSearchArticleActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/Ko__SearchArticlePageTheme"
+            android:windowSoftInputMode="adjustPan|stateVisible" />
+
+        <activity
+            android:name="com.kayako.sdk.android.k5.activities.KayakoArticleActivity"
+            android:theme="@style/Ko__AppTheme" />
+
+    </application>
+
+</manifest>
