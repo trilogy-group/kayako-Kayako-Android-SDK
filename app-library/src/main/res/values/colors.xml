@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Material Colors -->
+    <!-- Default Material Colors -->
     <color name="colorPrimary">#9B9B9B</color>
     <color name="colorPrimaryDark">#7C7C7C</color>
     <color name="colorAccent">#3AA6C5</color>
+
+    <!-- Primary Material Colors -->
+    <color name="ko__colorPrimary">@color/colorPrimary</color>
+    <color name="ko__colorPrimaryDark">@color/colorPrimaryDark</color>
+    <color name="ko__colorAccent">@color/colorAccent</color>
 
     <!-- Common Colors -->
     <color name="ko__black">#000</color>
@@ -29,7 +34,7 @@
     <color name="ko__section_info_subtitle_text_color">@color/ko__light_gray_text_color</color>
 
     <!-- Listing -->
-    <color name="ko__list_item_title_text_color">@color/colorAccent</color>
+    <color name="ko__list_item_title_text_color">@color/ko__colorAccent</color>
     <color name="ko__list_item_subtitle_text_color">@color/ko__dark_gray_text_color</color>
     <color name="ko__list_item_background">#fff</color>
     <color name="ko__list_item_header_background_color">@color/ko__light_gray_background_colour</color>
@@ -43,10 +48,10 @@
     <color name="ko__list_search_item_subtitle_text_color">#747474</color>
 
     <!-- Empty & Error States -->
-    <color name="ko__retry_button_background_default">@color/colorPrimary</color>
-    <color name="ko__retry_button_background_pressed">@color/colorPrimary</color>
-    <color name="ko__retry_button_background_selected">@color/colorPrimaryDark</color>
-    <color name="ko__error_title_color">@color/colorAccent</color>
+    <color name="ko__retry_button_background_default">@color/ko__colorPrimary</color>
+    <color name="ko__retry_button_background_pressed">@color/ko__colorPrimary</color>
+    <color name="ko__retry_button_background_selected">@color/ko__colorPrimaryDark</color>
+    <color name="ko__error_title_color">@color/ko__colorAccent</color>
     <color name="ko__error_description">@color/ko__dark_gray_text_color</color>
 
     <!-- Article -->
