@@ -71,7 +71,7 @@ public abstract class EndlessRecyclerViewScrollAdapter<T extends LoadingItem> ex
      *
      * Once all items have been loaded, ensure that the
      *
-     * @param hasMoreItems
+     * @param hasMoreItems mark as true if it has more items
      */
     public void setHasMoreItems(boolean hasMoreItems) {
         mHasMoreItems = hasMoreItems;
