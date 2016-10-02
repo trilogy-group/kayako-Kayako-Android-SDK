@@ -1,8 +1,40 @@
+
+def appName = "Kayko Android SDK"
+
+def appGroupId = "com.kayako.messenger"
+def appArtifactId = "kayako-messenger"
+def appVersion = "0.0.1"
+
+def appBintrayUser = "kayako"
+def appUserOrg = "kayako-support"
+def appBintrayApiKey = "FILL_API_KEY_HERE"
+
+def appRepoName = "kayako-devkits"
+def appPackageName = appArtifactId
+
+def appVcsUrl = "https://github.com/kayako/Kayako-Android-SDK.git"
+def appWebsiteUrl = "https://github.com/kayako/Kayako-Android-SDK"
+def appIssueTrackerUrl = "https://github.com/kayako/Kayako-Android-SDK/issues"
+
+def appDeveloperId = "kayako"
+def appDeveloperName = "Neil Mathew"
+def appDeveloperEmail = "neil.mathew@kayako.com"
+
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+group = appGroupId  // Maven Group ID for the artifact
+version = appVersion // Library version
+archivesBaseName = appArtifactId // Sets the artefact Id name
 
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.1"
+
+    lintOptions {
+        abortOnError false
+    }
 
     defaultConfig {
         minSdkVersion 14
@@ -19,12 +51,81 @@ android {
     }
 }
 
+bintray {
+    user = appBintrayUser
+    key = appBintrayApiKey
+
+    configurations = ['archives'] //When uploading configuration files
+    pkg {
+        repo = appRepoName
+        name = appPackageName
+        userOrg = appUserOrg
+        websiteUrl = appWebsiteUrl
+        issueTrackerUrl = appIssueTrackerUrl
+        vcsUrl = appVcsUrl
+        licenses = ['Apache-2.0']
+        labels = ['kayako', 'android']
+        publicDownloadNumbers = false
+    }
+}
+
+install {
+    repositories.mavenInstaller {
+        pom {
+            project {
+                packaging 'aar'
+
+                group appGroupId
+                artifactId appArtifactId
+                version appVersion
+
+                name appName
+                url appWebsiteUrl
+
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id appDeveloperId
+                        name appDeveloperName
+                        email appDeveloperEmail
+                    }
+                }
+                scm {
+                    connection appVcsUrl
+                    developerConnection appVcsUrl
+                    url appWebsiteUrl
+                }
+            }
+        }
+    }
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
+
+artifacts {
+    archives sourcesJar
+}
+
+task findConventions << {
+    println project.getConvention()
+}
+
 repositories {
     mavenCentral() // jcenter() works as well because it pulls from Maven Central
+    maven {
+        url "http://dl.bintray.com/kayako-support/kayako-devkits"
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:24.2.0'
     compile 'com.android.support:recyclerview-v7:24.2.0'
     compile 'com.android.support:support-v4:24.2.0'
@@ -49,4 +150,5 @@ dependencies {
         exclude module: 'recyclerview-v7'
     }
 
+    compile 'com.kayako:kayako:0.0.3'
 }
