@@ -1,0 +1,29 @@
+<resources>
+
+    <style name="Ko__AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/ko__colorAccent</item>
+        <item name="colorPrimaryDark">@color/ko__colorPrimaryDark</item>
+        <item name="colorAccent">@color/ko__colorAccent</item>
+        <item name="actionModeBackground">@color/ko__colorPrimary</item>
+        <item name="android:windowBackground">@color/ko__white</item>
+    </style>
+
+    <style name="Ko__SearchArticlePageTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="Ko__ButtonStyle">
+        <item name="android:background">@drawable/ko__retry_button_background</item>
+        <item name="android:textColor">@color/ko__white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Ko__SearchToolbarStyle" parent="@style/Theme.AppCompat.Light">
+        <item name="android:textColorPrimary">@color/ko__toolbar_search_background</item>
+        <item name="actionMenuTextColor">@color/ko__toolbar_search_text_color</item>
+        <item name="colorAccent">@color/ko__colorAccent</item>
+        <item name="selectableItemBackgroundBorderless">?android:selectableItemBackground</item>
+    </style>
+
+</resources>

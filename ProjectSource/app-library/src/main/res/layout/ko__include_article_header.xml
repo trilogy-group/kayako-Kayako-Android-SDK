@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/ko__article_header_background_color"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="horizontal"
+        android:fadeScrollbars="true">
+
+        <com.kayako.sdk.android.k5.common.view.RegularTextView
+            android:id="@+id/ko__article_directory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:textSize="14sp"
+            android:textColor="@color/ko__article_header_sub_title_color"
+            tools:text="Getting Started > Zapier Integration" />
+
+    </HorizontalScrollView>
+
+    <com.kayako.sdk.android.k5.common.view.BoldTextView
+        android:id="@+id/ko__article_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/ko__article_header_title_color"
+        android:textSize="20sp"
+        tools:text="How do I use Zapier to make something do something else?" />
+
+</LinearLayout>

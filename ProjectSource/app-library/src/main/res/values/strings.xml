@@ -1,0 +1,20 @@
+<resources>
+    <string name="ko__title_above_search_bar">How can we help you?</string>
+    <string name="ko__title_help_center">Help</string>
+    <string name="ko__label_search_hint">Search here...</string>
+
+    <string name="ko__label_retry">Retry</string>
+    <string name="ko__label_empty_view_title">Whoops!</string>
+    <string name="ko__label_empty_view_description">Looks like there\'s nothing to show</string>
+    <string name="ko__label_error_view_title">Uh Oh.</string>
+    <string name="ko__label_error_view_description">Something went wrong. Please try again later.</string>
+
+    <string name="ko__msg_error_type_at_least_three_characters_to_search">Please type at least 3 characters to search!</string>
+    <string name="ko__msg_error_unable_to_load_more_items">Something went wrong. Unable to load more items.</string>
+    <string name="ko__msg_error_unable_to_article">Something went wrong. Unable to load Articles.</string>
+
+    <string name="ko__action_contact">Contact</string>
+    <string name="ko__action_search">Search</string>
+    <string name="ko__action_ok">Ok</string>
+
+</resources>
