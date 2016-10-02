@@ -50,6 +50,7 @@ A simple example to retrieve open the help center.
 
 # Documentation
 
-There are a few steps that need to be taken before you can use the SDK. Head over to [Kayako's Developer Portal](https://developer.kayako.com/sdk/java/integration_guide/) and follow the Integraton Guide. 
+There are a few steps that need to be taken before you can use the SDK. Head over to [Kayako's Developer Portal](https://developer.kayako.com/sdk/android/integration_guide/) and follow the Integraton Guide. 
+
 
 
