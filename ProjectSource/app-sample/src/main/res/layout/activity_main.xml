@@ -10,18 +10,27 @@
     android:paddingTop="@dimen/ko__activity_vertical_margin"
     tools:context="com.kayako.sample.MainActivity">
 
+
     <EditText
         android:id="@+id/edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:padding="8dp"
-        android:singleLine="true"
+        android:background="@null"
         android:text="https://support.kayako.com" />
+
+    <include layout="@layout/separator" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <include layout="@layout/separator" />
 
     <Button
         android:id="@+id/button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="8dp"
