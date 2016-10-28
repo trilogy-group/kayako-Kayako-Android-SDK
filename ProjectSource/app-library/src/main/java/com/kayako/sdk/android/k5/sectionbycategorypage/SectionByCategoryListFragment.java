@@ -9,7 +9,7 @@ import android.view.View;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.list.ListItemRecyclerViewAdapter;
 import com.kayako.sdk.android.k5.common.adapter.list.ListItem;
-import com.kayako.sdk.android.k5.common.adapter.list.SearchSectionAdapter;
+import com.kayako.sdk.android.k5.common.adapter.searchsectionlist.SearchSectionAdapter;
 import com.kayako.sdk.android.k5.common.fragments.ActivityNavigationResourceCallback;
 import com.kayako.sdk.android.k5.common.fragments.BaseListFragment;
 import com.kayako.sdk.android.k5.common.task.BackgroundTask;

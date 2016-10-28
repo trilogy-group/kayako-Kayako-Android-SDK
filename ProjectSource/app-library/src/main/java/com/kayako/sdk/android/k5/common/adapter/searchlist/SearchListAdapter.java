@@ -6,21 +6,20 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kayako.sdk.android.k5.R;
-import com.kayako.sdk.android.k5.common.adapter.loadmorelist.EndlessRecyclerViewScrollAdapter;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.adapter.loadmorelist.EndlessRecyclerViewScrollAdapter;
 
 import java.util.List;
 
-import static com.kayako.sdk.android.k5.common.adapter.ListType.SEARCH_ITEM;
 
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
-public class SearchArticleAdapter extends EndlessRecyclerViewScrollAdapter {
+public class SearchListAdapter extends EndlessRecyclerViewScrollAdapter {
 
     private OnSearchedArticleItemClickListener mListener;
 
-    public SearchArticleAdapter(List<BaseListItem> items, OnSearchedArticleItemClickListener listener) {
+    public SearchListAdapter(List<BaseListItem> items, OnSearchedArticleItemClickListener listener) {
         super(items);
         mListener = listener;
     }
@@ -33,10 +32,10 @@ public class SearchArticleAdapter extends EndlessRecyclerViewScrollAdapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
-            case SEARCH_ITEM:
+            case SearchListType.SEARCH_ITEM:
                 View viewItem = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.ko__list_item_search_result, parent, false);
-                return new SearchedItemViewHolder(viewItem);
+                return new SearchItemViewHolder(viewItem);
             default:
                 return super.onCreateViewHolder(parent, viewType);
         }
@@ -45,12 +44,12 @@ public class SearchArticleAdapter extends EndlessRecyclerViewScrollAdapter {
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, int position) {
         switch (viewHolder.getItemViewType()) {
-            case SEARCH_ITEM:
-                SearchedItemViewHolder searchedItemViewHolder = (SearchedItemViewHolder) viewHolder;
+            case SearchListType.SEARCH_ITEM:
+                SearchItemViewHolder searchItemViewHolder = (SearchItemViewHolder) viewHolder;
                 SearchListItem item = (SearchListItem) getData().get(position);
-                searchedItemViewHolder.mTitle.setText(item.getTitle());
-                searchedItemViewHolder.mSubTitle.setText(item.getSubtitle());
-                searchedItemViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                searchItemViewHolder.mTitle.setText(item.getTitle());
+                searchItemViewHolder.mSubTitle.setText(item.getSubtitle());
+                searchItemViewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         SearchListItem item = (SearchListItem) getData().get(viewHolder.getAdapterPosition());

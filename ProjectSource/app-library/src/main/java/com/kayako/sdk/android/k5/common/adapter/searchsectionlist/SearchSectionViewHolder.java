@@ -1,4 +1,4 @@
-package com.kayako.sdk.android.k5.common.adapter.list;
+package com.kayako.sdk.android.k5.common.adapter.searchsectionlist;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

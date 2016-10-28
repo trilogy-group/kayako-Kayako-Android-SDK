@@ -1,15 +1,14 @@
-package com.kayako.sdk.android.k5.common.adapter.list;
+package com.kayako.sdk.android.k5.common.adapter.searchsectionlist;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
-import com.kayako.sdk.android.k5.common.adapter.ListType;
 import com.kayako.sdk.android.k5.common.adapter.list.ListItemRecyclerViewAdapter;
+import com.kayako.sdk.android.k5.common.adapter.list.ListType;
 
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class SearchSectionAdapter extends ListItemRecyclerViewAdapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
-            case ListType.SEARCH_SECTION_ITEM:
+            case SearchSectionListType.SEARCH_SECTION_ITEM:
                 View viewSearchSection = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.ko__list_search_section, parent, false);
                 return new SearchSectionViewHolder(viewSearchSection);
@@ -43,7 +42,7 @@ public class SearchSectionAdapter extends ListItemRecyclerViewAdapter {
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, int position) {
         switch (viewHolder.getItemViewType()) {
-            case ListType.SEARCH_SECTION_ITEM:
+            case SearchSectionListType.SEARCH_SECTION_ITEM:
                 SearchSectionViewHolder searchViewHolder = (SearchSectionViewHolder) viewHolder;
                 searchViewHolder.mSearchEditText.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -61,7 +60,7 @@ public class SearchSectionAdapter extends ListItemRecyclerViewAdapter {
     @Override
     public int getItemViewType(int position) {
         if (position == 0) {
-            return ListType.SEARCH_SECTION_ITEM;
+            return SearchSectionListType.SEARCH_SECTION_ITEM;
         }
         return super.getItemViewType(position);
     }

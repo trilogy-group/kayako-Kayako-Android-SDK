@@ -6,12 +6,12 @@ import android.widget.TextView;
 
 import com.kayako.sdk.android.k5.R;
 
-public class SearchedItemViewHolder extends RecyclerView.ViewHolder {
+public class SearchItemViewHolder extends RecyclerView.ViewHolder {
     public TextView mTitle;
     public TextView mSubTitle;
     public View mView;
 
-    public SearchedItemViewHolder(View view) {
+    public SearchItemViewHolder(View view) {
         super(view);
         mView = view;
         mTitle = (TextView) view.findViewById(R.id.ko__list_item_title);

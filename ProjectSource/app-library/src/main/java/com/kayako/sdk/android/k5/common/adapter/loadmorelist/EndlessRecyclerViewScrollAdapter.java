@@ -8,7 +8,7 @@ import android.widget.ProgressBar;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
-import com.kayako.sdk.android.k5.common.adapter.ListType;
+import com.kayako.sdk.android.k5.common.adapter.list.ListType;
 
 import java.util.ArrayList;
 import java.util.List;

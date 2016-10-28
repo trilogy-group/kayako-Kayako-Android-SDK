@@ -12,6 +12,7 @@ import com.kayako.sdk.android.k5.common.adapter.loadmorelist.EndlessRecyclerView
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.list.ListItemRecyclerViewAdapter;
 import com.kayako.sdk.android.k5.common.adapter.list.ListItem;
+import com.kayako.sdk.android.k5.common.adapter.sectioninfolist.SectionInfoAdapter;
 import com.kayako.sdk.android.k5.common.fragments.BaseListFragment;
 import com.kayako.sdk.android.k5.common.task.BackgroundTask;
 import com.kayako.sdk.android.k5.common.utils.ViewUtils;
