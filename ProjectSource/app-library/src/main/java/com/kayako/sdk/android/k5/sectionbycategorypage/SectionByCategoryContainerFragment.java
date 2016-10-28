@@ -10,7 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -19,12 +18,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.kayako.sdk.android.k5.R;
-import com.kayako.sdk.android.k5.common.data.SpinnerItem;
+import com.kayako.sdk.android.k5.common.adapter.spinnerlist.SpinnerItem;
 import com.kayako.sdk.android.k5.common.fragments.BaseContainerFragment;
 import com.kayako.sdk.android.k5.common.task.BackgroundTask;
 
 import java.util.List;
-import java.util.Locale;
 
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>

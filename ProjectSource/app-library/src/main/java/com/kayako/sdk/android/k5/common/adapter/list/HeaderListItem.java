@@ -1,0 +1,36 @@
+package com.kayako.sdk.android.k5.common.adapter.list;
+
+import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.adapter.ListType;
+import com.kayako.sdk.helpcenter.base.Resource;
+
+/**
+ * @author Neil Mathew <neil.mathew@kayako.com>
+ */
+public class HeaderListItem extends BaseListItem {
+
+    private String title;
+    private Resource resource;
+
+    public HeaderListItem(String title, Resource resource) {
+        super(ListType.HEADER_ITEM);
+        this.title = title;
+        this.resource = resource;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Resource getResource() {
+        return resource;
+    }
+
+    public void setResource(Resource resource) {
+        this.resource = resource;
+    }
+}

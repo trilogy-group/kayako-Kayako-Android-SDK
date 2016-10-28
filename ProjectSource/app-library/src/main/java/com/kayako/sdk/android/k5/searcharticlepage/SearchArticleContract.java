@@ -1,6 +1,6 @@
 package com.kayako.sdk.android.k5.searcharticlepage;
 
-import com.kayako.sdk.android.k5.common.data.ListItem;
+import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.mvp.BaseData;
 import com.kayako.sdk.android.k5.common.mvp.BasePresenter;
 import com.kayako.sdk.android.k5.common.mvp.BaseView;
@@ -40,11 +40,11 @@ public interface SearchArticleContract {
 
         void cancelBackgroundTasks();
 
-        void setUpList(List<ListItem> items);
+        void setUpList(List<BaseListItem> items);
 
         // Load more methods
 
-        void addItemsToList(List<ListItem> items);
+        void addItemsToList(List<BaseListItem> items);
 
         void showLoadingMoreItemsProgress();
 
@@ -73,7 +73,7 @@ public interface SearchArticleContract {
 
         void onMoreDataLoaded(boolean isSuccessful);
 
-        void onClickListItem(ListItem listItem);
+        void onClickListItem(BaseListItem listItem);
 
         void reloadPage();
 

@@ -1,4 +1,4 @@
-package com.kayako.sdk.android.k5.common.data;
+package com.kayako.sdk.android.k5.common.adapter.spinnerlist;
 
 
 import com.kayako.sdk.helpcenter.base.Resource;

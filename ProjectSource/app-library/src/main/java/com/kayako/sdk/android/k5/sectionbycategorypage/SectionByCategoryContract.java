@@ -1,9 +1,9 @@
 package com.kayako.sdk.android.k5.sectionbycategorypage;
 
+import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.mvp.BaseData;
 import com.kayako.sdk.android.k5.common.mvp.BasePresenter;
 import com.kayako.sdk.android.k5.common.mvp.BaseView;
-import com.kayako.sdk.android.k5.common.data.ListItem;
 import com.kayako.sdk.helpcenter.category.Category;
 import com.kayako.sdk.helpcenter.section.Section;
 
@@ -27,7 +27,7 @@ public interface SectionByCategoryContract {
 
     interface View extends BaseView {
 
-        void setUpList(List<ListItem> items);
+        void setUpList(List<BaseListItem> items);
 
         void showOnlyListView();
 
@@ -54,7 +54,7 @@ public interface SectionByCategoryContract {
 
         void onDataLoaded(boolean isSuccessful);
 
-        void onClickListItem(ListItem listItem);
+        void onClickListItem(BaseListItem listItem);
 
         void onClickSearch();
 
