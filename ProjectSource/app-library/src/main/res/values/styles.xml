@@ -40,4 +40,10 @@
         <item name="android:textColor">@color/ko__messenger_speech_bubble_self_text_color</item>
     </style>
 
+    <style name="Ko__ChatBubbleDateStyle">
+        <item name="android:textSize">10sp</item>
+        <item name="android:layout_margin">4dp
+        </item>
+    </style>
+
 </resources>

@@ -66,4 +66,14 @@
         android:layout_alignParentTop="true"
         tools:src="#808080" />
 
+    <TextView
+        android:id="@+id/time"
+        style="@style/Ko__ChatBubbleDateStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/message"
+        android:layout_below="@+id/message"
+        android:layout_marginTop="@dimen/ko__messenger_gap_between_time_and_message"
+        tools:text="12:30 PM" />
+
 </RelativeLayout>

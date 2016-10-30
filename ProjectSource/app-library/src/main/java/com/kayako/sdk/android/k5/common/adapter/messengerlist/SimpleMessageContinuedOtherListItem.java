@@ -7,11 +7,13 @@ import java.util.Map;
 public class SimpleMessageContinuedOtherListItem extends BaseListItem {
 
     private String message;
+    private long time;
     private Map<String, Object> data;
 
-    public SimpleMessageContinuedOtherListItem(String message, Map<String, Object> data) {
+    public SimpleMessageContinuedOtherListItem(String message, long time, Map<String, Object> data) {
         super(MessengerListType.SIMPLE_MESSAGE_CONTINUED_OTHER);
         this.message = message;
+        this.time = time;
         this.data = data;
     }
 
@@ -29,5 +31,13 @@ public class SimpleMessageContinuedOtherListItem extends BaseListItem {
 
     public void setData(Map<String, Object> data) {
         this.data = data;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
     }
 }

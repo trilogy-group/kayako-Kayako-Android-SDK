@@ -57,6 +57,15 @@
         android:maxLines="1"
         tools:text="something.txt" />
 
+    <TextView
+        android:id="@+id/time"
+        style="@style/Ko__ChatBubbleDateStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/message"
+        android:layout_below="@+id/message"
+        android:layout_marginTop="@dimen/ko__messenger_gap_between_time_and_message"
+        tools:text="12:30 PM" />
 
     <com.kayako.sdk.android.k5.common.view.CircleImageView
         android:id="@+id/avatar"
@@ -66,5 +75,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         tools:src="#808080" />
+
 
 </RelativeLayout>

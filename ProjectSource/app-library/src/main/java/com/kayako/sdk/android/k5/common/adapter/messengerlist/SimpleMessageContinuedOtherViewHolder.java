@@ -10,10 +10,12 @@ import com.kayako.sdk.android.k5.common.view.CircleImageView;
 public class SimpleMessageContinuedOtherViewHolder extends RecyclerView.ViewHolder {
 
     public TextView message;
+    public TextView time;
 
     public SimpleMessageContinuedOtherViewHolder(View itemView) {
         super(itemView);
         message = (TextView) itemView.findViewById(R.id.message);
+        time = (TextView) itemView.findViewById(R.id.time);
     }
 
 }

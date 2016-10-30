@@ -8,13 +8,16 @@ public class AttachmentMessageOtherListItem extends BaseListItem {
 
     private String attachmentThumbnailUrl;
     private String message;
+    private long time;
     private Map<String, Object> data;
 
-    public AttachmentMessageOtherListItem(String attachmentThumbnailUrl, String message, Map<String, Object> data) {
+    public AttachmentMessageOtherListItem(String attachmentThumbnailUrl, String message, long time, Map<String, Object> data) {
         super(MessengerListType.ATTACHMENT_MESSAGE_OTHER);
         this.message = message;
         this.attachmentThumbnailUrl = attachmentThumbnailUrl;
+        this.time = time;
         this.data = data;
+
     }
 
     public String getAttachmentThumbnailUrl() {
@@ -39,5 +42,13 @@ public class AttachmentMessageOtherListItem extends BaseListItem {
 
     public void setData(Map<String, Object> data) {
         this.data = data;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
     }
 }

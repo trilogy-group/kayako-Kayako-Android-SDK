@@ -8,13 +8,15 @@ public class SimpleMessageSelfListItem extends BaseListItem {
 
     private String message;
     private String avatarUrl;
+    private long time;
     private Map<String, Object> data;
 
-    public SimpleMessageSelfListItem(String message, String avatarUrl, Map<String, Object> data) {
+    public SimpleMessageSelfListItem(String message, String avatarUrl, long time, Map<String, Object> data) {
         super(MessengerListType.SIMPLE_MESSAGE_SELF);
 
         this.message = message;
         this.avatarUrl = avatarUrl;
+        this.time = time;
         this.data = data;
     }
 
@@ -40,5 +42,13 @@ public class SimpleMessageSelfListItem extends BaseListItem {
 
     public void setData(Map<String, Object> data) {
         this.data = data;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
     }
 }

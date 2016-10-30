@@ -8,13 +8,15 @@ public class AttachmentMessageContinuedSelfListItem extends BaseListItem {
 
     private String attachmentThumbnailUrl;
     private String message;
+    private long time;
     private Map<String, Object> data;
 
-    public AttachmentMessageContinuedSelfListItem(String attachmentThumbnailUrl, String message, Map<String, Object> data) {
+    public AttachmentMessageContinuedSelfListItem(String attachmentThumbnailUrl, String message, long time, Map<String, Object> data) {
         super(MessengerListType.ATTACHMENT_MESSAGE_CONTINUED_SELF);
         this.message = message;
         this.attachmentThumbnailUrl = attachmentThumbnailUrl;
         this.data = data;
+        this.time = time;
     }
 
     public String getAttachmentThumbnailUrl() {
@@ -39,5 +41,13 @@ public class AttachmentMessageContinuedSelfListItem extends BaseListItem {
 
     public void setData(Map<String, Object> data) {
         this.data = data;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
     }
 }

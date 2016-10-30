@@ -3,7 +3,6 @@ package com.kayako.sdk.android.k5.common.adapter.messengerlist;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +10,10 @@ import android.view.ViewGroup;
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.loadmorelist.EndlessRecyclerViewScrollAdapter;
+import com.kayako.sdk.android.k5.common.utils.DateTimeUtils;
 import com.kayako.sdk.android.k5.common.utils.ImageUtils;
 import com.kayako.sdk.android.k5.core.Kayako;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -56,6 +55,13 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 simpleMessageSelfViewHolder.message.setText(Html.fromHtml(simpleMessageSelfListItem.getMessage()));
                 ImageUtils.setAvatarImage(Kayako.getApplicationContext(), simpleMessageSelfViewHolder.avatar, simpleMessageSelfListItem.getAvatarUrl());
 
+                if (simpleMessageSelfListItem.getTime() == 0) {
+                    simpleMessageSelfViewHolder.time.setVisibility(View.GONE);
+                } else {
+                    simpleMessageSelfViewHolder.time.setVisibility(View.VISIBLE);
+                    simpleMessageSelfViewHolder.time.setText(DateTimeUtils.formatTime(Kayako.getApplicationContext(), simpleMessageSelfListItem.getTime()));
+                }
+
                 setAvatarClickListenerOnView(simpleMessageSelfViewHolder.avatar, simpleMessageSelfListItem.getItemType(), simpleMessageSelfListItem.getData());
                 setItemClickListenerOnView(simpleMessageSelfViewHolder.itemView, simpleMessageSelfListItem.getItemType(), simpleMessageSelfListItem.getData());
 
@@ -68,6 +74,14 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 simpleMessageOtherViewHolder.message.setText(Html.fromHtml(simpleMessageOtherListItem.getMessage()));
                 ImageUtils.setAvatarImage(Kayako.getApplicationContext(), simpleMessageOtherViewHolder.avatar, simpleMessageOtherListItem.getAvatarUrl());
 
+                if (simpleMessageOtherListItem.getTime() == 0) {
+                    simpleMessageOtherViewHolder.time.setVisibility(View.GONE);
+                } else {
+                    simpleMessageOtherViewHolder.time.setVisibility(View.VISIBLE);
+                    simpleMessageOtherViewHolder.time.setText(DateTimeUtils.formatTime(Kayako.getApplicationContext(), simpleMessageOtherListItem.getTime()));
+                }
+
+
                 setAvatarClickListenerOnView(simpleMessageOtherViewHolder.avatar, simpleMessageOtherListItem.getItemType(), simpleMessageOtherListItem.getData());
                 setItemClickListenerOnView(simpleMessageOtherViewHolder.itemView, simpleMessageOtherListItem.getItemType(), simpleMessageOtherListItem.getData());
 
@@ -79,6 +93,13 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
 
                 simpleMessageContinuedSelfViewHolder.message.setText(Html.fromHtml(simpleMessageContinuedSelfListItem.getMessage()));
 
+                if (simpleMessageContinuedSelfListItem.getTime() == 0) {
+                    simpleMessageContinuedSelfViewHolder.time.setVisibility(View.GONE);
+                } else {
+                    simpleMessageContinuedSelfViewHolder.time.setVisibility(View.VISIBLE);
+                    simpleMessageContinuedSelfViewHolder.time.setText(DateTimeUtils.formatTime(Kayako.getApplicationContext(), simpleMessageContinuedSelfListItem.getTime()));
+                }
+
                 setItemClickListenerOnView(simpleMessageContinuedSelfViewHolder.itemView, simpleMessageContinuedSelfListItem.getItemType(), simpleMessageContinuedSelfListItem.getData());
 
                 break;
@@ -89,12 +110,26 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
 
                 simpleMessageContinuedOtherViewHolder.message.setText(Html.fromHtml(simpleMessageContinuedOtherListItem.getMessage()));
 
+                if (simpleMessageContinuedOtherListItem.getTime() == 0) {
+                    simpleMessageContinuedOtherViewHolder.time.setVisibility(View.GONE);
+                } else {
+                    simpleMessageContinuedOtherViewHolder.time.setVisibility(View.VISIBLE);
+                    simpleMessageContinuedOtherViewHolder.time.setText(DateTimeUtils.formatTime(Kayako.getApplicationContext(), simpleMessageContinuedOtherListItem.getTime()));
+                }
+
                 setItemClickListenerOnView(simpleMessageContinuedOtherViewHolder.itemView, simpleMessageContinuedOtherListItem.getItemType(), simpleMessageContinuedOtherListItem.getData());
                 break;
 
             case MessengerListType.ATTACHMENT_MESSAGE_SELF:
                 AttachmentMessageSelfViewHolder attachmentMessageSelfViewHolder = (AttachmentMessageSelfViewHolder) viewHolder;
                 AttachmentMessageSelfListItem attachmentMessageSelfListItem = (AttachmentMessageSelfListItem) getData().get(position);
+
+                if (attachmentMessageSelfListItem.getTime() == 0) {
+                    attachmentMessageSelfViewHolder.time.setVisibility(View.GONE);
+                } else {
+                    attachmentMessageSelfViewHolder.time.setVisibility(View.VISIBLE);
+                    attachmentMessageSelfViewHolder.time.setText(DateTimeUtils.formatTime(Kayako.getApplicationContext(), attachmentMessageSelfListItem.getTime()));
+                }
 
                 if (TextUtils.isEmpty(attachmentMessageSelfListItem.getMessage())) {
                     attachmentMessageSelfViewHolder.message.setVisibility(View.GONE);
@@ -120,6 +155,13 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 AttachmentMessageOtherViewHolder attachmentMessageOtherViewHolder = (AttachmentMessageOtherViewHolder) viewHolder;
                 AttachmentMessageOtherListItem attachmentMessageOtherListItem = (AttachmentMessageOtherListItem) getData().get(position);
 
+                if (attachmentMessageOtherListItem.getTime() == 0) {
+                    attachmentMessageOtherViewHolder.time.setVisibility(View.GONE);
+                } else {
+                    attachmentMessageOtherViewHolder.time.setVisibility(View.VISIBLE);
+                    attachmentMessageOtherViewHolder.time.setText(DateTimeUtils.formatTime(Kayako.getApplicationContext(), attachmentMessageOtherListItem.getTime()));
+                }
+
                 if (TextUtils.isEmpty(attachmentMessageOtherListItem.getMessage())) {
                     attachmentMessageOtherViewHolder.message.setVisibility(View.GONE);
                 } else {
@@ -144,6 +186,13 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 AttachmentMessageContinuedSelfViewHolder attachmentMessageContinuedSelfViewHolder = (AttachmentMessageContinuedSelfViewHolder) viewHolder;
                 AttachmentMessageContinuedSelfListItem attachmentMessageContinuedSelfListItem = (AttachmentMessageContinuedSelfListItem) getData().get(position);
 
+                if (attachmentMessageContinuedSelfListItem.getTime() == 0) {
+                    attachmentMessageContinuedSelfViewHolder.time.setVisibility(View.GONE);
+                } else {
+                    attachmentMessageContinuedSelfViewHolder.time.setVisibility(View.VISIBLE);
+                    attachmentMessageContinuedSelfViewHolder.time.setText(DateTimeUtils.formatTime(Kayako.getApplicationContext(), attachmentMessageContinuedSelfListItem.getTime()));
+                }
+
                 if (TextUtils.isEmpty(attachmentMessageContinuedSelfListItem.getMessage())) {
                     attachmentMessageContinuedSelfViewHolder.message.setVisibility(View.GONE);
                 } else {
@@ -167,6 +216,13 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
             case MessengerListType.ATTACHMENT_MESSAGE_CONTINUED_OTHER:
                 AttachmentMessageContinuedOtherViewHolder attachmentMessageContinuedOtherViewHolder = (AttachmentMessageContinuedOtherViewHolder) viewHolder;
                 AttachmentMessageContinuedOtherListItem attachmentMessageContinuedOtherListItem = (AttachmentMessageContinuedOtherListItem) getData().get(position);
+
+                if (attachmentMessageContinuedOtherListItem.getTime() == 0) {
+                    attachmentMessageContinuedOtherViewHolder.time.setVisibility(View.GONE);
+                } else {
+                    attachmentMessageContinuedOtherViewHolder.time.setVisibility(View.VISIBLE);
+                    attachmentMessageContinuedOtherViewHolder.time.setText(DateTimeUtils.formatTime(Kayako.getApplicationContext(), attachmentMessageContinuedOtherListItem.getTime()));
+                }
 
                 if (TextUtils.isEmpty(attachmentMessageContinuedOtherListItem.getMessage())) {
                     attachmentMessageContinuedOtherViewHolder.message.setVisibility(View.GONE);
@@ -193,7 +249,7 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 DateSeparatorViewHolder dateSeparatorViewHolder = (DateSeparatorViewHolder) viewHolder;
                 DateSeparatorListItem dateSeparatorListItem = (DateSeparatorListItem) getData().get(position);
 
-                dateSeparatorViewHolder.time.setText(com.kayako.sdk.android.k5.common.utils.DateUtils.formatDate(Kayako.getApplicationContext(), dateSeparatorListItem.getTimeInMilliseconds()));
+                dateSeparatorViewHolder.time.setText(DateTimeUtils.formatDate(Kayako.getApplicationContext(), dateSeparatorListItem.getTimeInMilliseconds()));
                 break;
 
             default:

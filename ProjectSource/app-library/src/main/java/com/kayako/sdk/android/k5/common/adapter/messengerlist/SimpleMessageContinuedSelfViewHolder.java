@@ -9,10 +9,12 @@ import com.kayako.sdk.android.k5.R;
 public class SimpleMessageContinuedSelfViewHolder extends RecyclerView.ViewHolder {
 
     public TextView message;
+    public TextView time;
 
     public SimpleMessageContinuedSelfViewHolder(View itemView) {
         super(itemView);
         message = (TextView) itemView.findViewById(R.id.message);
+        time = (TextView) itemView.findViewById(R.id.time);
     }
 
 }
