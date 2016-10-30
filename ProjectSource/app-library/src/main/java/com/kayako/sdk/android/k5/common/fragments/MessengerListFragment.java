@@ -1,22 +1,14 @@
 package com.kayako.sdk.android.k5.common.fragments;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
-import com.kayako.sdk.android.k5.common.adapter.loadmorelist.EndlessRecyclerViewScrollAdapter;
-import com.kayako.sdk.android.k5.common.adapter.loadmorelist.EndlessRecyclerViewScrollListener;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentMessageContinuedOtherListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentMessageContinuedSelfListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentMessageOtherListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentMessageSelfListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerAdapter;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.SimpleMessageContinuedOtherListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.SimpleMessageContinuedSelfListItem;
@@ -31,7 +23,7 @@ import java.util.Map;
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
-public class MessengerListFragment extends BaseListFragment implements MessengerAdapter.OnAvatarClickListenr, MessengerAdapter.OnItemClickListener {
+public class MessengerListFragment extends BaseListFragment implements MessengerAdapter.OnAvatarClickListener, MessengerAdapter.OnItemClickListener, MessengerAdapter.OnAttachmentClickListener {
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -49,7 +41,21 @@ public class MessengerListFragment extends BaseListFragment implements Messenger
         items.add(new SimpleMessageSelfListItem("Eeep!", avatarUrl_self, null));
         items.add(new SimpleMessageContinuedSelfListItem("Thanks", null));
 
-        MessengerAdapter messengerAdapter = new MessengerAdapter(items, this, this);
+        items.add(new SimpleMessageContinuedSelfListItem("Wait. Could you show me how your solar panels look?", null));
+        items.add(new AttachmentMessageOtherListItem("http://cdn2.bigcommerce.com/n-d57o0b/tvhc2xod/product_images/uploaded_images/solar-panels.jpg?t=1416860323", "Solarpanels.png", null));
+        items.add(new SimpleMessageContinuedOtherListItem("Does that help? Here's another one", null));
+        items.add(new AttachmentMessageContinuedOtherListItem("https://www.solarworld-usa.com/~/media/www/images/products/modules/off-grid.jpg?la=en", "Solarpanels.png", null));
+
+        items.add(new SimpleMessageSelfListItem("Let me just send back everything you sent me.", avatarUrl_self, null));
+        items.add(new AttachmentMessageSelfListItem("http://cdn2.bigcommerce.com/n-d57o0b/tvhc2xod/product_images/uploaded_images/solar-panels.jpg?t=1416860323", "Solarpanels.png", null));
+        items.add(new SimpleMessageContinuedSelfListItem("Does that help? Here's another one", null));
+        items.add(new AttachmentMessageContinuedSelfListItem("https://www.solarworld-usa.com/~/media/www/images/products/modules/off-grid.jpg?la=en", "Solarpanels.png", null));
+
+
+        MessengerAdapter messengerAdapter = new MessengerAdapter(items);
+        messengerAdapter.setOnItemClickListener(this);
+        messengerAdapter.setOnAvatarClickListener(this);
+        messengerAdapter.setOnAttachmentClickListener(this);
         initList(messengerAdapter, null);
     }
 
@@ -61,5 +67,10 @@ public class MessengerListFragment extends BaseListFragment implements Messenger
     @Override
     public void onClickItem(int messageType, Map<String, Object> messageData) {
         ViewUtils.showToastMessage(getContext(), "Item " + messageType, Toast.LENGTH_SHORT);
+    }
+
+    @Override
+    public void onClickAttachment(int messageType, Map<String, Object> messageData) {
+        ViewUtils.showToastMessage(getContext(), "Attachment " + messageType, Toast.LENGTH_SHORT);
     }
 }

@@ -6,17 +6,16 @@
     android:orientation="vertical"
     android:paddingLeft="@dimen/ko__messenger_list_item_margin"
     android:paddingRight="@dimen/ko__messenger_list_item_margin"
-    android:paddingTop="@dimen/ko__messenger_list_item_margin">
+    android:paddingTop="@dimen/ko__messenger_list_item_continued_margin_top">
 
     <FrameLayout
         android:id="@+id/image_container"
-        style="@style/Ko__ChatBubbleStyleOther"
+        style="@style/Ko__ChatBubbleStyleSelf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="@dimen/ko__messenger_gap_between_avatar_and_message"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="@dimen/ko__messenger_gap_between_message_and_end"
         android:layout_marginRight="@dimen/ko__messenger_gap_between_message_and_end"
-        android:layout_toRightOf="@+id/avatar"
         android:maxHeight="@dimen/ko__messenger_attachment_max_height"
         android:minHeight="@dimen/ko__messenger_attachment_min_height"
         android:minWidth="@dimen/ko__messenger_attachment_min_width">
@@ -34,13 +33,13 @@
             android:layout_width="24dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
-            android:src="@drawable/ko__img_attachment_placeholder_dark" />
+            android:src="@drawable/ko__img_attachment_placeholder_light" />
 
     </FrameLayout>
 
     <TextView
         android:id="@+id/message"
-        style="@style/Ko__ChatBubbleStyleOther"
+        style="@style/Ko__ChatBubbleStyleSelf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@id/image_container"
@@ -55,15 +54,5 @@
         android:gravity="start|center_vertical"
         android:maxLines="1"
         tools:text="something.txt" />
-
-
-    <com.kayako.sdk.android.k5.common.view.CircleImageView
-        android:id="@+id/avatar"
-        android:layout_width="@dimen/ko__messenger_avatar_size"
-        android:layout_height="@dimen/ko__messenger_avatar_size"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        tools:src="#808080" />
 
 </RelativeLayout>
