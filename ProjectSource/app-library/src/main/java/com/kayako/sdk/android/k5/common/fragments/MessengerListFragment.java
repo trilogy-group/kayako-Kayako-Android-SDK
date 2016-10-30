@@ -41,15 +41,22 @@ public class MessengerListFragment extends BaseListFragment implements Messenger
         items.add(new SimpleMessageSelfListItem("Eeep!", avatarUrl_self, null));
         items.add(new SimpleMessageContinuedSelfListItem("Thanks", null));
 
-        items.add(new SimpleMessageContinuedSelfListItem("Wait. Could you show me how your solar panels look?", null));
+        // Test Attachments by Other
+        items.add(new SimpleMessageSelfListItem("Wait. Could you show me how your solar panels look?", avatarUrl_other, null));
         items.add(new AttachmentMessageOtherListItem("http://cdn2.bigcommerce.com/n-d57o0b/tvhc2xod/product_images/uploaded_images/solar-panels.jpg?t=1416860323", "Solarpanels.png", null));
-        items.add(new SimpleMessageContinuedOtherListItem("Does that help? Here's another one", null));
+        items.add(new SimpleMessageOtherListItem("Good, right?", avatarUrl_other, null));
+        items.add(new AttachmentMessageContinuedOtherListItem("https://www.solarworld-usa.com/~/media/www/images/products/modules/off-grid.jpg?la=en", "Solarpanels.png", null));
         items.add(new AttachmentMessageContinuedOtherListItem("https://www.solarworld-usa.com/~/media/www/images/products/modules/off-grid.jpg?la=en", "Solarpanels.png", null));
 
+        // Test Attachments by Self
         items.add(new SimpleMessageSelfListItem("Let me just send back everything you sent me.", avatarUrl_self, null));
         items.add(new AttachmentMessageSelfListItem("http://cdn2.bigcommerce.com/n-d57o0b/tvhc2xod/product_images/uploaded_images/solar-panels.jpg?t=1416860323", "Solarpanels.png", null));
         items.add(new SimpleMessageContinuedSelfListItem("Does that help? Here's another one", null));
         items.add(new AttachmentMessageContinuedSelfListItem("https://www.solarworld-usa.com/~/media/www/images/products/modules/off-grid.jpg?la=en", "Solarpanels.png", null));
+        items.add(new AttachmentMessageContinuedSelfListItem("https://www.solarworld-usa.com/~/media/www/images/products/modules/off-grid.jpg?la=en", "Solarpanels.png", null));
+
+        // Test image without label
+        items.add(new AttachmentMessageSelfListItem("http://cdn2.bigcommerce.com/n-d57o0b/tvhc2xod/product_images/uploaded_images/solar-panels.jpg?t=1416860323", null, null));
 
 
         MessengerAdapter messengerAdapter = new MessengerAdapter(items);

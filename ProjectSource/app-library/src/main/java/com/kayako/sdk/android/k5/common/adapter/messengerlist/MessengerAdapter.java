@@ -1,6 +1,7 @@
 package com.kayako.sdk.android.k5.common.adapter.messengerlist;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,7 +93,12 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 AttachmentMessageSelfViewHolder attachmentMessageSelfViewHolder = (AttachmentMessageSelfViewHolder) viewHolder;
                 AttachmentMessageSelfListItem attachmentMessageSelfListItem = (AttachmentMessageSelfListItem) getData().get(position);
 
-                attachmentMessageSelfViewHolder.message.setText(attachmentMessageSelfListItem.getMessage());
+                if (TextUtils.isEmpty(attachmentMessageSelfListItem.getMessage())) {
+                    attachmentMessageSelfViewHolder.message.setVisibility(View.GONE);
+                } else {
+                    attachmentMessageSelfViewHolder.message.setVisibility(View.VISIBLE);
+                    attachmentMessageSelfViewHolder.message.setText(attachmentMessageSelfListItem.getMessage());
+                }
 
                 if (attachmentMessageSelfListItem.getAttachmentThumbnailUrl() == null) {
                     attachmentMessageSelfViewHolder.attachmentPlaceholder.setVisibility(View.VISIBLE);
@@ -111,7 +117,12 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 AttachmentMessageOtherViewHolder attachmentMessageOtherViewHolder = (AttachmentMessageOtherViewHolder) viewHolder;
                 AttachmentMessageOtherListItem attachmentMessageOtherListItem = (AttachmentMessageOtherListItem) getData().get(position);
 
-                attachmentMessageOtherViewHolder.message.setText(attachmentMessageOtherListItem.getMessage());
+                if (TextUtils.isEmpty(attachmentMessageOtherListItem.getMessage())) {
+                    attachmentMessageOtherViewHolder.message.setVisibility(View.GONE);
+                } else {
+                    attachmentMessageOtherViewHolder.message.setVisibility(View.VISIBLE);
+                    attachmentMessageOtherViewHolder.message.setText(attachmentMessageOtherListItem.getMessage());
+                }
 
                 if (attachmentMessageOtherListItem.getAttachmentThumbnailUrl() == null) {
                     attachmentMessageOtherViewHolder.attachmentPlaceholder.setVisibility(View.VISIBLE);
@@ -130,7 +141,12 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 AttachmentMessageContinuedSelfViewHolder attachmentMessageContinuedSelfViewHolder = (AttachmentMessageContinuedSelfViewHolder) viewHolder;
                 AttachmentMessageContinuedSelfListItem attachmentMessageContinuedSelfListItem = (AttachmentMessageContinuedSelfListItem) getData().get(position);
 
-                attachmentMessageContinuedSelfViewHolder.message.setText(attachmentMessageContinuedSelfListItem.getMessage());
+                if (TextUtils.isEmpty(attachmentMessageContinuedSelfListItem.getMessage())) {
+                    attachmentMessageContinuedSelfViewHolder.message.setVisibility(View.GONE);
+                } else {
+                    attachmentMessageContinuedSelfViewHolder.message.setVisibility(View.VISIBLE);
+                    attachmentMessageContinuedSelfViewHolder.message.setText(attachmentMessageContinuedSelfListItem.getMessage());
+                }
 
                 if (attachmentMessageContinuedSelfListItem.getAttachmentThumbnailUrl() == null) {
                     attachmentMessageContinuedSelfViewHolder.attachmentPlaceholder.setVisibility(View.VISIBLE);
@@ -149,7 +165,12 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 AttachmentMessageContinuedOtherViewHolder attachmentMessageContinuedOtherViewHolder = (AttachmentMessageContinuedOtherViewHolder) viewHolder;
                 AttachmentMessageContinuedOtherListItem attachmentMessageContinuedOtherListItem = (AttachmentMessageContinuedOtherListItem) getData().get(position);
 
-                attachmentMessageContinuedOtherViewHolder.message.setText(attachmentMessageContinuedOtherListItem.getMessage());
+                if (TextUtils.isEmpty(attachmentMessageContinuedOtherListItem.getMessage())) {
+                    attachmentMessageContinuedOtherViewHolder.message.setVisibility(View.GONE);
+                } else {
+                    attachmentMessageContinuedOtherViewHolder.message.setVisibility(View.VISIBLE);
+                    attachmentMessageContinuedOtherViewHolder.message.setText(attachmentMessageContinuedOtherListItem.getMessage());
+                }
 
                 if (attachmentMessageContinuedOtherListItem.getAttachmentThumbnailUrl() == null) {
                     attachmentMessageContinuedOtherViewHolder.attachmentPlaceholder.setVisibility(View.VISIBLE);
