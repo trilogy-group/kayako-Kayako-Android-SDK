@@ -27,7 +27,7 @@
     </style>
 
     <style name="Ko__ChatBubbleStyle">
-        <item name="selectableItemBackgroundBorderless">?android:selectableItemBackground</item>
+        <item name="android:minWidth">@dimen/ko__messenger_chat_bubble_min_width</item>
     </style>
 
     <style name="Ko__ChatBubbleStyleOther" parent="Ko__ChatBubbleStyle">
@@ -42,8 +42,6 @@
 
     <style name="Ko__ChatBubbleDateStyle">
         <item name="android:textSize">10sp</item>
-        <item name="android:layout_margin">4dp
-        </item>
+        <item name="android:layout_margin">@dimen/ko__messenger_list_item_time_margin</item>
     </style>
-
 </resources>

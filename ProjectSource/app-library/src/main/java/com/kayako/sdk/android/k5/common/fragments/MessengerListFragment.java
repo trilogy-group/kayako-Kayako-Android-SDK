@@ -69,6 +69,8 @@ public class MessengerListFragment extends BaseListFragment implements Messenger
         items.add(new DateSeparatorListItem(1477751012000L)); // Sat, 29 Oct 2016 14:23:32 GMT
         items.add(new SimpleMessageSelfListItem("Eeep!", avatarUrl_self, 0, null));
 
+        items.add(new SimpleMessageOtherListItem("!", avatarUrl_self, 1479763213000L, null));
+        items.add(new SimpleMessageSelfListItem("?", avatarUrl_self, 1479766213000L, null));
 
         MessengerAdapter messengerAdapter = new MessengerAdapter(items);
         messengerAdapter.setOnItemClickListener(this);
