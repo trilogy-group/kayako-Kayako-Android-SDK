@@ -1,6 +1,7 @@
 package com.kayako.sdk.android.k5.common.adapter.sectioninfolist;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +46,13 @@ public class SectionInfoAdapter extends ListItemRecyclerViewAdapter {
             case SectionInfoListType.SECTION_INFO_ITEM:
                 SectionInfoViewHolder sectionInfoViewHolder = (SectionInfoViewHolder) viewHolder;
                 sectionInfoViewHolder.title.setText(mTitle);
-                sectionInfoViewHolder.description.setText(mDescription);
+
+                if (TextUtils.isEmpty(mDescription)) {
+                    sectionInfoViewHolder.description.setVisibility(View.GONE);
+                } else {
+                    sectionInfoViewHolder.description.setVisibility(View.VISIBLE);
+                    sectionInfoViewHolder.description.setText(mDescription);
+                }
                 break;
             default:
                 super.onBindViewHolder(viewHolder, position);
