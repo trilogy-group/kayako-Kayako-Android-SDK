@@ -6,6 +6,8 @@
     <dimen name="ko__messenger_avatar_size">40dp</dimen>
     <dimen name="ko__messenger_list_item_margin">8dp</dimen>
     <dimen name="ko__messenger_list_item_continued_margin_top">4dp</dimen>
+    <dimen name="ko__messenger_list_item_separator_margin_top">16dp</dimen>
+    <dimen name="ko__messenger_list_item_separator_margin_bottom">8dp</dimen><!-- value[@dimen/ko__messenger_list_item_separator_margin_top] - value[@dimen/ko__messenger_list_item_margin] -->
     <dimen name="ko__messenger_gap_between_avatar_and_message">8dp</dimen>
     <dimen name="ko__messenger_gap_between_message_and_end">48dp</dimen> <!-- value[@dimen/ko__messenger_avatar_size] + value[@dimen/ko__messenger_gap_between_avatar_and_message] -->
     <dimen name="ko__messenger_gap_between_attachment_image_and_label">2dp</dimen>

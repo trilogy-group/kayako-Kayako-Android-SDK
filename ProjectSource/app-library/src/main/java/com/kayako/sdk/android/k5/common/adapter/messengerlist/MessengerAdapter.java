@@ -3,6 +3,7 @@ package com.kayako.sdk.android.k5.common.adapter.messengerlist;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import com.kayako.sdk.android.k5.common.adapter.loadmorelist.EndlessRecyclerView
 import com.kayako.sdk.android.k5.common.utils.ImageUtils;
 import com.kayako.sdk.android.k5.core.Kayako;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -187,6 +189,13 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
 
                 break;
 
+            case MessengerListType.DATE_SEPARATOR:
+                DateSeparatorViewHolder dateSeparatorViewHolder = (DateSeparatorViewHolder) viewHolder;
+                DateSeparatorListItem dateSeparatorListItem = (DateSeparatorListItem) getData().get(position);
+
+                dateSeparatorViewHolder.time.setText(com.kayako.sdk.android.k5.common.utils.DateUtils.formatDate(Kayako.getApplicationContext(), dateSeparatorListItem.getTimeInMilliseconds()));
+                break;
+
             default:
                 super.onBindViewHolder(viewHolder, position);
                 break;
@@ -230,6 +239,10 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
             case MessengerListType.ATTACHMENT_MESSAGE_CONTINUED_OTHER:
                 View attachmentMessageContinuedOtherView = LayoutInflater.from(parent.getContext()).inflate(R.layout.ko__list_messenger_attachment_message_continued_other, parent, false);
                 return new AttachmentMessageContinuedOtherViewHolder(attachmentMessageContinuedOtherView);
+
+            case MessengerListType.DATE_SEPARATOR:
+                View dateSeparatorView = LayoutInflater.from(parent.getContext()).inflate(R.layout.ko__list_messenger_date_separator, parent, false);
+                return new DateSeparatorViewHolder(dateSeparatorView);
 
             default:
                 return super.onCreateViewHolder(parent, viewType);

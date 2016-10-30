@@ -9,6 +9,7 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentMessageC
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentMessageContinuedSelfListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentMessageOtherListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentMessageSelfListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.DateSeparatorListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerAdapter;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.SimpleMessageContinuedOtherListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.SimpleMessageContinuedSelfListItem;
@@ -52,11 +53,21 @@ public class MessengerListFragment extends BaseListFragment implements Messenger
         items.add(new SimpleMessageSelfListItem("Let me just send back everything you sent me.", avatarUrl_self, null));
         items.add(new AttachmentMessageSelfListItem("http://cdn2.bigcommerce.com/n-d57o0b/tvhc2xod/product_images/uploaded_images/solar-panels.jpg?t=1416860323", "Solarpanels.png", null));
         items.add(new SimpleMessageContinuedSelfListItem("Does that help? Here's another one", null));
+
         items.add(new AttachmentMessageContinuedSelfListItem("https://www.solarworld-usa.com/~/media/www/images/products/modules/off-grid.jpg?la=en", "Solarpanels.png", null));
         items.add(new AttachmentMessageContinuedSelfListItem("https://www.solarworld-usa.com/~/media/www/images/products/modules/off-grid.jpg?la=en", "Solarpanels.png", null));
 
         // Test image without label
         items.add(new AttachmentMessageSelfListItem("http://cdn2.bigcommerce.com/n-d57o0b/tvhc2xod/product_images/uploaded_images/solar-panels.jpg?t=1416860323", null, null));
+
+        // Test time
+        items.add(new DateSeparatorListItem(System.currentTimeMillis())); // now
+        items.add(new SimpleMessageSelfListItem("Eeep!", avatarUrl_self, null));
+        items.add(new SimpleMessageSelfListItem("Eeep!", avatarUrl_self, null));
+        items.add(new DateSeparatorListItem(1456842212000L)); // Tue, 01 Mar 2016 14:23:32 GMT
+        items.add(new SimpleMessageSelfListItem("Eeep!", avatarUrl_self, null));
+        items.add(new DateSeparatorListItem(1477751012000L)); // Sat, 29 Oct 2016 14:23:32 GMT
+        items.add(new SimpleMessageSelfListItem("Eeep!", avatarUrl_self, null));
 
 
         MessengerAdapter messengerAdapter = new MessengerAdapter(items);
