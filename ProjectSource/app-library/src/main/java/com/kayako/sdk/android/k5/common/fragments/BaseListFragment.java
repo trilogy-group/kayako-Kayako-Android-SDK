@@ -27,7 +27,6 @@ public abstract class BaseListFragment extends BaseStateFragment {
     protected RecyclerView mRecyclerView;
     protected View mRoot;
     private EndlessRecyclerViewScrollAdapter mAdapter;
-    private EndlessRecyclerViewScrollListener mScrollListener;
 
     @Override
     final public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -92,24 +91,24 @@ public abstract class BaseListFragment extends BaseStateFragment {
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
-        mScrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager, adapter) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount) {
-                // Using a handler because it will cause IllegalStateException: Scroll callbacks should not be used to change the structure of the RecyclerView or the adapter contents.
-                Handler loadMoreHandler = new Handler(Looper.getMainLooper()) {
-                    @Override
-                    public void handleMessage(Message inputMessage) {
-                        loadMoreListener.loadMoreItems();
-                    }
-                };
-
-                loadMoreHandler.sendEmptyMessage(0);
-            }
-        };
-
         if (loadMoreListener != null) { // only enable scroll listener if needed
+            EndlessRecyclerViewScrollListener  scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager, adapter) {
+                @Override
+                public void onLoadMore(int page, int totalItemsCount) {
+                    // Using a handler because it will cause IllegalStateException: Scroll callbacks should not be used to change the structure of the RecyclerView or the adapter contents.
+                    Handler loadMoreHandler = new Handler(Looper.getMainLooper()) {
+                        @Override
+                        public void handleMessage(Message inputMessage) {
+                            loadMoreListener.loadMoreItems();
+                        }
+                    };
+
+                    loadMoreHandler.sendEmptyMessage(0);
+                }
+            };
+
             adapter.setHasMoreItems(true);
-            mRecyclerView.addOnScrollListener(mScrollListener);
+            mRecyclerView.addOnScrollListener(scrollListener);
         }
     }
 
