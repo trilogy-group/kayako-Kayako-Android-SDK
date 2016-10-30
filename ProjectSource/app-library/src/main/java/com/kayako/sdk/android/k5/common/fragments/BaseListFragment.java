@@ -88,7 +88,7 @@ public abstract class BaseListFragment extends BaseStateFragment {
         mAdapter = adapter;
 
         mRecyclerView.setAdapter(adapter);
-        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setHasFixedSize(true); // assuming the layout size of recyclerview does not change
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
