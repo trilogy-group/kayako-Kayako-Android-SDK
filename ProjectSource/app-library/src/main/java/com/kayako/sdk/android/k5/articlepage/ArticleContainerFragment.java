@@ -44,7 +44,7 @@ public class ArticleContainerFragment extends BaseContainerFragment implements A
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mRoot = inflater.inflate(R.layout.ko__fragment_default, null);
+        mRoot = inflater.inflate(R.layout.ko__fragment_default, container, false);
         Article article = (Article) getArguments().getSerializable(ARG_ARTICLE);
         setUpToolbar(String.valueOf(article.getId()));
         return mRoot;

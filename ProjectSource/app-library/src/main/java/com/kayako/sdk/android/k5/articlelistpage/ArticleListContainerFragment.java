@@ -45,7 +45,7 @@ public class ArticleListContainerFragment extends BaseContainerFragment implemen
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mRoot = inflater.inflate(R.layout.ko__fragment_default, null);
+        mRoot = inflater.inflate(R.layout.ko__fragment_default, container, false); // parent view added to ensure fragment fills LinearLayout
         setUpToolbar();
         return mRoot;
     }
