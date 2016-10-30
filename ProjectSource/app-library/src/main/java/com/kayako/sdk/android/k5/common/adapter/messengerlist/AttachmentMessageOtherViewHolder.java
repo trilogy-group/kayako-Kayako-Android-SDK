@@ -6,11 +6,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kayako.sdk.android.k5.R;
+import com.kayako.sdk.android.k5.common.view.CircleImageView;
 
 public class AttachmentMessageOtherViewHolder extends RecyclerView.ViewHolder {
 
     public TextView message;
     public TextView time;
+    public CircleImageView avatar;
     public ImageView attachmentPlaceholder;
     public ImageView attachmentThumbnail;
 
@@ -19,6 +21,7 @@ public class AttachmentMessageOtherViewHolder extends RecyclerView.ViewHolder {
         message = (TextView) itemView.findViewById(R.id.message);
         attachmentPlaceholder = (ImageView) itemView.findViewById(R.id.attachment_placeholder);
         attachmentThumbnail = (ImageView) itemView.findViewById(R.id.attachment_image);
+        avatar = (CircleImageView) itemView.findViewById(R.id.avatar);
         time = (TextView) itemView.findViewById(R.id.time);
     }
 
