@@ -33,6 +33,10 @@ public class KayakoHelpCenterActivityTest {
         Kayako.initialize(mActivityRule.getActivity());
     }
 
+    public static void checkIfActivityOpened(){
+        onView(withId(R.id.ko__fragment_listing)).check(matches(isDisplayed()));
+    }
+
     public static void checkIfArticleListingPageDisplayed() {
         onView(withId(R.id.ko__section_title)).check(matches(isDisplayed()));
     }
