@@ -1,6 +1,7 @@
 package com.kayako.sdk.android.k5.common.adapter.messengerlist;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,7 +51,7 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 final SimpleMessageSelfListItem simpleMessageSelfListItem = (SimpleMessageSelfListItem) getData().get(position);
                 final SimpleMessageSelfViewHolder simpleMessageSelfViewHolder = (SimpleMessageSelfViewHolder) viewHolder;
 
-                simpleMessageSelfViewHolder.message.setText(simpleMessageSelfListItem.getMessage());
+                simpleMessageSelfViewHolder.message.setText(Html.fromHtml(simpleMessageSelfListItem.getMessage()));
                 ImageUtils.setAvatarImage(Kayako.getApplicationContext(), simpleMessageSelfViewHolder.avatar, simpleMessageSelfListItem.getAvatarUrl());
 
                 setAvatarClickListenerOnView(simpleMessageSelfViewHolder.avatar, simpleMessageSelfListItem.getItemType(), simpleMessageSelfListItem.getData());
@@ -62,7 +63,7 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 SimpleMessageOtherListItem simpleMessageOtherListItem = (SimpleMessageOtherListItem) getData().get(position);
                 SimpleMessageOtherViewHolder simpleMessageOtherViewHolder = (SimpleMessageOtherViewHolder) viewHolder;
 
-                simpleMessageOtherViewHolder.message.setText(simpleMessageOtherListItem.getMessage());
+                simpleMessageOtherViewHolder.message.setText(Html.fromHtml(simpleMessageOtherListItem.getMessage()));
                 ImageUtils.setAvatarImage(Kayako.getApplicationContext(), simpleMessageOtherViewHolder.avatar, simpleMessageOtherListItem.getAvatarUrl());
 
                 setAvatarClickListenerOnView(simpleMessageOtherViewHolder.avatar, simpleMessageOtherListItem.getItemType(), simpleMessageOtherListItem.getData());
@@ -74,7 +75,7 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 SimpleMessageContinuedSelfListItem simpleMessageContinuedSelfListItem = (SimpleMessageContinuedSelfListItem) getData().get(position);
                 SimpleMessageContinuedSelfViewHolder simpleMessageContinuedSelfViewHolder = (SimpleMessageContinuedSelfViewHolder) viewHolder;
 
-                simpleMessageContinuedSelfViewHolder.message.setText(simpleMessageContinuedSelfListItem.getMessage());
+                simpleMessageContinuedSelfViewHolder.message.setText(Html.fromHtml(simpleMessageContinuedSelfListItem.getMessage()));
 
                 setItemClickListenerOnView(simpleMessageContinuedSelfViewHolder.itemView, simpleMessageContinuedSelfListItem.getItemType(), simpleMessageContinuedSelfListItem.getData());
 
@@ -84,7 +85,7 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 SimpleMessageContinuedOtherListItem simpleMessageContinuedOtherListItem = (SimpleMessageContinuedOtherListItem) getData().get(position);
                 SimpleMessageContinuedOtherViewHolder simpleMessageContinuedOtherViewHolder = (SimpleMessageContinuedOtherViewHolder) viewHolder;
 
-                simpleMessageContinuedOtherViewHolder.message.setText(simpleMessageContinuedOtherListItem.getMessage());
+                simpleMessageContinuedOtherViewHolder.message.setText(Html.fromHtml(simpleMessageContinuedOtherListItem.getMessage()));
 
                 setItemClickListenerOnView(simpleMessageContinuedOtherViewHolder.itemView, simpleMessageContinuedOtherListItem.getItemType(), simpleMessageContinuedOtherListItem.getData());
                 break;
@@ -97,7 +98,7 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                     attachmentMessageSelfViewHolder.message.setVisibility(View.GONE);
                 } else {
                     attachmentMessageSelfViewHolder.message.setVisibility(View.VISIBLE);
-                    attachmentMessageSelfViewHolder.message.setText(attachmentMessageSelfListItem.getMessage());
+                    attachmentMessageSelfViewHolder.message.setText(Html.fromHtml(attachmentMessageSelfListItem.getMessage()));
                 }
 
                 if (attachmentMessageSelfListItem.getAttachmentThumbnailUrl() == null) {
@@ -121,7 +122,7 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                     attachmentMessageOtherViewHolder.message.setVisibility(View.GONE);
                 } else {
                     attachmentMessageOtherViewHolder.message.setVisibility(View.VISIBLE);
-                    attachmentMessageOtherViewHolder.message.setText(attachmentMessageOtherListItem.getMessage());
+                    attachmentMessageOtherViewHolder.message.setText(Html.fromHtml(attachmentMessageOtherListItem.getMessage()));
                 }
 
                 if (attachmentMessageOtherListItem.getAttachmentThumbnailUrl() == null) {
@@ -145,7 +146,7 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                     attachmentMessageContinuedSelfViewHolder.message.setVisibility(View.GONE);
                 } else {
                     attachmentMessageContinuedSelfViewHolder.message.setVisibility(View.VISIBLE);
-                    attachmentMessageContinuedSelfViewHolder.message.setText(attachmentMessageContinuedSelfListItem.getMessage());
+                    attachmentMessageContinuedSelfViewHolder.message.setText(Html.fromHtml(attachmentMessageContinuedSelfListItem.getMessage()));
                 }
 
                 if (attachmentMessageContinuedSelfListItem.getAttachmentThumbnailUrl() == null) {
@@ -169,7 +170,7 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                     attachmentMessageContinuedOtherViewHolder.message.setVisibility(View.GONE);
                 } else {
                     attachmentMessageContinuedOtherViewHolder.message.setVisibility(View.VISIBLE);
-                    attachmentMessageContinuedOtherViewHolder.message.setText(attachmentMessageContinuedOtherListItem.getMessage());
+                    attachmentMessageContinuedOtherViewHolder.message.setText(Html.fromHtml(attachmentMessageContinuedOtherListItem.getMessage()));
                 }
 
                 if (attachmentMessageContinuedOtherListItem.getAttachmentThumbnailUrl() == null) {
