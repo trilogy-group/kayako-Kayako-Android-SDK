@@ -2,4 +2,14 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="ko__activity_horizontal_margin">16dp</dimen>
     <dimen name="ko__activity_vertical_margin">16dp</dimen>
+
+    <dimen name="ko__messenger_avatar_size">40dp</dimen>
+    <dimen name="ko__messenger_list_item_margin">8dp</dimen>
+    <dimen name="ko__messenger_list_item_continued_margin_top">4dp</dimen>
+    <dimen name="ko__messenger_gap_between_avatar_and_message">8dp</dimen>
+    <dimen name="ko__messenger_gap_between_message_and_end">48dp</dimen> <!-- @dimen/ko__messenger_avatar_size + @dimen/ko__messenger_gap_between_avatar_and_message -->
+
+    <dimen name="ko__messenger_chat_bubble_corner">8dp</dimen>
+    <dimen name="ko__messenger_chat_bubble_padding_vertical">8dp</dimen>
+    <dimen name="ko__messenger_chat_bubble_padding_horizontal">12dp</dimen>
 </resources>

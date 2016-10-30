@@ -1,0 +1,18 @@
+package com.kayako.sdk.android.k5.common.adapter.messengerlist;
+
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.TextView;
+
+import com.kayako.sdk.android.k5.R;
+
+public class SimpleMessageContinuedSelfViewHolder extends RecyclerView.ViewHolder {
+
+    public TextView message;
+
+    public SimpleMessageContinuedSelfViewHolder(View itemView) {
+        super(itemView);
+        message = (TextView) itemView.findViewById(R.id.message);
+    }
+
+}
