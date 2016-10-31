@@ -1,5 +1,8 @@
 package com.kayako.sdk.android.k5.common.adapter.messengerlist;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 
 import java.util.Map;
@@ -10,7 +13,7 @@ public class SimpleMessageContinuedOtherListItem extends BaseListItem {
     private long time;
     private Map<String, Object> data;
 
-    public SimpleMessageContinuedOtherListItem(String message, long time, Map<String, Object> data) {
+    public SimpleMessageContinuedOtherListItem(@NonNull String message, @Nullable long time, @Nullable Map<String, Object> data) {
         super(MessengerListType.SIMPLE_MESSAGE_CONTINUED_OTHER);
         this.message = message;
         this.time = time;

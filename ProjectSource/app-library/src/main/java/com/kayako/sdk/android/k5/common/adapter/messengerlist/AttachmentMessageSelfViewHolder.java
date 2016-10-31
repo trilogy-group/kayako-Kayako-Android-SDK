@@ -13,6 +13,7 @@ public class AttachmentMessageSelfViewHolder extends RecyclerView.ViewHolder {
     public TextView message;
     public TextView time;
     public CircleImageView avatar;
+    public CircleImageView channel;
     public ImageView attachmentPlaceholder;
     public ImageView attachmentThumbnail;
 
@@ -22,6 +23,7 @@ public class AttachmentMessageSelfViewHolder extends RecyclerView.ViewHolder {
         avatar = (CircleImageView) itemView.findViewById(R.id.avatar);
         attachmentPlaceholder = (ImageView) itemView.findViewById(R.id.attachment_placeholder);
         attachmentThumbnail = (ImageView) itemView.findViewById(R.id.attachment_image);
+        channel = (CircleImageView) itemView.findViewById(R.id.channel);
         time = (TextView) itemView.findViewById(R.id.time);
     }
 

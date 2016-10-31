@@ -55,6 +55,13 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 simpleMessageSelfViewHolder.message.setText(Html.fromHtml(simpleMessageSelfListItem.getMessage()));
                 ImageUtils.setAvatarImage(Kayako.getApplicationContext(), simpleMessageSelfViewHolder.avatar, simpleMessageSelfListItem.getAvatarUrl());
 
+                if (simpleMessageSelfListItem.getChannel() == null) {
+                    simpleMessageSelfViewHolder.channel.setVisibility(View.GONE);
+                } else {
+                    simpleMessageSelfViewHolder.channel.setVisibility(View.VISIBLE);
+                    ImageUtils.setChannelImage(Kayako.getApplicationContext(), simpleMessageSelfViewHolder.channel, simpleMessageSelfListItem.getChannel());
+                }
+
                 if (simpleMessageSelfListItem.getTime() == 0) {
                     simpleMessageSelfViewHolder.time.setVisibility(View.GONE);
                 } else {
@@ -74,13 +81,19 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 simpleMessageOtherViewHolder.message.setText(Html.fromHtml(simpleMessageOtherListItem.getMessage()));
                 ImageUtils.setAvatarImage(Kayako.getApplicationContext(), simpleMessageOtherViewHolder.avatar, simpleMessageOtherListItem.getAvatarUrl());
 
+                if (simpleMessageOtherListItem.getChannel() == null) {
+                    simpleMessageOtherViewHolder.channel.setVisibility(View.GONE);
+                } else {
+                    simpleMessageOtherViewHolder.channel.setVisibility(View.VISIBLE);
+                    ImageUtils.setChannelImage(Kayako.getApplicationContext(), simpleMessageOtherViewHolder.channel, simpleMessageOtherListItem.getChannel());
+                }
+
                 if (simpleMessageOtherListItem.getTime() == 0) {
                     simpleMessageOtherViewHolder.time.setVisibility(View.GONE);
                 } else {
                     simpleMessageOtherViewHolder.time.setVisibility(View.VISIBLE);
                     simpleMessageOtherViewHolder.time.setText(DateTimeUtils.formatTime(Kayako.getApplicationContext(), simpleMessageOtherListItem.getTime()));
                 }
-
 
                 setAvatarClickListenerOnView(simpleMessageOtherViewHolder.avatar, simpleMessageOtherListItem.getItemType(), simpleMessageOtherListItem.getData());
                 setItemClickListenerOnView(simpleMessageOtherViewHolder.itemView, simpleMessageOtherListItem.getItemType(), simpleMessageOtherListItem.getData());
@@ -126,6 +139,13 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
 
                 ImageUtils.setAvatarImage(Kayako.getApplicationContext(), attachmentMessageSelfViewHolder.avatar, attachmentMessageSelfListItem.getAvatarUrl());
 
+                if (attachmentMessageSelfListItem.getChannel() == null) {
+                    attachmentMessageSelfViewHolder.channel.setVisibility(View.GONE);
+                } else {
+                    attachmentMessageSelfViewHolder.channel.setVisibility(View.VISIBLE);
+                    ImageUtils.setChannelImage(Kayako.getApplicationContext(), attachmentMessageSelfViewHolder.channel, attachmentMessageSelfListItem.getChannel());
+                }
+
                 if (attachmentMessageSelfListItem.getTime() == 0) {
                     attachmentMessageSelfViewHolder.time.setVisibility(View.GONE);
                 } else {
@@ -160,6 +180,13 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 AttachmentMessageOtherListItem attachmentMessageOtherListItem = (AttachmentMessageOtherListItem) getData().get(position);
 
                 ImageUtils.setAvatarImage(Kayako.getApplicationContext(), attachmentMessageOtherViewHolder.avatar, attachmentMessageOtherListItem.getAvatarUrl());
+
+                if (attachmentMessageOtherListItem.getChannel() == null) {
+                    attachmentMessageOtherViewHolder.channel.setVisibility(View.GONE);
+                } else {
+                    attachmentMessageOtherViewHolder.channel.setVisibility(View.VISIBLE);
+                    ImageUtils.setChannelImage(Kayako.getApplicationContext(), attachmentMessageOtherViewHolder.channel, attachmentMessageOtherListItem.getChannel());
+                }
 
                 if (attachmentMessageOtherListItem.getTime() == 0) {
                     attachmentMessageOtherViewHolder.time.setVisibility(View.GONE);

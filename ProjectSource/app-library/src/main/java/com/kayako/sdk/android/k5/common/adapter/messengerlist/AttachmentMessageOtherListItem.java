@@ -1,5 +1,8 @@
 package com.kayako.sdk.android.k5.common.adapter.messengerlist;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 
 import java.util.Map;
@@ -10,14 +13,16 @@ public class AttachmentMessageOtherListItem extends BaseListItem {
     private String attachmentThumbnailUrl;
     private String message;
     private long time;
+    private ChannelDecoration channel;
     private Map<String, Object> data;
 
-    public AttachmentMessageOtherListItem(String avatarUrl, String attachmentThumbnailUrl, String message, long time, Map<String, Object> data) {
+    public AttachmentMessageOtherListItem(@NonNull String attachmentThumbnailUrl, @Nullable String message, @NonNull String avatarUrl, @Nullable ChannelDecoration channel, @Nullable long time, @Nullable Map<String, Object> data) {
         super(MessengerListType.ATTACHMENT_MESSAGE_OTHER);
         this.message = message;
         this.avatarUrl = avatarUrl;
         this.attachmentThumbnailUrl = attachmentThumbnailUrl;
         this.time = time;
+        this.channel = channel;
         this.data = data;
 
     }
@@ -60,5 +65,13 @@ public class AttachmentMessageOtherListItem extends BaseListItem {
 
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
+    }
+
+    public ChannelDecoration getChannel() {
+        return channel;
+    }
+
+    public void setChannel(ChannelDecoration channel) {
+        this.channel = channel;
     }
 }

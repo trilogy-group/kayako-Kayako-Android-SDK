@@ -1,5 +1,7 @@
 package com.kayako.sdk.android.k5.common.adapter.messengerlist;
 
+import android.support.annotation.Nullable;
+
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 
 import java.util.Map;
@@ -11,7 +13,7 @@ public class AttachmentMessageContinuedOtherListItem extends BaseListItem {
     private long time;
     private Map<String, Object> data;
 
-    public AttachmentMessageContinuedOtherListItem(String attachmentThumbnailUrl, String message, long time, Map<String, Object> data) {
+    public AttachmentMessageContinuedOtherListItem(@Nullable String attachmentThumbnailUrl, @Nullable String message, @Nullable long time, @Nullable Map<String, Object> data) {
         super(MessengerListType.ATTACHMENT_MESSAGE_CONTINUED_OTHER);
         this.message = message;
         this.attachmentThumbnailUrl = attachmentThumbnailUrl;

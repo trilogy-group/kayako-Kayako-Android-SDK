@@ -12,11 +12,13 @@ public class SimpleMessageSelfViewHolder extends RecyclerView.ViewHolder {
     public TextView message;
     public TextView time;
     public CircleImageView avatar;
+    public CircleImageView channel;
 
     public SimpleMessageSelfViewHolder(View itemView) {
         super(itemView);
         avatar = (CircleImageView) itemView.findViewById(R.id.avatar);
         message = (TextView) itemView.findViewById(R.id.message);
+        channel = (CircleImageView) itemView.findViewById(R.id.channel);
         time = (TextView) itemView.findViewById(R.id.time);
     }
 

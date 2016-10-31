@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:paddingLeft="@dimen/ko__messenger_list_item_margin"
     android:paddingRight="@dimen/ko__messenger_list_item_margin"
@@ -75,5 +76,17 @@
         android:layout_below="@+id/message"
         android:layout_marginTop="@dimen/ko__messenger_gap_between_time_and_message"
         tools:text="12:30 PM" />
+
+    <com.kayako.sdk.android.k5.common.view.CircleImageView
+        android:id="@+id/channel"
+        android:layout_width="@dimen/ko__messenger_channel_size"
+        android:layout_height="@dimen/ko__messenger_channel_size"
+        android:layout_alignTop="@+id/avatar"
+        android:layout_alignLeft="@+id/avatar"
+        android:layout_marginTop="@dimen/ko__messenger_gap_between_channel_and_avatar_top_corner"
+        android:layout_marginLeft="@dimen/ko__messenger_gap_between_channel_and_avatar_top_corner"
+        app:civ_border_color="#fff"
+        app:civ_border_width="2dp"
+        tools:src="#000" />
 
 </RelativeLayout>
