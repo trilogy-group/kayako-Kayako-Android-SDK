@@ -33,8 +33,13 @@ public abstract class BaseStateFragment extends Fragment {
             mEmptyStubView.setVisibility(View.VISIBLE);
         }
 
-        if (title == null) title = getString(R.string.ko__label_empty_view_title);
-        if (description == null) description = getString(R.string.ko__label_empty_view_description);
+        if (title == null) {
+            title = getString(R.string.ko__label_empty_view_title);
+        }
+
+        if (description == null) {
+            description = getString(R.string.ko__label_empty_view_description);
+        }
 
         mRootView.findViewById(R.id.ko__inflated_stub_empty_state).setVisibility(View.VISIBLE);
         ((TextView) mRootView.findViewById(R.id.ko__empty_state_title)).setText(title);
