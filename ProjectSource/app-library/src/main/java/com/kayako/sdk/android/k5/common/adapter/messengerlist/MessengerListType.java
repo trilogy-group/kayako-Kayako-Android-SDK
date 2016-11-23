@@ -5,8 +5,8 @@ import com.kayako.sdk.android.k5.common.adapter.loadmorelist.LoadMoreListType;
 public interface MessengerListType extends LoadMoreListType {
 
     // Message Types
-    int SIMPLE_MESSAGE_OTHER = 1; // Simple Message sent by someone else
-    int SIMPLE_MESSAGE_SELF = 2; // Simple Message sent by you
+    int SIMPLE_MESSAGE_OTHER = 2; // Simple Message sent by someone else
+    int SIMPLE_MESSAGE_SELF = 3; // Simple Message sent by you
     int SIMPLE_MESSAGE_CONTINUED_OTHER = 4; // Simple message (without avatar) continued from previous message by someones else
     int SIMPLE_MESSAGE_CONTINUED_SELF = 5; // Simple message (without avatar) continued from previous mesage by you
 
