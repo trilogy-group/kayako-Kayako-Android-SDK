@@ -142,12 +142,13 @@ public class SearchArticleFragment extends BaseListFragment implements SearchArt
 
     @Override
     public void setUpList(List<BaseListItem> items) {
-        super.initList(new SearchListAdapter(items, this), this);
+        super.initList(new SearchListAdapter(items, this));
+        super.setLoadMoreListener(this);
     }
 
     @Override
     public void addItemsToList(List<BaseListItem> items) {
-        super.addToList(items);
+        super.addItemsToEndOfList(items);
     }
 
     @Override
@@ -163,6 +164,9 @@ public class SearchArticleFragment extends BaseListFragment implements SearchArt
     @Override
     public void setListHasMoreItems(boolean hasMoreItems) {
         super.setHasMoreItems(hasMoreItems);
+        if (!hasMoreItems) {
+            super.removeLoadMoreListener();
+        }
     }
 
     @Override

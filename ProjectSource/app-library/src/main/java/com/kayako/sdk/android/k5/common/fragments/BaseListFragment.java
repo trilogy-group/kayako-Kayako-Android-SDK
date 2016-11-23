@@ -24,9 +24,11 @@ import java.util.List;
  */
 public abstract class BaseListFragment extends BaseStateFragment {
 
-    protected RecyclerView mRecyclerView;
     protected View mRoot;
+    protected RecyclerView mRecyclerView;
     private EndlessRecyclerViewScrollAdapter mAdapter;
+    private LinearLayoutManager mLayoutManager;
+    private EndlessRecyclerViewScrollListener mLoadMoreListener;
 
     @Override
     final public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -80,42 +82,86 @@ public abstract class BaseListFragment extends BaseStateFragment {
      * If loadMoreListener is set as null, it implies that there is no more items to load when user scrolls to bottom of list (disable load more listener)
      *
      * @param adapter
-     * @param loadMoreListener
      */
-    protected void initList(final EndlessRecyclerViewScrollAdapter adapter, final EndlessRecyclerViewScrollAdapter.OnLoadMoreListener loadMoreListener) {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mRoot.getContext());
+    protected void initList(final EndlessRecyclerViewScrollAdapter adapter) {
+        mLayoutManager = new LinearLayoutManager(mRoot.getContext());
         mAdapter = adapter;
 
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setHasFixedSize(true); // assuming the layout size of recyclerview does not change
         mRecyclerView.setNestedScrollingEnabled(false);
-        mRecyclerView.setLayoutManager(linearLayoutManager);
-
-        if (loadMoreListener != null) { // only enable scroll listener if needed
-            EndlessRecyclerViewScrollListener  scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager, adapter) {
-                @Override
-                public void onLoadMore(int page, int totalItemsCount) {
-                    // Using a handler because it will cause IllegalStateException: Scroll callbacks should not be used to change the structure of the RecyclerView or the adapter contents.
-                    Handler loadMoreHandler = new Handler(Looper.getMainLooper()) {
-                        @Override
-                        public void handleMessage(Message inputMessage) {
-                            loadMoreListener.loadMoreItems();
-                        }
-                    };
-
-                    loadMoreHandler.sendEmptyMessage(0);
-                }
-            };
-
-            adapter.setHasMoreItems(true);
-            mRecyclerView.addOnScrollListener(scrollListener);
-        }
+        mRecyclerView.setLayoutManager(mLayoutManager);
     }
 
-    protected void addToList(List<BaseListItem> items) {
+    protected void addItemsToEndOfList(List<BaseListItem> items) {
         mAdapter.addData(items);
         mAdapter.hideLoadMoreProgress();
     }
+
+    /**
+     * Smooth scroll to the end of list
+     */
+    protected void scrollToEndOfList() {
+        mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount());
+    }
+
+    /**
+     * Set OnScrollListener
+     *
+     * @param onScrollListener
+     */
+    protected void setScrollListener(RecyclerView.OnScrollListener onScrollListener) {
+        assert mRecyclerView != null;
+        assert onScrollListener != null;
+
+        mRecyclerView.addOnScrollListener(onScrollListener);
+    }
+
+    /**
+     * Add OnScrollListener
+     *
+     * @param onScrollListener
+     */
+    protected void removeScrollListener(RecyclerView.OnScrollListener onScrollListener) {
+        assert mRecyclerView != null;
+
+        mRecyclerView.removeOnScrollListener(onScrollListener);
+    }
+
+    protected void setLoadMoreListener(final EndlessRecyclerViewScrollAdapter.OnLoadMoreListener loadMoreListener) {
+        assert mLayoutManager != null;
+        assert mAdapter != null;
+        assert mRecyclerView != null;
+        assert loadMoreListener != null;
+
+        mLoadMoreListener = new EndlessRecyclerViewScrollListener(mLayoutManager, mAdapter) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                // Using a handler because it will cause IllegalStateException: Scroll callbacks should not be used to change the structure of the RecyclerView or the adapter contents.
+                Handler loadMoreHandler = new Handler(Looper.getMainLooper()) {
+                    @Override
+                    public void handleMessage(Message inputMessage) {
+                        loadMoreListener.loadMoreItems();
+                    }
+                };
+
+                loadMoreHandler.sendEmptyMessage(0);
+            }
+        };
+
+        mAdapter.setHasMoreItems(true);
+        mRecyclerView.addOnScrollListener(mLoadMoreListener);
+    }
+
+    protected void removeLoadMoreListener() {
+        assert mLoadMoreListener != null;
+        assert mRecyclerView != null;
+        assert mAdapter != null;
+
+        mAdapter.setHasMoreItems(false);
+        mRecyclerView.removeOnScrollListener(mLoadMoreListener);
+    }
+
 
     protected void showLoadMoreProgress() {
         mAdapter.showLoadMoreProgress();
@@ -126,10 +172,6 @@ public abstract class BaseListFragment extends BaseStateFragment {
     }
 
     protected void setHasMoreItems(boolean hasMoreItems) {
-        if (!hasMoreItems) {
-            mRecyclerView.clearOnScrollListeners();
-        }
-
         mAdapter.setHasMoreItems(hasMoreItems);
     }
 }

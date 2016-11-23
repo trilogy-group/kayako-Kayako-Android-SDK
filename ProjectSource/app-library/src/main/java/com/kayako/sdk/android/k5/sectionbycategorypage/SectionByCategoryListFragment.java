@@ -100,7 +100,7 @@ public class SectionByCategoryListFragment extends BaseListFragment implements S
     @Override
     public void setUpList(final List<BaseListItem> items) {
         listItemRecyclerViewAdapter = new SearchSectionAdapter(items, this, this);
-        initList(listItemRecyclerViewAdapter, null);
+        initList(listItemRecyclerViewAdapter);
     }
 
     @Override
