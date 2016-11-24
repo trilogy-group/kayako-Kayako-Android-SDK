@@ -15,6 +15,7 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentMessageC
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentMessageOtherListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentMessageSelfListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.ChannelDecoration;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.DataItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.DateSeparatorListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerAdapter;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.SimpleMessageContinuedOtherListItem;
@@ -104,6 +105,57 @@ public class MessengerListFragment extends BaseListFragment {
         super.scrollToBeginningOfList();
     }
 
+    @Override
+    protected int findFirstVisibleItemPosition() {
+        return super.findLastVisibleItemPosition();
+    }
+
+    @Override
+    protected int findLastVisibleItemPosition() {
+        return super.findFirstVisibleItemPosition();
+    }
+
+    /**
+     * scroll to bottom ONLY if the user is currently viewing the last few posts)
+     */
+    protected void scrollToNewMessagesIfNearby() {
+        int lastPosition = getSizeOfData() - 1;
+        int lastVisiblePosition = findFirstVisibleItemPosition();
+
+        if (lastPosition - lastVisiblePosition < 3) { // difference is less than 3 items
+            scrollToEndOfList();
+        }
+    }
+
+
+    protected void convertDataItemToListItems(List<DataItem> dataItems) {
+        // TODO: Assert that the list is ordered by date - NEWEST, NEW, OLD, OLDEST
+
+        for (int i = 0; i < dataItems.size() - 1; i++) {
+            DataItem dataItem = dataItems.get(i);
+            DataItem nextDataItem = dataItems.get(i + 1);
+
+            // TODO: Check the date of current dataItem and the nextDataItem. if the next DataItem is on the NEW DAY, add DATE_SEPARATOR between two
+
+            // TODO: Check if read status of current dataItem is true and the nextDataItem is false. If true, add UNREAD_MESSAGES_SEPARATOR between two
+
+            // TODO: Check if UserType - SELF/OTHER
+
+            // TODO: Check if the time of the previous dataItem and the current dataItem is less than XX seconds (or 1 min).
+            // TODO:       >> If yes, check if next dataItem is less than XX seconds.
+            // TODO:                if yes, ContinuedGroupType of current is CONT
+            // TODO:                if no, ContinuedGroupType of current is LAST
+            // TODO:       >> If no,
+            // TODO:                1> ContinuedGroupType of current == FIRST (with Avatar)
+
+            // TODO: Check if avatar is being shown.
+            // TODO:       >> if yes, check if channel is available
+            // TODO:                >> if yes, show channel too
+            // TODO:                >> if no, continue
+            // TODO:       >> if no, continue
+        }
+    }
+
     ////////////////////////////////////////////// TEST IMPLEMENTATION //////////////////////////////////////////////
 
     private AtomicInteger testTaskCounter = new AtomicInteger(0);
@@ -136,8 +188,6 @@ public class MessengerListFragment extends BaseListFragment {
         // -- But there may be multiple positions for the same post (If it has attachments, for example)
         // - Ok, generate a function that finds all positions from a id. Should we add an ID variable,
         // -- or continue using Map - flexible but we need an abstract method that the user needs to override to extract an id from
-
-
 
         // TODO: TEST add new item at position
         // TODO: TEST remove new item at position
@@ -302,7 +352,8 @@ public class MessengerListFragment extends BaseListFragment {
                 List<BaseListItem> items2 = new ArrayList();
                 items2.add(new SimpleMessageOtherListItem("Add one more at the end!", test_avatarUrl_self, test_channelFacebook, 0, null));
                 addItemsToEndOfList(items2);
-                scrollToEndOfList();
+
+                scrollToNewMessagesIfNearby();
             }
         });
 
@@ -312,7 +363,8 @@ public class MessengerListFragment extends BaseListFragment {
                 List<BaseListItem> items2 = new ArrayList();
                 items2.add(new SimpleMessageSelfListItem("Blah Blah!", test_avatarUrl_self, test_channelFacebook, 0, null));
                 addItemsToEndOfList(items2);
-                scrollToEndOfList();
+
+                scrollToNewMessagesIfNearby();
             }
         });
 
@@ -322,7 +374,8 @@ public class MessengerListFragment extends BaseListFragment {
                 List<BaseListItem> items2 = new ArrayList();
                 items2.add(new SimpleMessageOtherListItem("That's a good one!", test_avatarUrl_self, test_channelFacebook, 0, null));
                 addItemsToEndOfList(items2);
-                scrollToEndOfList();
+
+                scrollToNewMessagesIfNearby();
             }
         });
 

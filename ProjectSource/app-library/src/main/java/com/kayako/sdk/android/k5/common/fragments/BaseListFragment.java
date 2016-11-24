@@ -141,6 +141,18 @@ public abstract class BaseListFragment extends BaseStateFragment {
         mRecyclerView.smoothScrollToPosition(0);
     }
 
+    protected int findFirstVisibleItemPosition() {
+        return mLayoutManager.findFirstVisibleItemPosition();
+    }
+
+    protected int findLastVisibleItemPosition() {
+        return mLayoutManager.findLastVisibleItemPosition();
+    }
+
+    protected int getSizeOfData(){
+        return mAdapter.getItemCount();
+    }
+
 
     /**
      * Set OnScrollListener
