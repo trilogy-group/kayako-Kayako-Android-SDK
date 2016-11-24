@@ -84,26 +84,63 @@ public abstract class BaseListFragment extends BaseStateFragment {
      * @param adapter
      */
     protected void initList(final EndlessRecyclerViewScrollAdapter adapter) {
-        mLayoutManager = new LinearLayoutManager(mRoot.getContext());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mRoot.getContext());
+        init(adapter, linearLayoutManager);
+    }
+
+    protected void init(final EndlessRecyclerViewScrollAdapter adapter, final LinearLayoutManager layoutManager) {
+        assert adapter != null;
+        assert layoutManager != null;
+
         mAdapter = adapter;
+        mLayoutManager = layoutManager;
 
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setHasFixedSize(true); // assuming the layout size of recyclerview does not change
         mRecyclerView.setNestedScrollingEnabled(false);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setLayoutManager(layoutManager);
     }
 
     protected void addItemsToEndOfList(List<BaseListItem> items) {
-        mAdapter.addData(items);
+        mAdapter.addLoadMoreData(items);
         mAdapter.hideLoadMoreProgress();
+    }
+
+    protected void addItemsToBeginningOfList(List<BaseListItem> items) {
+        mAdapter.addItems(items, 0);
+        mAdapter.hideLoadMoreProgress();
+    }
+
+    protected void addItem(BaseListItem item, int position) {
+        mAdapter.addItem(item, position);
+    }
+
+    protected void removeItem(int position) {
+        mAdapter.removeItem(position);
+    }
+
+    protected void replaceItem(BaseListItem item, int position) {
+        mAdapter.replaceItem(item, position);
     }
 
     /**
      * Smooth scroll to the end of list
      */
     protected void scrollToEndOfList() {
+        assert mAdapter.getData().size() > 0;
+
         mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount());
     }
+
+    /**
+     * Smooth scroll to the beginning of list
+     */
+    protected void scrollToBeginningOfList() {
+        assert mAdapter.getData().size() > 0;
+
+        mRecyclerView.smoothScrollToPosition(0);
+    }
+
 
     /**
      * Set OnScrollListener
@@ -141,7 +178,9 @@ public abstract class BaseListFragment extends BaseStateFragment {
                 Handler loadMoreHandler = new Handler(Looper.getMainLooper()) {
                     @Override
                     public void handleMessage(Message inputMessage) {
-                        loadMoreListener.loadMoreItems();
+                        synchronized (this) {
+                            loadMoreListener.loadMoreItems();
+                        }
                     }
                 };
 
