@@ -27,18 +27,6 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
         super(itemList);
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        mItemClickListener = listener;
-    }
-
-    public void setOnAvatarClickListener(OnAvatarClickListener listener) {
-        mAvatarClickListener = listener;
-    }
-
-    public void setOnAttachmentClickListener(OnAttachmentClickListener listener) {
-        mAttachmentClickListener = listener;
-    }
-
     @Override
     public int getItemViewType(int position) {
         // TODO: Header/Footer Implementation
@@ -338,6 +326,18 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
             default:
                 return super.onCreateViewHolder(parent, viewType);
         }
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mItemClickListener = listener;
+    }
+
+    public void setOnAvatarClickListener(OnAvatarClickListener listener) {
+        mAvatarClickListener = listener;
+    }
+
+    public void setOnAttachmentClickListener(OnAttachmentClickListener listener) {
+        mAttachmentClickListener = listener;
     }
 
     private void setAvatarClickListenerOnView(View view, final int itemType, final Map<String, Object> data) {
