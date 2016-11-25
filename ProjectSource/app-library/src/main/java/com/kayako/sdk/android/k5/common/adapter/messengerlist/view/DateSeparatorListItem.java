@@ -1,16 +1,17 @@
-package com.kayako.sdk.android.k5.common.adapter.messengerlist;
+package com.kayako.sdk.android.k5.common.adapter.messengerlist.view;
 
 import android.support.annotation.NonNull;
 
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerListType;
 
 import java.util.Map;
 
 public class DateSeparatorListItem extends BaseListItem {
 
-    public long timeInMilliseconds;
+    private Long timeInMilliseconds;
 
-    public DateSeparatorListItem(@NonNull long time) {
+    public DateSeparatorListItem(@NonNull Long time) {
         super(MessengerListType.DATE_SEPARATOR);
         timeInMilliseconds = time;
     }

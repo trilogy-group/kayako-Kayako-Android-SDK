@@ -10,18 +10,20 @@ import android.widget.Toast;
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.loadmorelist.EndlessRecyclerViewScrollAdapter;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentMessageContinuedOtherListItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentMessageContinuedSelfListItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentMessageOtherListItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentMessageSelfListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.Attachment;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageContinuedOtherListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageContinuedSelfListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageOtherListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageSelfListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.ChannelDecoration;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.DataItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.DateSeparatorListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.DataItemHelperForCustomerChatUI;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.DateSeparatorListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerAdapter;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.SimpleMessageContinuedOtherListItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.SimpleMessageContinuedSelfListItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.SimpleMessageOtherListItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.SimpleMessageSelfListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageContinuedOtherListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageContinuedSelfListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageOtherListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageSelfListItem;
 import com.kayako.sdk.android.k5.common.utils.ViewUtils;
 
 import java.util.ArrayList;
@@ -42,7 +44,8 @@ public class MessengerListFragment extends BaseListFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        testSample();
+        testSample1();
+        testSample2();
     }
 
     protected void initMessengerList(List<BaseListItem> items) {
@@ -119,101 +122,38 @@ public class MessengerListFragment extends BaseListFragment {
      * scroll to bottom ONLY if the user is currently viewing the last few posts)
      */
     protected void scrollToNewMessagesIfNearby() {
-        int lastPosition = getSizeOfData() - 1;
-        int lastVisiblePosition = findFirstVisibleItemPosition();
+        int lastPosition = 0; // new messages are added at the top
+        int lastVisibleItemPosition = findLastVisibleItemPosition();
 
-        if (lastPosition - lastVisiblePosition < 3) { // difference is less than 3 items
+        if (Math.abs(lastVisibleItemPosition - lastPosition) < 3) { // difference is 2 items away
             scrollToEndOfList();
         }
     }
 
-
-    protected void convertDataItemToListItems(List<DataItem> dataItems) {
-        // TODO: Assert that the list is ordered by date - NEWEST, NEW, OLD, OLDEST
-
-        for (int i = 0; i < dataItems.size() - 1; i++) {
-            DataItem dataItem = dataItems.get(i);
-            DataItem nextDataItem = dataItems.get(i + 1);
-
-            // TODO: Check the date of current dataItem and the nextDataItem. if the next DataItem is on the NEW DAY, add DATE_SEPARATOR between two
-
-            // TODO: Check if read status of current dataItem is true and the nextDataItem is false. If true, add UNREAD_MESSAGES_SEPARATOR between two
-
-            // TODO: Check if UserType - SELF/OTHER
-
-            // TODO: Check if the time of the previous dataItem and the current dataItem is less than XX seconds (or 1 min).
-            // TODO:       >> If yes, check if next dataItem is less than XX seconds.
-            // TODO:                if yes, ContinuedGroupType of current is CONT
-            // TODO:                if no, ContinuedGroupType of current is LAST
-            // TODO:       >> If no,
-            // TODO:                1> ContinuedGroupType of current == FIRST (with Avatar)
-
-            // TODO: Check if avatar is being shown.
-            // TODO:       >> if yes, check if channel is available
-            // TODO:                >> if yes, show channel too
-            // TODO:                >> if no, continue
-            // TODO:       >> if no, continue
-        }
-    }
-
-    ////////////////////////////////////////////// TEST IMPLEMENTATION //////////////////////////////////////////////
+////////////////////////////////////////////// TEST IMPLEMENTATION //////////////////////////////////////////////
 
     private AtomicInteger testTaskCounter = new AtomicInteger(0);
     private AtomicInteger testMaxLoadMoreAttempts = new AtomicInteger(3);
 
-    private void testSample() {
-        /**
-         * X Init List
-         * X ADD NEW ITEMS TO END OF LIST (LOAD-MORE)
-         *
-         * X ADD NEW ITEM AT POS
-         * X REMOVE ITEM FROM POS
-         * X REPLACE ITEM AT POS
-         *
-         * X RE-SET WHOLE LIST
-         * X ADD SCROLL LISTENER
-         * X SMOOTH SCROLL TO POSITION
-         *
-         * X Reverse list - ScrollToBottom, ScrollToTop, AddItemsToBottom, AddItemsToTop, LoadMoreItems - Stop load more at the top
-         */
+    // TODO: TEST add new item at position
+    // TODO: TEST remove new item at position
+    // TODO: TEST replace new item at position
 
-        /**
-         * NEW LIST ITEM TYPES
-         * - SENDING MESSAGES - Ongoing?
-         */
+    // TODO: Map positions with DataItem
+    // TODO: Showing typing at bottom shouldn't affect adding new items to bottom of list
 
-        // TODO: Figure out how to relate ids with position? - Map position with postId! :D
-        // - Use a Map in the convertor class. When converting Posts -> ListTypes (map post id (Long) with position)??
-        // -- But positions can change as items get deleted, making the map unreliable later
-        // -- But there may be multiple positions for the same post (If it has attachments, for example)
-        // - Ok, generate a function that finds all positions from a id. Should we add an ID variable,
-        // -- or continue using Map - flexible but we need an abstract method that the user needs to override to extract an id from
+    private final String test_avatarUrl_other = "https://metalwihen4.kayako.com/avatar/get/0833f484-2dd2-5699-aef5-827ea49b77cc?1477595033";
+    private final String test_avatarUrl_self = "https://metalwihen4.kayako.com/avatar/get/305307ec-e897-558f-9e5a-26d13e08352d?1477462700";
+    private final ChannelDecoration test_channelColor = new ChannelDecoration(R.color.colorAccent);
+    private final ChannelDecoration test_channelFacebook = new ChannelDecoration(R.drawable.ko__img_facebook);
+    private final ChannelDecoration test_channelTwitter = new ChannelDecoration(R.drawable.ko__img_twitter);
+    private final ChannelDecoration test_channelMail = new ChannelDecoration(R.drawable.ko__img_mail);
+    private final ChannelDecoration test_channelMessenger = new ChannelDecoration(R.drawable.ko__img_messenger);
+    private final ChannelDecoration test_channelNote = new ChannelDecoration(R.drawable.ko__img_note);
+    private final ChannelDecoration test_channelHelpCenter = new ChannelDecoration(R.drawable.ko__img_helpcenter);
+    private final ChannelDecoration test_channelDefault = null;
 
-        // TODO: TEST add new item at position
-        // TODO: TEST remove new item at position
-        // TODO: TEST replace new item at position
-
-        /**
-         * Things to track
-         *
-         * - Adding items to bottom of list does NOT affect the Load More Item
-         * -- How to separate the Typing view (at bottom) from other at end items
-         *
-         * - Show/Hide Header info
-         * --
-         */
-
-        final String test_avatarUrl_other = "https://metalwihen4.kayako.com/avatar/get/0833f484-2dd2-5699-aef5-827ea49b77cc?1477595033";
-        final String test_avatarUrl_self = "https://metalwihen4.kayako.com/avatar/get/305307ec-e897-558f-9e5a-26d13e08352d?1477462700";
-        final ChannelDecoration test_channelColor = new ChannelDecoration(R.color.colorAccent);
-        final ChannelDecoration test_channelFacebook = new ChannelDecoration(R.drawable.ko__img_facebook);
-        final ChannelDecoration test_channelTwitter = new ChannelDecoration(R.drawable.ko__img_twitter);
-        final ChannelDecoration test_channelMail = new ChannelDecoration(R.drawable.ko__img_mail);
-        final ChannelDecoration test_channelMessenger = new ChannelDecoration(R.drawable.ko__img_messenger);
-        final ChannelDecoration test_channelNote = new ChannelDecoration(R.drawable.ko__img_note);
-        final ChannelDecoration test_channelHelpCenter = new ChannelDecoration(R.drawable.ko__img_helpcenter);
-        final ChannelDecoration test_channelDefault = null;
-
+    private void testSample1() {
         List<BaseListItem> items = new ArrayList<>();
         items.add(new SimpleMessageOtherListItem("Hey there. You look lost. Can I help?", test_avatarUrl_other, test_channelDefault, 1477751012000L, null));
         items.add(new SimpleMessageSelfListItem("Yeah, I'm trying to buy a coffee machine. Don't know where to start...", test_avatarUrl_self, test_channelDefault, 1477751012000L, null));
@@ -225,21 +165,21 @@ public class MessengerListFragment extends BaseListFragment {
 
         // Test Attachments by Other
         items.add(new SimpleMessageOtherListItem("Wait. Could you show me how your solar panels look?", test_avatarUrl_other, test_channelDefault, 0, null));
-        items.add(new AttachmentMessageOtherListItem("http://cdn2.bigcommerce.com/n-d57o0b/tvhc2xod/product_images/uploaded_images/solar-panels.jpg?t=1416860323", "Solarpanels.png", test_avatarUrl_other, test_channelDefault, 0, null));
+        items.add(new AttachmentMessageOtherListItem(test_avatarUrl_other, test_channelDefault, new Attachment(0L, "http://cdn2.bigcommerce.com/n-d57o0b/tvhc2xod/product_images/uploaded_images/solar-panels.jpg?t=1416860323", "Solarpanels.png"), 0, null));
         items.add(new SimpleMessageSelfListItem("Good, right?", test_avatarUrl_self, test_channelDefault, 1477763213000L, null));
-        items.add(new AttachmentMessageContinuedOtherListItem("https://www.solarworld-usa.com/~/media/www/images/products/modules/off-grid.jpg?la=en", "Solarpanels.png", 0, null));
-        items.add(new AttachmentMessageContinuedOtherListItem("https://www.solarworld-usa.com/~/media/www/images/products/modules/off-grid.jpg?la=en", "Solarpanels.png", 0, null));
+        items.add(new AttachmentMessageContinuedOtherListItem(new Attachment(0L, "https://www.solarworld-usa.com/~/media/www/images/products/modules/off-grid.jpg?la=en", "Solarpanels.png"), 0, null));
+        items.add(new AttachmentMessageContinuedOtherListItem(new Attachment(0L, "https://www.solarworld-usa.com/~/media/www/images/products/modules/off-grid.jpg?la=en", "Solarpanels.png"), 0, null));
 
         // Test Attachments by Self
         items.add(new SimpleMessageSelfListItem("Let me just send back everything you sent me.", test_avatarUrl_self, test_channelDefault, 0, null));
-        items.add(new AttachmentMessageSelfListItem(test_avatarUrl_self, test_channelDefault, "http://cdn2.bigcommerce.com/n-d57o0b/tvhc2xod/product_images/uploaded_images/solar-panels.jpg?t=1416860323", "Solarpanels.png", 0, null));
+        items.add(new AttachmentMessageSelfListItem(test_avatarUrl_self, test_channelDefault, new Attachment(0L, "http://cdn2.bigcommerce.com/n-d57o0b/tvhc2xod/product_images/uploaded_images/solar-panels.jpg?t=1416860323", "Solarpanels.png"), 0, null));
         items.add(new SimpleMessageContinuedSelfListItem("Does that help? Here's another one", 0, null));
 
-        items.add(new AttachmentMessageContinuedSelfListItem("https://www.solarworld-usa.com/~/media/www/images/products/modules/off-grid.jpg?la=en", "Solarpanels.png", 0, null));
-        items.add(new AttachmentMessageContinuedSelfListItem("https://www.solarworld-usa.com/~/media/www/images/products/modules/off-grid.jpg?la=en", "Solarpanels.png", 0, null));
+        items.add(new AttachmentMessageContinuedSelfListItem(new Attachment(0L, "https://www.solarworld-usa.com/~/media/www/images/products/modules/off-grid.jpg?la=en", "Solarpanels.png"), 0, null));
+        items.add(new AttachmentMessageContinuedSelfListItem(new Attachment(0L, "https://www.solarworld-usa.com/~/media/www/images/products/modules/off-grid.jpg?la=en", "Solarpanels.png"), 0, null));
 
         // Test image without label
-        items.add(new AttachmentMessageSelfListItem(test_avatarUrl_self, test_channelDefault, "http://cdn2.bigcommerce.com/n-d57o0b/tvhc2xod/product_images/uploaded_images/solar-panels.jpg?t=1416860323", null, 0, null));
+        items.add(new AttachmentMessageSelfListItem(test_avatarUrl_self, test_channelDefault, new Attachment(0L, "http://cdn2.bigcommerce.com/n-d57o0b/tvhc2xod/product_images/uploaded_images/solar-panels.jpg?t=1416860323", null), 0, null));
 
         // Test time
         items.add(new DateSeparatorListItem(System.currentTimeMillis())); // now
@@ -360,17 +300,10 @@ public class MessengerListFragment extends BaseListFragment {
         runTestTask(new TestCallback() {
             @Override
             public void performAfterWait() {
-                List<BaseListItem> items2 = new ArrayList();
-                items2.add(new SimpleMessageSelfListItem("Blah Blah!", test_avatarUrl_self, test_channelFacebook, 0, null));
-                addItemsToEndOfList(items2);
+                List<BaseListItem> items = new ArrayList();
+                items.add(new SimpleMessageSelfListItem("Blah Blah!", test_avatarUrl_self, test_channelFacebook, 0, null));
+                addItemsToEndOfList(items);
 
-                scrollToNewMessagesIfNearby();
-            }
-        });
-
-        runTestTask(new TestCallback() {
-            @Override
-            public void performAfterWait() {
                 List<BaseListItem> items2 = new ArrayList();
                 items2.add(new SimpleMessageOtherListItem("That's a good one!", test_avatarUrl_self, test_channelFacebook, 0, null));
                 addItemsToEndOfList(items2);
@@ -381,7 +314,23 @@ public class MessengerListFragment extends BaseListFragment {
 
     }
 
+    private void testSample2() {
+        runTestTask(new TestCallback() {
+            @Override
+            public void performAfterWait() {
+                List<DataItem> dataItems = new ArrayList<>();
+                dataItems.add(new DataItem(0L, null, test_avatarUrl_self, false, test_channelFacebook, "Whassup?", 1459763213000L, null, true));
+                dataItems.add(new DataItem(0L, null, test_avatarUrl_other, true, test_channelHelpCenter, "Hello", 1499763213000L, null, false));
+
+                addItemsToEndOfList(DataItemHelperForCustomerChatUI.convertDataItemToListItems(dataItems));
+
+                scrollToNewMessagesIfNearby();
+            }
+        });
+    }
+
     private void runTestTask(final TestCallback testCallback) {
+        testTaskCounter.set(0);
         new AsyncTask<Void, Void, Void>() {
 
             @Override

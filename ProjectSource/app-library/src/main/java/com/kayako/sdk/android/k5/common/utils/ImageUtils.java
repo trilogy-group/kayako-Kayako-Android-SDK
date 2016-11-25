@@ -68,7 +68,7 @@ public class ImageUtils {
      * @param channelDecoration
      */
     public static void setChannelImage(Context context, CircleImageView imageView, ChannelDecoration channelDecoration) {
-        int drawableResourceId = channelDecoration.sourceDrawable;
+        int drawableResourceId = channelDecoration.getSourceDrawable();
 
         if (drawableResourceId != 0) {
             imageView.setImageResource(drawableResourceId);

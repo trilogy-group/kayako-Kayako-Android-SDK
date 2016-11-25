@@ -1,21 +1,23 @@
-package com.kayako.sdk.android.k5.common.adapter.messengerlist;
+package com.kayako.sdk.android.k5.common.adapter.messengerlist.view;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.kayako.sdk.android.k5.common.adapter.BaseDataListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.ChannelDecoration;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerListType;
 
 import java.util.Map;
 
-public class SimpleMessageSelfListItem extends BaseDataListItem {
+public class SimpleMessageOtherListItem extends BaseDataListItem {
 
     private String message;
     private String avatarUrl;
     private long time;
     private ChannelDecoration channel;
 
-    public SimpleMessageSelfListItem(@NonNull String message, @NonNull String avatarUrl, @Nullable ChannelDecoration channel, @Nullable long time, @Nullable Map<String, Object> data) {
-        super(MessengerListType.SIMPLE_MESSAGE_SELF, data);
+    public SimpleMessageOtherListItem(@NonNull String message, @NonNull String avatarUrl, @Nullable ChannelDecoration channel, @Nullable long time, @Nullable Map<String, Object> data) {
+        super(MessengerListType.SIMPLE_MESSAGE_OTHER, data);
 
         this.message = message;
         this.avatarUrl = avatarUrl;

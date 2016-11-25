@@ -1,4 +1,4 @@
-package com.kayako.sdk.android.k5.common.adapter.messengerlist;
+package com.kayako.sdk.android.k5.common.adapter.messengerlist.view;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

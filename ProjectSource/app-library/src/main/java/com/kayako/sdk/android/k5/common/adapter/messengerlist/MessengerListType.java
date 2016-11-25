@@ -15,13 +15,14 @@ public interface MessengerListType extends LoadMoreListType {
     int ATTACHMENT_MESSAGE_CONTINUED_OTHER = 8; // Attachment with message (without avatar) by other
     int ATTACHMENT_MESSAGE_CONTINUED_SELF = 9; // Attachment with message (without avatar) by self
 
-    // Separator Types
-    int DATE_SEPARATOR = 10;
-
     // Header/Footer Types
-    int CONVERSATION_INFO_HEADER = 8;
-    int TYPING_FOOTER = 9;
+    int CONVERSATION_INFO_HEADER = 10;
+    int TYPING_FOOTER = 11;
+
+    // Separator Types
+    int DATE_SEPARATOR = 12;
+    int UNREAD_SEPARATOR = 13;
 
     // Info Types
-    int SIMPLE_INFO = 10;
+    int SIMPLE_INFO = 14;
 }
