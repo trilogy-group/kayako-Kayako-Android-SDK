@@ -319,8 +319,19 @@ public class MessengerListFragment extends BaseListFragment {
             @Override
             public void performAfterWait() {
                 List<DataItem> dataItems = new ArrayList<>();
-                dataItems.add(new DataItem(0L, null, test_avatarUrl_self, false, test_channelFacebook, "Whassup?", 1459763213000L, null, true));
-                dataItems.add(new DataItem(0L, null, test_avatarUrl_other, true, test_channelHelpCenter, "Hello", 1499763213000L, null, false));
+                dataItems.add(new DataItem(0L, null, test_avatarUrl_self, true, 0, test_channelFacebook, "Whassup?", 1499763213000L, null, true));
+                dataItems.add(new DataItem(0L, null, test_avatarUrl_other, false, 2, test_channelHelpCenter, "Hello", 1499763213000L, null, true));
+                dataItems.add(new DataItem(0L, null, test_avatarUrl_self, true, 0, test_channelFacebook, "Whassup?", 1499763314000L, null, true));
+                dataItems.add(new DataItem(0L, null, test_avatarUrl_other, false, 2, test_channelHelpCenter, "Why,", 1499763315000L, null, true));
+                dataItems.add(new DataItem(0L, null, test_avatarUrl_other, false, 2, test_channelHelpCenter, "Hedsafadsfallo", 1499773315000L, null, true));
+                dataItems.add(new DataItem(0L, null, test_avatarUrl_other, false, 2, test_channelHelpCenter, "Hesdfasllo", 1499783315000L, null, false));
+                dataItems.add(new DataItem(0L, null, test_avatarUrl_self, true, 0, test_channelHelpCenter, "Hel213q dswzwexq wqdlo", 1499793315000L, null, false));
+                dataItems.add(new DataItem(0L, null, test_avatarUrl_self, true, 0, test_channelHelpCenter, "Hel213q ds d asd sawzwexq wqdlo", 1499803315000L, null, false));
+                dataItems.add(new DataItem(0L, null, test_avatarUrl_other, false, 2, test_channelHelpCenter, "He sa dsa dasdallo", 1499963315000L, null, false));
+                dataItems.add(new DataItem(0L, null, test_avatarUrl_other, false, 2, test_channelHelpCenter, "He sa2 dsa dasdallo", 1499963325000L, null, false));
+                dataItems.add(new DataItem(0L, null, test_avatarUrl_self, true, 0, test_channelHelpCenter, "He sa3 dsa dasdallo", 1499963335000L, null, false));
+                dataItems.add(new DataItem(0L, null, test_avatarUrl_other, false, 2, test_channelHelpCenter, "He saddsdass llo", 1500063315000L, null, false));
+                dataItems.add(new DataItem(0L, null, test_avatarUrl_other, false, 2, test_channelHelpCenter, "He asdas dasdasdasd  s llo", 1511163315000L, null, false));
 
                 addItemsToEndOfList(DataItemHelperForCustomerChatUI.convertDataItemToListItems(dataItems));
 

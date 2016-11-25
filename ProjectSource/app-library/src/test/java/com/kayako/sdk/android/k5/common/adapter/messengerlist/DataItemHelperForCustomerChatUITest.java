@@ -14,7 +14,6 @@ public class DataItemHelperForCustomerChatUITest {
         - Ensure messages are NOT grouped together if sent within time interval but by different users
 
         - Ensure messages are NOT grouped together if date separator is applied
-        - Allow messages to be grouped together if unread separator is applied (don't enforce anything, but defines acceptable behaviour)
-
+        - Allow messages to be grouped together even if unread separator is applied between them (don't enforce anything, but defines acceptable behaviour)
      */
 }
