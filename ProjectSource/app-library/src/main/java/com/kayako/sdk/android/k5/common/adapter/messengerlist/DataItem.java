@@ -15,18 +15,19 @@ public class DataItem {
     private String avatarUrl;
     private String message;
     private Long timeInMilliseconds;
+    private Long userId;
 
     /* Not Mandatory fields (needed to generate views) */
-    private boolean isSelf;
     private ChannelDecoration channelDecoration;
     private boolean isRead;
+    private boolean isSelf;
     private List<Attachment> attachments;
 
     // TODO: Unfurled content model?
     // TODO: Activity Message? isActivity <-- checks should be added before isSelf
     // TODO: Delivery Indicators? Blue Tick, Double Tick...
 
-    public DataItem(Long id, Map<String, Object> data, String avatarUrl, boolean isSelf, ChannelDecoration channelDecoration, String message, Long timeInMilliseconds, List<Attachment> attachments, boolean isRead) {
+    public DataItem(Long id, Map<String, Object> data, String avatarUrl, boolean isSelf, long userId, ChannelDecoration channelDecoration, String message, Long timeInMilliseconds, List<Attachment> attachments, boolean isRead) {
         assert avatarUrl != null;
         assert message != null;
         assert timeInMilliseconds != null;
@@ -34,6 +35,7 @@ public class DataItem {
         this.id = id;
         this.data = data;
         this.avatarUrl = avatarUrl;
+        this.userId = userId;
         this.isSelf = isSelf;
         this.channelDecoration = channelDecoration;
         this.message = message;
@@ -80,6 +82,14 @@ public class DataItem {
 
     public void setTimeInMilliseconds(Long timeInMilliseconds) {
         this.timeInMilliseconds = timeInMilliseconds;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public boolean isSelf() {

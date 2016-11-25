@@ -16,6 +16,8 @@ import java.util.List;
 
 public class DataItemHelperForCustomerChatUI {
 
+    public static final long MINIMUM_MILLISECONDS_TO_GROUP = 10 * 1000L;
+
     public static List<BaseListItem> convertDataItemToListItems(List<DataItem> dataItems) {
         // TODO: Assert that the list is ordered by date - NEWEST, NEW, OLD, OLDEST
         DataItem currentDataItem;
@@ -151,7 +153,6 @@ public class DataItemHelperForCustomerChatUI {
      * @return
      */
     private static boolean isGroupable(DataItem previousDataItem, DataItem currentDataItem) {
-        final long MINIMUM_MILLISECONDS_TO_GROUP = 10 * 1000L;
         return Math.abs(currentDataItem.getTimeInMilliseconds() - previousDataItem.getTimeInMilliseconds()) <= MINIMUM_MILLISECONDS_TO_GROUP;
     }
 
@@ -171,7 +172,7 @@ public class DataItemHelperForCustomerChatUI {
         }
 
         // Show time if the next message is sent by someone other than who sent the current message
-        if (nextDataItem.isSelf() != currentDataItem.isSelf()) {
+        if (nextDataItem.getUserId() != currentDataItem.getUserId()) {
             return true;
         }
 
@@ -196,7 +197,7 @@ public class DataItemHelperForCustomerChatUI {
         }
 
         // Show Avatar if the previous message is sent by someone other than who sent the current message
-        if (previousDataItem.isSelf() != currentDataItem.isSelf()) {
+        if (previousDataItem.getUserId() != currentDataItem.getUserId()) {
             return true;
         }
 
