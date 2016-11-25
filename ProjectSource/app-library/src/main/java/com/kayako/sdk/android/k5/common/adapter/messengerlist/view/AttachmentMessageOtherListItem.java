@@ -17,8 +17,8 @@ public class AttachmentMessageOtherListItem extends BaseDataListItem {
     private ChannelDecoration channel;
     private Attachment attachment;
 
-    public AttachmentMessageOtherListItem(@NonNull String avatarUrl, @Nullable ChannelDecoration channel, @NonNull Attachment attachment, @Nullable long time, @Nullable Map<String, Object> data) {
-        super(MessengerListType.ATTACHMENT_MESSAGE_OTHER, data);
+    public AttachmentMessageOtherListItem(@Nullable Long id, @NonNull String avatarUrl, @Nullable ChannelDecoration channel, @NonNull Attachment attachment, @Nullable long time, @Nullable Map<String, Object> data) {
+        super(MessengerListType.ATTACHMENT_MESSAGE_OTHER, id, data);
         this.avatarUrl = avatarUrl;
         this.attachment = attachment;
         this.time = time;

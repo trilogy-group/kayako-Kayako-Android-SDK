@@ -7,10 +7,12 @@ import java.util.Map;
  */
 public abstract class BaseDataListItem extends BaseListItem {
 
+    private Long id;
     private Map<String, Object> data;
 
-    public BaseDataListItem(int type, Map<String, Object> data) {
+    public BaseDataListItem(int type, Long id, Map<String, Object> data) {
         super(type);
+        this.id = id;
         this.data = data;
     }
 
@@ -22,4 +24,11 @@ public abstract class BaseDataListItem extends BaseListItem {
         this.data = data;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

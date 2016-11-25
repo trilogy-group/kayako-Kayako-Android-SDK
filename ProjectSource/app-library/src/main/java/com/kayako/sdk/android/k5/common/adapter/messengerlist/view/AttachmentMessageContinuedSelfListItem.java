@@ -14,8 +14,8 @@ public class AttachmentMessageContinuedSelfListItem extends BaseDataListItem {
     private long time;
     private Attachment attachment;
 
-    public AttachmentMessageContinuedSelfListItem(@NonNull Attachment attachment, @Nullable long time, @Nullable Map<String, Object> data) {
-        super(MessengerListType.ATTACHMENT_MESSAGE_CONTINUED_SELF, data);
+    public AttachmentMessageContinuedSelfListItem(@Nullable Long id, @NonNull Attachment attachment, @Nullable long time, @Nullable Map<String, Object> data) {
+        super(MessengerListType.ATTACHMENT_MESSAGE_CONTINUED_SELF, id,data);
         this.attachment = attachment;
         this.time = time;
     }

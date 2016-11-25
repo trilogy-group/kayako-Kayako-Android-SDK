@@ -13,8 +13,8 @@ public class SimpleMessageContinuedSelfListItem extends BaseDataListItem {
     private String message;
     private long time;
 
-    public SimpleMessageContinuedSelfListItem(@NonNull String message, @Nullable long time, @Nullable Map<String, Object> data) {
-        super(MessengerListType.SIMPLE_MESSAGE_CONTINUED_SELF,data);
+    public SimpleMessageContinuedSelfListItem(@Nullable Long id,@NonNull String message, @Nullable long time, @Nullable Map<String, Object> data) {
+        super(MessengerListType.SIMPLE_MESSAGE_CONTINUED_SELF, id, data);
         this.message = message;
         this.time = time;
     }

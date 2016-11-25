@@ -16,8 +16,8 @@ public class SimpleMessageOtherListItem extends BaseDataListItem {
     private long time;
     private ChannelDecoration channel;
 
-    public SimpleMessageOtherListItem(@NonNull String message, @NonNull String avatarUrl, @Nullable ChannelDecoration channel, @Nullable long time, @Nullable Map<String, Object> data) {
-        super(MessengerListType.SIMPLE_MESSAGE_OTHER, data);
+    public SimpleMessageOtherListItem(@Nullable Long id,@NonNull String message, @NonNull String avatarUrl, @Nullable ChannelDecoration channel, @Nullable long time, @Nullable Map<String, Object> data) {
+        super(MessengerListType.SIMPLE_MESSAGE_OTHER, id,data);
 
         this.message = message;
         this.avatarUrl = avatarUrl;

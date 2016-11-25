@@ -12,7 +12,9 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.UnreadSeparat
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class DataItemHelperForCustomerChatUI {
 
@@ -25,6 +27,7 @@ public class DataItemHelperForCustomerChatUI {
         DataItem previousDataItem;
 
         List<BaseListItem> viewItems = new ArrayList<>();
+        Set<Long> ids = new HashSet<>();
 
         for (int i = 0; i < dataItems.size(); i++) {
             // Get the current dataItem
@@ -44,13 +47,22 @@ public class DataItemHelperForCustomerChatUI {
                 nextDataItem = dataItems.get(i + 1);
             }
 
-            // Assertions
+            // Assertions on time
             if (previousDataItem != null && previousDataItem.getTimeInMilliseconds() > currentDataItem.getTimeInMilliseconds()) {
                 throw new AssertionError("The list is not sorted by time!");
             }
 
+            // Assertions on time
+            // TODO: Redundant?
             if (nextDataItem != null && currentDataItem.getTimeInMilliseconds() > nextDataItem.getTimeInMilliseconds()) {
                 throw new AssertionError("The list is not sorted by time!");
+            }
+
+            // Assertions on ids
+            if (ids.contains(currentDataItem.getId())) {
+                throw new AssertionError("Every item of the list should have a unique id!");
+            } else {
+                ids.add(currentDataItem.getId());
             }
 
             // Add Date Separators wherever applicable
@@ -235,13 +247,13 @@ public class DataItemHelperForCustomerChatUI {
         }
 
         if (viewBehaviour.showAvatar && viewBehaviour.showAsSelf) {
-            return new SimpleMessageSelfListItem(currentDataItem.getMessage(), currentDataItem.getAvatarUrl(), currentDataItem.getChannelDecoration(), time, currentDataItem.getData());
+            return new SimpleMessageSelfListItem(currentDataItem.getId(), currentDataItem.getMessage(), currentDataItem.getAvatarUrl(), currentDataItem.getChannelDecoration(), time, currentDataItem.getData());
         } else if (viewBehaviour.showAvatar) {
-            return new SimpleMessageOtherListItem(currentDataItem.getMessage(), currentDataItem.getAvatarUrl(), currentDataItem.getChannelDecoration(), time, currentDataItem.getData());
+            return new SimpleMessageOtherListItem(currentDataItem.getId(), currentDataItem.getMessage(), currentDataItem.getAvatarUrl(), currentDataItem.getChannelDecoration(), time, currentDataItem.getData());
         } else if (viewBehaviour.showAsSelf) {
-            return new SimpleMessageContinuedSelfListItem(currentDataItem.getMessage(), time, currentDataItem.getData());
+            return new SimpleMessageContinuedSelfListItem(currentDataItem.getId(), currentDataItem.getMessage(), time, currentDataItem.getData());
         } else {
-            return new SimpleMessageContinuedOtherListItem(currentDataItem.getMessage(), time, currentDataItem.getData());
+            return new SimpleMessageContinuedOtherListItem(currentDataItem.getId(), currentDataItem.getMessage(), time, currentDataItem.getData());
         }
     }
 
@@ -255,13 +267,13 @@ public class DataItemHelperForCustomerChatUI {
         }
 
         if (viewBehaviour.showAvatar && viewBehaviour.showAsSelf) {
-            return new AttachmentMessageSelfListItem(currentDataItem.getAvatarUrl(), currentDataItem.getChannelDecoration(), attachment, time, currentDataItem.getData());
+            return new AttachmentMessageSelfListItem(currentDataItem.getId(), currentDataItem.getAvatarUrl(), currentDataItem.getChannelDecoration(), attachment, time, currentDataItem.getData());
         } else if (viewBehaviour.showAvatar) {
-            return new AttachmentMessageOtherListItem(currentDataItem.getAvatarUrl(), currentDataItem.getChannelDecoration(), attachment, time, currentDataItem.getData());
+            return new AttachmentMessageOtherListItem(currentDataItem.getId(), currentDataItem.getAvatarUrl(), currentDataItem.getChannelDecoration(), attachment, time, currentDataItem.getData());
         } else if (viewBehaviour.showAsSelf) {
-            return new AttachmentMessageSelfListItem(currentDataItem.getAvatarUrl(), currentDataItem.getChannelDecoration(), attachment, time, currentDataItem.getData());
+            return new AttachmentMessageSelfListItem(currentDataItem.getId(), currentDataItem.getAvatarUrl(), currentDataItem.getChannelDecoration(), attachment, time, currentDataItem.getData());
         } else {
-            return new AttachmentMessageOtherListItem(currentDataItem.getAvatarUrl(), currentDataItem.getChannelDecoration(), attachment, time, currentDataItem.getData());
+            return new AttachmentMessageOtherListItem(currentDataItem.getId(), currentDataItem.getAvatarUrl(), currentDataItem.getChannelDecoration(), attachment, time, currentDataItem.getData());
         }
     }
 

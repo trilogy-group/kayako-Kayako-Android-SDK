@@ -13,8 +13,8 @@ public class SimpleMessageContinuedOtherListItem extends BaseDataListItem {
     private String message;
     private long time;
 
-    public SimpleMessageContinuedOtherListItem(@NonNull String message, @Nullable long time, @Nullable Map<String, Object> data) {
-        super(MessengerListType.SIMPLE_MESSAGE_CONTINUED_OTHER,data);
+    public SimpleMessageContinuedOtherListItem(@Nullable Long id, @NonNull String message, @Nullable long time, @Nullable Map<String, Object> data) {
+        super(MessengerListType.SIMPLE_MESSAGE_CONTINUED_OTHER, id, data);
         this.message = message;
         this.time = time;
     }

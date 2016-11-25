@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import com.kayako.sdk.android.k5.R;
+import com.kayako.sdk.android.k5.common.adapter.BaseDataListItem;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.loadmorelist.EndlessRecyclerViewScrollAdapter;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.Attachment;
@@ -118,6 +119,25 @@ public class MessengerListFragment extends BaseListFragment {
         return super.findFirstVisibleItemPosition();
     }
 
+    public List<Integer> findPositionsOfId(long id) {
+        // TODO: Any changes to be made should be made from lowest position to highest position so that nothing gets upset
+        List<Integer> positions = new ArrayList<>();
+        for (int position = 0; position < mMessengerAdapter.getData().size(); position++) {
+
+            BaseListItem baseListItem = mMessengerAdapter.getData().get(position);
+
+            if (baseListItem instanceof BaseDataListItem) {
+                BaseDataListItem baseDataListItem = (BaseDataListItem) baseListItem;
+                if (baseDataListItem.getId() == id) {
+                    positions.add(position);
+                }
+            }
+        }
+
+        return positions;
+    }
+
+
     /**
      * scroll to bottom ONLY if the user is currently viewing the last few posts)
      */
@@ -155,52 +175,52 @@ public class MessengerListFragment extends BaseListFragment {
 
     private void testSample1() {
         List<BaseListItem> items = new ArrayList<>();
-        items.add(new SimpleMessageOtherListItem("Hey there. You look lost. Can I help?", test_avatarUrl_other, test_channelDefault, 1477751012000L, null));
-        items.add(new SimpleMessageSelfListItem("Yeah, I'm trying to buy a coffee machine. Don't know where to start...", test_avatarUrl_self, test_channelDefault, 1477751012000L, null));
-        items.add(new SimpleMessageOtherListItem("We sell Solar Panels, not coffee machines", test_avatarUrl_other, test_channelDefault, 0, null));
-        items.add(new SimpleMessageContinuedOtherListItem("Though I personally love Brewfictus coffee machines.", 0, null));
-        items.add(new SimpleMessageContinuedOtherListItem("How about searching there?", 1477751013000L, null));
-        items.add(new SimpleMessageSelfListItem("Eeep!", test_avatarUrl_self, test_channelDefault, 0, null));
-        items.add(new SimpleMessageContinuedSelfListItem("Thanks", 1477751013000L, null));
+        items.add(new SimpleMessageOtherListItem(0L, "Hey there. You look lost. Can I help?", test_avatarUrl_other, test_channelDefault, 1477751012000L, null));
+        items.add(new SimpleMessageSelfListItem(0L, "Yeah, I'm trying to buy a coffee machine. Don't know where to start...", test_avatarUrl_self, test_channelDefault, 1477751012000L, null));
+        items.add(new SimpleMessageOtherListItem(0L, "We sell Solar Panels, not coffee machines", test_avatarUrl_other, test_channelDefault, 0, null));
+        items.add(new SimpleMessageContinuedOtherListItem(0L, "Though I personally love Brewfictus coffee machines.", 0, null));
+        items.add(new SimpleMessageContinuedOtherListItem(0L, "How about searching there?", 1477751013000L, null));
+        items.add(new SimpleMessageSelfListItem(0L, "Eeep!", test_avatarUrl_self, test_channelDefault, 0, null));
+        items.add(new SimpleMessageContinuedSelfListItem(0L, "Thanks", 1477751013000L, null));
 
         // Test Attachments by Other
-        items.add(new SimpleMessageOtherListItem("Wait. Could you show me how your solar panels look?", test_avatarUrl_other, test_channelDefault, 0, null));
-        items.add(new AttachmentMessageOtherListItem(test_avatarUrl_other, test_channelDefault, new Attachment(0L, "http://cdn2.bigcommerce.com/n-d57o0b/tvhc2xod/product_images/uploaded_images/solar-panels.jpg?t=1416860323", "Solarpanels.png"), 0, null));
-        items.add(new SimpleMessageSelfListItem("Good, right?", test_avatarUrl_self, test_channelDefault, 1477763213000L, null));
-        items.add(new AttachmentMessageContinuedOtherListItem(new Attachment(0L, "https://www.solarworld-usa.com/~/media/www/images/products/modules/off-grid.jpg?la=en", "Solarpanels.png"), 0, null));
-        items.add(new AttachmentMessageContinuedOtherListItem(new Attachment(0L, "https://www.solarworld-usa.com/~/media/www/images/products/modules/off-grid.jpg?la=en", "Solarpanels.png"), 0, null));
+        items.add(new SimpleMessageOtherListItem(0L, "Wait. Could you show me how your solar panels look?", test_avatarUrl_other, test_channelDefault, 0, null));
+        items.add(new AttachmentMessageOtherListItem(0L, test_avatarUrl_other, test_channelDefault, new Attachment(0L, "http://cdn2.bigcommerce.com/n-d57o0b/tvhc2xod/product_images/uploaded_images/solar-panels.jpg?t=1416860323", "Solarpanels.png"), 0, null));
+        items.add(new SimpleMessageSelfListItem(0L, "Good, right?", test_avatarUrl_self, test_channelDefault, 1477763213000L, null));
+        items.add(new AttachmentMessageContinuedOtherListItem(0L, new Attachment(0L, "https://www.solarworld-usa.com/~/media/www/images/products/modules/off-grid.jpg?la=en", "Solarpanels.png"), 0, null));
+        items.add(new AttachmentMessageContinuedOtherListItem(0L, new Attachment(0L, "https://www.solarworld-usa.com/~/media/www/images/products/modules/off-grid.jpg?la=en", "Solarpanels.png"), 0, null));
 
         // Test Attachments by Self
-        items.add(new SimpleMessageSelfListItem("Let me just send back everything you sent me.", test_avatarUrl_self, test_channelDefault, 0, null));
-        items.add(new AttachmentMessageSelfListItem(test_avatarUrl_self, test_channelDefault, new Attachment(0L, "http://cdn2.bigcommerce.com/n-d57o0b/tvhc2xod/product_images/uploaded_images/solar-panels.jpg?t=1416860323", "Solarpanels.png"), 0, null));
-        items.add(new SimpleMessageContinuedSelfListItem("Does that help? Here's another one", 0, null));
+        items.add(new SimpleMessageSelfListItem(0L, "Let me just send back everything you sent me.", test_avatarUrl_self, test_channelDefault, 0, null));
+        items.add(new AttachmentMessageSelfListItem(0L, test_avatarUrl_self, test_channelDefault, new Attachment(0L, "http://cdn2.bigcommerce.com/n-d57o0b/tvhc2xod/product_images/uploaded_images/solar-panels.jpg?t=1416860323", "Solarpanels.png"), 0, null));
+        items.add(new SimpleMessageContinuedSelfListItem(0L, "Does that help? Here's another one", 0, null));
 
-        items.add(new AttachmentMessageContinuedSelfListItem(new Attachment(0L, "https://www.solarworld-usa.com/~/media/www/images/products/modules/off-grid.jpg?la=en", "Solarpanels.png"), 0, null));
-        items.add(new AttachmentMessageContinuedSelfListItem(new Attachment(0L, "https://www.solarworld-usa.com/~/media/www/images/products/modules/off-grid.jpg?la=en", "Solarpanels.png"), 0, null));
+        items.add(new AttachmentMessageContinuedSelfListItem(0L, new Attachment(0L, "https://www.solarworld-usa.com/~/media/www/images/products/modules/off-grid.jpg?la=en", "Solarpanels.png"), 0, null));
+        items.add(new AttachmentMessageContinuedSelfListItem(0L, new Attachment(0L, "https://www.solarworld-usa.com/~/media/www/images/products/modules/off-grid.jpg?la=en", "Solarpanels.png"), 0, null));
 
         // Test image without label
-        items.add(new AttachmentMessageSelfListItem(test_avatarUrl_self, test_channelDefault, new Attachment(0L, "http://cdn2.bigcommerce.com/n-d57o0b/tvhc2xod/product_images/uploaded_images/solar-panels.jpg?t=1416860323", null), 0, null));
+        items.add(new AttachmentMessageSelfListItem(0L, test_avatarUrl_self, test_channelDefault, new Attachment(0L, "http://cdn2.bigcommerce.com/n-d57o0b/tvhc2xod/product_images/uploaded_images/solar-panels.jpg?t=1416860323", null), 0, null));
 
         // Test time
         items.add(new DateSeparatorListItem(System.currentTimeMillis())); // now
-        items.add(new SimpleMessageSelfListItem("Eeep!", test_avatarUrl_self, test_channelDefault, 0, null));
-        items.add(new SimpleMessageSelfListItem("Eeep!", test_avatarUrl_self, test_channelDefault, 1477763213000L, null));
+        items.add(new SimpleMessageSelfListItem(0L, "Eeep!", test_avatarUrl_self, test_channelDefault, 0, null));
+        items.add(new SimpleMessageSelfListItem(0L, "Eeep!", test_avatarUrl_self, test_channelDefault, 1477763213000L, null));
         items.add(new DateSeparatorListItem(1456842212000L)); // Tue, 01 Mar 2016 14:23:32 GMT
-        items.add(new SimpleMessageSelfListItem("Eeep!", test_avatarUrl_self, test_channelDefault, 1477763213000L, null));
+        items.add(new SimpleMessageSelfListItem(0L, "Eeep!", test_avatarUrl_self, test_channelDefault, 1477763213000L, null));
         items.add(new DateSeparatorListItem(1477751012000L)); // Sat, 29 Oct 2016 14:23:32 GMT
-        items.add(new SimpleMessageSelfListItem("Eeep!", test_avatarUrl_self, test_channelDefault, 0, null));
+        items.add(new SimpleMessageSelfListItem(0L, "Eeep!", test_avatarUrl_self, test_channelDefault, 0, null));
 
         // Test min-wdith of Chat Bubble
-        items.add(new SimpleMessageOtherListItem("!", test_avatarUrl_other, test_channelDefault, 1479763213000L, null));
-        items.add(new SimpleMessageSelfListItem("?", test_avatarUrl_self, test_channelDefault, 1479766213000L, null));
+        items.add(new SimpleMessageOtherListItem(0L, "!", test_avatarUrl_other, test_channelDefault, 1479763213000L, null));
+        items.add(new SimpleMessageSelfListItem(0L, "?", test_avatarUrl_self, test_channelDefault, 1479766213000L, null));
 
         // Test all channels
-        items.add(new SimpleMessageOtherListItem("Facebook!", test_avatarUrl_other, test_channelFacebook, 1479763213000L, null));
-        items.add(new SimpleMessageOtherListItem("Twitter!", test_avatarUrl_other, test_channelTwitter, 1479763213000L, null));
-        items.add(new SimpleMessageOtherListItem("Mail!", test_avatarUrl_other, test_channelMail, 1479763213000L, null));
-        items.add(new SimpleMessageOtherListItem("HelpCenter!", test_avatarUrl_other, test_channelHelpCenter, 1479763213000L, null));
-        items.add(new SimpleMessageOtherListItem("Note!", test_avatarUrl_other, test_channelNote, 1479763213000L, null));
-        items.add(new SimpleMessageOtherListItem("Messenger!", test_avatarUrl_other, test_channelMessenger, 1479763213000L, null));
+        items.add(new SimpleMessageOtherListItem(0L, "Facebook!", test_avatarUrl_other, test_channelFacebook, 1479763213000L, null));
+        items.add(new SimpleMessageOtherListItem(0L, "Twitter!", test_avatarUrl_other, test_channelTwitter, 1479763213000L, null));
+        items.add(new SimpleMessageOtherListItem(0L, "Mail!", test_avatarUrl_other, test_channelMail, 1479763213000L, null));
+        items.add(new SimpleMessageOtherListItem(0L, "HelpCenter!", test_avatarUrl_other, test_channelHelpCenter, 1479763213000L, null));
+        items.add(new SimpleMessageOtherListItem(0L, "Note!", test_avatarUrl_other, test_channelNote, 1479763213000L, null));
+        items.add(new SimpleMessageOtherListItem(0L, "Messenger!", test_avatarUrl_other, test_channelMessenger, 1479763213000L, null));
 
         initMessengerList(items);
 
@@ -274,9 +294,9 @@ public class MessengerListFragment extends BaseListFragment {
                         // ADD NEW ITEMS AT END
                         List<BaseListItem> items = new ArrayList();
                         String suffix = String.format("[%s]", testMaxLoadMoreAttempts);
-                        items.add(new SimpleMessageSelfListItem("More " + suffix, test_avatarUrl_self, test_channelFacebook, 0, null));
+                        items.add(new SimpleMessageSelfListItem(0L, "More " + suffix, test_avatarUrl_self, test_channelFacebook, 0, null));
                         for (int i = 2; i <= 20; i++) {
-                            items.add(new SimpleMessageContinuedSelfListItem("More " + suffix + " " + i, 0, null));
+                            items.add(new SimpleMessageContinuedSelfListItem(0L, "More " + suffix + " " + i, 0, null));
                         }
                         addItemsToBeginningOfList(items); // TODO: Remove hideLoadMoreProgress call in addItemsToEndOfList?
 
@@ -290,7 +310,7 @@ public class MessengerListFragment extends BaseListFragment {
             @Override
             public void performAfterWait() {
                 List<BaseListItem> items2 = new ArrayList();
-                items2.add(new SimpleMessageOtherListItem("Add one more at the end!", test_avatarUrl_self, test_channelFacebook, 0, null));
+                items2.add(new SimpleMessageOtherListItem(0L, "Add one more at the end!", test_avatarUrl_self, test_channelFacebook, 0, null));
                 addItemsToEndOfList(items2);
 
                 scrollToNewMessagesIfNearby();
@@ -301,11 +321,11 @@ public class MessengerListFragment extends BaseListFragment {
             @Override
             public void performAfterWait() {
                 List<BaseListItem> items = new ArrayList();
-                items.add(new SimpleMessageSelfListItem("Blah Blah!", test_avatarUrl_self, test_channelFacebook, 0, null));
+                items.add(new SimpleMessageSelfListItem(0L, "Blah Blah!", test_avatarUrl_self, test_channelFacebook, 0, null));
                 addItemsToEndOfList(items);
 
                 List<BaseListItem> items2 = new ArrayList();
-                items2.add(new SimpleMessageOtherListItem("That's a good one!", test_avatarUrl_self, test_channelFacebook, 0, null));
+                items2.add(new SimpleMessageOtherListItem(0L, "That's a good one!", test_avatarUrl_self, test_channelFacebook, 0, null));
                 addItemsToEndOfList(items2);
 
                 scrollToNewMessagesIfNearby();
@@ -320,24 +340,29 @@ public class MessengerListFragment extends BaseListFragment {
             public void performAfterWait() {
                 List<DataItem> dataItems = new ArrayList<>();
                 dataItems.add(new DataItem(0L, null, test_avatarUrl_self, true, 0, test_channelFacebook, "Whassup?", 1499763213000L, null, true));
-                dataItems.add(new DataItem(0L, null, test_avatarUrl_other, false, 2, test_channelHelpCenter, "Hello", 1499763213000L, null, true));
-                dataItems.add(new DataItem(0L, null, test_avatarUrl_self, true, 0, test_channelFacebook, "Whassup?", 1499763314000L, null, true));
-                dataItems.add(new DataItem(0L, null, test_avatarUrl_other, false, 2, test_channelHelpCenter, "Why,", 1499763315000L, null, true));
-                dataItems.add(new DataItem(0L, null, test_avatarUrl_other, false, 2, test_channelHelpCenter, "Hedsafadsfallo", 1499773315000L, null, true));
-                dataItems.add(new DataItem(0L, null, test_avatarUrl_other, false, 2, test_channelHelpCenter, "Hesdfasllo", 1499783315000L, null, false));
-                dataItems.add(new DataItem(0L, null, test_avatarUrl_self, true, 0, test_channelHelpCenter, "Hel213q dswzwexq wqdlo", 1499793315000L, null, false));
-                dataItems.add(new DataItem(0L, null, test_avatarUrl_self, true, 0, test_channelHelpCenter, "Hel213q ds d asd sawzwexq wqdlo", 1499803315000L, null, false));
-                dataItems.add(new DataItem(0L, null, test_avatarUrl_other, false, 2, test_channelHelpCenter, "He sa dsa dasdallo", 1499963315000L, null, false));
-                dataItems.add(new DataItem(0L, null, test_avatarUrl_other, false, 2, test_channelHelpCenter, "He sa2 dsa dasdallo", 1499963325000L, null, false));
-                dataItems.add(new DataItem(0L, null, test_avatarUrl_self, true, 0, test_channelHelpCenter, "He sa3 dsa dasdallo", 1499963335000L, null, false));
-                dataItems.add(new DataItem(0L, null, test_avatarUrl_other, false, 2, test_channelHelpCenter, "He saddsdass llo", 1500063315000L, null, false));
-                dataItems.add(new DataItem(0L, null, test_avatarUrl_other, false, 2, test_channelHelpCenter, "He asdas dasdasdasd  s llo", 1511163315000L, null, false));
+                dataItems.add(new DataItem(1L, null, test_avatarUrl_other, false, 2, test_channelHelpCenter, "Hello", 1499763213000L, null, true));
+                dataItems.add(new DataItem(2L, null, test_avatarUrl_self, true, 0, test_channelFacebook, "Whassup?", 1499763314000L, null, true));
+                dataItems.add(new DataItem(3L, null, test_avatarUrl_other, false, 2, test_channelHelpCenter, "Why,", 1499763315000L, null, true));
+                dataItems.add(new DataItem(4L, null, test_avatarUrl_other, false, 2, test_channelHelpCenter, "Hedsafadsfallo", 1499773315000L, null, true));
+                dataItems.add(new DataItem(5L, null, test_avatarUrl_other, false, 2, test_channelHelpCenter, "Hesdfasllo", 1499783315000L, null, false));
+                dataItems.add(new DataItem(7L, null, test_avatarUrl_self, true, 0, test_channelHelpCenter, "Hel213q dswzwexq wqdlo", 1499793315000L, null, false));
+                dataItems.add(new DataItem(9L, null, test_avatarUrl_self, true, 0, test_channelHelpCenter, "Hel213q ds d asd sawzwexq wqdlo", 1499803315000L, null, false));
+                dataItems.add(new DataItem(12L, null, test_avatarUrl_other, false, 2, test_channelHelpCenter, "He sa dsa dasdallo", 1499963315000L, null, false));
+                dataItems.add(new DataItem(16L, null, test_avatarUrl_other, false, 2, test_channelHelpCenter, "He sa2 dsa dasdallo", 1499963325000L, null, false));
+                dataItems.add(new DataItem(18L, null, test_avatarUrl_self, true, 0, test_channelHelpCenter, "He sa3 dsa dasdallo", 1499963335000L, null, false));
+                dataItems.add(new DataItem(21L, null, test_avatarUrl_other, false, 2, test_channelHelpCenter, "He saddsdass llo", 1500063315000L, null, false));
+                dataItems.add(new DataItem(26L, null, test_avatarUrl_other, false, 2, test_channelHelpCenter, "He asdas dasdasdasd  s llo", 1511163315000L, null, false));
 
                 addItemsToEndOfList(DataItemHelperForCustomerChatUI.convertDataItemToListItems(dataItems));
 
                 scrollToNewMessagesIfNearby();
+
+                List<Integer> positions = findPositionsOfId(21);
+                System.out.println(positions);
             }
         });
+
+
     }
 
     private void runTestTask(final TestCallback testCallback) {
@@ -347,7 +372,7 @@ public class MessengerListFragment extends BaseListFragment {
             @Override
             protected Void doInBackground(Void... params) {
                 try {
-                    Thread.sleep(testTaskCounter.addAndGet(2000));
+                    Thread.sleep(testTaskCounter.addAndGet(1000));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

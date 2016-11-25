@@ -17,8 +17,8 @@ public class AttachmentMessageSelfListItem extends BaseDataListItem {
     private ChannelDecoration channel;
     private Attachment attachment;
 
-    public AttachmentMessageSelfListItem(@NonNull String avatarUrl, @Nullable ChannelDecoration channel, @NonNull Attachment attachment, @Nullable long time, @Nullable Map<String, Object> data) {
-        super(MessengerListType.ATTACHMENT_MESSAGE_SELF, data);
+    public AttachmentMessageSelfListItem(@Nullable Long id,@NonNull String avatarUrl, @Nullable ChannelDecoration channel, @NonNull Attachment attachment, @Nullable long time, @Nullable Map<String, Object> data) {
+        super(MessengerListType.ATTACHMENT_MESSAGE_SELF, id,data);
         this.attachment = attachment;
         this.time = time;
         this.avatarUrl = avatarUrl;

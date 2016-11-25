@@ -16,8 +16,8 @@ public class SimpleMessageSelfListItem extends BaseDataListItem {
     private long time;
     private ChannelDecoration channel;
 
-    public SimpleMessageSelfListItem(@NonNull String message, @NonNull String avatarUrl, @Nullable ChannelDecoration channel, @Nullable long time, @Nullable Map<String, Object> data) {
-        super(MessengerListType.SIMPLE_MESSAGE_SELF, data);
+    public SimpleMessageSelfListItem(@Nullable Long id, @NonNull String message, @NonNull String avatarUrl, @Nullable ChannelDecoration channel, @Nullable long time, @Nullable Map<String, Object> data) {
+        super(MessengerListType.SIMPLE_MESSAGE_SELF, id, data);
 
         this.message = message;
         this.avatarUrl = avatarUrl;
