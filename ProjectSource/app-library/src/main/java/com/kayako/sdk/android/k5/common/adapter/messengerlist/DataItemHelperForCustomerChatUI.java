@@ -1,6 +1,8 @@
 package com.kayako.sdk.android.k5.common.adapter.messengerlist;
 
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageContinuedOtherListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageContinuedSelfListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageOtherListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageSelfListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.DateSeparatorListItem;
@@ -265,9 +267,9 @@ public class DataItemHelperForCustomerChatUI {
         } else if (viewBehaviour.showAvatar) {
             return new AttachmentMessageOtherListItem(currentDataItem.getId(), currentDataItem.getAvatarUrl(), currentDataItem.getChannelDecoration(), attachment, time, currentDataItem.getData());
         } else if (viewBehaviour.showAsSelf) {
-            return new AttachmentMessageSelfListItem(currentDataItem.getId(), currentDataItem.getAvatarUrl(), currentDataItem.getChannelDecoration(), attachment, time, currentDataItem.getData());
+            return new AttachmentMessageContinuedSelfListItem(currentDataItem.getId(), attachment, time, currentDataItem.getData());
         } else {
-            return new AttachmentMessageOtherListItem(currentDataItem.getId(), currentDataItem.getAvatarUrl(), currentDataItem.getChannelDecoration(), attachment, time, currentDataItem.getData());
+            return new AttachmentMessageContinuedOtherListItem(currentDataItem.getId(), attachment, time, currentDataItem.getData());
         }
     }
 
