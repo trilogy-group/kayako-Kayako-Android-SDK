@@ -22,27 +22,40 @@ public class ImageUtils {
      * @param avatarUrl  URL of the avatar image to show
      */
     public static void setAvatarImage(Context context, ImageView avatarView, String avatarUrl) {
-        Glide.with(context)
-                .load(avatarUrl)
-                .bitmapTransform(new CropCircleTransformation(context))
-                .placeholder(R.color.ko__avatar_image_background)
-                .signature(new StringSignature(avatarUrl))
-                .into(avatarView);
+        if (avatarUrl != null) {
+            Glide.with(context)
+                    .load(avatarUrl)
+                    .bitmapTransform(new CropCircleTransformation(context))
+                    .placeholder(R.color.ko__avatar_image_background)
+                    .signature(new StringSignature(avatarUrl))
+                    .into(avatarView);
+        } else {
+            Glide.with(context)
+                    .load(R.color.ko__avatar_image_background)
+                    .bitmapTransform(new CropCircleTransformation(context))
+                    .into(avatarView);
+        }
     }
 
     /**
      * Set public image url imageView and specify default placeholder resource
-     *
-     * @param context
+     *  @param context
      * @param imageView
      * @param imageUrl
+     * @param placeholderDrawable
      */
-    public static void setImage(Context context, ImageView imageView, String imageUrl) {
-        Glide.with(context)
-                .load(imageUrl)
-                .signature(new StringSignature(imageUrl))
-                .placeholder(R.color.ko__avatar_image_background)
-                .into(imageView);
+    public static void setImage(Context context, ImageView imageView, String imageUrl, int placeholderDrawable) {
+        if (imageUrl != null) {
+            Glide.with(context)
+                    .load(imageUrl)
+                    .signature(new StringSignature(imageUrl))
+                    .placeholder(placeholderDrawable)
+                    .into(imageView);
+        } else {
+            Glide.with(context)
+                    .load(placeholderDrawable)
+                    .into(imageView);
+        }
     }
 
     /**
@@ -53,11 +66,17 @@ public class ImageUtils {
      * @param avatarUrl  URL of the avatar image to show
      */
     public static void setAvatarImage(Context context, CircleImageView avatarView, String avatarUrl) {
-        Glide.with(context)
-                .load(avatarUrl)
-                .placeholder(R.color.ko__avatar_image_background)
-                .signature(new StringSignature(avatarUrl))
-                .into(avatarView);
+        if (avatarUrl != null) {
+            Glide.with(context)
+                    .load(avatarUrl)
+                    .placeholder(R.color.ko__avatar_image_background)
+                    .signature(new StringSignature(avatarUrl))
+                    .into(avatarView);
+        } else {
+            Glide.with(context)
+                    .load(R.color.ko__avatar_image_background)
+                    .into(avatarView);
+        }
     }
 
     /**
