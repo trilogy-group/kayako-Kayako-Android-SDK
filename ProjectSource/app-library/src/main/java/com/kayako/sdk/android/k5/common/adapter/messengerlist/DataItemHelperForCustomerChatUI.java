@@ -18,7 +18,7 @@ import java.util.Set;
 
 public class DataItemHelperForCustomerChatUI {
 
-    public static final long MINIMUM_MILLISECONDS_TO_GROUP = 10 * 1000L;
+    public static final long MINIMUM_MILLISECONDS_TO_GROUP = 60 * 1000L;
 
     public static List<BaseListItem> convertDataItemToListItems(List<DataItem> dataItems) {
         // TODO: Assert that the list is ordered by date - NEWEST, NEW, OLD, OLDEST
@@ -49,13 +49,7 @@ public class DataItemHelperForCustomerChatUI {
 
             // Assertions on time
             if (previousDataItem != null && previousDataItem.getTimeInMilliseconds() > currentDataItem.getTimeInMilliseconds()) {
-                throw new AssertionError("The list is not sorted by time!");
-            }
-
-            // Assertions on time
-            // TODO: Redundant?
-            if (nextDataItem != null && currentDataItem.getTimeInMilliseconds() > nextDataItem.getTimeInMilliseconds()) {
-                throw new AssertionError("The list is not sorted by time!");
+                throw new AssertionError("The list is not sorted by time! Should be in descending order of creation time with newest item on top of list");
             }
 
             // Assertions on ids
