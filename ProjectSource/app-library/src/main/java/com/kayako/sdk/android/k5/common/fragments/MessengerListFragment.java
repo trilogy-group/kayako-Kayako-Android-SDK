@@ -2,15 +2,21 @@ package com.kayako.sdk.android.k5.common.fragments;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.Toast;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseDataListItem;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.loadmorelist.EndlessRecyclerViewScrollAdapter;
+import com.kayako.sdk.android.k5.common.adapter.loadmorelist.EndlessRecyclerViewScrollListener;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.Attachment;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageContinuedOtherListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageContinuedSelfListItem;
@@ -45,11 +51,14 @@ public class MessengerListFragment extends BaseListFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        testSample1();
-        testSample2();
+        // testSample1();
+        // testSample2();
     }
 
-    protected void initMessengerList(List<BaseListItem> items) {
+    /**
+     * @param items List of view items ordered from Newest item to Oldest item
+     */
+    public void initMessengerList(List<BaseListItem> items) {
         // Reverse item order
         Collections.reverse(items);
 
@@ -69,20 +78,20 @@ public class MessengerListFragment extends BaseListFragment {
         scrollToEndOfList();
     }
 
-    protected void setOnItemClickListener(MessengerAdapter.OnItemClickListener listener) {
+    public void setOnItemClickListener(MessengerAdapter.OnItemClickListener listener) {
         mMessengerAdapter.setOnItemClickListener(listener);
     }
 
-    protected void setOnAvatarClickListener(MessengerAdapter.OnAvatarClickListener listener) {
+    public void setOnAvatarClickListener(MessengerAdapter.OnAvatarClickListener listener) {
         mMessengerAdapter.setOnAvatarClickListener(listener);
     }
 
-    protected void setOnAttachmentClickListener(MessengerAdapter.OnAttachmentClickListener listener) {
+    public void setOnAttachmentClickListener(MessengerAdapter.OnAttachmentClickListener listener) {
         mMessengerAdapter.setOnAttachmentClickListener(listener);
     }
 
     @Override
-    protected void addItemsToEndOfList(List<BaseListItem> items) {
+    public void addItemsToEndOfList(List<BaseListItem> items) {
         // Reverse item order
         Collections.reverse(items);
 
@@ -91,7 +100,7 @@ public class MessengerListFragment extends BaseListFragment {
     }
 
     @Override
-    protected void addItemsToBeginningOfList(List<BaseListItem> items) {
+    public void addItemsToBeginningOfList(List<BaseListItem> items) {
         // Reverse item order
         Collections.reverse(items);
 
@@ -99,24 +108,103 @@ public class MessengerListFragment extends BaseListFragment {
         super.addItemsToEndOfList(items);
     }
 
+    // Overriding to make methods public
+
     @Override
-    protected void scrollToEndOfList() {
+    public void scrollToEndOfList() {
         super.scrollToBeginningOfList();
     }
 
     @Override
-    protected void scrollToBeginningOfList() {
+    public void scrollToBeginningOfList() {
         super.scrollToBeginningOfList();
     }
 
     @Override
-    protected int findFirstVisibleItemPosition() {
+    public int findFirstVisibleItemPosition() {
         return super.findLastVisibleItemPosition();
     }
 
     @Override
-    protected int findLastVisibleItemPosition() {
+    public int findLastVisibleItemPosition() {
         return super.findFirstVisibleItemPosition();
+    }
+
+    @Override
+    public void showEmptyViewAndHideOthers(@Nullable String title, @Nullable String description) {
+        super.showEmptyViewAndHideOthers(title, description);
+    }
+
+    @Override
+    public void showLoadingViewAndHideOthers() {
+        super.showLoadingViewAndHideOthers();
+    }
+
+    @Override
+    public void showErrorViewAndHideOthers(@Nullable String title, @Nullable String description, @NonNull View.OnClickListener onClickRetryListener) {
+        super.showErrorViewAndHideOthers(title, description, onClickRetryListener);
+    }
+
+    @Override
+    public void showListViewAndHideOthers() {
+        super.showListViewAndHideOthers();
+    }
+
+
+    @Override
+    public void addItem(BaseListItem item, int position) {
+        super.addItem(item, position);
+    }
+
+    @Override
+    public void removeItem(int position) {
+        super.removeItem(position);
+    }
+
+    @Override
+    public void replaceItem(BaseListItem item, int position) {
+        super.replaceItem(item, position);
+    }
+
+    @Override
+    public int getSizeOfData() {
+        return super.getSizeOfData();
+    }
+
+
+    @Override
+    public void setScrollListener(RecyclerView.OnScrollListener onScrollListener) {
+        super.setScrollListener(onScrollListener);
+    }
+
+    @Override
+    public void removeScrollListener(RecyclerView.OnScrollListener onScrollListener) {
+        super.removeScrollListener(onScrollListener);
+    }
+
+    @Override
+    public void setLoadMoreListener(final EndlessRecyclerViewScrollAdapter.OnLoadMoreListener loadMoreListener) {
+        super.setLoadMoreListener(loadMoreListener);
+    }
+
+    @Override
+    public void removeLoadMoreListener() {
+        super.removeLoadMoreListener();
+    }
+
+    @Override
+    public void showLoadMoreProgress() {
+        super.showLoadMoreProgress();
+    }
+
+    @Override
+    public void hideLoadMoreProgress() {
+        super.hideLoadMoreProgress();
+    }
+
+    @Override
+    public void setHasMoreItems(boolean hasMoreItems) {
+        super.setHasMoreItems(hasMoreItems);
     }
 
     public List<Integer> findPositionsOfId(long id) {
@@ -137,11 +225,10 @@ public class MessengerListFragment extends BaseListFragment {
         return positions;
     }
 
-
     /**
      * scroll to bottom ONLY if the user is currently viewing the last few posts)
      */
-    protected void scrollToNewMessagesIfNearby() {
+    public void scrollToNewMessagesIfNearby() {
         int lastPosition = 0; // new messages are added at the top
         int lastVisibleItemPosition = findLastVisibleItemPosition();
 
