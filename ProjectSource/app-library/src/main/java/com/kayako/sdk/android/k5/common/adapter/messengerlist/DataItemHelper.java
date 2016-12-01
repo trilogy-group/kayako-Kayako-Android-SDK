@@ -18,12 +18,20 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class DataItemHelperForCustomerChatUI {
+public class DataItemHelper {
 
-    public static final long MINIMUM_MILLISECONDS_TO_GROUP = 60 * 1000L;
+    public static final long MINIMUM_MILLISECONDS_TO_GROUP = 3 * 60 * 1000L;
 
-    public static List<BaseListItem> convertDataItemToListItems(List<DataItem> dataItems) {
-        // TODO: Assert that the list is ordered by date - NEWEST, NEW, OLD, OLDEST
+    private static DataItemHelper mDataItemHelper;
+
+    public static DataItemHelper getInstance() {
+        if (mDataItemHelper == null) {
+            mDataItemHelper = new DataItemHelper();
+        }
+        return mDataItemHelper;
+    }
+
+    public List<BaseListItem> convertDataItemToListItems(List<DataItem> dataItems) {
         DataItem currentDataItem;
         DataItem nextDataItem;
         DataItem previousDataItem;
@@ -84,7 +92,7 @@ public class DataItemHelperForCustomerChatUI {
         return viewItems;
     }
 
-    private static List<BaseListItem> generateMessageViews(ViewBehaviour viewBehaviour, DataItem currentDataItem) {
+    protected List<BaseListItem> generateMessageViews(ViewBehaviour viewBehaviour, DataItem currentDataItem) {
         List<BaseListItem> generatedViewItems = new ArrayList<>();
 
         switch (viewBehaviour.messageType) {
@@ -101,7 +109,7 @@ public class DataItemHelperForCustomerChatUI {
         }
     }
 
-    private static ViewBehaviour defineViewBehaviour(DataItem currentDataItem, DataItem previousDataItem, DataItem nextDataItem) {
+    protected ViewBehaviour defineViewBehaviour(DataItem currentDataItem, DataItem previousDataItem, DataItem nextDataItem) {
         ViewBehaviour.MessageType messageType = getMessageType(currentDataItem);
         boolean showTime = getTimeVisibility(currentDataItem, nextDataItem);
         boolean showAvatar = getAvatarVisibility(currentDataItem, previousDataItem);
@@ -115,7 +123,7 @@ public class DataItemHelperForCustomerChatUI {
      * Check if the current data item was posted on a day after the previous data item.
      * If true, add the DATE SEPARATOR.
      */
-    private static void addDateSeparators(List<BaseListItem> viewItems, DataItem currentDataItem, DataItem previousDataItem) {
+    protected void addDateSeparators(List<BaseListItem> viewItems, DataItem currentDataItem, DataItem previousDataItem) {
         Calendar currentDate = Calendar.getInstance();
         currentDate.setTimeInMillis(currentDataItem.getTimeInMilliseconds());
 
@@ -131,7 +139,7 @@ public class DataItemHelperForCustomerChatUI {
      * Check if the readStatus of the previousDataItem is false and the currentDataItem is true.
      * If true, add the UNREAD SEPARATOR
      */
-    private static void addUnreadSeparator(List<BaseListItem> viewItems, DataItem currentDataItem, DataItem previousDataItem) {
+    protected void addUnreadSeparator(List<BaseListItem> viewItems, DataItem currentDataItem, DataItem previousDataItem) {
         if (previousDataItem.isRead() && !currentDataItem.isRead()) {
             viewItems.add(new UnreadSeparatorListItem());
         }
@@ -143,7 +151,7 @@ public class DataItemHelperForCustomerChatUI {
      * @param currentDataItem
      * @return
      */
-    private static ViewBehaviour.MessageType getMessageType(DataItem currentDataItem) {
+    protected ViewBehaviour.MessageType getMessageType(DataItem currentDataItem) {
         if (currentDataItem.getAttachments() != null && currentDataItem.getAttachments().size() > 0) {
             return ViewBehaviour.MessageType.ATTACHMENT;
         } else {
@@ -160,7 +168,7 @@ public class DataItemHelperForCustomerChatUI {
      * @param currentDataItem
      * @return
      */
-    private static boolean isGroupable(DataItem previousDataItem, DataItem currentDataItem) {
+    protected boolean isGroupable(DataItem previousDataItem, DataItem currentDataItem) {
         return Math.abs(currentDataItem.getTimeInMilliseconds() - previousDataItem.getTimeInMilliseconds()) <= MINIMUM_MILLISECONDS_TO_GROUP;
     }
 
@@ -171,7 +179,7 @@ public class DataItemHelperForCustomerChatUI {
      * @param nextDataItem
      * @return
      */
-    private static boolean getTimeVisibility(DataItem currentDataItem, DataItem nextDataItem) {
+    protected boolean getTimeVisibility(DataItem currentDataItem, DataItem nextDataItem) {
         assert currentDataItem != null;
 
         // Don't show Time if is last element of list
@@ -180,7 +188,7 @@ public class DataItemHelperForCustomerChatUI {
         }
 
         // Show time if the next message is sent by someone other than who sent the current message
-        if (nextDataItem.getUserId() != currentDataItem.getUserId()) {
+        if (!nextDataItem.getUserDecoration().getUserId().equals(currentDataItem.getUserDecoration().getUserId())) {
             return true;
         }
 
@@ -195,7 +203,7 @@ public class DataItemHelperForCustomerChatUI {
      * @param previousDataItem
      * @return
      */
-    private static boolean getAvatarVisibility(DataItem currentDataItem, DataItem previousDataItem) {
+    protected boolean getAvatarVisibility(DataItem currentDataItem, DataItem previousDataItem) {
 
         assert currentDataItem != null;
 
@@ -205,7 +213,12 @@ public class DataItemHelperForCustomerChatUI {
         }
 
         // Show Avatar if the previous message is sent by someone other than who sent the current message
-        if (previousDataItem.getUserId() != currentDataItem.getUserId()) {
+        if (!previousDataItem.getUserDecoration().getUserId().equals(currentDataItem.getUserDecoration().getUserId())) {
+            return true;
+        }
+
+        // Show Avatar if the previous message is sent via another channel as compared to the current message
+        if (previousDataItem.getChannelDecoration().getSourceDrawable() != currentDataItem.getChannelDecoration().getSourceDrawable()) {
             return true;
         }
 
@@ -220,7 +233,7 @@ public class DataItemHelperForCustomerChatUI {
      * @param currentDataItem
      * @return
      */
-    private static boolean getChannelVisibility(boolean showAvatar, DataItem currentDataItem) {
+    protected boolean getChannelVisibility(boolean showAvatar, DataItem currentDataItem) {
         return showAvatar && currentDataItem.getChannelDecoration() != null;
     }
 
@@ -230,11 +243,11 @@ public class DataItemHelperForCustomerChatUI {
      * @param currentDataItem
      * @return
      */
-    private static boolean getIfSelf(DataItem currentDataItem) {
-        return currentDataItem.isSelf();
+    protected boolean getIfSelf(DataItem currentDataItem) {
+        return currentDataItem.getUserDecoration().isSelf();
     }
 
-    private static BaseListItem generateSimpleMessage(DataItem currentDataItem, ViewBehaviour viewBehaviour) {
+    protected BaseListItem generateSimpleMessage(DataItem currentDataItem, ViewBehaviour viewBehaviour) {
         long time = 0;
         if (viewBehaviour.showTime) {
             time = currentDataItem.getTimeInMilliseconds();
@@ -243,9 +256,9 @@ public class DataItemHelperForCustomerChatUI {
         }
 
         if (viewBehaviour.showAvatar && viewBehaviour.showAsSelf) {
-            return new SimpleMessageSelfListItem(currentDataItem.getId(), currentDataItem.getMessage(), currentDataItem.getAvatarUrl(), currentDataItem.getChannelDecoration(), time, currentDataItem.getData());
+            return new SimpleMessageSelfListItem(currentDataItem.getId(), currentDataItem.getMessage(), currentDataItem.getUserDecoration().getAvatarUrl(), currentDataItem.getChannelDecoration(), time, currentDataItem.getData());
         } else if (viewBehaviour.showAvatar) {
-            return new SimpleMessageOtherListItem(currentDataItem.getId(), currentDataItem.getMessage(), currentDataItem.getAvatarUrl(), currentDataItem.getChannelDecoration(), time, currentDataItem.getData());
+            return new SimpleMessageOtherListItem(currentDataItem.getId(), currentDataItem.getMessage(), currentDataItem.getUserDecoration().getAvatarUrl(), currentDataItem.getChannelDecoration(), time, currentDataItem.getData());
         } else if (viewBehaviour.showAsSelf) {
             return new SimpleMessageContinuedSelfListItem(currentDataItem.getId(), currentDataItem.getMessage(), time, currentDataItem.getData());
         } else {
@@ -254,7 +267,7 @@ public class DataItemHelperForCustomerChatUI {
     }
 
 
-    private static BaseListItem generateAttachmentMessage(DataItem currentDataItem, ViewBehaviour viewBehaviour, Attachment attachment) {
+    protected BaseListItem generateAttachmentMessage(DataItem currentDataItem, ViewBehaviour viewBehaviour, Attachment attachment) {
         long time = 0;
         if (viewBehaviour.showTime) {
             time = currentDataItem.getTimeInMilliseconds();
@@ -263,9 +276,9 @@ public class DataItemHelperForCustomerChatUI {
         }
 
         if (viewBehaviour.showAvatar && viewBehaviour.showAsSelf) {
-            return new AttachmentMessageSelfListItem(currentDataItem.getId(), currentDataItem.getAvatarUrl(), currentDataItem.getChannelDecoration(), attachment, time, currentDataItem.getData());
+            return new AttachmentMessageSelfListItem(currentDataItem.getId(), currentDataItem.getUserDecoration().getAvatarUrl(), currentDataItem.getChannelDecoration(), attachment, time, currentDataItem.getData());
         } else if (viewBehaviour.showAvatar) {
-            return new AttachmentMessageOtherListItem(currentDataItem.getId(), currentDataItem.getAvatarUrl(), currentDataItem.getChannelDecoration(), attachment, time, currentDataItem.getData());
+            return new AttachmentMessageOtherListItem(currentDataItem.getId(), currentDataItem.getUserDecoration().getAvatarUrl(), currentDataItem.getChannelDecoration(), attachment, time, currentDataItem.getData());
         } else if (viewBehaviour.showAsSelf) {
             return new AttachmentMessageContinuedSelfListItem(currentDataItem.getId(), attachment, time, currentDataItem.getData());
         } else {
@@ -273,7 +286,7 @@ public class DataItemHelperForCustomerChatUI {
         }
     }
 
-    private static List<BaseListItem> generateAttachmentMessages(DataItem currentDataItem, ViewBehaviour viewBehaviour) {
+    protected List<BaseListItem> generateAttachmentMessages(DataItem currentDataItem, ViewBehaviour viewBehaviour) {
         assert currentDataItem.getAttachments() != null;
 
         List<BaseListItem> attachmentMessages = new ArrayList<>();

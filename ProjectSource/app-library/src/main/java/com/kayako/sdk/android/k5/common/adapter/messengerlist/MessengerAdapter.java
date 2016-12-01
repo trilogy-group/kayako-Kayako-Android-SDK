@@ -25,8 +25,8 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
     private OnAvatarClickListener mAvatarClickListener;
     private OnAttachmentClickListener mAttachmentClickListener;
 
-    private static final int DEFAULT_PLACEHOLDER_ATTACHMENT_IMAGE = R.drawable.ko__img_attachment_placeholder_dark;
-    private int sPlaceholderImageForAttachments = DEFAULT_PLACEHOLDER_ATTACHMENT_IMAGE;
+    private static final int DEFAULT_PLACEHOLDER_ATTACHMENT_DARK = R.drawable.ko__img_attachment_placeholder_dark;
+    private static final int DEFAULT_PLACEHOLDER_ATTACHMENT_LIGHT = R.drawable.ko__img_attachment_placeholder_light;
 
     public MessengerAdapter(List<BaseListItem> itemList) {
         super(itemList);
@@ -62,8 +62,8 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                     simpleMessageSelfViewHolder.time.setText(DateTimeUtils.formatTime(Kayako.getApplicationContext(), simpleMessageSelfListItem.getTime()));
                 }
 
-                setAvatarClickListenerOnView(simpleMessageSelfViewHolder.avatar, simpleMessageSelfListItem.getItemType(), simpleMessageSelfListItem.getData());
-                setItemClickListenerOnView(simpleMessageSelfViewHolder.itemView, simpleMessageSelfListItem.getItemType(), simpleMessageSelfListItem.getData());
+                setAvatarClickListenerOnView(simpleMessageSelfViewHolder.avatar, simpleMessageSelfListItem.getItemType(), simpleMessageSelfListItem.getId(), simpleMessageSelfListItem.getData());
+                setItemClickListenerOnView(simpleMessageSelfViewHolder.itemView, simpleMessageSelfListItem.getItemType(), simpleMessageSelfListItem.getId(), simpleMessageSelfListItem.getData());
 
                 break;
 
@@ -88,8 +88,8 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                     simpleMessageOtherViewHolder.time.setText(DateTimeUtils.formatTime(Kayako.getApplicationContext(), simpleMessageOtherListItem.getTime()));
                 }
 
-                setAvatarClickListenerOnView(simpleMessageOtherViewHolder.avatar, simpleMessageOtherListItem.getItemType(), simpleMessageOtherListItem.getData());
-                setItemClickListenerOnView(simpleMessageOtherViewHolder.itemView, simpleMessageOtherListItem.getItemType(), simpleMessageOtherListItem.getData());
+                setAvatarClickListenerOnView(simpleMessageOtherViewHolder.avatar, simpleMessageOtherListItem.getItemType(), simpleMessageOtherListItem.getId(), simpleMessageOtherListItem.getData());
+                setItemClickListenerOnView(simpleMessageOtherViewHolder.itemView, simpleMessageOtherListItem.getItemType(), simpleMessageOtherListItem.getId(), simpleMessageOtherListItem.getData());
 
                 break;
 
@@ -106,7 +106,7 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                     simpleMessageContinuedSelfViewHolder.time.setText(DateTimeUtils.formatTime(Kayako.getApplicationContext(), simpleMessageContinuedSelfListItem.getTime()));
                 }
 
-                setItemClickListenerOnView(simpleMessageContinuedSelfViewHolder.itemView, simpleMessageContinuedSelfListItem.getItemType(), simpleMessageContinuedSelfListItem.getData());
+                setItemClickListenerOnView(simpleMessageContinuedSelfViewHolder.itemView, simpleMessageContinuedSelfListItem.getItemType(), simpleMessageContinuedSelfListItem.getId(), simpleMessageContinuedSelfListItem.getData());
 
                 break;
 
@@ -123,7 +123,7 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                     simpleMessageContinuedOtherViewHolder.time.setText(DateTimeUtils.formatTime(Kayako.getApplicationContext(), simpleMessageContinuedOtherListItem.getTime()));
                 }
 
-                setItemClickListenerOnView(simpleMessageContinuedOtherViewHolder.itemView, simpleMessageContinuedOtherListItem.getItemType(), simpleMessageContinuedOtherListItem.getData());
+                setItemClickListenerOnView(simpleMessageContinuedOtherViewHolder.itemView, simpleMessageContinuedOtherListItem.getItemType(), simpleMessageContinuedOtherListItem.getId(), simpleMessageContinuedOtherListItem.getData());
                 break;
 
             case MessengerListType.ATTACHMENT_MESSAGE_SELF:
@@ -161,12 +161,12 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 } else {
                     attachmentMessageSelfViewHolder.attachmentPlaceholder.setVisibility(View.GONE);
                     attachmentMessageSelfViewHolder.attachmentThumbnail.setVisibility(View.VISIBLE);
-                    ImageUtils.setImage(Kayako.getApplicationContext(), attachmentMessageSelfViewHolder.attachmentThumbnail, attachmentMessageSelfListItem.getAttachment().getThumbnailUrl(), sPlaceholderImageForAttachments);
+                    ImageUtils.setImage(Kayako.getApplicationContext(), attachmentMessageSelfViewHolder.attachmentThumbnail, attachmentMessageSelfListItem.getAttachment().getThumbnailUrl(), DEFAULT_PLACEHOLDER_ATTACHMENT_LIGHT);
                 }
 
-                setAvatarClickListenerOnView(attachmentMessageSelfViewHolder.avatar, attachmentMessageSelfListItem.getItemType(), attachmentMessageSelfListItem.getData());
-                setAttachmentClickListenerOnView(attachmentMessageSelfViewHolder.attachmentThumbnail, attachmentMessageSelfListItem.getItemType(), attachmentMessageSelfListItem.getData());
-                setAttachmentClickListenerOnView(attachmentMessageSelfViewHolder.attachmentPlaceholder, attachmentMessageSelfListItem.getItemType(), attachmentMessageSelfListItem.getData());
+                setAvatarClickListenerOnView(attachmentMessageSelfViewHolder.avatar, attachmentMessageSelfListItem.getItemType(), attachmentMessageSelfListItem.getId(), attachmentMessageSelfListItem.getData());
+                setAttachmentClickListenerOnView(attachmentMessageSelfViewHolder.attachmentThumbnail, attachmentMessageSelfListItem.getItemType(), attachmentMessageSelfListItem.getId(), attachmentMessageSelfListItem.getData());
+                setAttachmentClickListenerOnView(attachmentMessageSelfViewHolder.attachmentPlaceholder, attachmentMessageSelfListItem.getItemType(), attachmentMessageSelfListItem.getId(), attachmentMessageSelfListItem.getData());
 
                 break;
 
@@ -205,12 +205,12 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 } else {
                     attachmentMessageOtherViewHolder.attachmentPlaceholder.setVisibility(View.GONE);
                     attachmentMessageOtherViewHolder.attachmentThumbnail.setVisibility(View.VISIBLE);
-                    ImageUtils.setImage(Kayako.getApplicationContext(), attachmentMessageOtherViewHolder.attachmentThumbnail, attachmentMessageOtherListItem.getAttachment().getThumbnailUrl(), sPlaceholderImageForAttachments);
+                    ImageUtils.setImage(Kayako.getApplicationContext(), attachmentMessageOtherViewHolder.attachmentThumbnail, attachmentMessageOtherListItem.getAttachment().getThumbnailUrl(), DEFAULT_PLACEHOLDER_ATTACHMENT_DARK);
                 }
 
-                setAvatarClickListenerOnView(attachmentMessageOtherViewHolder.avatar, attachmentMessageOtherListItem.getItemType(), attachmentMessageOtherListItem.getData());
-                setAttachmentClickListenerOnView(attachmentMessageOtherViewHolder.attachmentThumbnail, attachmentMessageOtherListItem.getItemType(), attachmentMessageOtherListItem.getData());
-                setAttachmentClickListenerOnView(attachmentMessageOtherViewHolder.attachmentPlaceholder, attachmentMessageOtherListItem.getItemType(), attachmentMessageOtherListItem.getData());
+                setAvatarClickListenerOnView(attachmentMessageOtherViewHolder.avatar, attachmentMessageOtherListItem.getItemType(), attachmentMessageOtherListItem.getId(), attachmentMessageOtherListItem.getData());
+                setAttachmentClickListenerOnView(attachmentMessageOtherViewHolder.attachmentThumbnail, attachmentMessageOtherListItem.getItemType(), attachmentMessageOtherListItem.getId(), attachmentMessageOtherListItem.getData());
+                setAttachmentClickListenerOnView(attachmentMessageOtherViewHolder.attachmentPlaceholder, attachmentMessageOtherListItem.getItemType(), attachmentMessageOtherListItem.getId(), attachmentMessageOtherListItem.getData());
 
                 break;
 
@@ -240,10 +240,10 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 } else {
                     attachmentMessageContinuedSelfViewHolder.attachmentPlaceholder.setVisibility(View.GONE);
                     attachmentMessageContinuedSelfViewHolder.attachmentThumbnail.setVisibility(View.VISIBLE);
-                    ImageUtils.setImage(Kayako.getApplicationContext(), attachmentMessageContinuedSelfViewHolder.attachmentThumbnail, attachmentMessageContinuedSelfListItem.getAttachment().getThumbnailUrl(), sPlaceholderImageForAttachments);
+                    ImageUtils.setImage(Kayako.getApplicationContext(), attachmentMessageContinuedSelfViewHolder.attachmentThumbnail, attachmentMessageContinuedSelfListItem.getAttachment().getThumbnailUrl(), DEFAULT_PLACEHOLDER_ATTACHMENT_LIGHT);
                 }
-                setAttachmentClickListenerOnView(attachmentMessageContinuedSelfViewHolder.attachmentThumbnail, attachmentMessageContinuedSelfListItem.getItemType(), attachmentMessageContinuedSelfListItem.getData());
-                setAttachmentClickListenerOnView(attachmentMessageContinuedSelfViewHolder.attachmentPlaceholder, attachmentMessageContinuedSelfListItem.getItemType(), attachmentMessageContinuedSelfListItem.getData());
+                setAttachmentClickListenerOnView(attachmentMessageContinuedSelfViewHolder.attachmentThumbnail, attachmentMessageContinuedSelfListItem.getItemType(), attachmentMessageContinuedSelfListItem.getId(), attachmentMessageContinuedSelfListItem.getData());
+                setAttachmentClickListenerOnView(attachmentMessageContinuedSelfViewHolder.attachmentPlaceholder, attachmentMessageContinuedSelfListItem.getItemType(), attachmentMessageContinuedSelfListItem.getId(), attachmentMessageContinuedSelfListItem.getData());
 
                 break;
 
@@ -273,11 +273,11 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 } else {
                     attachmentMessageContinuedOtherViewHolder.attachmentPlaceholder.setVisibility(View.GONE);
                     attachmentMessageContinuedOtherViewHolder.attachmentThumbnail.setVisibility(View.VISIBLE);
-                    ImageUtils.setImage(Kayako.getApplicationContext(), attachmentMessageContinuedOtherViewHolder.attachmentThumbnail, attachmentMessageContinuedOtherListItem.getAttachment().getThumbnailUrl(), sPlaceholderImageForAttachments);
+                    ImageUtils.setImage(Kayako.getApplicationContext(), attachmentMessageContinuedOtherViewHolder.attachmentThumbnail, attachmentMessageContinuedOtherListItem.getAttachment().getThumbnailUrl(), DEFAULT_PLACEHOLDER_ATTACHMENT_DARK);
                 }
 
-                setAttachmentClickListenerOnView(attachmentMessageContinuedOtherViewHolder.attachmentThumbnail, attachmentMessageContinuedOtherListItem.getItemType(), attachmentMessageContinuedOtherListItem.getData());
-                setAttachmentClickListenerOnView(attachmentMessageContinuedOtherViewHolder.attachmentPlaceholder, attachmentMessageContinuedOtherListItem.getItemType(), attachmentMessageContinuedOtherListItem.getData());
+                setAttachmentClickListenerOnView(attachmentMessageContinuedOtherViewHolder.attachmentThumbnail, attachmentMessageContinuedOtherListItem.getItemType(), attachmentMessageContinuedOtherListItem.getId(), attachmentMessageContinuedOtherListItem.getData());
+                setAttachmentClickListenerOnView(attachmentMessageContinuedOtherViewHolder.attachmentPlaceholder, attachmentMessageContinuedOtherListItem.getItemType(), attachmentMessageContinuedOtherListItem.getId(), attachmentMessageContinuedOtherListItem.getData());
 
                 break;
 
@@ -366,34 +366,34 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
         mAttachmentClickListener = listener;
     }
 
-    private void setAvatarClickListenerOnView(View view, final int itemType, final Map<String, Object> data) {
+    protected void setAvatarClickListenerOnView(final View view, final int itemType, final Long id, final Map<String, Object> data) {
         if (mAvatarClickListener != null) {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mAvatarClickListener.OnClickAvatar(itemType, data);
+                    mAvatarClickListener.OnClickAvatar(view, itemType, id, data);
                 }
             });
         }
     }
 
-    private void setItemClickListenerOnView(View view, final int itemType, final Map<String, Object> data) {
+    protected void setItemClickListenerOnView(View view, final int itemType, final Long id, final Map<String, Object> data) {
         if (mItemClickListener != null) {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mItemClickListener.onClickItem(itemType, data);
+                    mItemClickListener.onClickItem(itemType, id, data);
                 }
             });
         }
     }
 
-    private void setAttachmentClickListenerOnView(View view, final int itemType, final Map<String, Object> data) {
+    protected void setAttachmentClickListenerOnView(View view, final int itemType, final Long id, final Map<String, Object> data) {
         if (mAttachmentClickListener != null) {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mAttachmentClickListener.onClickAttachment(itemType, data);
+                    mAttachmentClickListener.onClickAttachment(itemType, id, data);
                 }
             });
         }
@@ -406,7 +406,7 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
          * @param messageType One of the List Item Types specified in MessengerListType interface
          * @param messageData Map of data sent via the adapter while initializing the list
          */
-        void onClickItem(int messageType, Map<String, Object> messageData);
+        void onClickItem(int messageType, Long id, Map<String, Object> messageData);
     }
 
     public interface OnAvatarClickListener {
@@ -416,7 +416,7 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
          * @param messageType
          * @param messageData
          */
-        void OnClickAvatar(int messageType, Map<String, Object> messageData);
+        void OnClickAvatar(View avatarView, int messageType, Long id, Map<String, Object> messageData);
     }
 
     public interface OnAttachmentClickListener {
@@ -426,10 +426,6 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
          * @param messageType
          * @param messageData
          */
-        void onClickAttachment(int messageType, Map<String, Object> messageData);
-    }
-
-    public void setAttachmentPlaceholderDrawable(@DrawableRes int drawableResId) {
-        sPlaceholderImageForAttachments = drawableResId;
+        void onClickAttachment(int messageType, Long id, Map<String, Object> messageData);
     }
 }

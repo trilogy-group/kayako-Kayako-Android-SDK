@@ -38,6 +38,15 @@ public abstract class EndlessRecyclerViewScrollAdapter extends RecyclerView.Adap
         notifyItemRangeInserted(0, mValues.size());
     }
 
+    public void replaceAllData(List<BaseListItem> newData) {
+        if (newData == null) {
+            newData = new ArrayList<>();
+        }
+        mValues = newData;
+        // TODO: No animation? Added because setData caused a flash while new info was added.
+    }
+
+
     public void addLoadMoreData(List<BaseListItem> moreData) {
         int originalSize = mValues.size();
         mValues.addAll(moreData);

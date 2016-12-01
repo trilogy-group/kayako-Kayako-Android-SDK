@@ -149,7 +149,7 @@ public abstract class BaseListFragment extends BaseStateFragment {
         return mLayoutManager.findLastVisibleItemPosition();
     }
 
-    protected int getSizeOfData(){
+    protected int getSizeOfData() {
         return mAdapter.getItemCount();
     }
 
@@ -213,7 +213,6 @@ public abstract class BaseListFragment extends BaseStateFragment {
         mRecyclerView.removeOnScrollListener(mLoadMoreListener);
     }
 
-
     protected void showLoadMoreProgress() {
         mAdapter.showLoadMoreProgress();
     }
@@ -225,4 +224,9 @@ public abstract class BaseListFragment extends BaseStateFragment {
     protected void setHasMoreItems(boolean hasMoreItems) {
         mAdapter.setHasMoreItems(hasMoreItems);
     }
+
+    protected boolean hasMoreItems() {
+        return mAdapter.hasMoreItems();
+    }
+
 }

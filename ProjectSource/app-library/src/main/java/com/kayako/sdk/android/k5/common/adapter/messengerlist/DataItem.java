@@ -12,31 +12,27 @@ public class DataItem {
     /* Fields needed to generate the views */
 
     /* Mandatory fields (needed to generate views) */
-    private String avatarUrl;
+    private UserDecoration userDecoration;
     private String message;
     private Long timeInMilliseconds;
-    private Long userId;
 
     /* Not Mandatory fields (needed to generate views) */
     private ChannelDecoration channelDecoration;
     private boolean isRead;
-    private boolean isSelf;
     private List<Attachment> attachments;
 
     // TODO: Unfurled content model?
     // TODO: Activity Message? isActivity <-- checks should be added before isSelf
     // TODO: Delivery Indicators? Blue Tick, Double Tick...
 
-    public DataItem(Long id, Map<String, Object> data, String avatarUrl, boolean isSelf, long userId, ChannelDecoration channelDecoration, String message, Long timeInMilliseconds, List<Attachment> attachments, boolean isRead) {
-        assert avatarUrl != null;
+    public DataItem(Long id, Map<String, Object> data, UserDecoration userDecoration, ChannelDecoration channelDecoration, String message, Long timeInMilliseconds, List<Attachment> attachments, boolean isRead) {
+        assert userDecoration != null;
         assert message != null;
         assert timeInMilliseconds != null;
 
         this.id = id;
         this.data = data;
-        this.avatarUrl = avatarUrl;
-        this.userId = userId;
-        this.isSelf = isSelf;
+        this.userDecoration = userDecoration;
         this.channelDecoration = channelDecoration;
         this.message = message;
         this.timeInMilliseconds = timeInMilliseconds;
@@ -60,14 +56,6 @@ public class DataItem {
         this.data = data;
     }
 
-    public String getAvatarUrl() {
-        return avatarUrl;
-    }
-
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
-    }
-
     public String getMessage() {
         return message;
     }
@@ -84,20 +72,12 @@ public class DataItem {
         this.timeInMilliseconds = timeInMilliseconds;
     }
 
-    public Long getUserId() {
-        return userId;
+    public UserDecoration getUserDecoration() {
+        return userDecoration;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public boolean isSelf() {
-        return isSelf;
-    }
-
-    public void setSelf(boolean self) {
-        isSelf = self;
+    public void setUserDecoration(UserDecoration userDecoration) {
+        this.userDecoration = userDecoration;
     }
 
     public ChannelDecoration getChannelDecoration() {

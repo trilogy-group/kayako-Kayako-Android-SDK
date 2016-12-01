@@ -2,9 +2,6 @@ package com.kayako.sdk.android.k5.common.fragments;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,15 +13,15 @@ import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseDataListItem;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.loadmorelist.EndlessRecyclerViewScrollAdapter;
-import com.kayako.sdk.android.k5.common.adapter.loadmorelist.EndlessRecyclerViewScrollListener;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.Attachment;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.UserDecoration;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageContinuedOtherListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageContinuedSelfListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageOtherListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageSelfListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.ChannelDecoration;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.DataItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.DataItemHelperForCustomerChatUI;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.DataItemHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.DateSeparatorListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerAdapter;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageContinuedOtherListItem;
@@ -51,6 +48,7 @@ public class MessengerListFragment extends BaseListFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        // TODO: Uncomment below for demonstrations
         // testSample1();
         // testSample2();
     }
@@ -62,8 +60,15 @@ public class MessengerListFragment extends BaseListFragment {
         // Reverse item order
         Collections.reverse(items);
 
-        // Create Adapter
-        mMessengerAdapter = new MessengerAdapter(items);
+        // Create adapter and init Messenger list
+        initMessengerList(new MessengerAdapter(items));
+    }
+
+    /**
+     * @param messengerAdapter Adapter for messenger items
+     */
+    public void initMessengerList(MessengerAdapter messengerAdapter) {
+        mMessengerAdapter = messengerAdapter;
 
         // Create LayoutManager and reverse the layout
         LinearLayoutManager layoutManager = new LinearLayoutManager(mRoot.getContext());
@@ -76,6 +81,15 @@ public class MessengerListFragment extends BaseListFragment {
 
         // Scroll to the very bottom
         scrollToEndOfList();
+    }
+
+    public void replaceMessengerList(List<BaseListItem> items) {
+        // Reverse item order
+        Collections.reverse(items);
+
+        assert mMessengerAdapter != null;
+
+        mMessengerAdapter.replaceAllData(items);
     }
 
     public void setOnItemClickListener(MessengerAdapter.OnItemClickListener listener) {
@@ -207,6 +221,11 @@ public class MessengerListFragment extends BaseListFragment {
         super.setHasMoreItems(hasMoreItems);
     }
 
+    @Override
+    public boolean hasMoreItems() {
+        return super.hasMoreItems();
+    }
+
     public List<Integer> findPositionsOfId(long id) {
         // TODO: Any changes to be made should be made from lowest position to highest position so that nothing gets upset
         List<Integer> positions = new ArrayList<>();
@@ -313,20 +332,22 @@ public class MessengerListFragment extends BaseListFragment {
 
         setOnItemClickListener(new MessengerAdapter.OnItemClickListener() {
             @Override
-            public void onClickItem(int messageType, Map<String, Object> messageData) {
+            public void onClickItem(int messageType, Long id, Map<String, Object> messageData) {
                 ViewUtils.showToastMessage(getContext(), "Item " + messageType, Toast.LENGTH_SHORT);
             }
         });
 
         setOnAvatarClickListener(new MessengerAdapter.OnAvatarClickListener() {
-            public void OnClickAvatar(int messageType, Map<String, Object> messageData) {
+            @Override
+            public void OnClickAvatar(View view, int messageType, Long id, Map<String, Object> messageData) {
                 ViewUtils.showToastMessage(getContext(), "Avatar: " + messageType, Toast.LENGTH_SHORT);
             }
+
         });
 
         setOnAttachmentClickListener(new MessengerAdapter.OnAttachmentClickListener() {
             @Override
-            public void onClickAttachment(int messageType, Map<String, Object> messageData) {
+            public void onClickAttachment(int messageType, Long id, Map<String, Object> messageData) {
                 ViewUtils.showToastMessage(getContext(), "Attachment " + messageType, Toast.LENGTH_SHORT);
             }
         });
@@ -426,21 +447,21 @@ public class MessengerListFragment extends BaseListFragment {
             @Override
             public void performAfterWait() {
                 List<DataItem> dataItems = new ArrayList<>();
-                dataItems.add(new DataItem(0L, null, test_avatarUrl_self, true, 0, test_channelFacebook, "Whassup?", 1499763213000L, null, true));
-                dataItems.add(new DataItem(1L, null, test_avatarUrl_other, false, 2, test_channelHelpCenter, "Hello", 1499763213000L, null, true));
-                dataItems.add(new DataItem(2L, null, test_avatarUrl_self, true, 0, test_channelFacebook, "Whassup?", 1499763314000L, null, true));
-                dataItems.add(new DataItem(3L, null, test_avatarUrl_other, false, 2, test_channelHelpCenter, "Why,", 1499763315000L, null, true));
-                dataItems.add(new DataItem(4L, null, test_avatarUrl_other, false, 2, test_channelHelpCenter, "Hedsafadsfallo", 1499773315000L, null, true));
-                dataItems.add(new DataItem(5L, null, test_avatarUrl_other, false, 2, test_channelHelpCenter, "Hesdfasllo", 1499783315000L, null, false));
-                dataItems.add(new DataItem(7L, null, test_avatarUrl_self, true, 0, test_channelHelpCenter, "Hel213q dswzwexq wqdlo", 1499793315000L, null, false));
-                dataItems.add(new DataItem(9L, null, test_avatarUrl_self, true, 0, test_channelHelpCenter, "Hel213q ds d asd sawzwexq wqdlo", 1499803315000L, null, false));
-                dataItems.add(new DataItem(12L, null, test_avatarUrl_other, false, 2, test_channelHelpCenter, "He sa dsa dasdallo", 1499963315000L, null, false));
-                dataItems.add(new DataItem(16L, null, test_avatarUrl_other, false, 2, test_channelHelpCenter, "He sa2 dsa dasdallo", 1499963325000L, null, false));
-                dataItems.add(new DataItem(18L, null, test_avatarUrl_self, true, 0, test_channelHelpCenter, "He sa3 dsa dasdallo", 1499963335000L, null, false));
-                dataItems.add(new DataItem(21L, null, test_avatarUrl_other, false, 2, test_channelHelpCenter, "He saddsdass llo", 1500063315000L, null, false));
-                dataItems.add(new DataItem(26L, null, test_avatarUrl_other, false, 2, test_channelHelpCenter, "He asdas dasdasdasd  s llo", 1511163315000L, null, false));
+                dataItems.add(new DataItem(0L, null, new UserDecoration(test_avatarUrl_self, 0L, true), test_channelFacebook, "Whassup?", 1499763213000L, null, true));
+                dataItems.add(new DataItem(1L, null, new UserDecoration(test_avatarUrl_other, 2L, false), test_channelHelpCenter, "Hello", 1499763213000L, null, true));
+                dataItems.add(new DataItem(2L, null, new UserDecoration(test_avatarUrl_self, 0L, true), test_channelFacebook, "Whassup?", 1499763314000L, null, true));
+                dataItems.add(new DataItem(3L, null, new UserDecoration(test_avatarUrl_other, 2L, false), test_channelHelpCenter, "Why,", 1499763315000L, null, true));
+                dataItems.add(new DataItem(4L, null, new UserDecoration(test_avatarUrl_other, 2L, false), test_channelHelpCenter, "Hedsafadsfallo", 1499773315000L, null, true));
+                dataItems.add(new DataItem(5L, null, new UserDecoration(test_avatarUrl_other, 2L, false), test_channelHelpCenter, "Hesdfasllo", 1499783315000L, null, false));
+                dataItems.add(new DataItem(7L, null, new UserDecoration(test_avatarUrl_self, 0L, true), test_channelHelpCenter, "Hel213q dswzwexq wqdlo", 1499793315000L, null, false));
+                dataItems.add(new DataItem(9L, null, new UserDecoration(test_avatarUrl_self, 0L, true), test_channelHelpCenter, "Hel213q ds d asd sawzwexq wqdlo", 1499803315000L, null, false));
+                dataItems.add(new DataItem(12L, null, new UserDecoration(test_avatarUrl_other, 2L, false), test_channelHelpCenter, "He sa dsa dasdallo", 1499963315000L, null, false));
+                dataItems.add(new DataItem(16L, null, new UserDecoration(test_avatarUrl_other, 2L, false), test_channelHelpCenter, "He sa2 dsa dasdallo", 1499963325000L, null, false));
+                dataItems.add(new DataItem(18L, null, new UserDecoration(test_avatarUrl_self, 0L, true), test_channelHelpCenter, "He sa3 dsa dasdallo", 1499963335000L, null, false));
+                dataItems.add(new DataItem(21L, null, new UserDecoration(test_avatarUrl_other, 2L, false), test_channelHelpCenter, "He saddsdass llo", 1500063315000L, null, false));
+                dataItems.add(new DataItem(26L, null, new UserDecoration(test_avatarUrl_other, 2L, false), test_channelHelpCenter, "He asdas dasdasdasd  s llo", 1511163315000L, null, false));
 
-                addItemsToEndOfList(DataItemHelperForCustomerChatUI.convertDataItemToListItems(dataItems));
+                addItemsToEndOfList(DataItemHelper.getInstance().convertDataItemToListItems(dataItems));
 
                 scrollToNewMessagesIfNearby();
 
