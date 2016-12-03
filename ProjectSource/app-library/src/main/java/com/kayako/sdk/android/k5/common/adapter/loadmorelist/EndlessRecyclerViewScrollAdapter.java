@@ -33,6 +33,8 @@ public abstract class EndlessRecyclerViewScrollAdapter extends RecyclerView.Adap
         if (newData == null) {
             newData = new ArrayList<>();
         }
+
+        mValues.clear();
         notifyItemRangeRemoved(0, mValues.size());
         mValues = newData;
         notifyItemRangeInserted(0, mValues.size());
@@ -43,7 +45,9 @@ public abstract class EndlessRecyclerViewScrollAdapter extends RecyclerView.Adap
             newData = new ArrayList<>();
         }
         mValues = newData;
-        // TODO: No animation? Added because setData caused a flash while new info was added.
+        notifyDataSetChanged();
+        // Careful with this line - the wrong value causes crashes.
+        // Ensure there is no animation. Added because setData caused a flash while new info was added.
     }
 
 

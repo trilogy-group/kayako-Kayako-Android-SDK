@@ -214,18 +214,31 @@ public abstract class BaseListFragment extends BaseStateFragment {
     }
 
     protected void showLoadMoreProgress() {
+        if (mAdapter == null) {
+            throw new NullPointerException("You need to initialize the fragment with Adapter!");
+        }
         mAdapter.showLoadMoreProgress();
     }
 
+
     protected void hideLoadMoreProgress() {
+        if (mAdapter == null) {
+            throw new NullPointerException("You need to initialize the fragment with Adapter!");
+        }
         mAdapter.hideLoadMoreProgress();
     }
 
     protected void setHasMoreItems(boolean hasMoreItems) {
+        if (mAdapter == null) {
+            throw new NullPointerException("You need to initialize the fragment with Adapter!");
+        }
         mAdapter.setHasMoreItems(hasMoreItems);
     }
 
     protected boolean hasMoreItems() {
+        if (mAdapter == null) {
+            throw new NullPointerException("You need to initialize the fragment with Adapter!");
+        }
         return mAdapter.hasMoreItems();
     }
 

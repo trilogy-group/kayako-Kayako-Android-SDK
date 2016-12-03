@@ -5,6 +5,11 @@ public class Attachment {
     private String thumbnailUrl;
     private String caption;
 
+    private String fileName;
+    private long fileSize;
+    private String thumbnailType;
+    private String downloadUrl;
+
     public Attachment(Long id, String thumbnailUrl, String caption) {
         assert thumbnailUrl != null;
 
@@ -13,10 +18,44 @@ public class Attachment {
         this.thumbnailUrl = thumbnailUrl;
     }
 
-    public Attachment(String thumbnailUrl) {
-        assert thumbnailUrl != null;
-
+    public Attachment(String thumbnailUrl,String fileName, long fileSize, String thumbnailType, String downloadUrl) {
         this.thumbnailUrl = thumbnailUrl;
+        this.fileName = fileName;
+        this.fileSize = fileSize;
+        this.thumbnailType = thumbnailType;
+        this.downloadUrl = downloadUrl;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public long getFileSize() {
+        return fileSize;
+    }
+
+    public void setFileSize(long fileSize) {
+        this.fileSize = fileSize;
+    }
+
+    public String getThumbnailType() {
+        return thumbnailType;
+    }
+
+    public void setThumbnailType(String thumbnailType) {
+        this.thumbnailType = thumbnailType;
+    }
+
+    public String getDownloadUrl() {
+        return downloadUrl;
+    }
+
+    public void setDownloadUrl(String downloadUrl) {
+        this.downloadUrl = downloadUrl;
     }
 
     public Long getId() {
