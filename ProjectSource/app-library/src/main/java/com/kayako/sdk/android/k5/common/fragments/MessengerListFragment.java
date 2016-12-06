@@ -24,6 +24,7 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.DataItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.DataItemHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.DateSeparatorListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerAdapter;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.EmptyListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageContinuedOtherListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageContinuedSelfListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageOtherListItem;
@@ -300,7 +301,6 @@ public class MessengerListFragment extends BaseListFragment {
         items.add(new SimpleMessageSelfListItem(0L, "Let me just send back everything you sent me.", test_avatarUrl_self, test_channelDefault, 0, null));
         items.add(new AttachmentMessageSelfListItem(0L, test_avatarUrl_self, test_channelDefault, new Attachment(0L, "http://cdn2.bigcommerce.com/n-d57o0b/tvhc2xod/product_images/uploaded_images/solar-panels.jpg?t=1416860323", "Solarpanels.png"), 0, null));
         items.add(new SimpleMessageContinuedSelfListItem(0L, "Does that help? Here's another one", 0, null));
-
         items.add(new AttachmentMessageContinuedSelfListItem(0L, new Attachment(0L, "https://www.solarworld-usa.com/~/media/www/images/products/modules/off-grid.jpg?la=en", "Solarpanels.png"), 0, null));
         items.add(new AttachmentMessageContinuedSelfListItem(0L, new Attachment(0L, "https://www.solarworld-usa.com/~/media/www/images/products/modules/off-grid.jpg?la=en", "Solarpanels.png"), 0, null));
 
@@ -315,6 +315,7 @@ public class MessengerListFragment extends BaseListFragment {
         items.add(new SimpleMessageSelfListItem(0L, "Eeep!", test_avatarUrl_self, test_channelDefault, 1477763213000L, null));
         items.add(new DateSeparatorListItem(1477751012000L)); // Sat, 29 Oct 2016 14:23:32 GMT
         items.add(new SimpleMessageSelfListItem(0L, "Eeep!", test_avatarUrl_self, test_channelDefault, 0, null));
+        items.add(new EmptyListItem());
 
         // Test min-wdith of Chat Bubble
         items.add(new SimpleMessageOtherListItem(0L, "!", test_avatarUrl_other, test_channelDefault, 1479763213000L, null));
@@ -460,7 +461,6 @@ public class MessengerListFragment extends BaseListFragment {
                 dataItems.add(new DataItem(18L, null, new UserDecoration(test_avatarUrl_self, 0L, true), test_channelHelpCenter, "He sa3 dsa dasdallo", 1499963335000L, null, false));
                 dataItems.add(new DataItem(21L, null, new UserDecoration(test_avatarUrl_other, 2L, false), test_channelHelpCenter, "He saddsdass llo", 1500063315000L, null, false));
                 dataItems.add(new DataItem(26L, null, new UserDecoration(test_avatarUrl_other, 2L, false), test_channelHelpCenter, "He asdas dasdasdasd  s llo", 1511163315000L, null, false));
-
                 addItemsToEndOfList(DataItemHelper.getInstance().convertDataItemToListItems(dataItems));
 
                 scrollToNewMessagesIfNearby();

@@ -297,6 +297,10 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 }
                 break;
 
+            case MessengerListType.EMPTY_SEPARATOR:
+                // Nothing to modify
+                break;
+
             default:
                 super.onBindViewHolder(viewHolder, position);
                 break;
@@ -349,6 +353,9 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 View unreadSeparatorView = LayoutInflater.from(parent.getContext()).inflate(R.layout.ko__list_messenger_unread_separator, parent, false);
                 return new UnreadSeparatorViewHolder(unreadSeparatorView);
 
+            case MessengerListType.EMPTY_SEPARATOR:
+                View emptySeparatorView = LayoutInflater.from(parent.getContext()).inflate(R.layout.ko__list_messenger_empty_separator, parent, false);
+                return new EmptyViewHolder(emptySeparatorView);
             default:
                 return super.onCreateViewHolder(parent, viewType);
         }

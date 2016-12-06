@@ -22,7 +22,8 @@ public interface MessengerListType extends LoadMoreListType {
     // Separator Types
     int DATE_SEPARATOR = 12;
     int UNREAD_SEPARATOR = 13;
+    int EMPTY_SEPARATOR = 14;
 
     // Info Types
-    int SIMPLE_INFO = 14;
+    int SIMPLE_INFO = 15;
 }
