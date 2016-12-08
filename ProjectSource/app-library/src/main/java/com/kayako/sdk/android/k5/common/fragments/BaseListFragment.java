@@ -17,7 +17,7 @@ import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.loadmorelist.EndlessRecyclerViewScrollAdapter;
 import com.kayako.sdk.android.k5.common.adapter.loadmorelist.EndlessRecyclerViewScrollListener;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
-import com.kayako.sdk.android.k5.common.view.StateViewHelper;
+import com.kayako.sdk.android.k5.common.viewhelpers.DefaultStateViewHelper;
 
 import java.util.List;
 
@@ -32,13 +32,13 @@ public abstract class BaseListFragment extends Fragment {
     private LinearLayoutManager mLayoutManager;
     private EndlessRecyclerViewScrollListener mLoadMoreListener;
 
-    private StateViewHelper mStateViewHelper;
+    private DefaultStateViewHelper mStateViewHelper;
 
     @Override
     final public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRoot = inflater.inflate(R.layout.ko__fragment_list, container, false);
         mRecyclerView = (RecyclerView) mRoot.findViewById(R.id.ko__list);
-        mStateViewHelper = new StateViewHelper(mRoot);
+        mStateViewHelper = new DefaultStateViewHelper(mRoot);
         return mRoot;
     }
 

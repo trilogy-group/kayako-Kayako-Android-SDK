@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.utils.ImageUtils;
 import com.kayako.sdk.android.k5.common.utils.ViewUtils;
-import com.kayako.sdk.android.k5.common.view.StateViewHelper;
+import com.kayako.sdk.android.k5.common.viewhelpers.DefaultStateViewHelper;
 import com.kayako.sdk.helpcenter.articles.Article;
 
 /**
@@ -31,7 +31,7 @@ public class ArticleFragment extends Fragment implements ArticleContract.View {
     public static final String ARG_ARTICLE = "article";
     private View mRoot;
     private ArticleContract.Presenter mPresenter;
-    private StateViewHelper mStateViewHelper;
+    private DefaultStateViewHelper mStateViewHelper;
 
     public static ArticleFragment newInstance(Article article) {
         Bundle bundle = new Bundle();
@@ -50,7 +50,7 @@ public class ArticleFragment extends Fragment implements ArticleContract.View {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mRoot = inflater.inflate(R.layout.ko__fragment_article_content, null);
-        mStateViewHelper = new StateViewHelper(mRoot);
+        mStateViewHelper = new DefaultStateViewHelper(mRoot);
         return mRoot;
     }
 

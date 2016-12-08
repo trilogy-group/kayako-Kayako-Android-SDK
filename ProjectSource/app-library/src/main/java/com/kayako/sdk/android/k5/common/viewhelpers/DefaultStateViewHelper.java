@@ -1,4 +1,4 @@
-package com.kayako.sdk.android.k5.common.view;
+package com.kayako.sdk.android.k5.common.viewhelpers;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -13,14 +13,14 @@ import com.kayako.sdk.android.k5.R;
 /**
  * This helper class can be used with any fragment/activity that includes R.layout.ko__include_state_stubs in their layout xml file.
  */
-public class StateViewHelper {
+public class DefaultStateViewHelper {
 
     private ViewStub mEmptyStubView;
     private ViewStub mErrorStubView;
     private ViewStub mLoadingStubView;
     private View mRootView;
 
-    public StateViewHelper(View rootView) {
+    public DefaultStateViewHelper(View rootView) {
         if (rootView.findViewById(R.id.ko__stub_empty_state) == null
                 || rootView.findViewById(R.id.ko__stub_loading_state) == null
                 || rootView.findViewById(R.id.ko__stub_error_state) == null) {
