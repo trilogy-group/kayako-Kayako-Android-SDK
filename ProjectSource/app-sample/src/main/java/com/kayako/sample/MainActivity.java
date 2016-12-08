@@ -12,9 +12,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.kayako.sdk.android.k5.activities.KayakoMessengerActivity;
 import com.kayako.sdk.android.k5.core.Kayako;
 
-import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -59,6 +59,14 @@ public class MainActivity extends AppCompatActivity {
 
                 String url = editText.getText().toString();
                 Kayako.getInstance().openHelpCenter(MainActivity.this, url, selectedLocale);
+            }
+        });
+
+        Button buttonMessenger = (Button) findViewById(R.id.button_messenger);
+        buttonMessenger.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(KayakoMessengerActivity.getIntent(MainActivity.this));
             }
         });
 
