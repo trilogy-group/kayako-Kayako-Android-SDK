@@ -31,6 +31,8 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessage
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageOtherListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageSelfListItem;
 import com.kayako.sdk.android.k5.common.utils.ViewUtils;
+import com.kayako.sdk.android.k5.common.viewhelpers.CustomStateViewHelper;
+import com.kayako.sdk.android.k5.common.viewhelpers.DefaultStateViewHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,6 +46,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class MessengerListFragment extends BaseListFragment {
 
     private MessengerAdapter mMessengerAdapter;
+
     private static final boolean SHOW_SAMPLE_DATA = true;
 
     @Override
@@ -151,9 +154,11 @@ public class MessengerListFragment extends BaseListFragment {
         return super.findFirstVisibleItemPosition();
     }
 
+    ///////// STATES /////////
+
     @Override
-    public void showEmptyViewAndHideOthers(@Nullable String title, @Nullable String description) {
-        super.showEmptyViewAndHideOthers(title, description);
+    public void showEmptyViewAndHideOthers() {
+        super.showEmptyViewAndHideOthers();
     }
 
     @Override
@@ -162,8 +167,8 @@ public class MessengerListFragment extends BaseListFragment {
     }
 
     @Override
-    public void showErrorViewAndHideOthers(@Nullable String title, @Nullable String description, @NonNull View.OnClickListener onClickRetryListener) {
-        super.showErrorViewAndHideOthers(title, description, onClickRetryListener);
+    public void showErrorViewAndHideOthers() {
+        super.showErrorViewAndHideOthers();
     }
 
     @Override
@@ -171,6 +176,22 @@ public class MessengerListFragment extends BaseListFragment {
         super.showListViewAndHideOthers();
     }
 
+    @Override
+    public void hideAll() {
+        super.hideAll();
+    }
+
+    @Override
+    public CustomStateViewHelper getCustomStateViewHelper() {
+        return super.getCustomStateViewHelper();
+    }
+
+    @Override
+    public DefaultStateViewHelper getDefaultStateViewHelper() {
+        return super.getDefaultStateViewHelper();
+    }
+
+    ///////// Adapter Methods /////////
 
     @Override
     public void addItem(BaseListItem item, int position) {
@@ -191,7 +212,6 @@ public class MessengerListFragment extends BaseListFragment {
     public int getSizeOfData() {
         return super.getSizeOfData();
     }
-
 
     @Override
     public void setScrollListener(RecyclerView.OnScrollListener onScrollListener) {

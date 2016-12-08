@@ -12,11 +12,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.loadmorelist.EndlessRecyclerViewScrollAdapter;
 import com.kayako.sdk.android.k5.common.adapter.loadmorelist.EndlessRecyclerViewScrollListener;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.viewhelpers.CustomStateViewHelper;
 import com.kayako.sdk.android.k5.common.viewhelpers.DefaultStateViewHelper;
 
 import java.util.List;
@@ -32,13 +34,15 @@ public abstract class BaseListFragment extends Fragment {
     private LinearLayoutManager mLayoutManager;
     private EndlessRecyclerViewScrollListener mLoadMoreListener;
 
-    private DefaultStateViewHelper mStateViewHelper;
+    private DefaultStateViewHelper mDefaultStateViewHelper;
+    private CustomStateViewHelper mCustomStateViewHelper;
 
     @Override
     final public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRoot = inflater.inflate(R.layout.ko__fragment_list, container, false);
         mRecyclerView = (RecyclerView) mRoot.findViewById(R.id.ko__list);
-        mStateViewHelper = new DefaultStateViewHelper(mRoot);
+        mDefaultStateViewHelper = new DefaultStateViewHelper(mRoot);
+        mCustomStateViewHelper = new CustomStateViewHelper((LinearLayout) mRoot.findViewById(R.id.ko__custom_state_container));
         return mRoot;
     }
 
@@ -52,39 +56,64 @@ public abstract class BaseListFragment extends Fragment {
         view.setVisibility(View.GONE);
     }
 
-    protected void showEmptyViewAndHideOthers(@Nullable String title, @Nullable String description) {
-        mStateViewHelper.showEmptyView(title, description, getActivity());
-        mStateViewHelper.hideErrorView();
-        mStateViewHelper.hideLoadingView();
+    protected void showEmptyViewAndHideOthers() {
+        if (mCustomStateViewHelper.hasEmptyView()) {
+            mCustomStateViewHelper.showEmptyView();
+        } else {
+            mDefaultStateViewHelper.showEmptyView(getActivity());
+        }
+
+        mDefaultStateViewHelper.hideErrorView();
+        mDefaultStateViewHelper.hideLoadingView();
         hideListView();
     }
 
     protected void showLoadingViewAndHideOthers() {
-        mStateViewHelper.showLoadingView();
-        mStateViewHelper.hideEmptyView();
-        mStateViewHelper.hideErrorView();
+        if (mCustomStateViewHelper.hasLoadingView()) {
+            mCustomStateViewHelper.showLoadingView();
+        } else {
+            mDefaultStateViewHelper.showLoadingView();
+        }
+
+        mDefaultStateViewHelper.hideEmptyView();
+        mDefaultStateViewHelper.hideErrorView();
         hideListView();
     }
 
-    protected void showErrorViewAndHideOthers(@Nullable String title, @Nullable String description, @NonNull View.OnClickListener onClickRetryListener) {
-        mStateViewHelper.showErrorView(title, description, getActivity(), onClickRetryListener);
-        mStateViewHelper.hideEmptyView();
-        mStateViewHelper.hideLoadingView();
+    protected void showErrorViewAndHideOthers() {
+        if (mCustomStateViewHelper.hasErrorView()) {
+            mCustomStateViewHelper.showErrorView();
+        } else {
+            mDefaultStateViewHelper.showErrorView(getActivity());
+        }
+
+        mDefaultStateViewHelper.hideEmptyView();
+        mDefaultStateViewHelper.hideLoadingView();
         hideListView();
     }
 
     protected void showListViewAndHideOthers() {
         showListView();
-        mStateViewHelper.hideEmptyView();
-        mStateViewHelper.hideErrorView();
-        mStateViewHelper.hideLoadingView();
+        mCustomStateViewHelper.hideAll();
+        mDefaultStateViewHelper.hideEmptyView();
+        mDefaultStateViewHelper.hideErrorView();
+        mDefaultStateViewHelper.hideLoadingView();
     }
 
     protected void hideAll() {
-        mStateViewHelper.hideEmptyView();
-        mStateViewHelper.hideErrorView();
-        mStateViewHelper.hideLoadingView();
         hideListView();
+        mCustomStateViewHelper.hideAll();
+        mDefaultStateViewHelper.hideEmptyView();
+        mDefaultStateViewHelper.hideErrorView();
+        mDefaultStateViewHelper.hideLoadingView();
+    }
+
+    protected CustomStateViewHelper getCustomStateViewHelper() {
+        return mCustomStateViewHelper;
+    }
+
+    protected DefaultStateViewHelper getDefaultStateViewHelper() {
+        return mDefaultStateViewHelper;
     }
 
     /**

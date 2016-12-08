@@ -20,7 +20,7 @@ public class CustomStateViewHelper {
     private View mErrorStateView;
     private View mLoadingStateView;
 
-    CustomStateViewHelper(@NonNull LinearLayout stateViewContainer) {
+    public CustomStateViewHelper(@NonNull LinearLayout stateViewContainer) {
         mStateContainerView = stateViewContainer;
     }
 
@@ -74,6 +74,22 @@ public class CustomStateViewHelper {
 
     public void hideErrorView() {
         clearContainer();
+    }
+
+    public void hideAll() {
+        clearContainer();
+    }
+
+    public boolean hasEmptyView() {
+        return mEmptyStateView != null;
+    }
+
+    public boolean hasErrorView() {
+        return mErrorStateView != null;
+    }
+
+    public boolean hasLoadingView() {
+        return mLoadingStateView != null;
     }
 
     private void clearContainer() {

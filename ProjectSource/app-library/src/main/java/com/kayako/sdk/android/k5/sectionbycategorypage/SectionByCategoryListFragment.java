@@ -47,6 +47,18 @@ public class SectionByCategoryListFragment extends BaseListFragment implements S
         mPresenter = SectionByCategoryFactory.getPresenter(this);
     }
 
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getDefaultStateViewHelper().setupErrorView(null, null, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPresenter.reloadPage();
+            }
+        });
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -110,17 +122,12 @@ public class SectionByCategoryListFragment extends BaseListFragment implements S
 
     @Override
     public void showOnlyEmptyView() {
-        showEmptyViewAndHideOthers(null, null);
+        showEmptyViewAndHideOthers();
     }
 
     @Override
     public void showOnlyErrorView() {
-        showErrorViewAndHideOthers(null, null, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mPresenter.reloadPage();
-            }
-        });
+        showErrorViewAndHideOthers();
     }
 
     @Override

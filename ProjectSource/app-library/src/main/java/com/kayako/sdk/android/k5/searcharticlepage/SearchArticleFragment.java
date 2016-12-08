@@ -41,6 +41,17 @@ public class SearchArticleFragment extends BaseListFragment implements SearchArt
     }
 
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getDefaultStateViewHelper().setupErrorView(null, null, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPresenter.reloadPage();
+            }
+        });
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mPresenter.initPage();
@@ -65,17 +76,12 @@ public class SearchArticleFragment extends BaseListFragment implements SearchArt
 
     @Override
     public void showOnlyEmptyView() {
-        super.showEmptyViewAndHideOthers(null, null);
+        super.showEmptyViewAndHideOthers();
     }
 
     @Override
     public void showOnlyErrorView() {
-        super.showErrorViewAndHideOthers(null, null, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                reloadPage();
-            }
-        });
+        super.showErrorViewAndHideOthers();
     }
 
     @Override

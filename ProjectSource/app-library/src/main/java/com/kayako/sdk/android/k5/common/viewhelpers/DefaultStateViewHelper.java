@@ -20,6 +20,13 @@ public class DefaultStateViewHelper {
     private ViewStub mLoadingStubView;
     private View mRootView;
 
+    private String mEmptyViewTitle;
+    private String mEmptyViewDescription;
+
+    private String mErrorViewTitle;
+    private String mErrorViewDescription;
+    private View.OnClickListener mErrorViewClickListener;
+
     public DefaultStateViewHelper(View rootView) {
         if (rootView.findViewById(R.id.ko__stub_empty_state) == null
                 || rootView.findViewById(R.id.ko__stub_loading_state) == null
@@ -38,20 +45,38 @@ public class DefaultStateViewHelper {
         mErrorStubView = (ViewStub) mRootView.findViewById(R.id.ko__stub_error_state);
     }
 
-    public void showEmptyView(@Nullable String title, @Nullable String description, @NonNull Context context) {
+    public void setupEmptyView(@Nullable String title, @Nullable String description) {
+        mEmptyViewTitle = title;
+        mEmptyViewDescription = description;
+    }
 
+    public void setupErrorView(@Nullable String title, @Nullable String description, @NonNull View.OnClickListener listener) {
+        mErrorViewTitle = title;
+        mErrorViewDescription = description;
+        mErrorViewClickListener = listener;
+    }
+
+    public void showEmptyView(@NonNull Context context) {
         if (mEmptyStubView != null) {
             // After the stub is inflated, the stub is removed from the view hierarchy.
             mEmptyStubView.setVisibility(View.VISIBLE);
         }
 
-        if (title == null) title = context.getString(R.string.ko__label_empty_view_title);
-        if (description == null)
-            description = context.getString(R.string.ko__label_empty_view_description);
-
         mRootView.findViewById(R.id.ko__inflated_stub_empty_state).setVisibility(View.VISIBLE);
-        ((TextView) mRootView.findViewById(R.id.ko__empty_state_title)).setText(title);
-        ((TextView) mRootView.findViewById(R.id.ko__empty_state_description)).setText(description);
+
+        TextView description = ((TextView) mRootView.findViewById(R.id.ko__empty_state_title));
+        if (mEmptyViewDescription == null) {
+            description.setText(context.getString(R.string.ko__label_empty_view_description));
+        } else {
+            description.setText(mEmptyViewDescription);
+        }
+
+        TextView title = ((TextView) mRootView.findViewById(R.id.ko__empty_state_description));
+        if (mEmptyViewTitle == null) {
+            title.setText(context.getString(R.string.ko__label_empty_view_title));
+        } else {
+            title.setText(mEmptyViewTitle);
+        }
     }
 
     public void hideEmptyView() {
@@ -64,19 +89,34 @@ public class DefaultStateViewHelper {
         }
     }
 
-    public void showErrorView(@Nullable String title, @Nullable String description, @NonNull Context context, @NonNull View.OnClickListener onClickListener) {
+    public void showErrorView(@NonNull Context context) {
         if (mErrorStubView != null) {
             mErrorStubView.setVisibility(View.VISIBLE);
         }
 
-        if (title == null) title = context.getString(R.string.ko__label_error_view_title);
-        if (description == null)
-            description = context.getString(R.string.ko__label_error_view_description);
-
         mRootView.findViewById(R.id.ko__inflated_stub_error_state).setVisibility(View.VISIBLE);
-        ((TextView) mRootView.findViewById(R.id.ko__error_state_title)).setText(title);
-        ((TextView) mRootView.findViewById(R.id.ko__error_state_description)).setText(description);
-        ((Button) mRootView.findViewById(R.id.ko__error_retry_button)).setOnClickListener(onClickListener);
+
+        TextView title = ((TextView) mRootView.findViewById(R.id.ko__error_state_title));
+        if (mErrorViewTitle == null) {
+            title.setText(context.getString(R.string.ko__label_error_view_title));
+        } else {
+            title.setText(mErrorViewTitle);
+        }
+
+        TextView description = ((TextView) mRootView.findViewById(R.id.ko__error_state_description));
+        if (mErrorViewDescription == null) {
+            description.setText(context.getString(R.string.ko__label_error_view_description));
+        } else {
+            description.setText(mErrorViewDescription);
+        }
+
+        View button = (mRootView.findViewById(R.id.ko__error_retry_button));
+        if (mErrorViewClickListener == null) {
+            button.setVisibility(View.GONE); // Hide retry button
+        } else {
+            button.setOnClickListener(mErrorViewClickListener);
+            button.setVisibility(View.VISIBLE);
+        }
     }
 
     public void hideErrorView() {

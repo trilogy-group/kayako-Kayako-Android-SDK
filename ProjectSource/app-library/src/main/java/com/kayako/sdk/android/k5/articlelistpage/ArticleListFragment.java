@@ -52,6 +52,17 @@ public class ArticleListFragment extends BaseListFragment implements ArticleList
     }
 
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getDefaultStateViewHelper().setupErrorView(null, null, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                reloadPage();
+            }
+        });
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (getArguments() != null && getArguments().containsKey(ARG_SECTION)) {
@@ -150,17 +161,12 @@ public class ArticleListFragment extends BaseListFragment implements ArticleList
 
     @Override
     public void showOnlyEmptyView() {
-        super.showEmptyViewAndHideOthers(null, null);
+        super.showEmptyViewAndHideOthers();
     }
 
     @Override
     public void showOnlyErrorView() {
-        super.showErrorViewAndHideOthers(null, null, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                reloadPage();
-            }
-        });
+        super.showErrorViewAndHideOthers();
     }
 
     @Override
