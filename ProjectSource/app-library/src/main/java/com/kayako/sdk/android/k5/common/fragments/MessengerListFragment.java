@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
+import com.kayako.sdk.android.k5.BuildConfig;
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseDataListItem;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
@@ -38,20 +39,25 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Test fragment - should be deleted or kept in a test folder
- *
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
 public class MessengerListFragment extends BaseListFragment {
 
     private MessengerAdapter mMessengerAdapter;
+    private static final boolean SHOW_SAMPLE_DATA = true;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        // TODO: Uncomment below for demonstrations
-        // testSample1();
-        // testSample2();
+        if (SHOW_SAMPLE_DATA && BuildConfig.DEBUG) {
+            testSample1();
+            testSample2();
+        }
     }
 
     /**
