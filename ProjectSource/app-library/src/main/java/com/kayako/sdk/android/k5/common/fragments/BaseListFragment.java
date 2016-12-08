@@ -6,6 +6,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,13 +17,14 @@ import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.loadmorelist.EndlessRecyclerViewScrollAdapter;
 import com.kayako.sdk.android.k5.common.adapter.loadmorelist.EndlessRecyclerViewScrollListener;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.view.StateViewHelper;
 
 import java.util.List;
 
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
-public abstract class BaseListFragment extends BaseStateFragment {
+public abstract class BaseListFragment extends Fragment {
 
     protected View mRoot;
     protected RecyclerView mRecyclerView;
@@ -30,11 +32,13 @@ public abstract class BaseListFragment extends BaseStateFragment {
     private LinearLayoutManager mLayoutManager;
     private EndlessRecyclerViewScrollListener mLoadMoreListener;
 
+    private StateViewHelper mStateViewHelper;
+
     @Override
     final public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRoot = inflater.inflate(R.layout.ko__fragment_list, container, false);
         mRecyclerView = (RecyclerView) mRoot.findViewById(R.id.ko__list);
-        super.initStateViews(mRoot);
+        mStateViewHelper = new StateViewHelper(mRoot);
         return mRoot;
     }
 
@@ -49,31 +53,38 @@ public abstract class BaseListFragment extends BaseStateFragment {
     }
 
     protected void showEmptyViewAndHideOthers(@Nullable String title, @Nullable String description) {
-        showEmptyView(title, description);
-        hideErrorView();
-        hideLoadingView();
+        mStateViewHelper.showEmptyView(title, description, getActivity());
+        mStateViewHelper.hideErrorView();
+        mStateViewHelper.hideLoadingView();
         hideListView();
     }
 
     protected void showLoadingViewAndHideOthers() {
-        showLoadingView();
-        hideEmptyView();
-        hideErrorView();
+        mStateViewHelper.showLoadingView();
+        mStateViewHelper.hideEmptyView();
+        mStateViewHelper.hideErrorView();
         hideListView();
     }
 
     protected void showErrorViewAndHideOthers(@Nullable String title, @Nullable String description, @NonNull View.OnClickListener onClickRetryListener) {
-        showErrorView(title, description, onClickRetryListener);
-        hideEmptyView();
-        hideLoadingView();
+        mStateViewHelper.showErrorView(title, description, getActivity(), onClickRetryListener);
+        mStateViewHelper.hideEmptyView();
+        mStateViewHelper.hideLoadingView();
         hideListView();
     }
 
     protected void showListViewAndHideOthers() {
         showListView();
-        hideEmptyView();
-        hideErrorView();
-        hideLoadingView();
+        mStateViewHelper.hideEmptyView();
+        mStateViewHelper.hideErrorView();
+        mStateViewHelper.hideLoadingView();
+    }
+
+    protected void hideAll() {
+        mStateViewHelper.hideEmptyView();
+        mStateViewHelper.hideErrorView();
+        mStateViewHelper.hideLoadingView();
+        hideListView();
     }
 
     /**

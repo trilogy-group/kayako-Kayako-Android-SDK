@@ -85,12 +85,8 @@ public class SearchArticleFragment extends BaseListFragment implements SearchArt
 
     @Override
     public void showBlankView() {
-        super.hideEmptyView();
-        super.hideLoadingView();
-        super.hideErrorView();
-        super.hideListView();
+        super.hideAll();
     }
-
 
     @Override
     public void startSearchTask() {
