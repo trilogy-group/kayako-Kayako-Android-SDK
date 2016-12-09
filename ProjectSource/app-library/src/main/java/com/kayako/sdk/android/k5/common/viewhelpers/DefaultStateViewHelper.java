@@ -64,14 +64,14 @@ public class DefaultStateViewHelper {
 
         mRootView.findViewById(R.id.ko__inflated_stub_empty_state).setVisibility(View.VISIBLE);
 
-        TextView description = ((TextView) mRootView.findViewById(R.id.ko__empty_state_title));
+        TextView description = ((TextView) mRootView.findViewById(R.id.ko__empty_state_description));
         if (mEmptyViewDescription == null) {
             description.setText(context.getString(R.string.ko__label_empty_view_description));
         } else {
             description.setText(mEmptyViewDescription);
         }
 
-        TextView title = ((TextView) mRootView.findViewById(R.id.ko__empty_state_description));
+        TextView title = ((TextView) mRootView.findViewById(R.id.ko__empty_state_title));
         if (mEmptyViewTitle == null) {
             title.setText(context.getString(R.string.ko__label_empty_view_title));
         } else {

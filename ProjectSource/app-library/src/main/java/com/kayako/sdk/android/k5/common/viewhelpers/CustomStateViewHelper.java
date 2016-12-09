@@ -51,14 +51,14 @@ public class CustomStateViewHelper {
     }
 
     public void showLoadingView() {
-        if (mEmptyStateView == null) {
+        if (mLoadingStateView == null) {
             throw new AssertionError("Please setLoadingView() before calling this method");
         }
         replaceContainer(mLoadingStateView);
     }
 
     public void showErrorView() {
-        if (mEmptyStateView == null) {
+        if (mErrorStateView == null) {
             throw new AssertionError("Please setErrorView() before calling this method");
         }
         replaceContainer(mErrorStateView);

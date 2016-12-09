@@ -61,6 +61,7 @@ public abstract class BaseListFragment extends Fragment {
             mCustomStateViewHelper.showEmptyView();
         } else {
             mDefaultStateViewHelper.showEmptyView(getActivity());
+            mCustomStateViewHelper.hideAll();
         }
 
         mDefaultStateViewHelper.hideErrorView();
@@ -73,6 +74,7 @@ public abstract class BaseListFragment extends Fragment {
             mCustomStateViewHelper.showLoadingView();
         } else {
             mDefaultStateViewHelper.showLoadingView();
+            mCustomStateViewHelper.hideAll();
         }
 
         mDefaultStateViewHelper.hideEmptyView();
@@ -85,6 +87,7 @@ public abstract class BaseListFragment extends Fragment {
             mCustomStateViewHelper.showErrorView();
         } else {
             mDefaultStateViewHelper.showErrorView(getActivity());
+            mCustomStateViewHelper.hideAll();
         }
 
         mDefaultStateViewHelper.hideEmptyView();
@@ -192,7 +195,6 @@ public abstract class BaseListFragment extends Fragment {
     protected int getSizeOfData() {
         return mAdapter.getItemCount();
     }
-
 
     /**
      * Set OnScrollListener
