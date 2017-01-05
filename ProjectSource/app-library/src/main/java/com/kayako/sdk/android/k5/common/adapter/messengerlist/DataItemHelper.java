@@ -130,7 +130,8 @@ public class DataItemHelper {
         Calendar previousDate = Calendar.getInstance();
         previousDate.setTimeInMillis(previousDataItem.getTimeInMilliseconds());
 
-        if (currentDate.get(Calendar.DAY_OF_YEAR) > previousDate.get(Calendar.DAY_OF_YEAR)) {
+        if (currentDate.get(Calendar.DAY_OF_YEAR) > previousDate.get(Calendar.DAY_OF_YEAR)
+                || currentDate.get(Calendar.YEAR) > previousDate.get(Calendar.YEAR)) {
             viewItems.add(new DateSeparatorListItem(currentDataItem.getTimeInMilliseconds()));
         }
     }
