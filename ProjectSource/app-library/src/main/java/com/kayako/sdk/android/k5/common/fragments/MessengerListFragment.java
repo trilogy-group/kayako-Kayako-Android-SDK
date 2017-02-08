@@ -55,9 +55,14 @@ public class MessengerListFragment extends BaseListFragment {
     }
 
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (SHOW_SAMPLE_DATA && BuildConfig.DEBUG) {
+        if (SHOW_SAMPLE_DATA) {
             testSample1();
             testSample2();
         }
@@ -142,6 +147,12 @@ public class MessengerListFragment extends BaseListFragment {
     @Override
     public void scrollToBeginningOfList() {
         super.scrollToBeginningOfList();
+    }
+
+    @Override
+    protected void scrollToPosition(int position) {
+        assert position < getSizeOfData();
+        super.scrollToPosition(getSizeOfData() - position);
     }
 
     @Override
