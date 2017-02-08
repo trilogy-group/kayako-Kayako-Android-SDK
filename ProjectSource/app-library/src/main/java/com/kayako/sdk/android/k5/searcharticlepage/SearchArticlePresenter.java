@@ -1,7 +1,8 @@
 package com.kayako.sdk.android.k5.searcharticlepage;
 
-import com.kayako.sdk.android.k5.core.HelpCenterPref;
-import com.kayako.sdk.android.k5.common.data.ListItem;
+import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.adapter.list.ListItem;
+import com.kayako.sdk.android.k5.common.adapter.searchlist.SearchListItem;
 import com.kayako.sdk.helpcenter.search.SearchArticle;
 
 import java.util.ArrayList;
@@ -17,8 +18,8 @@ public class SearchArticlePresenter implements SearchArticleContract.Presenter {
     private SearchArticleContract.View mView;
     private SearchArticleContract.Data mData;
     private String mQuery;
-    private List<ListItem> mListItems;
-    private List<ListItem> mMoreItems;
+    private List<BaseListItem> mListItems;
+    private List<BaseListItem> mMoreItems;
 
     public SearchArticlePresenter(SearchArticleContract.View view, SearchArticleContract.Data data) {
         this.mView = view;
@@ -117,8 +118,9 @@ public class SearchArticlePresenter implements SearchArticleContract.Presenter {
     }
 
     @Override
-    public void onClickListItem(ListItem listItem) {
-        SearchArticle searchArticle = (SearchArticle) listItem.getResource();
+    public void onClickListItem(BaseListItem listItem) {
+        SearchListItem item = (SearchListItem) listItem;
+        SearchArticle searchArticle = (SearchArticle) item.getResource();
         mView.openArticleActivity(searchArticle.getOriginalArticle());
     }
 
@@ -142,14 +144,14 @@ public class SearchArticlePresenter implements SearchArticleContract.Presenter {
         mView = view;
     }
 
-    private List<ListItem> convertToListItems(List<SearchArticle> searchArticleList) {
+    private List<BaseListItem> convertToListItems(List<SearchArticle> searchArticleList) {
         if (searchArticleList.size() == 0) {
             return new ArrayList<>();
         } else {
-            List<ListItem> items = new ArrayList<>();
+            List<BaseListItem> items = new ArrayList<>();
             for (SearchArticle searchArticle : searchArticleList) {
                 String subtitle = String.format("%s > %s", searchArticle.getCategoryName(), searchArticle.getSectionName());
-                items.add(new ListItem(false, searchArticle.getTitle(), subtitle, searchArticle));
+                items.add(new SearchListItem(searchArticle.getTitle(), subtitle, searchArticle));
             }
             return items;
         }

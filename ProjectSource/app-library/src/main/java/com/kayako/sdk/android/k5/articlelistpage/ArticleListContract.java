@@ -1,6 +1,7 @@
 package com.kayako.sdk.android.k5.articlelistpage;
 
-import com.kayako.sdk.android.k5.common.data.ListItem;
+import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.adapter.list.ListItem;
 import com.kayako.sdk.android.k5.common.mvp.BaseData;
 import com.kayako.sdk.android.k5.common.mvp.BasePresenter;
 import com.kayako.sdk.android.k5.common.mvp.BaseView;
@@ -24,7 +25,7 @@ public interface ArticleListContract {
 
     interface View extends BaseView {
 
-        void setUpList(List<ListItem> items, String title, String description);
+        void setUpList(List<BaseListItem> items, String title, String description);
 
         void showOnlyListView();
 
@@ -40,7 +41,7 @@ public interface ArticleListContract {
 
         void cancelBackgroundTasks();
 
-        void addItemsToList(List<ListItem> items);
+        void addItemsToList(List<BaseListItem> items);
 
         void showLoadingMoreItemsProgress();
 

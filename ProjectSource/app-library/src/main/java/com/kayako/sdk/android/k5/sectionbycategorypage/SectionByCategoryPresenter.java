@@ -1,14 +1,15 @@
 package com.kayako.sdk.android.k5.sectionbycategorypage;
 
-import com.kayako.sdk.android.k5.core.HelpCenterPref;
-import com.kayako.sdk.android.k5.common.data.ListItem;
+import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.adapter.list.HeaderListItem;
+import com.kayako.sdk.android.k5.common.adapter.list.ListItem;
+import com.kayako.sdk.android.k5.common.adapter.searchlist.SearchListItem;
 import com.kayako.sdk.helpcenter.base.Resource;
 import com.kayako.sdk.helpcenter.category.Category;
 import com.kayako.sdk.helpcenter.section.Section;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -18,7 +19,7 @@ public class SectionByCategoryPresenter implements SectionByCategoryContract.Pre
 
     private SectionByCategoryContract.View mView;
     private SectionByCategoryContract.Data mData;
-    private List<ListItem> mListItems;
+    private List<BaseListItem> mListItems;
 
     public SectionByCategoryPresenter(SectionByCategoryContract.View view, SectionByCategoryContract.Data data) {
         this.mView = view;
@@ -40,8 +41,8 @@ public class SectionByCategoryPresenter implements SectionByCategoryContract.Pre
     }
 
     @Override
-    public void onClickListItem(ListItem listItem) {
-        Resource resource = listItem.getResource();
+    public void onClickListItem(BaseListItem listItem) {
+        Resource resource = ((ListItem) listItem).getResource();
         if (resource instanceof Section) {
             mView.openArticleListingPage(((Section) resource));
         }
@@ -86,19 +87,19 @@ public class SectionByCategoryPresenter implements SectionByCategoryContract.Pre
         }
     }
 
-    private List<ListItem> setUpList(List<Category> categories, Map<Category, List<Section>> sectionsByCategory) {
+    private List<BaseListItem> setUpList(List<Category> categories, Map<Category, List<Section>> sectionsByCategory) {
         if (categories.size() == 0) {
             mView.showOnlyEmptyView();
             return new ArrayList<>();
         } else {
-            List<ListItem> items = new ArrayList<>();
+            List<BaseListItem> items = new ArrayList<>();
 
             for (Category category : categories) {
-                items.add(new ListItem(true, category.getTitle(), null, category));
+                items.add(new HeaderListItem(category.getTitle(), category));
 
                 if (sectionsByCategory.containsKey(category)) {
                     for (Section section : sectionsByCategory.get(category)) {
-                        items.add(new ListItem(false, section.getTitle(), section.getDescription(), section));
+                        items.add(new ListItem(section.getTitle(), section.getDescription(), section));
                     }
                 }
             }

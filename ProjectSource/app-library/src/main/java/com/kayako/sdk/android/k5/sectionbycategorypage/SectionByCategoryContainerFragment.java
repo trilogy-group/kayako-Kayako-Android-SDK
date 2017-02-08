@@ -10,7 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -19,12 +18,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.kayako.sdk.android.k5.R;
-import com.kayako.sdk.android.k5.common.data.SpinnerItem;
+import com.kayako.sdk.android.k5.common.adapter.spinnerlist.SpinnerItem;
 import com.kayako.sdk.android.k5.common.fragments.BaseContainerFragment;
 import com.kayako.sdk.android.k5.common.task.BackgroundTask;
 
 import java.util.List;
-import java.util.Locale;
 
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
@@ -50,7 +48,7 @@ public class SectionByCategoryContainerFragment extends BaseContainerFragment im
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mRoot = inflater.inflate(R.layout.ko__fragment_help_center, null);
+        mRoot = inflater.inflate(R.layout.ko__fragment_help_center, container, false); // parent view added to ensure fragment fills LinearLayout
         setUpToolbar();
         return mRoot;
     }
@@ -93,7 +91,7 @@ public class SectionByCategoryContainerFragment extends BaseContainerFragment im
     }
 
     @Override
-    public void setToolbarSpinner(List<SpinnerItem> items,int defaultPosition) {
+    public void setToolbarSpinner(List<SpinnerItem> items, int defaultPosition) {
         Spinner spinner = (Spinner) mToolbar.findViewById(R.id.ko__toolbar_spinner);
         spinner.setAdapter(new ArrayAdapter<>(getContext(), R.layout.ko__spinner_item, items));
         spinner.setSelection(defaultPosition);

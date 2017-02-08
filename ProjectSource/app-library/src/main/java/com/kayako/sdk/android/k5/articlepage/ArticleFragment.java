@@ -106,13 +106,6 @@ public class ArticleFragment extends BaseStateFragment implements ArticleContrac
             }
 
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                String url = view.getUrl();
-                mPresenter.onClickLinkInArticle(url);
-                return true;
-            }
-
-            @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 mPresenter.onClickLinkInArticle(url);
                 return true;
@@ -151,7 +144,9 @@ public class ArticleFragment extends BaseStateFragment implements ArticleContrac
 
     @Override
     public void showFailedToLoadErrorMessage() {
-        ViewUtils.showSnackBar(mRoot, getString(R.string.ko__msg_error_unable_to_article));
+        if (isAdded()) {
+            ViewUtils.showSnackBar(mRoot, getString(R.string.ko__msg_error_unable_to_article));
+        }
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.kayako.sdk.android.k5.sectionbycategorypage;
 
-import com.kayako.sdk.android.k5.common.data.SpinnerItem;
+import com.kayako.sdk.android.k5.common.adapter.spinnerlist.SpinnerItem;
 import com.kayako.sdk.android.k5.common.utils.LocaleUtils;
 import com.kayako.sdk.android.k5.core.HelpCenterPref;
 import com.kayako.sdk.helpcenter.locale.Locale;

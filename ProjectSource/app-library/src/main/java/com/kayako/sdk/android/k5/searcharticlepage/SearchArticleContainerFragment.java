@@ -45,7 +45,7 @@ public class SearchArticleContainerFragment extends Fragment implements SearchAr
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mRoot = inflater.inflate(R.layout.ko__fragment_search, null);
+        mRoot = inflater.inflate(R.layout.ko__fragment_search, container, false);
         mSearchArticleResult = (SearchArticleFragment) getChildFragmentManager().findFragmentById(R.id.ko__container_search_results);
         setUpToolbar();
         return mRoot;

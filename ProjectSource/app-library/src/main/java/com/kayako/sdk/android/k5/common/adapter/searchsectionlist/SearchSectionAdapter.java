@@ -1,14 +1,14 @@
-package com.kayako.sdk.android.k5.sectionbycategorypage;
+package com.kayako.sdk.android.k5.common.adapter.searchsectionlist;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.kayako.sdk.android.k5.R;
-import com.kayako.sdk.android.k5.common.adapter.ListItemRecyclerViewAdapter;
-import com.kayako.sdk.android.k5.common.data.ListItem;
+import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.adapter.list.ListItemRecyclerViewAdapter;
+import com.kayako.sdk.android.k5.common.adapter.list.ListType;
 
 import java.util.List;
 
@@ -17,20 +17,20 @@ import java.util.List;
  */
 public class SearchSectionAdapter extends ListItemRecyclerViewAdapter {
 
-    protected static final int STATE_SEARCH_SECTION = 3;
-
     protected OnSearchClickListener mSearchClickListener;
 
-    public SearchSectionAdapter(List<ListItem> items, OnItemClickListener itemClickListener, OnSearchClickListener searchClickListener) {
-        super(items, itemClickListener);
+    public SearchSectionAdapter(List<BaseListItem> items, OnListItemClickListener itemClickListener, OnSearchClickListener searchClickListener) {
+        super(items);
         items.add(0, null);
         mSearchClickListener = searchClickListener;
+        setListClickListener(itemClickListener);
+        setHeaderClickListener(null);
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
-            case STATE_SEARCH_SECTION:
+            case SearchSectionListType.SEARCH_SECTION_ITEM:
                 View viewSearchSection = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.ko__list_search_section, parent, false);
                 return new SearchSectionViewHolder(viewSearchSection);
@@ -42,9 +42,9 @@ public class SearchSectionAdapter extends ListItemRecyclerViewAdapter {
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, int position) {
         switch (viewHolder.getItemViewType()) {
-            case STATE_SEARCH_SECTION:
+            case SearchSectionListType.SEARCH_SECTION_ITEM:
                 SearchSectionViewHolder searchViewHolder = (SearchSectionViewHolder) viewHolder;
-                searchViewHolder.searchEditText.setOnClickListener(new View.OnClickListener() {
+                searchViewHolder.mSearchEditText.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         mSearchClickListener.onClickSearch();
@@ -60,20 +60,9 @@ public class SearchSectionAdapter extends ListItemRecyclerViewAdapter {
     @Override
     public int getItemViewType(int position) {
         if (position == 0) {
-            return STATE_SEARCH_SECTION;
+            return SearchSectionListType.SEARCH_SECTION_ITEM;
         }
         return super.getItemViewType(position);
-    }
-
-    public class SearchSectionViewHolder extends ViewHolder {
-        public TextView searchEditText;
-
-        public SearchSectionViewHolder(View view) {
-            super(view);
-            mView = view;
-            mItem = null;
-            searchEditText = (TextView) view.findViewById(R.id.ko__search_bar);
-        }
     }
 
     public interface OnSearchClickListener {

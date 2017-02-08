@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.LinearLayout;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.articlelistpage.ArticleListContainerFragment;
@@ -40,18 +41,26 @@ public class KayakoHelpCenterActivity extends AppCompatActivity implements Activ
     }
 
     private void openFirstPage() {
-        Fragment newFragment = SectionByCategoryContainerFragment.newInstance();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.ko__fragment_listing, newFragment, FRAGMENT_TAG);
-        transaction.commit();
+        showSectionsByCategoryFragment();
     }
 
     @Override
     public void openNextPage(Resource resource) {
+        showArticleListFragment(resource);
+    }
+
+    private void showArticleListFragment(Resource resource) {
         Fragment newFragment = ArticleListContainerFragment.newInstance((Section) resource);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.ko__fragment_listing, newFragment, FRAGMENT_TAG);
-        transaction.addToBackStack(null);
+        transaction.addToBackStack(null); // enable back stack to return to first fragment
+        transaction.commit();
+    }
+
+    private void showSectionsByCategoryFragment() {
+        Fragment newFragment = SectionByCategoryContainerFragment.newInstance();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.ko__fragment_listing, newFragment, FRAGMENT_TAG);
         transaction.commit();
     }
 

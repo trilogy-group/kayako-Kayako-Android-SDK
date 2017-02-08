@@ -1,18 +1,18 @@
 package com.kayako.sdk.android.k5.sectionbycategorypage;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.kayako.sdk.android.k5.common.adapter.ListItemRecyclerViewAdapter;
-import com.kayako.sdk.android.k5.common.data.ListItem;
+import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.adapter.list.ListItemRecyclerViewAdapter;
+import com.kayako.sdk.android.k5.common.adapter.list.ListItem;
+import com.kayako.sdk.android.k5.common.adapter.searchsectionlist.SearchSectionAdapter;
 import com.kayako.sdk.android.k5.common.fragments.ActivityNavigationResourceCallback;
 import com.kayako.sdk.android.k5.common.fragments.BaseListFragment;
 import com.kayako.sdk.android.k5.common.task.BackgroundTask;
-import com.kayako.sdk.android.k5.common.fragments.ActivityNavigationIdCallback;
 import com.kayako.sdk.android.k5.activities.KayakoSearchArticleActivity;
 import com.kayako.sdk.helpcenter.section.Section;
 
@@ -21,11 +21,11 @@ import java.util.List;
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
-public class SectionByCategoryListFragment extends BaseListFragment implements SectionByCategoryContract.View, ListItemRecyclerViewAdapter.OnItemClickListener, SearchSectionAdapter.OnSearchClickListener {
+public class SectionByCategoryListFragment extends BaseListFragment implements SectionByCategoryContract.View, ListItemRecyclerViewAdapter.OnListItemClickListener, SearchSectionAdapter.OnSearchClickListener {
 
     protected SectionByCategoryContract.Presenter mPresenter;
     protected BackgroundTask mBackgroundTask;
-    protected ListItemRecyclerViewAdapter listItemRecyclerViewAdapter;
+    protected SearchSectionAdapter listItemRecyclerViewAdapter;
     protected ActivityNavigationResourceCallback mActivityNavigation;
 
     public static SectionByCategoryListFragment newInstance() {
@@ -98,7 +98,7 @@ public class SectionByCategoryListFragment extends BaseListFragment implements S
     }
 
     @Override
-    public void setUpList(final List<ListItem> items) {
+    public void setUpList(final List<BaseListItem> items) {
         listItemRecyclerViewAdapter = new SearchSectionAdapter(items, this, this);
         initList(listItemRecyclerViewAdapter, null);
     }
@@ -129,7 +129,7 @@ public class SectionByCategoryListFragment extends BaseListFragment implements S
     }
 
     @Override
-    public void onItemClick(ListItem listItem) {
+    public void onClickListItem(ListItem listItem) {
         mPresenter.onClickListItem(listItem);
     }
 

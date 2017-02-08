@@ -7,9 +7,10 @@ import android.view.View;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.activities.KayakoArticleActivity;
-import com.kayako.sdk.android.k5.common.adapter.EndlessRecyclerViewScrollAdapter;
-import com.kayako.sdk.android.k5.common.adapter.ListItemRecyclerViewAdapter;
-import com.kayako.sdk.android.k5.common.data.ListItem;
+import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.adapter.loadmorelist.EndlessRecyclerViewScrollAdapter;
+import com.kayako.sdk.android.k5.common.adapter.searchlist.SearchListAdapter;
+import com.kayako.sdk.android.k5.common.adapter.searchlist.SearchListItem;
 import com.kayako.sdk.android.k5.common.fragments.BaseListFragment;
 import com.kayako.sdk.android.k5.common.task.BackgroundTask;
 import com.kayako.sdk.android.k5.common.utils.ViewUtils;
@@ -20,7 +21,7 @@ import java.util.List;
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
-public class SearchArticleFragment extends BaseListFragment implements SearchArticleContract.View, SearchResultCallback, ListItemRecyclerViewAdapter.OnItemClickListener, EndlessRecyclerViewScrollAdapter.OnLoadMoreListener {
+public class SearchArticleFragment extends BaseListFragment implements SearchArticleContract.View, SearchResultCallback, SearchListAdapter.OnSearchedArticleItemClickListener, EndlessRecyclerViewScrollAdapter.OnLoadMoreListener {
 
     private SearchArticleContract.Presenter mPresenter;
     private BackgroundTask mSearchTask;
@@ -140,12 +141,12 @@ public class SearchArticleFragment extends BaseListFragment implements SearchArt
     }
 
     @Override
-    public void setUpList(List<ListItem> items) {
-        super.initList(new SearchArticleAdapter(items, this), this);
+    public void setUpList(List<BaseListItem> items) {
+        super.initList(new SearchListAdapter(items, this), this);
     }
 
     @Override
-    public void addItemsToList(List<ListItem> items) {
+    public void addItemsToList(List<BaseListItem> items) {
         super.addToList(items);
     }
 
@@ -175,11 +176,6 @@ public class SearchArticleFragment extends BaseListFragment implements SearchArt
     }
 
     @Override
-    public void onItemClick(ListItem listItem) {
-        mPresenter.onClickListItem(listItem);
-    }
-
-    @Override
     public void loadMoreItems() {
         mPresenter.loadMoreData();
     }
@@ -192,5 +188,10 @@ public class SearchArticleFragment extends BaseListFragment implements SearchArt
     @Override
     public void clearSearchResults() {
         mPresenter.clearSearchResults();
+    }
+
+    @Override
+    public void onClickSearchedArticle(SearchListItem listItem) {
+        mPresenter.onClickListItem(listItem);
     }
 }

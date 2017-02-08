@@ -1,4 +1,4 @@
-package com.kayako.sdk.android.k5.common.adapter;
+package com.kayako.sdk.android.k5.common.adapter.loadmorelist;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,7 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.kayako.sdk.android.k5.R;
-import com.kayako.sdk.android.k5.common.data.LoadingItem;
+import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.adapter.list.ListType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,23 +16,21 @@ import java.util.List;
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
-public abstract class EndlessRecyclerViewScrollAdapter<T extends LoadingItem> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public abstract class EndlessRecyclerViewScrollAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static final int STATE_LOAD_MORE = -10;
-
-    protected List<T> mValues;
-    private T mProgressItem = getLoadingFooterItem();
+    protected List<BaseListItem> mValues;
+    private LoadingItem mProgressItem = getLoadingFooterItem();
     private boolean mHasMoreItems = false;
 
-    public EndlessRecyclerViewScrollAdapter(List<T> items) {
+    public EndlessRecyclerViewScrollAdapter(List<BaseListItem> items) {
         mValues = items;
     }
 
-    public List<T> getData() {
+    public List<BaseListItem> getData() {
         return mValues;
     }
 
-    public void setData(List<T> newData) {
+    public void setData(List<BaseListItem> newData) {
         if (newData == null) {
             newData = new ArrayList<>();
         }
@@ -41,7 +40,7 @@ public abstract class EndlessRecyclerViewScrollAdapter<T extends LoadingItem> ex
 
     }
 
-    public void addData(List<T> moreData) {
+    public void addData(List<BaseListItem> moreData) {
         int originalSize = mValues.size();
         mValues.addAll(moreData);
         int newSize = mValues.size();
@@ -49,7 +48,9 @@ public abstract class EndlessRecyclerViewScrollAdapter<T extends LoadingItem> ex
         notifyItemRangeInserted(originalSize, newSize);
     }
 
-    public abstract T getLoadingFooterItem();
+    private LoadingItem getLoadingFooterItem() {
+        return new LoadingItem();
+    }
 
     public void showLoadMoreProgress() {
         if (!mValues.contains(mProgressItem)) {
@@ -84,31 +85,23 @@ public abstract class EndlessRecyclerViewScrollAdapter<T extends LoadingItem> ex
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
-            case STATE_LOAD_MORE:
+            case ListType.LOADING_ITEM:
                 View viewHeader = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.ko__list_item_loading, parent, false);
                 return new LoadingViewHolder(viewHeader);
+            default:
+                return null;
         }
-        return null;
     }
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, int position) {
-        switch (viewHolder.getItemViewType()) {
-            case STATE_LOAD_MORE:
-//                LoadingViewHolder headerViewHolder = (LoadingViewHolder) viewHolder;
-                break;
-        }
+        // Nothing to bind here
     }
 
     @Override
     public int getItemViewType(int position) {
-        LoadingItem item = mValues.get(position);
-        if (item.isLoading()) {
-            return STATE_LOAD_MORE;
-        } else {
-            return 0;
-        }
+        return mValues.get(position).getItemType();
     }
 
     @Override

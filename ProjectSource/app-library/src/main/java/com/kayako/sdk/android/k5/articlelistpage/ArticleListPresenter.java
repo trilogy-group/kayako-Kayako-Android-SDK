@@ -2,7 +2,8 @@ package com.kayako.sdk.android.k5.articlelistpage;
 
 import android.text.Html;
 
-import com.kayako.sdk.android.k5.common.data.ListItem;
+import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.adapter.list.ListItem;
 import com.kayako.sdk.helpcenter.articles.Article;
 import com.kayako.sdk.helpcenter.section.Section;
 
@@ -20,8 +21,8 @@ public class ArticleListPresenter implements ArticleListContract.Presenter {
     private ArticleListContract.View mView;
     private ArticleListContract.Data mData;
 
-    private List<ListItem> mListItems;
-    private List<ListItem> mMoreItems;
+    private List<BaseListItem> mListItems;
+    private List<BaseListItem> mMoreItems;
     private long mSectionId;
     private String mSectionTitle;
     private String mSectionDescription;
@@ -142,11 +143,11 @@ public class ArticleListPresenter implements ArticleListContract.Presenter {
         mView = view;
     }
 
-    private List<ListItem> convertToListItems(List<Article> articles) {
+    private List<BaseListItem> convertToListItems(List<Article> articles) {
         if (articles.size() == 0) {
             return new ArrayList<>();
         } else {
-            List<ListItem> items = new ArrayList<>();
+            List<BaseListItem> items = new ArrayList<>();
             for (Article article : articles) {
 
                 String contentsWithoutHtml = "";
@@ -154,7 +155,7 @@ public class ArticleListPresenter implements ArticleListContract.Presenter {
                     contentsWithoutHtml = Html.fromHtml(article.getContents()).toString();
                 }
 
-                ListItem item = new ListItem(false, article.getTitle(), contentsWithoutHtml, article);
+                ListItem item = new ListItem(article.getTitle(), contentsWithoutHtml, article);
                 items.add(item);
             }
             return items;

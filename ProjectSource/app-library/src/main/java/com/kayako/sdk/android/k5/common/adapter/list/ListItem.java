@@ -1,31 +1,29 @@
-package com.kayako.sdk.android.k5.common.data;
+package com.kayako.sdk.android.k5.common.adapter.list;
 
+import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.helpcenter.base.Resource;
 
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
-public class ListItem extends LoadingItem {
+public class ListItem extends BaseListItem {
 
-    private boolean isHeader;
     private String title;
     private String subtitle;
     private Resource resource;
 
-    public ListItem(boolean isHeader, String title, String subtitle, Resource resource) {
-        super(false);
-        this.isHeader = isHeader;
+    public ListItem(String title, String subtitle, Resource resource) {
+        super(ListType.LIST_ITEM);
         this.title = title;
         this.subtitle = subtitle;
         this.resource = resource;
     }
 
-    public boolean isHeader() {
-        return isHeader;
-    }
-
-    public void setHeader(boolean header) {
-        isHeader = header;
+    protected ListItem(int listType, String title, String subtitle, Resource resource) {
+        super(listType);
+        this.title = title;
+        this.subtitle = subtitle;
+        this.resource = resource;
     }
 
     public String getTitle() {
