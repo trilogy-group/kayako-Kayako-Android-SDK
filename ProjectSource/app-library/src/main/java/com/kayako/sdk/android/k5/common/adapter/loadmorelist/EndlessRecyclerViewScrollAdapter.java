@@ -33,18 +33,52 @@ public abstract class EndlessRecyclerViewScrollAdapter extends RecyclerView.Adap
         if (newData == null) {
             newData = new ArrayList<>();
         }
+
+        mValues.clear();
         notifyItemRangeRemoved(0, mValues.size());
         mValues = newData;
         notifyItemRangeInserted(0, mValues.size());
-
     }
 
-    public void addData(List<BaseListItem> moreData) {
+    public void replaceAllData(List<BaseListItem> newData) {
+        if (newData == null) {
+            newData = new ArrayList<>();
+        }
+        mValues = newData;
+        notifyDataSetChanged();
+        // Careful with this line - the wrong value causes crashes.
+        // Ensure there is no animation. Added because setData caused a flash while new info was added.
+    }
+
+
+    public void addLoadMoreData(List<BaseListItem> moreData) {
         int originalSize = mValues.size();
         mValues.addAll(moreData);
         int newSize = mValues.size();
 
         notifyItemRangeInserted(originalSize, newSize);
+    }
+
+    public void addItems(List<BaseListItem> moreData, int position) {
+        mValues.addAll(0, moreData);
+        notifyItemRangeInserted(position, moreData.size());
+    }
+
+    public void addItem(BaseListItem item, int position) {
+        mValues.add(position, item);
+        notifyItemInserted(position);
+    }
+
+    public void removeItem(int position) {
+        mValues.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public void replaceItem(BaseListItem item, int position) {
+        mValues.remove(position);
+        notifyItemRemoved(position);
+        mValues.add(position, item);
+        notifyItemInserted(position);
     }
 
     private LoadingItem getLoadingFooterItem() {
@@ -58,6 +92,9 @@ public abstract class EndlessRecyclerViewScrollAdapter extends RecyclerView.Adap
         }
     }
 
+    /**
+     * Removes the load more progress item if showing
+     */
     public void hideLoadMoreProgress() {
         int position = mValues.indexOf(mProgressItem);
         if (position != -1) {
@@ -68,7 +105,7 @@ public abstract class EndlessRecyclerViewScrollAdapter extends RecyclerView.Adap
 
     /**
      * Use this function to enable/disable the progressbar at the bottom of the RecyclerView list.
-     *
+     * <p>
      * Once all items have been loaded, ensure that the
      *
      * @param hasMoreItems mark as true if it has more items
@@ -107,7 +144,6 @@ public abstract class EndlessRecyclerViewScrollAdapter extends RecyclerView.Adap
     public int getItemCount() {
         return getData().size();
     }
-
 
 
     public interface OnLoadMoreListener {

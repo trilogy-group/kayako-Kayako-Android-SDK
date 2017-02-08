@@ -74,7 +74,12 @@
 
     <color name="ko__messenger_speech_bubble_other_background_color">#EDEEEF</color>
     <color name="ko__messenger_speech_bubble_other_text_color">#000</color>
+
     <color name="ko__messenger_date_separator_line_color">#3C808080</color>
     <color name="ko__messenger_date_separator_text_color">#808080</color>
+
+    <color name="ko__messenger_unread_separator_line_color">#F1703F</color>
+    <color name="ko__messenger_unread_separator_text_color">#F1703F</color>
+
 
 </resources>

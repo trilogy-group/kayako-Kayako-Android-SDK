@@ -15,7 +15,7 @@
     <dimen name="ko__messenger_gap_between_message_and_end">48dp</dimen> <!-- value[@dimen/ko__messenger_avatar_size] + value[@dimen/ko__messenger_gap_between_avatar_and_message] -->
     <dimen name="ko__messenger_gap_between_attachment_image_and_label">2dp</dimen>
     <dimen name="ko__messenger_gap_between_time_and_message">3dp</dimen>
-    <dimen name="ko__messenger_gap_between_channel_and_avatar_top_corner">25dp</dimen>
+    <dimen name="ko__messenger_gap_between_channel_and_avatar_top_corner">28dp</dimen>  <!-- Shouldn't be greater than value[ko__messenger_avatar_size]-->
 
     <dimen name="ko__messenger_chat_bubble_corner">8dp</dimen>
     <dimen name="ko__messenger_chat_bubble_padding_vertical">8dp</dimen>

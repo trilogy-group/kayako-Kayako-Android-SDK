@@ -16,5 +16,6 @@
     <string name="ko__action_contact">Contact</string>
     <string name="ko__action_search">Search</string>
     <string name="ko__action_ok">Ok</string>
+    <string name="ko__msg_unread_message">new messages</string>
 
 </resources>

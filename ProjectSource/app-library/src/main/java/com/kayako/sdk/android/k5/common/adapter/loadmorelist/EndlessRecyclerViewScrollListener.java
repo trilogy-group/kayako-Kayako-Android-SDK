@@ -97,8 +97,13 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
         // threshold should reflect how many total columns there are too
         if (!loading && (lastVisibleItemPosition + visibleThreshold) > totalItemCount) {
             currentPage++;
-            onLoadMore(currentPage, totalItemCount);
             loading = true;
+
+            synchronized (this) {
+                if (mAdapter.hasMoreItems()) {
+                    onLoadMore(currentPage, totalItemCount);
+                }
+            }
         }
     }
 

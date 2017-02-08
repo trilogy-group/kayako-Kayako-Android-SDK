@@ -17,4 +17,11 @@
         tools:listitem="@layout/ko__list_item_search_result" />
 
     <include layout="@layout/ko__include_state_stubs" />
+
+    <LinearLayout
+        android:id="@+id/ko__custom_state_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" />
+
 </FrameLayout>

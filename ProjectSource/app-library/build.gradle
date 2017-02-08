@@ -29,8 +29,8 @@ version = appVersion // Library version
 archivesBaseName = appArtifactId // Sets the artefact Id name
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.1"
+    compileSdkVersion 23
+    buildToolsVersion '23.0.0'
 
     lintOptions {
         abortOnError false
@@ -134,10 +134,8 @@ dependencies {
     compile 'com.squareup.okio:okio:1.9.0'
     compile 'com.google.code.gson:gson:2.4'
     compile 'com.github.bumptech.glide:glide:3.7.0'
-
     testCompile 'junit:junit:4.12'
-    testCompile "org.mockito:mockito-core:1.10.19"
-
+    testCompile 'org.mockito:mockito-core:1.10.19'
     androidTestCompile 'com.android.support:support-annotations:24.2.0'
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -149,6 +147,5 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude module: 'recyclerview-v7'
     }
-
     compile 'com.kayako:kayako:0.0.3'
 }

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Kayako Sample App</string>
     <string name="open_kayako_help_center">Open Kayako Help Center</string>
+    <string name="open_messenger">Open Messenger</string>
 </resources>

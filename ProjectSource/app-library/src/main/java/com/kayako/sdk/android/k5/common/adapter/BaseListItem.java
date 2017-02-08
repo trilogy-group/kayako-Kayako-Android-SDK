@@ -5,13 +5,22 @@ package com.kayako.sdk.android.k5.common.adapter;
  */
 public abstract class BaseListItem {
 
-    private int mListItemType;
+    private int listItemType;
+    private long listId;
 
     public BaseListItem(int type) {
-        mListItemType = type;
+        listItemType = type;
     }
 
     public int getItemType() {
-        return mListItemType;
+        return listItemType;
+    }
+
+    public long getListId() {
+        return listId;
+    }
+
+    public void setListId(long listId) {
+        this.listId = listId;
     }
 }

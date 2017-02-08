@@ -1,28 +1,28 @@
-package com.kayako.sdk.android.k5.common.adapter.messengerlist;
+package com.kayako.sdk.android.k5.common.adapter.messengerlist.view;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.adapter.BaseDataListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.ChannelDecoration;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerListType;
 
 import java.util.Map;
 
-public class SimpleMessageOtherListItem extends BaseListItem {
+public class SimpleMessageOtherListItem extends BaseDataListItem {
 
     private String message;
     private String avatarUrl;
     private long time;
     private ChannelDecoration channel;
-    private Map<String, Object> data;
 
-    public SimpleMessageOtherListItem(@NonNull String message, @NonNull String avatarUrl, @Nullable ChannelDecoration channel, @Nullable long time, @Nullable Map<String, Object> data) {
-        super(MessengerListType.SIMPLE_MESSAGE_OTHER);
+    public SimpleMessageOtherListItem(@Nullable Long id,@NonNull String message, @NonNull String avatarUrl, @Nullable ChannelDecoration channel, @Nullable long time, @Nullable Map<String, Object> data) {
+        super(MessengerListType.SIMPLE_MESSAGE_OTHER, id,data);
 
         this.message = message;
         this.avatarUrl = avatarUrl;
         this.time = time;
         this.channel = channel;
-        this.data = data;
     }
 
     public String getMessage() {
@@ -39,14 +39,6 @@ public class SimpleMessageOtherListItem extends BaseListItem {
 
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
-    }
-
-    public Map<String, Object> getData() {
-        return data;
-    }
-
-    public void setData(Map<String, Object> data) {
-        this.data = data;
     }
 
     public long getTime() {

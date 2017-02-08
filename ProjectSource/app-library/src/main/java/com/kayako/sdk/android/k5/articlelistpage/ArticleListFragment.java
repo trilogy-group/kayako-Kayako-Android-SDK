@@ -52,6 +52,17 @@ public class ArticleListFragment extends BaseListFragment implements ArticleList
     }
 
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getDefaultStateViewHelper().setupErrorView(null, null, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                reloadPage();
+            }
+        });
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (getArguments() != null && getArguments().containsKey(ARG_SECTION)) {
@@ -72,12 +83,13 @@ public class ArticleListFragment extends BaseListFragment implements ArticleList
     @Override
     public void setUpList(List<BaseListItem> items, String title, String description) {
         SectionInfoAdapter sectionInfoAdapter = new SectionInfoAdapter(items, this, title, description);
-        initList(sectionInfoAdapter, this);
+        initList(sectionInfoAdapter);
+        setLoadMoreListener(this);
     }
 
     @Override
     public void addItemsToList(List<BaseListItem> items) {
-        super.addToList(items);
+        super.addItemsToEndOfList(items);
     }
 
     @Override
@@ -93,6 +105,9 @@ public class ArticleListFragment extends BaseListFragment implements ArticleList
     @Override
     public void setListHasMoreItems(boolean hasMoreItems) {
         super.setHasMoreItems(hasMoreItems);
+        if (!hasMoreItems) { // Removing listener improves performance by no longer checking every scroll
+            super.removeLoadMoreListener();
+        }
     }
 
     protected void reloadPage() {
@@ -146,17 +161,12 @@ public class ArticleListFragment extends BaseListFragment implements ArticleList
 
     @Override
     public void showOnlyEmptyView() {
-        super.showEmptyViewAndHideOthers(null, null);
+        super.showEmptyViewAndHideOthers();
     }
 
     @Override
     public void showOnlyErrorView() {
-        super.showErrorViewAndHideOthers(null, null, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                reloadPage();
-            }
-        });
+        super.showErrorViewAndHideOthers();
     }
 
     @Override
