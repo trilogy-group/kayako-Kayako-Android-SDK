@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <solid android:color="@color/ko__messenger_speech_bubble_other_background_color" />
+
+    <padding
+        android:bottom="@dimen/ko__messenger_chat_bubble_padding_vertical"
+        android:left="@dimen/ko__messenger_chat_bubble_padding_horizontal"
+        android:right="@dimen/ko__messenger_chat_bubble_padding_horizontal"
+        android:top="@dimen/ko__messenger_chat_bubble_padding_vertical" />
+
+    <corners
+        android:bottomLeftRadius="@dimen/ko__messenger_chat_bubble_corner"
+        android:bottomRightRadius="@dimen/ko__messenger_chat_bubble_corner"
+        android:topLeftRadius="@dimen/ko__messenger_chat_bubble_corner"
+        android:topRightRadius="@dimen/ko__messenger_chat_bubble_corner" />
+</shape>

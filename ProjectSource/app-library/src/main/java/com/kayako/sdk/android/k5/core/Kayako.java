@@ -14,7 +14,7 @@ import java.util.Locale;
  */
 public class Kayako {
 
-    private Context mAppContext;
+    private static Context mAppContext;
     private static Kayako mInstance;
 
     public static void initialize(Context applicationContext) {
@@ -31,6 +31,10 @@ public class Kayako {
             throw new NullPointerException("Please call Kayako.initialize() in your Application class");
         }
         return mInstance;
+    }
+
+    public static Context getApplicationContext() {
+        return mAppContext;
     }
 
     public void openHelpCenter(Context context, String helpCenterUrl, Locale defaultLocale) {

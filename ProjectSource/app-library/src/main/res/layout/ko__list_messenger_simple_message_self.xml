@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/ko__messenger_list_item_margin"
+    android:paddingRight="@dimen/ko__messenger_list_item_margin"
+    android:paddingTop="@dimen/ko__messenger_list_item_margin">
+
+    <TextView
+        android:id="@+id/message"
+        style="@style/Ko__ChatBubbleStyleSelf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/ko__messenger_gap_between_message_and_end"
+        android:layout_marginRight="@dimen/ko__messenger_gap_between_avatar_and_message"
+        android:layout_toLeftOf="@+id/avatar"
+        android:gravity="end|center_vertical"
+        tools:text="Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah" />
+
+    <TextView
+        android:id="@+id/time"
+        style="@style/Ko__ChatBubbleDateStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/message"
+        android:layout_below="@+id/message"
+        android:layout_marginTop="@dimen/ko__messenger_gap_between_time_and_message"
+        tools:text="12:30 PM" />
+
+    <com.kayako.sdk.android.k5.common.view.CircleImageView
+        android:id="@+id/avatar"
+        android:layout_width="@dimen/ko__messenger_avatar_size"
+        android:layout_height="@dimen/ko__messenger_avatar_size"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        tools:src="#808080" />
+
+    <com.kayako.sdk.android.k5.common.view.CircleImageView
+        android:id="@+id/channel"
+        android:layout_width="@dimen/ko__messenger_channel_size"
+        android:layout_height="@dimen/ko__messenger_channel_size"
+        android:layout_alignTop="@+id/avatar"
+        android:layout_alignRight="@+id/avatar"
+        android:layout_marginTop="@dimen/ko__messenger_gap_between_channel_and_avatar_top_corner"
+        android:layout_marginRight="@dimen/ko__messenger_gap_between_channel_and_avatar_top_corner"
+        app:civ_border_color="#fff"
+        app:civ_border_width="2dp"
+        tools:src="#000" />
+
+</RelativeLayout>

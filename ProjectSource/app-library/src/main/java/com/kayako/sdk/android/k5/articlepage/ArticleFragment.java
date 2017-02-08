@@ -16,11 +16,10 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.fragments.BaseStateFragment;
+import com.kayako.sdk.android.k5.common.utils.ImageUtils;
 import com.kayako.sdk.android.k5.common.utils.ViewUtils;
-import com.kayako.sdk.android.k5.common.view.CropCircleTransformation;
 import com.kayako.sdk.helpcenter.articles.Article;
 
 /**
@@ -68,11 +67,7 @@ public class ArticleFragment extends BaseStateFragment implements ArticleContrac
     @Override
     public void setAuthorAvatar(String avatarUrl) {
         ImageView authorAvatar = (ImageView) mRoot.findViewById(R.id.ko__article_author_avatar);
-        Glide.with(getContext())
-                .load(avatarUrl)
-                .bitmapTransform(new CropCircleTransformation(getContext()))
-                .placeholder(R.color.ko__avatar_image_background)
-                .into(authorAvatar);
+        ImageUtils.setAvatarImage(getContext(), authorAvatar, avatarUrl);
     }
 
     @Override
