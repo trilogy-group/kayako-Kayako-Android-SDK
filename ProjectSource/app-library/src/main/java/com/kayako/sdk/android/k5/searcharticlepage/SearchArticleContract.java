@@ -4,6 +4,7 @@ import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.mvp.BaseData;
 import com.kayako.sdk.android.k5.common.mvp.BasePresenter;
 import com.kayako.sdk.android.k5.common.mvp.BaseView;
+import com.kayako.sdk.error.KayakoException;
 import com.kayako.sdk.helpcenter.articles.Article;
 import com.kayako.sdk.helpcenter.search.SearchArticle;
 
@@ -15,7 +16,7 @@ import java.util.List;
 public interface SearchArticleContract {
 
     interface Data extends BaseData {
-        List<SearchArticle> searchArticles(String query, int offset, int limit);
+        List<SearchArticle> searchArticles(String query, int offset, int limit) throws KayakoException;
     }
 
     interface View extends BaseView {

@@ -4,7 +4,7 @@ import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.list.HeaderListItem;
 import com.kayako.sdk.android.k5.common.adapter.list.ListItem;
 import com.kayako.sdk.android.k5.common.adapter.searchlist.SearchListItem;
-import com.kayako.sdk.helpcenter.base.Resource;
+import com.kayako.sdk.base.parser.Resource;
 import com.kayako.sdk.helpcenter.category.Category;
 import com.kayako.sdk.helpcenter.section.Section;
 

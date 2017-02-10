@@ -1,7 +1,7 @@
 package com.kayako.sdk.android.k5.common.adapter.spinnerlist;
 
 
-import com.kayako.sdk.helpcenter.base.Resource;
+import com.kayako.sdk.base.parser.Resource;
 
 public class SpinnerItem {
 

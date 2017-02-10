@@ -1,6 +1,7 @@
 package com.kayako.sdk.android.k5.sectionbycategorypage;
 
 import com.kayako.sdk.android.k5.core.HelpCenterPref;
+import com.kayako.sdk.error.KayakoException;
 import com.kayako.sdk.helpcenter.HelpCenter;
 import com.kayako.sdk.helpcenter.category.Category;
 import com.kayako.sdk.helpcenter.section.Section;
@@ -29,7 +30,7 @@ public class SectionByCategoryRepository implements SectionByCategoryContract.Da
         mLocale = locale;
     }
 
-    public List<Category> getCategories(boolean useCache) {
+    public List<Category> getCategories(boolean useCache) throws KayakoException {
         if (useCache && areCategoriesCached()) {
             return mCategories;
         } else {
@@ -37,7 +38,7 @@ public class SectionByCategoryRepository implements SectionByCategoryContract.Da
         }
     }
 
-    public Map<Category, List<Section>> getSectionsByCategory(List<Category> categories, boolean useCache) {
+    public Map<Category, List<Section>> getSectionsByCategory(List<Category> categories, boolean useCache) throws KayakoException{
         if (!areCategoriesCached()) {
             throw new NullPointerException("Categories have not been fetched yet. Please call getCategories() first");
         }

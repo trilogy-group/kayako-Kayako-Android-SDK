@@ -1,6 +1,7 @@
 package com.kayako.sdk.android.k5.sectionbycategorypage;
 
 import com.kayako.sdk.android.k5.core.HelpCenterPref;
+import com.kayako.sdk.error.KayakoException;
 import com.kayako.sdk.helpcenter.HelpCenter;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class SectionByCategoryContainerRepository implements SectionByCategoryCo
     }
 
     @Override
-    public List<com.kayako.sdk.helpcenter.locale.Locale> getPublicLocales(boolean useCacheIfAvailable) {
+    public List<com.kayako.sdk.helpcenter.locale.Locale> getPublicLocales(boolean useCacheIfAvailable) throws KayakoException{
 
         if (!useCacheIfAvailable || mLocales == null) {
             mLocales = mHelpCenter.getLocales();

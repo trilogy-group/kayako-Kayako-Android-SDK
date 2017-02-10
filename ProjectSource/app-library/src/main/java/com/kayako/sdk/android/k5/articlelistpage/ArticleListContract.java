@@ -5,6 +5,7 @@ import com.kayako.sdk.android.k5.common.adapter.list.ListItem;
 import com.kayako.sdk.android.k5.common.mvp.BaseData;
 import com.kayako.sdk.android.k5.common.mvp.BasePresenter;
 import com.kayako.sdk.android.k5.common.mvp.BaseView;
+import com.kayako.sdk.error.KayakoException;
 import com.kayako.sdk.helpcenter.articles.Article;
 import com.kayako.sdk.helpcenter.section.Section;
 
@@ -16,7 +17,7 @@ import java.util.List;
 public interface ArticleListContract {
 
     interface Data extends BaseData {
-        List<Article> getArticles(long sectionId, int offset, int limit, boolean useCache);
+        List<Article> getArticles(long sectionId, int offset, int limit, boolean useCache) throws KayakoException;
 
         boolean isCached(long sectionId);
 

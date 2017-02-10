@@ -1,5 +1,6 @@
 package com.kayako.sdk.android.k5.searcharticlepage;
 
+import com.kayako.sdk.error.KayakoException;
 import com.kayako.sdk.helpcenter.HelpCenter;
 import com.kayako.sdk.helpcenter.search.SearchArticle;
 
@@ -18,7 +19,7 @@ public class SearchArticleRepository implements SearchArticleContract.Data {
     }
 
     @Override
-    public List<SearchArticle> searchArticles(String query, int offset, int limit) {
+    public List<SearchArticle> searchArticles(String query, int offset, int limit) throws KayakoException {
         return mHelpCenter.getSearchArticles(query, offset, limit);
     }
 

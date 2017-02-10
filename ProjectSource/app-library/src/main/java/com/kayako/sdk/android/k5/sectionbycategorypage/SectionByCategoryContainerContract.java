@@ -4,6 +4,7 @@ import com.kayako.sdk.android.k5.common.adapter.spinnerlist.SpinnerItem;
 import com.kayako.sdk.android.k5.common.mvp.BaseData;
 import com.kayako.sdk.android.k5.common.mvp.BasePresenter;
 import com.kayako.sdk.android.k5.common.mvp.BaseView;
+import com.kayako.sdk.error.KayakoException;
 import com.kayako.sdk.helpcenter.locale.Locale;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
 public interface SectionByCategoryContainerContract {
 
     interface Data extends BaseData {
-        List<Locale> getPublicLocales(boolean useCache);
+        List<Locale> getPublicLocales(boolean useCache) throws KayakoException;
 
         boolean isCached();
 

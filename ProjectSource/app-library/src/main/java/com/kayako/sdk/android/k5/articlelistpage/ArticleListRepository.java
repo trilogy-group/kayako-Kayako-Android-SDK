@@ -1,6 +1,7 @@
 package com.kayako.sdk.android.k5.articlelistpage;
 
 import com.kayako.sdk.android.k5.core.HelpCenterPref;
+import com.kayako.sdk.error.KayakoException;
 import com.kayako.sdk.helpcenter.HelpCenter;
 import com.kayako.sdk.helpcenter.articles.Article;
 
@@ -26,7 +27,7 @@ public class ArticleListRepository implements ArticleListContract.Data {
     }
 
     @Override
-    public List<Article> getArticles(long sectionId, int offset, int limit, boolean useCache) {
+    public List<Article> getArticles(long sectionId, int offset, int limit, boolean useCache) throws KayakoException{
         if (!useCache || mArticles == null || mArticles.size() == 0 || mSectionId != sectionId) {
             mSectionId = sectionId;
             return mArticles = mHelpCenter.getArticles(sectionId, offset, limit);
