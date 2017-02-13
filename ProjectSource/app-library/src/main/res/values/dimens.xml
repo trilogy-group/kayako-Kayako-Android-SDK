@@ -28,4 +28,11 @@
     <dimen name="ko__messenger_attachment_max_height">160dp</dimen>
     <dimen name="ko__messenger_channel_size">18dp</dimen>
 
+    <dimen name="ko__conversation_list_item_avatar_size">45dp</dimen>
+    <dimen name="ko__conversation_list_item_avatar_with_assignee_size">30dp</dimen>
+    <dimen name="ko__conversation_list_item_assignee_avatar_size">30dp</dimen>
+    <dimen name="ko__conversation_list_item_assignee_avatar_margin_top_left_corner">15dp</dimen>
+    <dimen name="ko__conversation_list_item_gap_between_avatar_and_messages">16dp</dimen>
+
+
 </resources>

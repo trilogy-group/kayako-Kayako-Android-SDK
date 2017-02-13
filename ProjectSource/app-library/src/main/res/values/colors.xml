@@ -81,5 +81,18 @@
     <color name="ko__messenger_unread_separator_line_color">#F1703F</color>
     <color name="ko__messenger_unread_separator_text_color">#F1703F</color>
 
+    <!-- Conversation -->
+    <color name="ko_conversation_item_dot_separator_color">#D1D5D7</color>
+    <color name="ko__conversation_item_subject_text_color">#5F6C73</color>
+    <color name="ko__conversation_item_preview_text_color">#838D94</color>
+    <color name="ko__conversation_item_default_text_color">#A1AAAF</color>
+    <color name="ko__conversation_item_avatar_default_background_color">#808080</color>
+    <color name="ko__conversation_item_name_text_color">#2d3138</color>
+
+    <color name="conversation_item_status_blue">#4EAFCB</color>
+    <color name="conversation_item_status_yellow">#E0AF2A</color>
+    <color name="conversation_item_status_green">#4EAC5E</color>
+    <color name="conversation_item_status_gray">#A1AAAF</color>
+
 
 </resources>

@@ -47,7 +47,7 @@ public class MessengerListFragment extends BaseListFragment {
 
     private MessengerAdapter mMessengerAdapter;
 
-    private static final boolean SHOW_SAMPLE_DATA = true;
+    private static final boolean SHOW_SAMPLE_DATA = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

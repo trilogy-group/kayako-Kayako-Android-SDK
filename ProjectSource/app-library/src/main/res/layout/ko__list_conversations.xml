@@ -1,0 +1,98 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:selectableItemBackground"
+    android:gravity="center"
+    android:minHeight="50dp"
+    android:padding="16dp">
+
+    <com.kayako.sdk.android.k5.common.view.CircleImageView
+        android:id="@+id/avatar"
+        android:layout_width="@dimen/ko__conversation_list_item_avatar_size"
+        android:layout_height="@dimen/ko__conversation_list_item_avatar_size"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        tools:src="@color/ko__conversation_item_avatar_default_background_color" />
+
+    <LinearLayout
+        android:id="@+id/info"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/name"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/name"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/status"
+            fontPath="fonts/SourceSansPro-Regular.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:maxLines="1"
+            android:textSize="12sp"
+            tools:ignore="MissingPrefix"
+            tools:text="Pending" />
+
+        <include
+            layout="@layout/ko__include_dot_separator"
+            android:layout_width="4dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp" />
+
+
+        <TextView
+            android:id="@+id/time"
+            fontPath="fonts/SourceSansPro-Regular.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:maxLines="1"
+            android:textColor="@color/ko__conversation_item_default_text_color"
+            android:textSize="12sp"
+            tools:ignore="MissingPrefix"
+            tools:text="3h" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/subject"
+        fontPath="fonts/SourceSansPro-Regular.otf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/avatar"
+        android:layout_alignParentEnd="true"
+        android:layout_marginLeft="@dimen/ko__conversation_list_item_gap_between_avatar_and_messages"
+        android:layout_marginTop="4dp"
+        android:layout_toRightOf="@+id/avatar"
+        android:ellipsize="end"
+        android:gravity="center_vertical|left"
+        android:maxLines="1"
+        android:textColor="@color/ko__conversation_item_subject_text_color"
+        android:textSize="16sp"
+        tools:ignore="MissingPrefix"
+        tools:text="@string/lorem_ipsum"
+        android:layout_alignParentRight="true" />
+
+    <TextView
+        android:id="@+id/name"
+        fontPath="fonts/SourceSansPro-Semibold.otf"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/avatar"
+        android:layout_marginLeft="@dimen/ko__conversation_list_item_gap_between_avatar_and_messages"
+        android:layout_toEndOf="@+id/avatar"
+        android:layout_toStartOf="@+id/info"
+        android:ellipsize="end"
+        android:gravity="center_vertical|left"
+        android:maxLines="1"
+        android:textColor="@color/ko__conversation_item_name_text_color"
+        android:textSize="16sp"
+        tools:ignore="MissingPrefix"
+        tools:text="Himanshu Likhyani"
+        android:layout_toLeftOf="@+id/info"
+        android:layout_toRightOf="@+id/avatar" />
+
+
+</RelativeLayout>

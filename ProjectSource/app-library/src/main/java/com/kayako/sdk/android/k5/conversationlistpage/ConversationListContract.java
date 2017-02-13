@@ -1,0 +1,61 @@
+package com.kayako.sdk.android.k5.conversationlistpage;
+
+import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.mvp.BaseData;
+import com.kayako.sdk.android.k5.common.mvp.BasePresenter;
+import com.kayako.sdk.android.k5.common.mvp.BaseView;
+import com.kayako.sdk.messenger.conversation.Conversation;
+
+import java.util.List;
+
+public class ConversationListContract {
+
+    interface Data extends BaseData {
+        void getConversationList(OnLoadConversationsListener listener, int offset, int limit);
+    }
+
+    interface View extends BaseView {
+
+        void setupList(List<BaseListItem> conversations);
+
+        void appendToEndOfListAndStopLoadMoreProgress(List<BaseListItem> conversations);
+
+        void showEmptyView();
+
+        void showErrorView();
+
+        void showLoadingView();
+
+        void openMessageListPage(Long id);
+
+        void showMessage(String message);
+
+        void setListHasMoreItems(boolean hasMore);
+
+        void configureLoadMoreView(boolean showLoadMoreProgress);
+
+        boolean getIfListHasMoreItems();
+    }
+
+    interface Presenter extends BasePresenter<View> {
+
+        void setData(Data mData);
+
+        void initPage();
+
+        void closePage();
+
+        void onLoadMoreItems();
+
+        void onClickConversation(Conversation conversation);
+
+        void onClickRetryOnError();
+    }
+
+
+    interface OnLoadConversationsListener {
+        void onSuccess(List<Conversation> conversations);
+
+        void onFailure();
+    }
+}

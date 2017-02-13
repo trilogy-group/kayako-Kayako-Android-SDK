@@ -6,6 +6,7 @@ import android.support.annotation.DrawableRes;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.signature.StringSignature;
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.ChannelDecoration;
@@ -27,7 +28,9 @@ public class ImageUtils {
                     .load(avatarUrl)
                     .bitmapTransform(new CropCircleTransformation(context))
                     .placeholder(R.color.ko__avatar_image_background)
-                    .signature(new StringSignature(avatarUrl))
+                    .centerCrop()
+                    .skipMemoryCache(false) // false because avatars are repeatedly used in message listing, case listing, etc - when true, it shows placeholders
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(avatarView);
         } else {
             Glide.with(context)
@@ -35,11 +38,14 @@ public class ImageUtils {
                     .bitmapTransform(new CropCircleTransformation(context))
                     .into(avatarView);
         }
+
+
     }
 
     /**
      * Set public image url imageView and specify default placeholder resource
-     *  @param context
+     *
+     * @param context
      * @param imageView
      * @param imageUrl
      * @param placeholderDrawable
@@ -50,6 +56,9 @@ public class ImageUtils {
                     .load(imageUrl)
                     .signature(new StringSignature(imageUrl))
                     .placeholder(placeholderDrawable)
+                    .centerCrop()
+                    .skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
                     .into(imageView);
         } else {
             Glide.with(context)
@@ -70,7 +79,9 @@ public class ImageUtils {
             Glide.with(context)
                     .load(avatarUrl)
                     .placeholder(R.color.ko__avatar_image_background)
-                    .signature(new StringSignature(avatarUrl))
+                    .centerCrop()
+                    .skipMemoryCache(false) // false because avatars are repeatedly used in message listing, case listing, etc - when true, it shows placeholders
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(avatarView);
         } else {
             Glide.with(context)

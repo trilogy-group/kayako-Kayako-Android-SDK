@@ -1,10 +1,10 @@
 package com.kayako.sdk.android.k5.core;
 
 import android.content.Context;
-import android.content.Intent;
 import android.text.TextUtils;
 import android.webkit.URLUtil;
 
+import com.kayako.sdk.android.k5.activities.KayakoConversationListActivity;
 import com.kayako.sdk.android.k5.activities.KayakoHelpCenterActivity;
 
 import java.util.Locale;
@@ -20,6 +20,7 @@ public class Kayako {
     public static void initialize(Context applicationContext) {
         mInstance = new Kayako(applicationContext);
         HelpCenterPref.createInstance(applicationContext);
+        MessengerPref.createInstance(applicationContext);
     }
 
     public Kayako(Context mAppContext) {
@@ -38,6 +39,16 @@ public class Kayako {
     }
 
     public void openHelpCenter(Context context, String helpCenterUrl, Locale defaultLocale) {
+        setUpCommonCredentials(helpCenterUrl, defaultLocale);
+        context.startActivity(KayakoHelpCenterActivity.getIntent(context));
+    }
+
+    public void openMessenger(Context context, String helpCenterUrl, Locale defaultLocale) {
+        setUpCommonCredentials(helpCenterUrl, defaultLocale);
+        context.startActivity(KayakoConversationListActivity.getIntent(context));
+    }
+
+    public void setUpCommonCredentials(String helpCenterUrl, Locale defaultLocale) {
         if (!URLUtil.isValidUrl(helpCenterUrl)) {
             throw new IllegalArgumentException("Help Center Url provided is not valid");
         }
@@ -48,7 +59,6 @@ public class Kayako {
 
         HelpCenterPref.getInstance().setHelpCenterUrl(helpCenterUrl);
         HelpCenterPref.getInstance().setLocale(defaultLocale);
-
-        context.startActivity(KayakoHelpCenterActivity.getIntent(context));
     }
+
 }
