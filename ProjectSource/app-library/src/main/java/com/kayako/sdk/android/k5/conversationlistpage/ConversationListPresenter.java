@@ -1,6 +1,5 @@
 package com.kayako.sdk.android.k5.conversationlistpage;
 
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
@@ -17,7 +16,7 @@ public class ConversationListPresenter implements ConversationListContract.Prese
     private ConversationListContract.Data mData;
     private ConversationListContract.View mView;
 
-    private static final int LIMIT = 2;
+    private static final int LIMIT = 20;
     private int mOffset = 0;
 
     public ConversationListPresenter(ConversationListContract.View mView, ConversationListContract.Data mData) {

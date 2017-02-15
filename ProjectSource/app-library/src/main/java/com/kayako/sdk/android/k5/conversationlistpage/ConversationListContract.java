@@ -52,10 +52,18 @@ public class ConversationListContract {
         void onClickRetryOnError();
     }
 
+    interface ConfigureView {
+
+        void setOnScrollListener(OnScrollListener onScrollListener);
+    }
 
     interface OnLoadConversationsListener {
         void onSuccess(List<Conversation> conversations);
 
         void onFailure();
+    }
+
+    interface OnScrollListener {
+        void onScroll(boolean isScrolling);
     }
 }

@@ -13,6 +13,12 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
+    <style name="Ko__MessengerTheme" parent="Ko__AppTheme">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <!-- TODO: Configure all kinds of styles here -->
+    </style>
+
     <style name="Ko__ButtonStyle">
         <item name="android:background">@drawable/ko__retry_button_background</item>
         <item name="android:textColor">@color/ko__white</item>

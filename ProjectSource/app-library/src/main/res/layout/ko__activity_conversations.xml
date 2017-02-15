@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/ko__conversation_list_container"
-        android:name="com.kayako.sdk.android.k5.conversationlistpage.ConversationListFragment"
+        android:name="com.kayako.sdk.android.k5.conversationlistpage.ConversationListContainerFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

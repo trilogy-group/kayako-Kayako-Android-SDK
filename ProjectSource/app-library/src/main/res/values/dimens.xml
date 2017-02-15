@@ -33,6 +33,8 @@
     <dimen name="ko__conversation_list_item_assignee_avatar_size">30dp</dimen>
     <dimen name="ko__conversation_list_item_assignee_avatar_margin_top_left_corner">15dp</dimen>
     <dimen name="ko__conversation_list_item_gap_between_avatar_and_messages">16dp</dimen>
+    <dimen name="ko__conversation_list_new_conversation_button_width">234dp</dimen>
+    <dimen name="ko__conversation_list_new_conversation_button_height">40dp</dimen>
 
 
 </resources>

@@ -34,6 +34,16 @@
             android:name="com.kayako.sdk.android.k5.activities.KayakoMessengerActivity"
             android:theme="@style/HelpCenterTheme" />
 
+        <!--TODO: Figure out the theming -->
+        <!--TODO: Document the activities -->
+
+        <activity
+            android:name="com.kayako.sdk.android.k5.activities.KayakoConversationListActivity"
+            android:theme="@style/Ko__MessengerTheme" /> <!-- Replace with local style-->
+        <activity
+            android:name="com.kayako.sdk.android.k5.activities.KayakoSelectConversationActivity"
+            android:theme="@style/Ko__MessengerTheme" />
+
     </application>
 
 </manifest>

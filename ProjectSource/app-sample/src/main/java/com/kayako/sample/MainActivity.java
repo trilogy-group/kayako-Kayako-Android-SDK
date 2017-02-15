@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.kayako.sdk.android.k5.activities.KayakoMessengerActivity;
 import com.kayako.sdk.android.k5.core.Kayako;
 
 import java.util.Locale;
@@ -66,7 +65,10 @@ public class MainActivity extends AppCompatActivity {
         buttonMessenger.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(KayakoMessengerActivity.getIntent(MainActivity.this));
+
+                String url = editText.getText().toString();
+                Kayako.getInstance().openMessenger(MainActivity.this, url, Locale.US);
+                // startActivity(KayakoMessengerActivity.getIntent(MainActivity.this));
             }
         });
 

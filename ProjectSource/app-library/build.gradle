@@ -1,4 +1,3 @@
-
 def appName = "Kayko Android SDK"
 
 def appGroupId = "com.kayako.messenger"
@@ -117,11 +116,19 @@ artifacts {
 task findConventions << {
     println project.getConvention()
 }
+allprojects {
 
-repositories {
-    mavenCentral() // jcenter() works as well because it pulls from Maven Central
-    maven {
-        url "http://dl.bintray.com/kayako-support/kayako-devkits"
+    repositories {
+        mavenCentral() // jcenter() works as well because it pulls from Maven Central
+        maven {
+            url "http://dl.bintray.com/kayako-support/kayako-devkits"
+        }
+
+        maven { url 'https://jitpack.io' }
+
+        flatDir {
+            dirs 'libs'
+        }
     }
 }
 
@@ -134,6 +141,8 @@ dependencies {
     compile 'com.squareup.okio:okio:1.9.0'
     compile 'com.google.code.gson:gson:2.4'
     compile 'com.github.bumptech.glide:glide:3.7.0'
+
+
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:1.10.19'
     androidTestCompile 'com.android.support:support-annotations:24.2.0'
@@ -147,5 +156,10 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude module: 'recyclerview-v7'
     }
-    compile 'com.kayako:kayako:0.0.3'
+
+    // TODO: Uncomment when production ready
+    // compile 'com.kayako:kayako:0.0.3'
+    // compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.github.metalwihen:Kayako-Java-SDK:v0.0.9'
+
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
@@ -19,10 +20,14 @@ import com.kayako.sdk.messenger.conversation.Conversation;
 
 import java.util.List;
 
-public class ConversationListFragment extends BaseListFragment implements ConversationListContract.View {
+import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
+
+public class ConversationListFragment extends BaseListFragment implements ConversationListContract.View, ConversationListContract.ConfigureView {
 
     private ConversationListContract.Presenter mPresenter;
     private Handler mHandler;
+    private ConversationListContract.OnScrollListener mScrollListener;
+
     // TODO: Receive fingerprintId
     // TODO: Redesign the Views - placeholders for loading
 
@@ -68,6 +73,37 @@ public class ConversationListFragment extends BaseListFragment implements Conver
             @Override
             public void loadMoreItems() {
                 mPresenter.onLoadMoreItems();
+            }
+        });
+
+        super.setScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (mScrollListener == null) {
+                    return;
+                }
+                if (dy != 0) {
+                    mScrollListener.onScroll(true);
+                } else {
+                    mScrollListener.onScroll(false);
+                }
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if (mScrollListener == null) {
+                    return;
+                }
+
+                switch (newState) {
+                    case SCROLL_STATE_IDLE:
+                        mScrollListener.onScroll(false);
+                        break;
+                }
             }
         });
 
@@ -164,5 +200,10 @@ public class ConversationListFragment extends BaseListFragment implements Conver
         }
 
         return hasMoreItems();
+    }
+
+    @Override
+    public void setOnScrollListener(ConversationListContract.OnScrollListener onScrollListener) {
+        mScrollListener = onScrollListener;
     }
 }
