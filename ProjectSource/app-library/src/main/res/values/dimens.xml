@@ -36,5 +36,9 @@
     <dimen name="ko__conversation_list_new_conversation_button_width">234dp</dimen>
     <dimen name="ko__conversation_list_new_conversation_button_height">40dp</dimen>
 
+    <dimen name="ko__messenger_input_item_submit_button_padding">8dp</dimen>
+    <dimen name="ko__messenger_input_container_stroke_width">1dp</dimen>
+    <dimen name="ko__messenger_input_item_corner_top">@dimen/ko__messenger_chat_bubble_corner</dimen>
+    <dimen name="ko__messenger_input_item_corner_bottom">0dp</dimen>
 
 </resources>

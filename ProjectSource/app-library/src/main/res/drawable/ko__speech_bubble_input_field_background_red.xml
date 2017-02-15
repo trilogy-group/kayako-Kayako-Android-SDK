@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <solid android:color="@color/ko__messenger_input_field_red_background_color" />
+
+    <stroke
+        android:width="@dimen/ko__messenger_input_container_stroke_width"
+        android:color="@color/ko__messenger_input_field_red_hint_text_color" />
+
+    <corners
+        android:bottomLeftRadius="0dp"
+        android:bottomRightRadius="0dp"
+        android:topLeftRadius="@dimen/ko__messenger_chat_bubble_corner"
+        android:topRightRadius="@dimen/ko__messenger_chat_bubble_corner" />
+</shape>

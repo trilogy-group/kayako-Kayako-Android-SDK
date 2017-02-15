@@ -50,4 +50,10 @@
         <item name="android:textSize">10sp</item>
         <item name="android:layout_margin">@dimen/ko__messenger_list_item_time_margin</item>
     </style>
+
+    <style name="Ko__ChatBubbleInputComponentStyle" parent="Ko__ChatBubbleStyle">
+        <item name="android:background">@drawable/ko__speech_bubble_other</item>
+        <item name="android:textColor">@color/ko__messenger_speech_bubble_other_text_color</item>
+    </style>
+
 </resources>

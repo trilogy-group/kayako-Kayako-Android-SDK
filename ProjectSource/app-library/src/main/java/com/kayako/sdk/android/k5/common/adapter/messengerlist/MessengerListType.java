@@ -26,4 +26,7 @@ public interface MessengerListType extends LoadMoreListType {
 
     // Info Types
     int SIMPLE_INFO = 15;
+
+    // Input Types
+    int INPUT_EMAIL = 16;
 }

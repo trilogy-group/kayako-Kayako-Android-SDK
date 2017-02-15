@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/ko__messenger_list_item_margin"
+    android:paddingRight="@dimen/ko__messenger_list_item_margin"
+    android:paddingTop="@dimen/ko__messenger_list_item_margin">
+
+    <TextView
+        android:id="@+id/message_instruction"
+        style="@style/Ko__ChatBubbleStyleOther"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/ko__messenger_gap_between_avatar_and_message"
+        android:layout_marginRight="@dimen/ko__messenger_gap_between_message_and_end"
+        android:layout_toRightOf="@+id/avatar"
+        android:gravity="start|center_vertical"
+        tools:text="We need your email address to start the conversation" />
+
+
+    <!-- TODO: Make sure that the backgrounds, colours, are all extracted as ids  -->
+    <!-- TODO: Change the  LinearLayout background -  -->
+    <LinearLayout
+        android:id="@+id/input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/message_instruction"
+        android:layout_marginLeft="@dimen/ko__messenger_gap_between_avatar_and_message"
+        android:layout_marginRight="@dimen/ko__messenger_gap_between_message_and_end"
+        android:layout_marginTop="4dp"
+        android:layout_toRightOf="@+id/avatar"
+        android:background="@drawable/ko__speech_bubble_input_container_background"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/input_field_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ko__speech_bubble_input_field_background_blue"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/message_hint"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:textColor="@color/ko__messenger_input_field_blue_hint_text_color"
+                android:textSize="12sp" />
+
+            <EditText
+                android:id="@+id/input_email_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="6dp"
+                android:ellipsize="end"
+                android:hint="monco@hunter.com"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/ko__messenger_speech_bubble_other_background_color" />
+
+        <Button
+            android:id="@+id/submit_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:gravity="center"
+            android:padding="@dimen/ko__messenger_input_item_submit_button_padding"
+            tools:text="Submit" />
+
+    </LinearLayout>
+
+    <com.kayako.sdk.android.k5.common.view.CircleImageView
+        android:id="@+id/avatar"
+        android:layout_width="@dimen/ko__messenger_avatar_size"
+        android:layout_height="@dimen/ko__messenger_avatar_size"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        tools:src="#808080" />
+
+</RelativeLayout>

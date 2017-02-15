@@ -1,6 +1,5 @@
 package com.kayako.sdk.android.k5.common.adapter.messengerlist;
 
-import android.support.annotation.DrawableRes;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
@@ -11,7 +10,30 @@ import android.view.ViewGroup;
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.loadmorelist.EndlessRecyclerViewScrollAdapter;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.*;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageContinuedOtherListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageContinuedOtherViewHolder;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageContinuedSelfListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageContinuedSelfViewHolder;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageOtherListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageOtherViewHolder;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageSelfListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageSelfViewHolder;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.DateSeparatorListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.DateSeparatorViewHolder;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.EmptyViewHolder;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputEmailListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputEmailViewHolder;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFieldHelper;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageContinuedOtherListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageContinuedOtherViewHolder;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageContinuedSelfListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageContinuedSelfViewHolder;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageOtherListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageOtherViewHolder;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageSelfListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageSelfViewHolder;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.UnreadSeparatorListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.UnreadSeparatorViewHolder;
 import com.kayako.sdk.android.k5.common.utils.DateTimeUtils;
 import com.kayako.sdk.android.k5.common.utils.ImageUtils;
 import com.kayako.sdk.android.k5.core.Kayako;
@@ -301,6 +323,15 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 // Nothing to modify
                 break;
 
+            case MessengerListType.INPUT_EMAIL:
+                final InputEmailViewHolder inputEmailViewHolder = (InputEmailViewHolder) viewHolder;
+                final InputEmailListItem inputEmailListItem = (InputEmailListItem) getData().get(position);
+
+                InputFieldHelper.configureAvatar(inputEmailViewHolder, 0); // TODO: Sending 0 temporarily
+                InputFieldHelper.configureEmailFieldText(inputEmailViewHolder);
+                InputFieldHelper.configureOnClickSubmitListener(inputEmailViewHolder, inputEmailListItem.getOnClickSubmitListener());
+                break;
+
             default:
                 super.onBindViewHolder(viewHolder, position);
                 break;
@@ -356,6 +387,11 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
             case MessengerListType.EMPTY_SEPARATOR:
                 View emptySeparatorView = LayoutInflater.from(parent.getContext()).inflate(R.layout.ko__list_messenger_empty_separator, parent, false);
                 return new EmptyViewHolder(emptySeparatorView);
+
+            case MessengerListType.INPUT_EMAIL:
+                View inputEmailView = LayoutInflater.from(parent.getContext()).inflate(R.layout.ko__list_messenger_input_email, parent, false);
+                return new InputEmailViewHolder(inputEmailView);
+
             default:
                 return super.onCreateViewHolder(parent, viewType);
         }

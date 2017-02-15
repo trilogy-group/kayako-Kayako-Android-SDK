@@ -94,5 +94,12 @@
     <color name="conversation_item_status_green">#4EAC5E</color>
     <color name="conversation_item_status_gray">#A1AAAF</color>
 
+    <color name="ko__messenger_input_container_stroke_color">#EDEEEF</color>
+    <color name="ko__messenger_input_field_red_background_color">#FCEEEB</color>
+    <color name="ko__messenger_input_field_red_hint_text_color">#DB3F24</color>
+    <color name="ko__messenger_input_field_blue_background_color">#EFF8FA</color>
+    <color name="ko__messenger_input_field_blue_hint_text_color">#5F6C73</color>
+    <color name="ko__messenger_input_field_white_background_color">#FFFFFF</color>
+    <color name="ko__messenger_input_field_white_hint_text_color">#838D94</color>
 
 </resources>
