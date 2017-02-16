@@ -33,7 +33,7 @@ public class InputFieldEmailHelper {
         viewHolder.submitButton.setText(context.getResources().getString(R.string.ko__label_submit));
     }
 
-    private static void setDefaultFieldState(InputEmailViewHolder viewHolder) {
+    private static void setFocusedFieldState(InputEmailViewHolder viewHolder) {
         Context context = Kayako.getApplicationContext();
         viewHolder.emailFieldLayout.setBackgroundResource(INPUT_FIELD_BACKGROUND_COLOR_DEFAULT);
         viewHolder.messageHint.setTextColor(context.getResources().getColor(HINT_TEXT_COLOR_DEFAULT));
@@ -41,7 +41,7 @@ public class InputFieldEmailHelper {
         viewHolder.submitButton.setText(context.getResources().getString(R.string.ko__label_submit));
     }
 
-    private static void setFilledFieldState(InputEmailViewHolder viewHolder) {
+    private static void setUnfocusedFieldState(InputEmailViewHolder viewHolder) {
         Context context = Kayako.getApplicationContext();
         viewHolder.emailFieldLayout.setBackgroundResource(INPUT_FIELD_BACKGROUND_COLOR_FILLED);
         viewHolder.messageHint.setTextColor(context.getResources().getColor(HINT_TEXT_COLOR_FILLED));
@@ -53,14 +53,18 @@ public class InputFieldEmailHelper {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
+    private static boolean isFocused(View view) {
+        return view.isFocused(); // TODO: Check if this is working when there is more than one focusable entity
+    }
+
     private static void setEmailFieldState(InputEmailViewHolder viewHolder, boolean validateEmail) {
         String enteredEmail = viewHolder.emailEditText.getText().toString();
-        if (!validateEmail && (enteredEmail == null || enteredEmail.length() == 0)) {
-            setDefaultFieldState(viewHolder);
-        } else if (validateEmail && !isValidEmailField(viewHolder.emailEditText.getText().toString())) {
+        if (validateEmail && !isValidEmailField(enteredEmail)) {
             setErrorFieldState(viewHolder);
+        } else if (isFocused(viewHolder.emailEditText)) {
+            setFocusedFieldState(viewHolder);
         } else {
-            setFilledFieldState(viewHolder);
+            setUnfocusedFieldState(viewHolder);
         }
     }
 
@@ -74,7 +78,7 @@ public class InputFieldEmailHelper {
             InputFieldHelper.enableInputLayout(viewHolder);
 
             // Set up email field
-            setDefaultFieldState(viewHolder);
+            setFocusedFieldState(viewHolder);
             viewHolder.emailEditText.setHint(R.string.ko__messenger_input_email_edittext_hint);
             viewHolder.emailEditText.addTextChangedListener(new TextWatcher() {
                 @Override
