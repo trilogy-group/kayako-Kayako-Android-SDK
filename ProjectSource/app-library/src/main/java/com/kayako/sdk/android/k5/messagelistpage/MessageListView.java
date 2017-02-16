@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.kayako.sdk.android.k5.activities.KayakoSelectConversationActivity;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.BotMessageListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputEmailListItem;
 import com.kayako.sdk.android.k5.common.fragments.MessengerListFragment;
 
@@ -45,6 +46,9 @@ public class MessageListView extends MessengerListFragment implements MessageLis
 
     @Override
     public void setupList(List<BaseListItem> messageList) {
+        // TODO: Test pre-submitted value
+        messageList.add(new InputEmailListItem("prefilled@yeah.com"));
+
         // TODO: Testing Submit button
         messageList.add(new InputEmailListItem(new InputEmailListItem.OnClickSubmitListener() {
             @Override
@@ -52,6 +56,9 @@ public class MessageListView extends MessengerListFragment implements MessageLis
                 Toast.makeText(getContext(), "SUBMIT WORKS", Toast.LENGTH_SHORT).show();
             }
         }));
+
+        // TODO: Testing BOT Message
+        messageList.add(new BotMessageListItem("What would you like to talk about?", 0, null));
 
         showListViewAndHideOthers();
         initMessengerList(messageList);

@@ -7,14 +7,14 @@ import android.widget.TextView;
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.view.CircleImageView;
 
-public class SimpleMessageOtherViewHolder extends RecyclerView.ViewHolder {
+public class BotMessageViewHolder extends RecyclerView.ViewHolder {
 
     public TextView message;
     public TextView time;
     public CircleImageView avatar;
     public CircleImageView channel;
 
-    public SimpleMessageOtherViewHolder(View itemView) {
+    public BotMessageViewHolder(View itemView) {
         super(itemView);
         avatar = (CircleImageView) itemView.findViewById(R.id.avatar);
         channel = (CircleImageView) itemView.findViewById(R.id.channel);

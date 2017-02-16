@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.loadmorelist.EndlessRecyclerViewScrollAdapter;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.BotMessageHelper;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.InputFieldEmailHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageContinuedOtherListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageContinuedOtherViewHolder;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageContinuedSelfListItem;
@@ -18,6 +20,8 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMes
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageOtherViewHolder;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageSelfListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageSelfViewHolder;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.BotMessageListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.BotMessageViewHolder;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.DateSeparatorListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.DateSeparatorViewHolder;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.EmptyViewHolder;
@@ -111,7 +115,6 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
 
                 setAvatarClickListenerOnView(simpleMessageOtherViewHolder.avatar, simpleMessageOtherListItem.getItemType(), simpleMessageOtherListItem.getId(), simpleMessageOtherListItem.getData());
                 setItemClickListenerOnView(simpleMessageOtherViewHolder.itemView, simpleMessageOtherListItem.getItemType(), simpleMessageOtherListItem.getId(), simpleMessageOtherListItem.getData());
-
                 break;
 
             case MessengerListType.SIMPLE_MESSAGE_CONTINUED_SELF:
@@ -322,7 +325,25 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 // Nothing to modify
                 break;
 
-            case MessengerListType.INPUT_EMAIL:
+            case MessengerListType.BOT_MESSAGE:
+                BotMessageListItem botMessageListItem = (BotMessageListItem) getData().get(position);
+                BotMessageViewHolder botMessageViewHolder = (BotMessageViewHolder) viewHolder;
+
+                botMessageViewHolder.message.setText(Html.fromHtml(botMessageListItem.getMessage()));
+                ImageUtils.setAvatarImage(Kayako.getApplicationContext(), botMessageViewHolder.avatar, BotMessageHelper.getBotDrawable());
+
+                if (botMessageListItem.getTime() == 0) {
+                    botMessageViewHolder.time.setVisibility(View.GONE);
+                } else {
+                    botMessageViewHolder.time.setVisibility(View.VISIBLE);
+                    botMessageViewHolder.time.setText(DateTimeUtils.formatTime(Kayako.getApplicationContext(), botMessageListItem.getTime()));
+                }
+
+                // No Item Click Listener
+                // No Avatar Click Listener
+                break;
+
+            case MessengerListType.INPUT_FIELD_EMAIL:
                 final InputEmailViewHolder inputEmailViewHolder = (InputEmailViewHolder) viewHolder;
                 final InputEmailListItem inputEmailListItem = (InputEmailListItem) getData().get(position);
 
@@ -385,7 +406,12 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 View emptySeparatorView = LayoutInflater.from(parent.getContext()).inflate(R.layout.ko__list_messenger_empty_separator, parent, false);
                 return new EmptyViewHolder(emptySeparatorView);
 
-            case MessengerListType.INPUT_EMAIL:
+            case MessengerListType.BOT_MESSAGE: // Note: Bot message shares the same layout as SIMPLE_MESSAGE_OTHER
+                View botMessageView = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.ko__list_messenger_simple_message_other, parent, false);
+                return new BotMessageViewHolder(botMessageView);
+
+            case MessengerListType.INPUT_FIELD_EMAIL:
                 View inputEmailView = LayoutInflater.from(parent.getContext()).inflate(R.layout.ko__list_messenger_input_field, parent, false);
                 return new InputEmailViewHolder(inputEmailView);
 

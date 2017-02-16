@@ -1,4 +1,4 @@
-package com.kayako.sdk.android.k5.common.adapter.messengerlist;
+package com.kayako.sdk.android.k5.common.adapter.messengerlist.helper;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -12,12 +12,17 @@ import android.view.View;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFieldViewHolder;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFieldlListItem;
 import com.kayako.sdk.android.k5.common.utils.ImageUtils;
 import com.kayako.sdk.android.k5.core.Kayako;
 
 public class InputFieldHelper {
 
     private InputFieldHelper() {
+    }
+
+    public static boolean isPreSubmittedField(InputFieldlListItem inputFieldlListItem) {
+        return inputFieldlListItem.hasSubmittedValue();
     }
 
     public static void configureInputField(InputFieldViewHolder viewHolder, @DrawableRes int avatarDrawableId, @StringRes int instructionMessageStringResId) {

@@ -1,4 +1,4 @@
-package com.kayako.sdk.android.k5.common.adapter.messengerlist;
+package com.kayako.sdk.android.k5.common.adapter.messengerlist.helper;
 
 import android.content.Context;
 import android.text.Editable;
@@ -65,44 +65,50 @@ public class InputFieldEmailHelper {
     }
 
     public static void configureInputEmailField(final InputEmailViewHolder viewHolder, final InputEmailListItem listItem) {
+        InputFieldHelper.configureInputField(viewHolder, BotMessageHelper.getBotDrawable(), R.string.ko__messenger_input_email_message_instruction);
 
         // Set up Input field
-        InputFieldHelper.configureInputField(viewHolder, R.drawable.ko__cat_in_box, R.string.ko__messenger_input_email_message_instruction);
-        InputFieldHelper.enableInputLayout(viewHolder);
+        if (listItem.hasSubmittedValue()) {
+            InputFieldHelper.enableSubmittedLayout(viewHolder, listItem.getSubmittedValue());
+        } else {
+            InputFieldHelper.enableInputLayout(viewHolder);
 
-        // Set up email field
-        setDefaultFieldState(viewHolder);
-        viewHolder.emailEditText.setHint(R.string.ko__messenger_input_email_edittext_hint);
-        viewHolder.emailEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            // Set up email field
+            setDefaultFieldState(viewHolder);
+            viewHolder.emailEditText.setHint(R.string.ko__messenger_input_email_edittext_hint);
+            viewHolder.emailEditText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                setEmailFieldState(viewHolder, false);
-            }
-        });
-
-        // Submit button
-        viewHolder.submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setEmailFieldState(viewHolder, true);
-
-                String email = viewHolder.emailEditText.getText().toString();
-                if (isValidEmailField(email)) {
-                    InputFieldHelper.enableSubmittedLayout(viewHolder, email);
-                    listItem.getOnClickSubmitListener().onClickSubmit(email);
                 }
-            }
-        });
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    setEmailFieldState(viewHolder, false);
+                }
+            });
+
+            // Submit button
+            viewHolder.submitButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setEmailFieldState(viewHolder, true);
+
+                    String email = viewHolder.emailEditText.getText().toString();
+                    if (isValidEmailField(email)) {
+                        InputFieldHelper.enableSubmittedLayout(viewHolder, email);
+                        listItem.getOnClickSubmitListener().onClickSubmit(email);
+                    }
+                }
+            });
+        }
+
+
     }
 
 }

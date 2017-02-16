@@ -28,5 +28,8 @@ public interface MessengerListType extends LoadMoreListType {
     int SIMPLE_INFO = 15;
 
     // Input Types
-    int INPUT_EMAIL = 16;
+    int INPUT_FIELD_EMAIL = 16;
+
+    // Bot Message
+    int BOT_MESSAGE = 17;
 }
