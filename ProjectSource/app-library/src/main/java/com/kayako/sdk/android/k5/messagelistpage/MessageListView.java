@@ -45,13 +45,13 @@ public class MessageListView extends MessengerListFragment implements MessageLis
 
     @Override
     public void setupList(List<BaseListItem> messageList) {
-        /* TODO: Testing Submit button
-            messageList.add(new InputEmailListItem(new InputEmailListItem.OnClickSubmitListener() {
+        // TODO: Testing Submit button
+        messageList.add(new InputEmailListItem(new InputEmailListItem.OnClickSubmitListener() {
             @Override
             public void onClickSubmit(String email) {
                 Toast.makeText(getContext(), "SUBMIT WORKS", Toast.LENGTH_SHORT).show();
             }
-        }));*/
+        }));
 
         showListViewAndHideOthers();
         initMessengerList(messageList);

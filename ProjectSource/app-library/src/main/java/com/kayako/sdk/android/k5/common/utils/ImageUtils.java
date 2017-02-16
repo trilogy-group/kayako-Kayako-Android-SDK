@@ -91,6 +91,23 @@ public class ImageUtils {
     }
 
     /**
+     * Set local drawable to imageview
+     *
+     * @param context
+     * @param avatarView
+     * @param avatarResId
+     */
+    public static void setAvatarImage(Context context, CircleImageView avatarView, int avatarResId) {
+        Glide.with(context)
+                .load(avatarResId)
+                .placeholder(R.color.ko__avatar_image_background)
+                .centerCrop()
+                .skipMemoryCache(false) // false because avatars are repeatedly used in message listing, case listing, etc - when true, it shows placeholders
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(avatarView);
+    }
+
+    /**
      * Set local drawable and background to CircleImageView
      *
      * @param context

@@ -23,7 +23,6 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.DateSeparator
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.EmptyViewHolder;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputEmailListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputEmailViewHolder;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFieldHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageContinuedOtherListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageContinuedOtherViewHolder;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageContinuedSelfListItem;
@@ -327,9 +326,7 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 final InputEmailViewHolder inputEmailViewHolder = (InputEmailViewHolder) viewHolder;
                 final InputEmailListItem inputEmailListItem = (InputEmailListItem) getData().get(position);
 
-                InputFieldHelper.configureAvatar(inputEmailViewHolder, 0); // TODO: Sending 0 temporarily
-                InputFieldHelper.configureEmailFieldText(inputEmailViewHolder);
-                InputFieldHelper.configureOnClickSubmitListener(inputEmailViewHolder, inputEmailListItem.getOnClickSubmitListener());
+                InputFieldEmailHelper.configureInputEmailField(inputEmailViewHolder, inputEmailListItem);
                 break;
 
             default:
@@ -389,7 +386,7 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 return new EmptyViewHolder(emptySeparatorView);
 
             case MessengerListType.INPUT_EMAIL:
-                View inputEmailView = LayoutInflater.from(parent.getContext()).inflate(R.layout.ko__list_messenger_input_email, parent, false);
+                View inputEmailView = LayoutInflater.from(parent.getContext()).inflate(R.layout.ko__list_messenger_input_field, parent, false);
                 return new InputEmailViewHolder(inputEmailView);
 
             default:

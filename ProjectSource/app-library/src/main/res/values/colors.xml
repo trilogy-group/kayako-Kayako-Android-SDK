@@ -101,5 +101,6 @@
     <color name="ko__messenger_input_field_blue_hint_text_color">#5F6C73</color>
     <color name="ko__messenger_input_field_white_background_color">#FFFFFF</color>
     <color name="ko__messenger_input_field_white_hint_text_color">#838D94</color>
-
+    <color name="ko__messenger_completed_field_green_background_color">#DCEEDF</color>
+    <color name="ko__messenger_completed_field_green_text_color">#2D3138</color>
 </resources>
