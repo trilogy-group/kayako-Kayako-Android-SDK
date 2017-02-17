@@ -7,14 +7,12 @@ import com.kayako.sdk.auth.FingerprintAuth;
 public class MessageListContainerFactory {
 
     private MessageListContainerFactory() {
-
     }
 
     private static MessageListContainerContract.Presenter mPresenter;
     private static MessageListContainerContract.Data mData;
 
     public static MessageListContainerContract.Presenter getPresenter(MessageListContainerContract.View view) {
-
         mData = getData();
 
         if (mPresenter == null) {

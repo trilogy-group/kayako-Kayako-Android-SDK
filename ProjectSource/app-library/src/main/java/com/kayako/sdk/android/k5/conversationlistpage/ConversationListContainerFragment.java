@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kayako.sdk.android.k5.R;
+import com.kayako.sdk.android.k5.activities.KayakoSelectConversationActivity;
 
 public class ConversationListContainerFragment extends Fragment implements ConversationListContainerContract.View {
 
@@ -24,6 +25,20 @@ public class ConversationListContainerFragment extends Fragment implements Conve
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return mRoot = inflater.inflate(R.layout.ko__fragment_conversation_list_container, container, false);
+    }
+
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        View newConversationButton = mRoot.findViewById(R.id.ko__new_conversation_button);
+        newConversationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.onClickNewConversation();
+            }
+        });
     }
 
     @Override
@@ -52,7 +67,7 @@ public class ConversationListContainerFragment extends Fragment implements Conve
 
     @Override
     public void hideNewConversationButton() {
-        if(!hasPageLoaded()){
+        if (!hasPageLoaded()) {
             return;
         }
 
@@ -63,7 +78,7 @@ public class ConversationListContainerFragment extends Fragment implements Conve
 
     @Override
     public void showNewConversationButton() {
-        if(!hasPageLoaded()){
+        if (!hasPageLoaded()) {
             return;
         }
 
@@ -74,10 +89,10 @@ public class ConversationListContainerFragment extends Fragment implements Conve
 
     @Override
     public void openNewConversationPage() {
-        if(!hasPageLoaded()){
+        if (!hasPageLoaded()) {
             return;
         }
 
-        // TODO:
+        startActivity(KayakoSelectConversationActivity.getIntent(getActivity()));
     }
 }

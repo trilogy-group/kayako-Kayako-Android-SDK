@@ -2,6 +2,9 @@ package com.kayako.sdk.android.k5.conversationlistpage;
 
 public class ConversationListContainerPresenter implements ConversationListContainerContract.Presenter {
 
+
+    // TODO: Refresh this page on returning to it - onActivityResult?
+
     ConversationListContainerContract.View mView;
 
     public ConversationListContainerPresenter(ConversationListContainerContract.View mView) {

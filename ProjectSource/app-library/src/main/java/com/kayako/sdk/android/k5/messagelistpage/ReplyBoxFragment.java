@@ -45,6 +45,7 @@ public class ReplyBoxFragment extends Fragment implements ReplyBoxContract.View,
         // Set up ReplyBoxText
         EditText replyBoxText = (EditText) mRoot.findViewById(R.id.reply_box_edittext);
         replyBoxText.addTextChangedListener(this);
+        replyBoxText.setText(null); // trigger textChangeListener for first time
     }
 
     @Override
@@ -74,6 +75,18 @@ public class ReplyBoxFragment extends Fragment implements ReplyBoxContract.View,
     }
 
     @Override
+    public void hideReplyBox() {
+        View view = mRoot.findViewById(R.id.reply_box_layout);
+        view.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showReplyBox() {
+        View view = mRoot.findViewById(R.id.reply_box_layout);
+        view.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void enableSendButton() {
         Button button = (Button) mRoot.findViewById(R.id.send_button);
         button.setEnabled(true);
@@ -88,16 +101,6 @@ public class ReplyBoxFragment extends Fragment implements ReplyBoxContract.View,
     @Override
     public void setReplyBoxListener(ReplyBoxContract.ReplyBoxListener listener) {
         mPresenter.setReplyBoxListener(listener);
-    }
-
-    @Override
-    public void disableReplyBox() {
-        // TODO:
-    }
-
-    @Override
-    public void enableReplyBox() {
-        // TODO:
     }
 
     @Override

@@ -31,12 +31,7 @@ public class MessageListView extends MessengerListFragment implements MessageLis
             throw new AssertionError("This fragment was intended to be used with KayakoSelectConversationActivity!");
         }
 
-        Bundle bundle = getActivity().getIntent().getExtras();
-        if (!bundle.containsKey(KayakoSelectConversationActivity.ARG_CONVERSATION_ID)) {
-            throw new AssertionError("This fragment needs the containing activity to be passed a conversation id!");
-        }
-
-        mPresenter.initPage(bundle.getLong(KayakoSelectConversationActivity.ARG_CONVERSATION_ID));
+        mPresenter.initPage();
     }
 
     @Override
@@ -61,9 +56,8 @@ public class MessageListView extends MessengerListFragment implements MessageLis
         // TODO: Testing BOT Message
         /*messageList.add(new BotMessageListItem("What would you like to talk about?", 0, null));*/
 
-        showListViewAndHideOthers();
         initMessengerList(messageList);
-
+        showListViewAndHideOthers();
 
         // TODO: Pagination
     }
@@ -83,8 +77,4 @@ public class MessageListView extends MessengerListFragment implements MessageLis
         showLoadingViewAndHideOthers();
     }
 
-    @Override
-    public void refreshList() {
-        mPresenter.refreshList();
-    }
 }

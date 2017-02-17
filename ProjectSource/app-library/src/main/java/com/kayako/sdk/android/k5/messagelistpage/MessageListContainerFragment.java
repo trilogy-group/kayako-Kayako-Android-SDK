@@ -11,6 +11,9 @@ import android.widget.Toast;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.activities.KayakoSelectConversationActivity;
+import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+
+import java.util.List;
 
 public class MessageListContainerFragment extends Fragment implements MessageListContainerContract.View {
 
@@ -52,20 +55,73 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
         super.onActivityCreated(savedInstanceState);
 
         Bundle bundle = getActivity().getIntent().getExtras();
-        if (!bundle.containsKey(KayakoSelectConversationActivity.ARG_CONVERSATION_ID)) {
-            throw new AssertionError("This fragment needs the containing activity to be passed a conversation id!");
+        if (bundle != null && bundle.containsKey(KayakoSelectConversationActivity.ARG_CONVERSATION_ID)) {
+            mPresenter.initPage(false, bundle.getLong(KayakoSelectConversationActivity.ARG_CONVERSATION_ID));
+        } else {
+            mPresenter.initPage(true, null);
         }
-        mPresenter.initPage(bundle.getLong(KayakoSelectConversationActivity.ARG_CONVERSATION_ID));
     }
 
-    @Override
-    public void refreshMessageListing() {
-        mMessageListView.refreshList();
+    private boolean hasPageLoaded() {
+        return isAdded() && getActivity() != null;
     }
 
     @Override
     public void showToastMessage(String errorMessage) {
         // TODO: See if this method is really required
         Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void setupListInMessageListingView(List<BaseListItem> baseListItems) {
+        if (!hasPageLoaded()) {
+            return;
+        }
+        mMessageListView.setupList(baseListItems);
+    }
+
+    @Override
+    public void showEmptyViewInMessageListingView() {
+        if (!hasPageLoaded()) {
+            return;
+        }
+
+        mMessageListView.showEmptyView();
+    }
+
+    @Override
+    public void showErrorViewInMessageListingView() {
+        if (!hasPageLoaded()) {
+            return;
+        }
+
+        mMessageListView.showErrorView();
+    }
+
+    @Override
+    public void showLoadingViewInMessageListingView() {
+        if (!hasPageLoaded()) {
+            return;
+        }
+
+        mMessageListView.showLoadingView();
+    }
+
+    @Override
+    public void hideReplyBox() {
+        if (!hasPageLoaded()) {
+            return;
+        }
+
+        mReplyBoxView.hideReplyBox();
+    }
+
+    @Override
+    public void showReplyBox() {
+        if (!hasPageLoaded()) {
+            return;
+        }
+
+        mReplyBoxView.showReplyBox();
     }
 }

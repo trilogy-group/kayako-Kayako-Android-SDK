@@ -32,9 +32,9 @@ public class ReplyBoxContract {
 
         void setReplyBoxText(String message); // TODO: Attachments later?
 
-        void disableReplyBox();
+        void hideReplyBox();
 
-        void enableReplyBox();
+        void showReplyBox();
     }
 
     public interface ReplyBoxListener {

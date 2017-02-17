@@ -11,6 +11,21 @@ public class KayakoSelectConversationActivity extends AppCompatActivity {
 
     public static final String ARG_CONVERSATION_ID = "conversation_id";
 
+    /**
+     * Use this constructor to start a new conversation
+     * @param context
+     * @return
+     */
+    public static Intent getIntent(Context context) {
+        Intent intent = new Intent(context, KayakoSelectConversationActivity.class);
+        return intent;
+    }
+
+    /**
+     * Use this constructor to open an existing conversation
+     * @param context
+     * @return
+     */
     public static Intent getIntent(Context context, long conversationId) {
         Intent intent = new Intent(context, KayakoSelectConversationActivity.class);
         intent.putExtra(ARG_CONVERSATION_ID, conversationId);
