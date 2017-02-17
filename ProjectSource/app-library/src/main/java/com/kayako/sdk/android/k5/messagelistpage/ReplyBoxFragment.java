@@ -3,6 +3,7 @@ package com.kayako.sdk.android.k5.messagelistpage;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -12,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.kayako.sdk.android.k5.R;
+import com.kayako.sdk.android.k5.common.utils.KeyboardUtils;
+import com.kayako.sdk.android.k5.core.Kayako;
 
 public class ReplyBoxFragment extends Fragment implements ReplyBoxContract.View, ReplyBoxContract.ConfigureView, TextWatcher {
 
@@ -88,8 +91,13 @@ public class ReplyBoxFragment extends Fragment implements ReplyBoxContract.View,
 
     @Override
     public void focusOnReplyBox() {
+        if (!hasPageLoaded()) {
+            return;
+        }
+
         EditText replyBoxText = (EditText) mRoot.findViewById(R.id.reply_box_edittext);
         replyBoxText.requestFocus();
+        KeyboardUtils.showKeyboard((AppCompatActivity) getActivity());
     }
 
     @Override

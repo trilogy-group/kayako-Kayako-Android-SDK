@@ -15,6 +15,7 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputEmailLis
 import com.kayako.sdk.android.k5.common.fragments.ListPageState;
 import com.kayako.sdk.android.k5.common.fragments.MessengerListFragment;
 import com.kayako.sdk.android.k5.common.fragments.OnListPageStateChangeListener;
+import com.kayako.sdk.android.k5.common.utils.KeyboardUtils;
 import com.kayako.sdk.android.k5.core.Kayako;
 
 import java.util.List;
@@ -79,7 +80,6 @@ public class MessageListView extends MessengerListFragment implements MessageLis
 
         initMessengerList(messageList);
         showListViewAndHideOthers();
-
         // TODO: Pagination
     }
 
