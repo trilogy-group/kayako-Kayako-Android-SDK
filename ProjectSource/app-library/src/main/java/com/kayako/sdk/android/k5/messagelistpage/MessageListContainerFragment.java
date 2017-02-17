@@ -140,4 +140,13 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
 
         mReplyBoxView.showReplyBox();
     }
+
+    @Override
+    public void focusOnReplyBox() {
+        if (!hasPageLoaded()) {
+            return;
+        }
+
+        mReplyBoxView.focusOnReplyBox();
+    }
 }

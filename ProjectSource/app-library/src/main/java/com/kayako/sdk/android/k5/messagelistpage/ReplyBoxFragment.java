@@ -87,6 +87,12 @@ public class ReplyBoxFragment extends Fragment implements ReplyBoxContract.View,
     }
 
     @Override
+    public void focusOnReplyBox() {
+        EditText replyBoxText = (EditText) mRoot.findViewById(R.id.reply_box_edittext);
+        replyBoxText.requestFocus();
+    }
+
+    @Override
     public void enableSendButton() {
         Button button = (Button) mRoot.findViewById(R.id.send_button);
         button.setEnabled(true);

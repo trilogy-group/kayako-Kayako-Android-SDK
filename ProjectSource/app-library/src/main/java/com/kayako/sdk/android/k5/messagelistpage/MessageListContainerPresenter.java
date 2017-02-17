@@ -179,7 +179,9 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                 public void onClickSubmit(String email) {
                     mEmail = email;
                     configureReplyBoxVisibility();
+                    mView.focusOnReplyBox();
                     reloadOnboardingMessages();
+
                     // TODO: Create new conversation?
                     // TODO: Some loading indicator
 

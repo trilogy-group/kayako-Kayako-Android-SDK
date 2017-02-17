@@ -35,6 +35,8 @@ public class ReplyBoxContract {
         void hideReplyBox();
 
         void showReplyBox();
+
+        void focusOnReplyBox();
     }
 
     public interface ReplyBoxListener {

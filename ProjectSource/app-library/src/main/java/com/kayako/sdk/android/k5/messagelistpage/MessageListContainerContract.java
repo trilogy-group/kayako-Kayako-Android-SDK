@@ -39,6 +39,8 @@ public class MessageListContainerContract {
         void hideReplyBox();
 
         void showReplyBox();
+
+        void focusOnReplyBox();
     }
 
     public interface Presenter extends BasePresenter<MessageListContainerContract.View> {
