@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.kayako.sample.store.Store;
 import com.kayako.sdk.android.k5.core.Kayako;
 
 import java.util.Locale;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         final EditText editText = (EditText) findViewById(R.id.edittext);
+        editText.setText(Store.getInstance().getHelpCenterUrl());
 
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
         spinner.setAdapter(new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, Locale.getAvailableLocales()));
@@ -48,16 +50,12 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (TextUtils.isEmpty(editText.getText().toString())) {
-                    Toast.makeText(MainActivity.this, "URL can not be blank", Toast.LENGTH_LONG).show();
-                    return;
-                } else if (!URLUtil.isValidUrl(editText.getText().toString())) {
-                    Toast.makeText(MainActivity.this, "Please enter a valid URL", Toast.LENGTH_LONG).show();
-                    return;
-                }
-
                 String url = editText.getText().toString();
-                Kayako.getInstance().openHelpCenter(MainActivity.this, url, selectedLocale);
+                if (validateInput(url)) {
+                    Store.getInstance().setHelpCenterUrl(url);
+
+                    Kayako.getInstance().openHelpCenter(MainActivity.this, url, selectedLocale); // Command to open Help Center
+                }
             }
         });
 
@@ -65,13 +63,26 @@ public class MainActivity extends AppCompatActivity {
         buttonMessenger.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 String url = editText.getText().toString();
-                Kayako.getInstance().openMessenger(MainActivity.this, url, Locale.US);
-                // startActivity(KayakoMessengerActivity.getIntent(MainActivity.this));
+                if (validateInput(url)) {
+                    Store.getInstance().setHelpCenterUrl(url);
+
+                    Kayako.getInstance().openMessenger(MainActivity.this, url, Locale.US); // Command to open Messenger
+                }
             }
         });
 
+    }
+
+    private boolean validateInput(String url) {
+        if (TextUtils.isEmpty(url)) {
+            Toast.makeText(MainActivity.this, "URL can not be blank", Toast.LENGTH_LONG).show();
+            return false;
+        } else if (!URLUtil.isValidUrl(url)) {
+            Toast.makeText(MainActivity.this, "Please enter a valid URL", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
     }
 
 
