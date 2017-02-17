@@ -1,7 +1,5 @@
 package com.kayako.sdk.android.k5.messagelistpage;
 
-import android.os.Handler;
-
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.ChannelDecoration;
@@ -10,6 +8,7 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.DataItemHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.UserDecoration;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.BotMessageListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputEmailListItem;
+import com.kayako.sdk.android.k5.common.fragments.ListPageState;
 import com.kayako.sdk.messenger.conversation.Conversation;
 import com.kayako.sdk.messenger.conversation.PostConversationBodyParams;
 import com.kayako.sdk.messenger.message.Message;
@@ -27,6 +26,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private boolean mIsNewConversation;
     private String mEmail; // TODO: Make this a SharedPref - should be global - not specific to a conversation
     private List<BaseListItem> mOnboardingItems = new ArrayList<>();
+    private ListPageState mListPageState;
 
 
     public MessageListContainerPresenter(MessageListContainerContract.View view, MessageListContainerContract.Data data) {
@@ -40,24 +40,29 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     }
 
     @Override
+    public void onClickRetryInErrorView() {
+        reloadPage(true);
+    }
+
+    @Override
+    public void onPageStateChange(ListPageState state) {
+        mListPageState = state;
+        configureReplyBoxVisibility();
+    }
+
+    @Override
     public void setView(MessageListContainerContract.View view) {
         mView = view;
     }
 
     @Override
     public void initPage(boolean isNewConversation, Long conversationId) {
-        mView.showLoadingViewInMessageListingView();
-
         mIsNewConversation = isNewConversation;
-        if (isNewConversation) {
-            mConversationId = null;
-            reloadOnboardingMessages();
-            mView.hideReplyBox();
-        } else {
+        if (conversationId != null) {
             mConversationId = conversationId;
-            reloadMessagesOfConversation();
-            mView.showReplyBox();
         }
+
+        reloadPage(true);
     }
 
     @Override
@@ -106,9 +111,57 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         }
     }
 
+    /**
+     * All logic for showing and hiding reply box should be in this method
+     */
+    private void configureReplyBoxVisibility() {
+        if (mListPageState != null) {
+            switch (mListPageState) {
+                case LIST:
+                    if (mIsNewConversation) { // Starting a new Conversation
+                        if (mEmail == null) { // Email step is yet to be entered (Reply box shouldn't be shown until the email is known
+                            mView.hideReplyBox();
+                        } else {
+                            mView.showReplyBox();
+                        }
+                    } else { // Existing Conversation
+                        mView.showReplyBox();
+                    }
+                    break;
+
+                default:
+                case EMPTY:
+                    mView.showReplyBox();
+                    break;
+
+                case ERROR:
+                case LOADING:
+                case NONE:
+                    mView.hideReplyBox();
+                    break;
+            }
+        } else {
+            mView.hideReplyBox();
+        }
+    }
+
     private void convertNewConversationToExistingConversation(Conversation conversation) {
         mConversationId = conversation.getId();
         mIsNewConversation = false;
+    }
+
+    private void reloadPage(boolean resetView) {
+        if (resetView) {
+            mView.showLoadingViewInMessageListingView();
+        }
+
+        if (mIsNewConversation) {
+            reloadOnboardingMessages();
+        } else {
+            reloadMessagesOfConversation();
+        }
+
+        configureReplyBoxVisibility();
     }
 
     private void reloadOnboardingMessages() {
@@ -119,9 +172,8 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                 @Override
                 public void onClickSubmit(String email) {
                     mEmail = email;
-                    mView.showReplyBox();
+                    configureReplyBoxVisibility();
                     reloadOnboardingMessages();
-
                     // TODO: Create new conversation?
                     // TODO: Some loading indicator
 

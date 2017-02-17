@@ -3,6 +3,7 @@ package com.kayako.sdk.android.k5.messagelistpage;
 import android.support.annotation.Nullable;
 
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.fragments.OnListPageStateChangeListener;
 import com.kayako.sdk.android.k5.common.mvp.BasePresenter;
 import com.kayako.sdk.android.k5.common.mvp.BaseView;
 
@@ -32,5 +33,12 @@ public class MessageListContract {
 
         void showLoadingView();
 
+        void setOnErrorListener(MessageListContract.OnErrorListener listener);
+
+        void setOnListPageStateChangeListener(OnListPageStateChangeListener listener);
+    }
+
+    public interface OnErrorListener {
+        void onClickRetry();
     }
 }

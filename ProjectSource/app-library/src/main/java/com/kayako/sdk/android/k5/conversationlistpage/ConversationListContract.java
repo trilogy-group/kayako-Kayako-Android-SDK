@@ -1,6 +1,7 @@
 package com.kayako.sdk.android.k5.conversationlistpage;
 
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.fragments.OnListPageStateChangeListener;
 import com.kayako.sdk.android.k5.common.mvp.BaseData;
 import com.kayako.sdk.android.k5.common.mvp.BasePresenter;
 import com.kayako.sdk.android.k5.common.mvp.BaseView;
@@ -55,6 +56,8 @@ public class ConversationListContract {
     interface ConfigureView {
 
         void setOnScrollListener(OnScrollListener onScrollListener);
+
+        void setOnPageStateChangeListener(OnListPageStateChangeListener onListPageStateChangeListener);
     }
 
     interface OnLoadConversationsListener {

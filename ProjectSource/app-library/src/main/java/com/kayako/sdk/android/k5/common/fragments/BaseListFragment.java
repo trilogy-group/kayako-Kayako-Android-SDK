@@ -4,13 +4,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.GravityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +34,7 @@ public abstract class BaseListFragment extends Fragment {
 
     private DefaultStateViewHelper mDefaultStateViewHelper;
     private CustomStateViewHelper mCustomStateViewHelper;
+    private OnListPageStateChangeListener mListPageChangeStateListener;
 
     @Override
     final public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -69,6 +66,10 @@ public abstract class BaseListFragment extends Fragment {
         mDefaultStateViewHelper.hideErrorView();
         mDefaultStateViewHelper.hideLoadingView();
         hideListView();
+
+        if (mListPageChangeStateListener != null) {
+            mListPageChangeStateListener.onListPageStateChanged(ListPageState.EMPTY);
+        }
     }
 
     protected void showLoadingViewAndHideOthers() {
@@ -82,6 +83,10 @@ public abstract class BaseListFragment extends Fragment {
         mDefaultStateViewHelper.hideEmptyView();
         mDefaultStateViewHelper.hideErrorView();
         hideListView();
+
+        if (mListPageChangeStateListener != null) {
+            mListPageChangeStateListener.onListPageStateChanged(ListPageState.LOADING);
+        }
     }
 
     protected void showErrorViewAndHideOthers() {
@@ -95,6 +100,10 @@ public abstract class BaseListFragment extends Fragment {
         mDefaultStateViewHelper.hideEmptyView();
         mDefaultStateViewHelper.hideLoadingView();
         hideListView();
+
+        if (mListPageChangeStateListener != null) {
+            mListPageChangeStateListener.onListPageStateChanged(ListPageState.ERROR);
+        }
     }
 
     protected void showListViewAndHideOthers() {
@@ -103,6 +112,10 @@ public abstract class BaseListFragment extends Fragment {
         mDefaultStateViewHelper.hideEmptyView();
         mDefaultStateViewHelper.hideErrorView();
         mDefaultStateViewHelper.hideLoadingView();
+
+        if (mListPageChangeStateListener != null) {
+            mListPageChangeStateListener.onListPageStateChanged(ListPageState.LIST);
+        }
     }
 
     protected void hideAll() {
@@ -111,6 +124,10 @@ public abstract class BaseListFragment extends Fragment {
         mDefaultStateViewHelper.hideEmptyView();
         mDefaultStateViewHelper.hideErrorView();
         mDefaultStateViewHelper.hideLoadingView();
+
+        if (mListPageChangeStateListener != null) {
+            mListPageChangeStateListener.onListPageStateChanged(ListPageState.NONE);
+        }
     }
 
     protected CustomStateViewHelper getCustomStateViewHelper() {
@@ -291,6 +308,10 @@ public abstract class BaseListFragment extends Fragment {
             throw new NullPointerException("You need to initialize the fragment with Adapter!");
         }
         return mAdapter.hasMoreItems();
+    }
+
+    protected void setOnListPageChangeStateListener(OnListPageStateChangeListener listPageChangeStateListener) {
+        mListPageChangeStateListener = listPageChangeStateListener;
     }
 
 }

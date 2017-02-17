@@ -9,12 +9,14 @@ import android.view.ViewGroup;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.activities.KayakoSelectConversationActivity;
+import com.kayako.sdk.android.k5.common.fragments.ListPageState;
+import com.kayako.sdk.android.k5.common.fragments.OnListPageStateChangeListener;
 
 public class ConversationListContainerFragment extends Fragment implements ConversationListContainerContract.View {
 
     private ConversationListContainerContract.Presenter mPresenter;
-    private View mRoot;
     private ConversationListContract.ConfigureView mConversationListView;
+    private View mRoot;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,12 +41,6 @@ public class ConversationListContainerFragment extends Fragment implements Conve
                 mPresenter.onClickNewConversation();
             }
         });
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mPresenter.onOpenPage();
 
         mConversationListView = (ConversationListContract.ConfigureView) getChildFragmentManager().findFragmentById(R.id.ko__conversation_list);
         mConversationListView.setOnScrollListener(new ConversationListContract.OnScrollListener() {
@@ -53,6 +49,19 @@ public class ConversationListContainerFragment extends Fragment implements Conve
                 mPresenter.onScrollConversationList(isScrolling);
             }
         });
+        mConversationListView.setOnPageStateChangeListener(new OnListPageStateChangeListener() {
+            @Override
+            public void onListPageStateChanged(ListPageState state) {
+                mPresenter.onPageStateChange(state);
+            }
+        });
+
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mPresenter.onOpenPage();
     }
 
     @Override

@@ -1,11 +1,16 @@
 package com.kayako.sdk.android.k5.conversationlistpage;
 
+import com.kayako.sdk.android.k5.common.fragments.ListPageState;
+
 public class ConversationListContainerPresenter implements ConversationListContainerContract.Presenter {
 
 
     // TODO: Refresh this page on returning to it - onActivityResult?
 
-    ConversationListContainerContract.View mView;
+    private ConversationListContainerContract.View mView;
+
+    private boolean mIsScrolling;
+    private ListPageState mListPageState;
 
     public ConversationListContainerPresenter(ConversationListContainerContract.View mView) {
         this.mView = mView;
@@ -26,6 +31,35 @@ public class ConversationListContainerPresenter implements ConversationListConta
 
     }
 
+    /**
+     * All conditions to show the New Conversation button visibility should be restricted to this method
+     */
+    private void configureNewConversationVisibility() {
+        if (mListPageState != null) {
+            switch (mListPageState) {
+                case LIST:
+                    if (mIsScrolling) {
+                        mView.hideNewConversationButton();
+                    } else {
+                        mView.showNewConversationButton();
+                    }
+                    break;
+
+                case EMPTY:
+                    mView.showNewConversationButton();
+                    break;
+
+                case NONE:
+                case ERROR:
+                case LOADING:
+                    mView.hideNewConversationButton();
+                    break;
+            }
+        } else {
+            mView.hideNewConversationButton();
+        }
+    }
+
     @Override
     public void onClickNewConversation() {
         mView.openNewConversationPage();
@@ -33,10 +67,13 @@ public class ConversationListContainerPresenter implements ConversationListConta
 
     @Override
     public void onScrollConversationList(boolean isScrolling) {
-        if (isScrolling) {
-            mView.hideNewConversationButton();
-        } else {
-            mView.showNewConversationButton();
-        }
+        mIsScrolling = isScrolling;
+        configureNewConversationVisibility();
+    }
+
+    @Override
+    public void onPageStateChange(ListPageState state) {
+        mListPageState = state;
+        configureNewConversationVisibility();
     }
 }

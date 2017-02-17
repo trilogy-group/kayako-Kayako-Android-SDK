@@ -12,6 +12,8 @@ import android.widget.Toast;
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.activities.KayakoSelectConversationActivity;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.fragments.ListPageState;
+import com.kayako.sdk.android.k5.common.fragments.OnListPageStateChangeListener;
 
 import java.util.List;
 
@@ -46,6 +48,20 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
 
                 // TODO: Testing
                 Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        mMessageListView.setOnErrorListener(new MessageListContract.OnErrorListener() {
+            @Override
+            public void onClickRetry() {
+                mPresenter.onClickRetryInErrorView();
+            }
+        });
+
+        mMessageListView.setOnListPageStateChangeListener(new OnListPageStateChangeListener() {
+            @Override
+            public void onListPageStateChanged(ListPageState state) {
+                mPresenter.onPageStateChange(state);
             }
         });
     }

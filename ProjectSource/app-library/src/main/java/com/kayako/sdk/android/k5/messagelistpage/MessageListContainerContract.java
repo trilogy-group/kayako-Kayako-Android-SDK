@@ -3,6 +3,7 @@ package com.kayako.sdk.android.k5.messagelistpage;
 import android.support.annotation.Nullable;
 
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.fragments.ListPageState;
 import com.kayako.sdk.android.k5.common.mvp.BaseData;
 import com.kayako.sdk.android.k5.common.mvp.BasePresenter;
 import com.kayako.sdk.android.k5.common.mvp.BaseView;
@@ -47,6 +48,10 @@ public class MessageListContainerContract {
         void onClickSendInReplyView(String message);
 
         void setData(Data data);
+
+        void onClickRetryInErrorView();
+
+        void onPageStateChange(ListPageState state);
     }
 
 

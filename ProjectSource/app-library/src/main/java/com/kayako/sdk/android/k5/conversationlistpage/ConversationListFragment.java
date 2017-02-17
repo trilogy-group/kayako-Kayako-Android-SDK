@@ -15,6 +15,8 @@ import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.conversationlist.ConversationListAdapter;
 import com.kayako.sdk.android.k5.common.adapter.loadmorelist.EndlessRecyclerViewScrollAdapter;
 import com.kayako.sdk.android.k5.common.fragments.BaseListFragment;
+import com.kayako.sdk.android.k5.common.fragments.ListPageState;
+import com.kayako.sdk.android.k5.common.fragments.OnListPageStateChangeListener;
 import com.kayako.sdk.android.k5.core.Kayako;
 import com.kayako.sdk.messenger.conversation.Conversation;
 
@@ -25,8 +27,8 @@ import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
 public class ConversationListFragment extends BaseListFragment implements ConversationListContract.View, ConversationListContract.ConfigureView {
 
     private ConversationListContract.Presenter mPresenter;
-    private Handler mHandler;
     private ConversationListContract.OnScrollListener mScrollListener;
+    private OnListPageStateChangeListener mOnListPageStateChangeListener;
 
     // TODO: Receive fingerprintId
     // TODO: Redesign the Views - placeholders for loading
@@ -38,9 +40,21 @@ public class ConversationListFragment extends BaseListFragment implements Conver
     }
 
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        super.setOnListPageChangeStateListener(new OnListPageStateChangeListener() {
+            @Override
+            public void onListPageStateChanged(ListPageState state) {
+                if (mOnListPageStateChangeListener != null) {
+                    mOnListPageStateChangeListener.onListPageStateChanged(state);
+                }
+            }
+        });
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mHandler = new Handler();
         mPresenter.initPage();
     }
 
@@ -141,6 +155,13 @@ public class ConversationListFragment extends BaseListFragment implements Conver
             return;
         }
 
+        Context context = Kayako.getApplicationContext();
+        getDefaultStateViewHelper().setupErrorView(context.getResources().getString(R.string.ko__label_error_view_title), context.getResources().getString(R.string.ko__label_error_view_description), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.onClickRetryOnError();
+            }
+        });
         showErrorViewAndHideOthers();
     }
 
@@ -206,4 +227,10 @@ public class ConversationListFragment extends BaseListFragment implements Conver
     public void setOnScrollListener(ConversationListContract.OnScrollListener onScrollListener) {
         mScrollListener = onScrollListener;
     }
+
+    @Override
+    public void setOnPageStateChangeListener(OnListPageStateChangeListener onListPageStateChangeListener) {
+        mOnListPageStateChangeListener = onListPageStateChangeListener;
+    }
+
 }

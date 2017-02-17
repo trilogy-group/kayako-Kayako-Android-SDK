@@ -1,5 +1,6 @@
 package com.kayako.sdk.android.k5.conversationlistpage;
 
+import com.kayako.sdk.android.k5.common.fragments.ListPageState;
 import com.kayako.sdk.android.k5.common.mvp.BasePresenter;
 import com.kayako.sdk.android.k5.common.mvp.BaseView;
 
@@ -23,5 +24,7 @@ public class ConversationListContainerContract {
         void onClickNewConversation();
 
         void onScrollConversationList(boolean isScrolling);
+
+        void onPageStateChange(ListPageState state);
     }
 }

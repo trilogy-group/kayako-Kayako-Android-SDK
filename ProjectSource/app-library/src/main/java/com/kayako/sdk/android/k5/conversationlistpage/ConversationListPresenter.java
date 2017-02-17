@@ -38,6 +38,11 @@ public class ConversationListPresenter implements ConversationListContract.Prese
         resetVariables();
         // TODO: Fingerprint?
         MessengerPref.getInstance().setFingerprintId("d0bc691c-62c5-468c-a4a5-3b096684dc96");
+
+        reloadPage();
+    }
+
+    private void reloadPage() {
         mView.showLoadingView();
         loadConversations(mOffset = 0);
     }
@@ -105,7 +110,7 @@ public class ConversationListPresenter implements ConversationListContract.Prese
 
     @Override
     public void onClickRetryOnError() {
-        // TODO: Reload page
+        reloadPage();
     }
 
     private List<BaseListItem> convertConversationToListItems(List<Conversation> conversations) {
