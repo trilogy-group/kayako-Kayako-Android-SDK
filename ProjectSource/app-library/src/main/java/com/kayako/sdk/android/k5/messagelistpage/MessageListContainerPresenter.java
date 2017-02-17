@@ -22,9 +22,11 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private MessageListContainerContract.View mView;
     private MessageListContainerContract.Data mData;
 
+    private String mEmail; // TODO: Make this a SharedPref - should be global - not specific to a conversation
+    private Long mCurrentUserId; // TODO: This too has to be saved
+
     private Long mConversationId;
     private boolean mIsNewConversation;
-    private String mEmail; // TODO: Make this a SharedPref - should be global - not specific to a conversation
     private List<BaseListItem> mOnboardingItems = new ArrayList<>();
     private ListPageState mListPageState;
 
@@ -70,7 +72,6 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         // TODO: Optimisitc Sending? Show it in messagelist?
         // TODO: Should both MessageListContainerView and MessageListView determine if it's a new conversation separately?
         if (mIsNewConversation) {
-
             if (mEmail == null) {
                 throw new AssertionError("If it's a new conversation and email is null, the user should not have had the chance to send a reply!");
             }
@@ -147,6 +148,11 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
     private void convertNewConversationToExistingConversation(Conversation conversation) {
         mConversationId = conversation.getId();
+        mCurrentUserId = conversation.getCreator().getId();
+
+        // TODO: At this point, you need to SAVE the email, loggedInUserId at a globally accessible level
+        // TODO: At the same time, you need to RETRIEVE these values when a new conversation is made
+
         mIsNewConversation = false;
     }
 
@@ -220,6 +226,9 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private List<DataItem> convertMessagesToDataItems(List<Message> messageList) {
         List<DataItem> dataItems = new ArrayList<>();
         for (Message message : messageList) {
+
+            // TODO: Leverage client_ids for optimistic sending
+
             dataItems.add(
                     new DataItem(
                             message.getId(),
@@ -228,7 +237,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                                     message.getCreator().getFullName(),
                                     message.getCreator().getAvatarUrl(),
                                     message.getCreator().getId(),
-                                    false), // TODO: On creating a conversation for the first time - save the userId of the creator of the conversation and check if it matches
+                                    mCurrentUserId != null && message.getCreator().getId().equals(mCurrentUserId)),
                             new ChannelDecoration(
                                     R.drawable.ko__img_helpcenter),
                             message.getContentText(),
