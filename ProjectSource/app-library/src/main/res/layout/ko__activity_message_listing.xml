@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/ko__message_list_container"
-        android:name="com.kayako.sdk.android.k5.messagelistpage.MessageListView"
+        android:name="com.kayako.sdk.android.k5.messagelistpage.MessageListContainerFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

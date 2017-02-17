@@ -1,6 +1,7 @@
 package com.kayako.sdk.android.k5.messagelistpage;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
@@ -12,7 +13,7 @@ import com.kayako.sdk.android.k5.common.fragments.MessengerListFragment;
 
 import java.util.List;
 
-public class MessageListView extends MessengerListFragment implements MessageListContract.View {
+public class MessageListView extends MessengerListFragment implements MessageListContract.View, MessageListContract.ConfigureView {
 
     private MessageListContract.Presenter mPresenter;
 
@@ -47,21 +48,23 @@ public class MessageListView extends MessengerListFragment implements MessageLis
     @Override
     public void setupList(List<BaseListItem> messageList) {
         // TODO: Test pre-submitted value
-        messageList.add(new InputEmailListItem("prefilled@yeah.com"));
+        // messageList.add(new InputEmailListItem("prefilled@yeah.com"));
 
         // TODO: Testing Submit button
-        messageList.add(new InputEmailListItem(new InputEmailListItem.OnClickSubmitListener() {
+        /*messageList.add(new InputEmailListItem(new InputEmailListItem.OnClickSubmitListener() {
             @Override
             public void onClickSubmit(String email) {
                 Toast.makeText(getContext(), "SUBMIT WORKS", Toast.LENGTH_SHORT).show();
             }
-        }));
+        }));*/
 
         // TODO: Testing BOT Message
-        messageList.add(new BotMessageListItem("What would you like to talk about?", 0, null));
+        /*messageList.add(new BotMessageListItem("What would you like to talk about?", 0, null));*/
 
         showListViewAndHideOthers();
         initMessengerList(messageList);
+
+
         // TODO: Pagination
     }
 
@@ -78,5 +81,10 @@ public class MessageListView extends MessengerListFragment implements MessageLis
     @Override
     public void showLoadingView() {
         showLoadingViewAndHideOthers();
+    }
+
+    @Override
+    public void refreshList() {
+        mPresenter.refreshList();
     }
 }

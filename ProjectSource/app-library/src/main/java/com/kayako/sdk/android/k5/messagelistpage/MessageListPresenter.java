@@ -1,23 +1,26 @@
 package com.kayako.sdk.android.k5.messagelistpage;
 
+import android.support.annotation.NonNull;
+
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.ChannelDecoration;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.DataItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.DataItemHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.UserDecoration;
-import com.kayako.sdk.android.k5.messagelistpage.MessageListContract.Presenter;
 import com.kayako.sdk.messenger.message.Message;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class MessageListPresenter implements Presenter {
+public class MessageListPresenter implements MessageListContract.Presenter {
 
+    private List<BaseListItem> mOnboardingItems = new ArrayList<>();
 
     private MessageListContract.View mView;
     private MessageListContract.Data mData;
+    private Long mConversationId;
 
     public MessageListPresenter(MessageListContract.View view, MessageListContract.Data data) {
         mView = view;
@@ -35,8 +38,17 @@ public class MessageListPresenter implements Presenter {
     }
 
     @Override
-    public void initPage(long conversationId) {
-        mView.showLoadingView();
+    public void initPage(Long conversationId) {
+        if (conversationId == null) {
+
+        } else {
+            mView.showLoadingView();
+            mConversationId = conversationId;
+            reloadMessages();
+        }
+    }
+
+    private void reloadMessages() {
         mData.getMessages(new MessageListContract.OnLoadMessagesListener() {
             @Override
             public void onSuccess(List<Message> messageList) {
@@ -56,7 +68,7 @@ public class MessageListPresenter implements Presenter {
                 // TODO: Add conditions to show toast if load-more and show error view if offset=0
                 mView.showErrorView();
             }
-        }, conversationId, 0, 10);
+        }, mConversationId, 0, 10);
 
     }
 
@@ -97,6 +109,11 @@ public class MessageListPresenter implements Presenter {
 
     @Override
     public void onClickRetryOnError() {
+        reloadMessages();
+    }
 
+    @Override
+    public void refreshList() {
+        reloadMessages();
     }
 }

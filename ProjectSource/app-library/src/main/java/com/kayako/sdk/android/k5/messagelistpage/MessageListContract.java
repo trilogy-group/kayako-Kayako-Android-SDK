@@ -1,5 +1,8 @@
 package com.kayako.sdk.android.k5.messagelistpage;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.mvp.BaseData;
 import com.kayako.sdk.android.k5.common.mvp.BasePresenter;
@@ -27,17 +30,24 @@ public class MessageListContract {
 
     interface Presenter extends BasePresenter<MessageListContract.View> {
 
-        void setData(MessageListContract.Data mData);
+        void setData(@NonNull MessageListContract.Data mData);
 
-        void initPage(long conversationId);
+        void initPage(@Nullable Long conversationId);
 
         void closePage();
 
         void onLoadMoreItems();
 
         void onClickRetryOnError();
+
+        void refreshList();
     }
 
+    interface ConfigureView {
+
+        void refreshList();
+
+    }
 
     public interface OnLoadMessagesListener {
         void onSuccess(List<Message> messageList);

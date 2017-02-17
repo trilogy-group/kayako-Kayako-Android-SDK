@@ -160,6 +160,6 @@ dependencies {
     // TODO: Uncomment when production ready
     // compile 'com.kayako:kayako:0.0.3'
     // compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.github.metalwihen:Kayako-Java-SDK:v0.0.9'
+    compile 'com.github.metalwihen:Kayako-Java-SDK:v0.0.10'
 
 }

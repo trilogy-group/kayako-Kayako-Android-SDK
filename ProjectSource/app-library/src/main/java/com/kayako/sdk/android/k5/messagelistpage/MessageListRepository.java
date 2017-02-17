@@ -60,7 +60,6 @@ public class MessageListRepository implements MessageListContract.Data {
                             }
                         }
 
-
                         listener.onFailure(exception.getMessage());
                     }
                 });
