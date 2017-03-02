@@ -8,6 +8,7 @@ android {
         applicationId "com.kayako.sample"
         minSdkVersion 16
         targetSdkVersion 24
+        multiDexEnabled true
         versionCode 1
         versionName "1.0"
     }
@@ -40,6 +41,7 @@ dependencies {
     compile 'com.squareup.okio:okio:1.9.0'
     compile 'com.google.code.gson:gson:2.4'
     compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.android.support:multidex:1.0.1'
 
     testCompile 'junit:junit:4.12'
 
