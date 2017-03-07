@@ -134,9 +134,13 @@ public class ArticleFragment extends Fragment implements ArticleContract.View {
 
     @Override
     public void openUrlIntent(String url) {
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(url));
-        startActivity(i);
+        try {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            startActivity(i);
+        } catch (Exception e) {
+            return; // If there's some issue like an android.os.FileUriExposedException, the crash should be contained
+        }
     }
 
     @Override
