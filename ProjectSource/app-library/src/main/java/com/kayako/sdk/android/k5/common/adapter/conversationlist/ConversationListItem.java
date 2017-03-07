@@ -9,24 +9,15 @@ public class ConversationListItem extends BaseListItem {
     public String name;
     public Long timeInMilleseconds;
     public String subject;
-    public String status;
-    public StatusColor statusColor;
 
     public Conversation conversation;
 
-    public ConversationListItem(String avatarUrl, String name, Long timeInMilleseconds, String subject, String status, StatusColor statusColor,Conversation conversation) {
+    public ConversationListItem(String avatarUrl, String name, Long timeInMilleseconds, String subject, Conversation conversation) {
         super(ConversationListType.CONVERSATION_LIST_ITEM);
         this.avatarUrl = avatarUrl;
         this.name = name;
         this.timeInMilleseconds = timeInMilleseconds;
         this.subject = subject;
-        this.status = status;
-        this.statusColor = statusColor;
         this.conversation = conversation;
     }
-
-    public enum StatusColor {
-        BLUE, GREEN, GRAY, YELLOW
-    }
-
 }

@@ -9,6 +9,7 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.UserDecoration;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.BotMessageListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputEmailListItem;
 import com.kayako.sdk.android.k5.common.fragments.ListPageState;
+import com.kayako.sdk.android.k5.core.MessengerPref;
 import com.kayako.sdk.messenger.conversation.Conversation;
 import com.kayako.sdk.messenger.conversation.PostConversationBodyParams;
 import com.kayako.sdk.messenger.message.Message;
@@ -26,10 +27,13 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private Long mCurrentUserId; // TODO: This too has to be saved
 
     private Long mConversationId;
+    private Conversation mConversation;
     private boolean mIsNewConversation;
+    private boolean mIsEmailAskedInThisConversation;
     private List<BaseListItem> mOnboardingItems = new ArrayList<>();
     private ListPageState mListPageState;
 
+    // TODO: Group onboarding messages logic in a private class? - confusing otherwise as more and more methods are used
 
     public MessageListContainerPresenter(MessageListContainerContract.View view, MessageListContainerContract.Data data) {
         mView = view;
@@ -64,6 +68,17 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             mConversationId = conversationId;
         }
 
+        // Retrieve existing email if available - so that user doesn't retry the same steps
+        mEmail = MessengerPref.getInstance().getEmailId();
+        if (mEmail == null) {
+            mIsEmailAskedInThisConversation = true;
+        } else {
+            mIsEmailAskedInThisConversation = false;
+        }
+
+        mCurrentUserId = MessengerPref.getInstance().getUserId();
+        // TODO: Ensure that the above two values are assigned early on
+
         reloadPage(true);
     }
 
@@ -85,7 +100,8 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             mData.startNewConversation(new PostConversationBodyParams(name, email, subject, contents), new MessageListContainerContract.OnLoadConversationListener() {
                 @Override
                 public void onSuccess(Conversation conversation) {
-                    convertNewConversationToExistingConversation(conversation);
+                    mConversation = conversation;
+                    setCurrentConversation(conversation);
                     reloadMessagesOfConversation();
                 }
 
@@ -95,6 +111,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                 }
             });
             reloadOnboardingMessages();
+
         } else {
             // TODO: mConversationId can be null
             mData.postNewMessage(mConversationId, message, new MessageListContainerContract.PostNewMessageCallback() {
@@ -146,54 +163,124 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         }
     }
 
-    private void convertNewConversationToExistingConversation(Conversation conversation) {
-        mConversationId = conversation.getId();
-        mCurrentUserId = conversation.getCreator().getId();
-
-        // TODO: At this point, you need to SAVE the email, loggedInUserId at a globally accessible level
-        // TODO: At the same time, you need to RETRIEVE these values when a new conversation is made
-
-        mIsNewConversation = false;
-    }
-
     private void reloadPage(boolean resetView) {
         if (resetView) {
             mView.showLoadingViewInMessageListingView();
         }
 
         if (mIsNewConversation) {
+            // Load view
             reloadOnboardingMessages();
         } else {
             reloadMessagesOfConversation();
+            reloadConversation(mConversationId);
         }
 
         configureReplyBoxVisibility();
     }
 
-    private void reloadOnboardingMessages() {
-        List<BaseListItem> baseListItems = new ArrayList<>();
+    private void reloadConversation(final long conversationId) {
+        mData.getConversation(conversationId, new MessageListContainerContract.OnLoadConversationListener() {
+            @Override
+            public void onSuccess(Conversation conversation) {
+                setCurrentConversation(conversation);
+                // TODO: Check for status - completed/closed to hide replybox
+            }
 
-        if (mEmail == null) {// TODO: Condition - if email not already available - from sharedPref
-            baseListItems.add(new InputEmailListItem(new InputEmailListItem.OnClickSubmitListener() {
-                @Override
-                public void onClickSubmit(String email) {
-                    mEmail = email;
-                    configureReplyBoxVisibility();
-                    mView.focusOnReplyBox();
-                    reloadOnboardingMessages();
+            @Override
+            public void onFailure(String message) {
+                // TODO: show message?
+            }
+        });
+    }
 
-                    // TODO: Create new conversation?
-                    // TODO: Some loading indicator
-
-                }
-            }));
-        } else {
-            baseListItems.add(new InputEmailListItem(mEmail));
-            baseListItems.add(new BotMessageListItem("What would you like to talk about?", 0, null)); // TODO: Convert to resId instead of string msg
+    private void setCurrentConversation(Conversation conversation) {
+        if (mIsNewConversation) {
+            setMessengerPrefsOnCreateConversation(
+                    mCurrentUserId = conversation.getCreator().getId(), // Assuming the current user is always the creator of conversation,
+                    mEmail,
+                    conversation.getCreator().getFullName());
         }
 
-        mOnboardingItems = baseListItems;
-        mView.setupListInMessageListingView(baseListItems);
+        mIsNewConversation = false;
+        mConversation = conversation;
+        mConversationId = conversation.getId();
+        // TODO: At the same time, you need to RETRIEVE these values when a new conversation is made
+        // TODO: Method to configure page based on conversation - eg: reply box visibility, etc
+
+        // Subscribe for realtime changes:
+        // TODO
+//        mData.registerCaseChangeListener(mCurrentUserId, conversation.getRealtimeChannel(), new MessageListContainerContract.OnConversationChangeListener() {
+//            @Override
+//            public void onConversationChange(Conversation conversation) {
+//                setCurrentConversation(conversation);
+//                // TODO: Method to configure page based on conversation - eg: reply box visibility, etc
+//            }
+//
+//            @Override
+//            public void onNewMessage(long messageId) {
+//                reloadMessagesOfConversation();
+//            }
+//
+//            @Override
+//            public void onUpdateMessage(long messageId) {
+//                reloadMessagesOfConversation();
+//            }
+//        });
+    }
+
+    private void setMessengerPrefsOnCreateConversation(Long currentUserId, String email, String fullName) {
+        if (email == null || currentUserId == null || currentUserId == 0 || fullName == null) {
+            throw new IllegalArgumentException("Values can not be null!");
+        }
+
+        MessengerPref.getInstance().setEmailId(email);
+        MessengerPref.getInstance().setUserId(currentUserId);
+        MessengerPref.getInstance().setFullName(fullName);
+    }
+
+    private void reloadOnboardingMessages() {
+        // TODO: Synchronize these methods?
+
+        // Decide what onboarding messages to show
+        if (mEmail == null) { // New conversation (first time) where email is unknown
+            mOnboardingItems = reloadOnboardingMessagesAskingForEmail();
+        } else if (mIsEmailAskedInThisConversation) { // New conversation (first time) where email is now known (but was asked in this conversation)
+            mOnboardingItems = reloadOnboardingMessagesWithPrefilledEmail();
+        } else { // New conversation (not the first time)
+            mOnboardingItems = reloadOnboardingMessagesWithoutEmail();
+        }
+
+        mView.setupListInMessageListingView(mOnboardingItems);
+    }
+
+    private List<BaseListItem> reloadOnboardingMessagesAskingForEmail() {
+        mIsEmailAskedInThisConversation = true;
+        List<BaseListItem> baseListItems = new ArrayList<>();
+        baseListItems.add(new InputEmailListItem(new InputEmailListItem.OnClickSubmitListener() {
+            @Override
+            public void onClickSubmit(String email) {
+                mEmail = email;
+                configureReplyBoxVisibility();
+                mView.focusOnReplyBox();
+                reloadOnboardingMessages();
+                // TODO: Some loading indicator - Optimistic Sending
+            }
+        }));
+        return baseListItems;
+    }
+
+    private List<BaseListItem> reloadOnboardingMessagesWithPrefilledEmail() {
+        List<BaseListItem> baseListItems = new ArrayList<>();
+        baseListItems.add(new InputEmailListItem(mEmail));
+        baseListItems.add(new BotMessageListItem("What would you like to talk about?", 0, null)); // TODO: Convert to resId instead of string msg
+        return baseListItems;
+    }
+
+    private List<BaseListItem> reloadOnboardingMessagesWithoutEmail() {
+        List<BaseListItem> baseListItems = new ArrayList<>();
+        baseListItems.add(new BotMessageListItem("What would you like to talk about?", 0, null)); // TODO: Convert to resId instead of string msg
+        return baseListItems;
     }
 
     private void reloadMessagesOfConversation() {
@@ -230,7 +317,6 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         for (Message message : messageList) {
 
             // TODO: Leverage client_ids for optimistic sending
-
             dataItems.add(
                     new DataItem(
                             message.getId(),
@@ -240,8 +326,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                                     message.getCreator().getAvatarUrl(),
                                     message.getCreator().getId(),
                                     mCurrentUserId != null && message.getCreator().getId().equals(mCurrentUserId)),
-                            new ChannelDecoration(
-                                    R.drawable.ko__img_helpcenter),
+                            null, // no channelDecoration
                             message.getContentText(),
                             message.getCreatedAt(),
                             Collections.EMPTY_LIST, // TODO: Attachments
@@ -252,4 +337,5 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
         return dataItems;
     }
+
 }

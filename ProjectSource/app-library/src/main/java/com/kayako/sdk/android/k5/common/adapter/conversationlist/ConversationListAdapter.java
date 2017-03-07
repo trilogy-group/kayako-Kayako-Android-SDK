@@ -68,26 +68,8 @@ public class ConversationListAdapter extends EndlessRecyclerViewScrollAdapter {
                     }
                 });
 
-                conversationViewHolder.status.setText(conversationListItem.status);
-                conversationViewHolder.status.setTextColor(getStatusColor(context, conversationListItem.statusColor));
             default:
                 super.onBindViewHolder(viewHolder, position);
-        }
-    }
-
-    public int getStatusColor(Context context, ConversationListItem.StatusColor statusColor) {
-        switch (statusColor) {
-            case BLUE:
-                return ContextCompat.getColor(context, R.color.conversation_item_status_blue);
-            case GRAY:
-                return ContextCompat.getColor(context, R.color.conversation_item_status_gray);
-            case GREEN:
-                return ContextCompat.getColor(context, R.color.conversation_item_status_green);
-
-            default:
-            case YELLOW:
-                return ContextCompat.getColor(context, R.color.conversation_item_status_yellow);
-
         }
     }
 

@@ -23,5 +23,7 @@
     <string name="ko__messenger_input_email_edittext_hint">john@doe.com</string>
     <string name="ko__messenger_input_email_message_hint_default">Your Email</string>
     <string name="ko__label_submit">Submit</string>
+    <string name="ko__messenger_label_new_conversation">Start a new conversation</string>
+    <string name="ko__messenger_reply_box_hint">Message team...</string>
 
 </resources>

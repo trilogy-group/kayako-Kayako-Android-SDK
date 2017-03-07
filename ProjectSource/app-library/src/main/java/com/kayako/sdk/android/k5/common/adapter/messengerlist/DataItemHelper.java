@@ -219,7 +219,10 @@ public class DataItemHelper {
         }
 
         // Show Avatar if the previous message is sent via another channel as compared to the current message
-        if (previousDataItem.getChannelDecoration().getSourceDrawable() != currentDataItem.getChannelDecoration().getSourceDrawable()) {
+        // TODO: Find another way to identify if channels match or not - add channel name?
+        if (previousDataItem.getChannelDecoration() != null &&
+                currentDataItem.getChannelDecoration() != null &&
+                previousDataItem.getChannelDecoration().getSourceDrawable() != currentDataItem.getChannelDecoration().getSourceDrawable()) {
             return true;
         }
 

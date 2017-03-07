@@ -69,4 +69,8 @@ public class MessengerPref {
     public void setUserId(long userId) {
         sPrefs.edit().putLong(KEY_CURRENT_USER_ID, userId).commit();
     }
+
+    public void clearAll() {
+        sPrefs.edit().clear().apply();
+    }
 }

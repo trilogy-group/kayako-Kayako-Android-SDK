@@ -45,9 +45,6 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
             @Override
             public void onClickSend(String message) {
                 mPresenter.onClickSendInReplyView(message);
-
-                // TODO: Testing
-                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -93,7 +90,10 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
         if (!hasPageLoaded()) {
             return;
         }
-        mMessageListView.setupList(baseListItems);
+
+        synchronized (this) { // TODO: Ensure the message listing is updated at a time, shift this logic to library for all view rendering logic!
+            mMessageListView.setupList(baseListItems);
+        }
     }
 
     @Override

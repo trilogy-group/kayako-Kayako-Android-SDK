@@ -97,10 +97,21 @@
     <color name="ko__messenger_input_container_stroke_color">#EDEEEF</color>
     <color name="ko__messenger_input_field_red_background_color">#FCEEEB</color>
     <color name="ko__messenger_input_field_red_hint_text_color">#DB3F24</color>
-    <color name="ko__messenger_input_field_blue_background_color">#EFF8FA</color>
-    <color name="ko__messenger_input_field_blue_hint_text_color">#5F6C73</color>
+
+    <color name="ko__messenger_input_field_blue_background_color">
+        @color/ko__messenger_input_field_white_background_color
+    </color><!--#EFF8FA</color>-->
+    <color name="ko__messenger_input_field_blue_hint_text_color">
+        @color/ko__messenger_input_field_white_hint_text_color
+    </color><!--#5F6C73</color>-->
+
     <color name="ko__messenger_input_field_white_background_color">#FFFFFF</color>
     <color name="ko__messenger_input_field_white_hint_text_color">#838D94</color>
     <color name="ko__messenger_completed_field_green_background_color">#DCEEDF</color>
     <color name="ko__messenger_completed_field_green_text_color">#2D3138</color>
+
+    <color name="ko__messenger_new_conversation_background_colour">#F1703F</color>
+    <color name="ko__messenger_new_conversation_text_colour">#FFFFFF</color>
+    <color name="ko__messenger_reply_box_send_button_background_colour">#F1703F</color>
+    <color name="ko__messenger_reply_box_background_colour">#F7F8F9</color>
 </resources>

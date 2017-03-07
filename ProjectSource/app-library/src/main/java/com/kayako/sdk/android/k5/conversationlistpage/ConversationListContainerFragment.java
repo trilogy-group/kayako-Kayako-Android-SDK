@@ -1,5 +1,6 @@
 package com.kayako.sdk.android.k5.conversationlistpage;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -29,7 +30,6 @@ public class ConversationListContainerFragment extends Fragment implements Conve
         return mRoot = inflater.inflate(R.layout.ko__fragment_conversation_list_container, container, false);
     }
 
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -55,13 +55,18 @@ public class ConversationListContainerFragment extends Fragment implements Conve
                 mPresenter.onPageStateChange(state);
             }
         });
-
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mPresenter.onOpenPage();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mPresenter.onActivityResult(requestCode, resultCode);
     }
 
     @Override
@@ -97,11 +102,19 @@ public class ConversationListContainerFragment extends Fragment implements Conve
     }
 
     @Override
-    public void openNewConversationPage() {
+    public void openNewConversationPage(int requestCode) {
+        if (!hasPageLoaded()) {
+            return;
+        }
+        startActivityForResult(KayakoSelectConversationActivity.getIntent(getActivity()), requestCode);
+    }
+
+    @Override
+    public void reloadConversations() {
         if (!hasPageLoaded()) {
             return;
         }
 
-        startActivity(KayakoSelectConversationActivity.getIntent(getActivity()));
+        mConversationListView.reloadConversations();
     }
 }

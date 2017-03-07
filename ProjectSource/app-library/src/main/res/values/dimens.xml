@@ -8,14 +8,17 @@
     <dimen name="ko__messenger_list_item_margin">8dp</dimen>
     <dimen name="ko__messenger_list_item_continued_margin_top">4dp</dimen>
     <dimen name="ko__messenger_list_item_separator_margin_top">16dp</dimen>
-    <dimen name="ko__messenger_list_item_separator_margin_bottom">8dp</dimen><!-- value[@dimen/ko__messenger_list_item_separator_margin_top] - value[@dimen/ko__messenger_list_item_margin] -->
+    <dimen name="ko__messenger_list_item_separator_margin_bottom">8dp
+    </dimen><!-- value[@dimen/ko__messenger_list_item_separator_margin_top] - value[@dimen/ko__messenger_list_item_margin] -->
     <dimen name="ko__messenger_list_item_time_margin">4dp</dimen>
 
     <dimen name="ko__messenger_gap_between_avatar_and_message">8dp</dimen>
-    <dimen name="ko__messenger_gap_between_message_and_end">48dp</dimen> <!-- value[@dimen/ko__messenger_avatar_size] + value[@dimen/ko__messenger_gap_between_avatar_and_message] -->
+    <dimen name="ko__messenger_gap_between_message_and_end">48dp
+    </dimen> <!-- value[@dimen/ko__messenger_avatar_size] + value[@dimen/ko__messenger_gap_between_avatar_and_message] -->
     <dimen name="ko__messenger_gap_between_attachment_image_and_label">2dp</dimen>
     <dimen name="ko__messenger_gap_between_time_and_message">3dp</dimen>
-    <dimen name="ko__messenger_gap_between_channel_and_avatar_top_corner">28dp</dimen>  <!-- Shouldn't be greater than value[ko__messenger_avatar_size]-->
+    <dimen name="ko__messenger_gap_between_channel_and_avatar_top_corner">28dp
+    </dimen>  <!-- Shouldn't be greater than value[ko__messenger_avatar_size]-->
 
     <dimen name="ko__messenger_chat_bubble_corner">8dp</dimen>
     <dimen name="ko__messenger_chat_bubble_padding_vertical">8dp</dimen>
@@ -33,12 +36,13 @@
     <dimen name="ko__conversation_list_item_assignee_avatar_size">30dp</dimen>
     <dimen name="ko__conversation_list_item_assignee_avatar_margin_top_left_corner">15dp</dimen>
     <dimen name="ko__conversation_list_item_gap_between_avatar_and_messages">16dp</dimen>
-    <dimen name="ko__conversation_list_new_conversation_button_width">234dp</dimen>
-    <dimen name="ko__conversation_list_new_conversation_button_height">40dp</dimen>
 
     <dimen name="ko__messenger_input_item_submit_button_padding">8dp</dimen>
     <dimen name="ko__messenger_input_container_stroke_width">1dp</dimen>
-    <dimen name="ko__messenger_input_item_corner_top">@dimen/ko__messenger_chat_bubble_corner</dimen>
+    <dimen name="ko__messenger_input_item_corner_top">@dimen/ko__messenger_chat_bubble_corner
+    </dimen>
     <dimen name="ko__messenger_input_item_corner_bottom">0dp</dimen>
+
+    <dimen name="ko__messenger_button_new_conversation_corner">64dp</dimen>
 
 </resources>

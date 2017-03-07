@@ -4,9 +4,6 @@ import com.kayako.sdk.android.k5.common.fragments.ListPageState;
 
 public class ConversationListContainerPresenter implements ConversationListContainerContract.Presenter {
 
-
-    // TODO: Refresh this page on returning to it - onActivityResult?
-
     private ConversationListContainerContract.View mView;
 
     private boolean mIsScrolling;
@@ -62,7 +59,7 @@ public class ConversationListContainerPresenter implements ConversationListConta
 
     @Override
     public void onClickNewConversation() {
-        mView.openNewConversationPage();
+        mView.openNewConversationPage(RequestCodes.REQUEST_CODE_CREATE_NEW_CONVERSATION);
     }
 
     @Override
@@ -75,5 +72,14 @@ public class ConversationListContainerPresenter implements ConversationListConta
     public void onPageStateChange(ListPageState state) {
         mListPageState = state;
         configureNewConversationVisibility();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode) {
+        switch (requestCode) {
+            case RequestCodes.REQUEST_CODE_CREATE_NEW_CONVERSATION:
+            case RequestCodes.REQUEST_CODE_OPEN_EXISTING_CONVERSATION:
+                mView.reloadConversations();
+        }
     }
 }

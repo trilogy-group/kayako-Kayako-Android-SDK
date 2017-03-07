@@ -11,10 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.utils.KeyboardUtils;
-import com.kayako.sdk.android.k5.core.Kayako;
 
 public class ReplyBoxFragment extends Fragment implements ReplyBoxContract.View, ReplyBoxContract.ConfigureView, TextWatcher {
 
@@ -37,7 +37,7 @@ public class ReplyBoxFragment extends Fragment implements ReplyBoxContract.View,
         super.onViewCreated(view, savedInstanceState);
 
         // Set up send button
-        View sendButton = mRoot.findViewById(R.id.send_button);
+        View sendButton = mRoot.findViewById(R.id.ko__reply_box_send_button);
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,13 +102,13 @@ public class ReplyBoxFragment extends Fragment implements ReplyBoxContract.View,
 
     @Override
     public void enableSendButton() {
-        Button button = (Button) mRoot.findViewById(R.id.send_button);
+        ImageButton button = (ImageButton) mRoot.findViewById(R.id.ko__reply_box_send_button);
         button.setEnabled(true);
     }
 
     @Override
     public void disableSendButton() {
-        Button button = (Button) mRoot.findViewById(R.id.send_button);
+        ImageButton button = (ImageButton) mRoot.findViewById(R.id.ko__reply_box_send_button);
         button.setEnabled(false);
     }
 

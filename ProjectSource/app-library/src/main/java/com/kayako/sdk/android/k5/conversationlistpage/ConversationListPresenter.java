@@ -7,6 +7,7 @@ import com.kayako.sdk.android.k5.common.adapter.conversationlist.ConversationLis
 import com.kayako.sdk.android.k5.core.MessengerPref;
 import com.kayako.sdk.messenger.conversation.Conversation;
 import com.kayako.sdk.messenger.conversation.fields.status.Status;
+import com.kayako.sdk.utils.FingerprintUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ public class ConversationListPresenter implements ConversationListContract.Prese
 
     private static final int LIMIT = 20;
     private int mOffset = 0;
+
 
     public ConversationListPresenter(ConversationListContract.View mView, ConversationListContract.Data mData) {
         this.mData = mData;
@@ -36,8 +38,13 @@ public class ConversationListPresenter implements ConversationListContract.Prese
 
     public void initPage() {
         resetVariables();
-        // TODO: Fingerprint?
-        MessengerPref.getInstance().setFingerprintId("d0bc691c-62c5-468c-a4a5-3b096684dc96");
+
+        String fingerprintId = MessengerPref.getInstance().getFingerprintId();
+        if (fingerprintId == null) {
+            MessengerPref.getInstance().setFingerprintId(FingerprintUtils.generateUUIDv4());
+        }
+        // TODO: For testing
+        //.setFingerprintId("d0bc691c-62c5-468c-a4a5-3b096684dc96");
 
         reloadPage();
     }
@@ -54,7 +61,7 @@ public class ConversationListPresenter implements ConversationListContract.Prese
                 synchronized (this) { // To avoid race conditions - especially when using load more
                     // Error Handling
                     if (conversations == null || conversations.size() == 0) {
-                        if (mOffset == 0) {
+                        if (offset == 0) {
                             mView.showEmptyView();
                         } else {
                             configureIfMoreItemsAvailable(0);
@@ -64,14 +71,14 @@ public class ConversationListPresenter implements ConversationListContract.Prese
                     }
 
                     // Configuring list - load more or setup list
-                    if (mOffset == 0) {
+                    if (offset == 0) {
                         mView.setupList(convertConversationToListItems(conversations));
                     } else {
                         mView.appendToEndOfListAndStopLoadMoreProgress(convertConversationToListItems(conversations));
                     }
 
                     configureIfMoreItemsAvailable(conversations.size());
-                    mOffset += conversations.size();
+                    mOffset = offset + conversations.size();
                 }
             }
 
@@ -105,12 +112,24 @@ public class ConversationListPresenter implements ConversationListContract.Prese
 
     @Override
     public void onClickConversation(Conversation conversation) {
-        mView.openMessageListPage(conversation.getId());
+        mView.openMessageListPage(conversation.getId(), RequestCodes.REQUEST_CODE_OPEN_EXISTING_CONVERSATION);
     }
 
     @Override
     public void onClickRetryOnError() {
         reloadPage();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode) {
+        if (requestCode == RequestCodes.REQUEST_CODE_OPEN_EXISTING_CONVERSATION) {
+            reloadConversations();
+        }
+    }
+
+    @Override
+    public void reloadConversations() {
+        loadConversations(0);
     }
 
     private List<BaseListItem> convertConversationToListItems(List<Conversation> conversations) {
@@ -121,34 +140,10 @@ public class ConversationListPresenter implements ConversationListContract.Prese
                     conversation.getCreator().getFullName(),// TODO: Whose name? The agent?
                     conversation.getUpdatedAt(),
                     conversation.getSubject(), // TODO: Shouldn't we show the preview message
-                    conversation.getStatus() != null ? conversation.getStatus().getLabel() : null,
-                    getStatusColor(conversation.getStatus()),
                     conversation));
 
         }
         return baseListItems;
-    }
-
-    private ConversationListItem.StatusColor getStatusColor(@Nullable Status status) {
-        if (status == null) {
-            return null;
-        }
-
-        switch (status.getType()) {
-            case NEW:
-            case OPEN:
-                return ConversationListItem.StatusColor.BLUE;
-
-            case CLOSED:
-                return ConversationListItem.StatusColor.GRAY;
-
-            case COMPLETED:
-                return ConversationListItem.StatusColor.GREEN;
-
-            default:
-            case CUSTOM:
-                return ConversationListItem.StatusColor.YELLOW;
-        }
     }
 
     private void resetVariables() {

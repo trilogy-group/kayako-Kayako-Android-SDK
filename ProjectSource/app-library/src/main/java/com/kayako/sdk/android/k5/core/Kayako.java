@@ -14,17 +14,17 @@ import java.util.Locale;
  */
 public class Kayako {
 
-    private static Context mAppContext;
     private static Kayako mInstance;
+    private Context mAppContext;
+
+    private Kayako(Context mAppContext) {
+        this.mAppContext = mAppContext;
+    }
 
     public static void initialize(Context applicationContext) {
         mInstance = new Kayako(applicationContext);
         HelpCenterPref.createInstance(applicationContext);
         MessengerPref.createInstance(applicationContext);
-    }
-
-    public Kayako(Context mAppContext) {
-        this.mAppContext = mAppContext;
     }
 
     public static Kayako getInstance() {
@@ -35,7 +35,7 @@ public class Kayako {
     }
 
     public static Context getApplicationContext() {
-        return mAppContext;
+        return getInstance().mAppContext;
     }
 
     public void openHelpCenter(Context context, String helpCenterUrl, Locale defaultLocale) {
@@ -48,13 +48,13 @@ public class Kayako {
         context.startActivity(KayakoConversationListActivity.getIntent(context));
     }
 
-    public void setUpCommonCredentials(String helpCenterUrl, Locale defaultLocale) {
+    private void setUpCommonCredentials(String helpCenterUrl, Locale defaultLocale) {
         if (!URLUtil.isValidUrl(helpCenterUrl)) {
             throw new IllegalArgumentException("Help Center Url provided is not valid");
         }
 
         if (TextUtils.isEmpty(helpCenterUrl) || defaultLocale == null) {
-            throw new NullPointerException("helpCenterUrl and defaultLocale are mandatory non-null arguments and need to be provided.");
+            throw new IllegalArgumentException("helpCenterUrl and defaultLocale are mandatory non-null arguments and need to be provided.");
         }
 
         HelpCenterPref.getInstance().setHelpCenterUrl(helpCenterUrl);

@@ -14,7 +14,6 @@ public class ConversationItemViewHolder extends RecyclerView.ViewHolder {
     public TextView name;
     public TextView time;
     public TextView subject;
-    public TextView status;
     public RelativeLayout layout;
     public View itemView;
 
@@ -25,7 +24,6 @@ public class ConversationItemViewHolder extends RecyclerView.ViewHolder {
         name = (TextView) v.findViewById(R.id.name);
         time = (TextView) v.findViewById(R.id.time);
         subject = (TextView) v.findViewById(R.id.subject);
-        status = (TextView) v.findViewById(R.id.status);
         layout = (RelativeLayout) v.findViewById(R.id.layout);
     }
 }

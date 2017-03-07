@@ -12,7 +12,9 @@ public class ConversationListContainerContract {
 
         void showNewConversationButton();
 
-        void openNewConversationPage();
+        void openNewConversationPage(int requestCode);
+
+        void reloadConversations();
     }
 
     interface Presenter extends BasePresenter<View> {
@@ -26,5 +28,7 @@ public class ConversationListContainerContract {
         void onScrollConversationList(boolean isScrolling);
 
         void onPageStateChange(ListPageState state);
+
+        void onActivityResult(int requestCode, int resultCode);
     }
 }

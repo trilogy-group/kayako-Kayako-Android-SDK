@@ -27,7 +27,7 @@ public class ConversationListContract {
 
         void showLoadingView();
 
-        void openMessageListPage(Long id);
+        void openMessageListPage(Long id, int requestCode);
 
         void showMessage(String message);
 
@@ -51,9 +51,15 @@ public class ConversationListContract {
         void onClickConversation(Conversation conversation);
 
         void onClickRetryOnError();
+
+        void onActivityResult(int requestCode, int resultCode);
+
+        void reloadConversations();
     }
 
     interface ConfigureView {
+
+        void reloadConversations();
 
         void setOnScrollListener(OnScrollListener onScrollListener);
 

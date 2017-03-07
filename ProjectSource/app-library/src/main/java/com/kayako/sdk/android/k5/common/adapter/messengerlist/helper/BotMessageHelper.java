@@ -8,7 +8,7 @@ public class BotMessageHelper {
     }
 
     public static int getBotDrawable() {
-        return R.drawable.ko__cat_in_box; // TODO: Change later
+        return R.drawable.ko__ic_bot_avatar; 
     }
 
 }

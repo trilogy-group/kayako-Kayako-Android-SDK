@@ -1,15 +1,14 @@
 package com.kayako.sdk.android.k5.conversationlistpage;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
 import com.kayako.sdk.android.k5.R;
-import com.kayako.sdk.android.k5.activities.KayakoConversationListActivity;
 import com.kayako.sdk.android.k5.activities.KayakoSelectConversationActivity;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.conversationlist.ConversationListAdapter;
@@ -63,7 +62,6 @@ public class ConversationListFragment extends BaseListFragment implements Conver
         super.onDestroyView();
         mPresenter.closePage();
     }
-
 
     private boolean hasPageLoaded() {
         return isAdded() && getActivity() != null;
@@ -175,12 +173,12 @@ public class ConversationListFragment extends BaseListFragment implements Conver
     }
 
     @Override
-    public void openMessageListPage(final Long id) {
+    public void openMessageListPage(final Long id, final int requestCode) {
         if (!hasPageLoaded()) {
             return;
         }
 
-        startActivity(KayakoSelectConversationActivity.getIntent(getActivity(), id));
+        startActivityForResult(KayakoSelectConversationActivity.getIntent(getActivity(), id), requestCode);
     }
 
     @Override
@@ -221,6 +219,11 @@ public class ConversationListFragment extends BaseListFragment implements Conver
         }
 
         return hasMoreItems();
+    }
+
+    @Override
+    public void reloadConversations() {
+        mPresenter.reloadConversations();
     }
 
     @Override

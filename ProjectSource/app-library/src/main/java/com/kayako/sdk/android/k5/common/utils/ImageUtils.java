@@ -38,8 +38,6 @@ public class ImageUtils {
                     .bitmapTransform(new CropCircleTransformation(context))
                     .into(avatarView);
         }
-
-
     }
 
     /**

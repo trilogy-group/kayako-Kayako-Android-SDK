@@ -22,6 +22,12 @@ public class MessageListContainerContract {
         void getMessages(final OnLoadMessagesListener listener, long conversationId, int offset, int limit);
 
         void startNewConversation(PostConversationBodyParams bodyParams, MessageListContainerContract.OnLoadConversationListener onLoadConversationListener);
+
+        void getConversation(long conversationId, final OnLoadConversationListener onLoadConversationListener);
+
+        void registerCaseChangeListener(long currentUserId, String conversationPresenceChannel, OnConversationChangeListener listener);
+
+        void unregisterCaseChangeListener();
     }
 
     public interface View extends BaseView {
@@ -73,7 +79,14 @@ public class MessageListContainerContract {
         void onSuccess(Conversation conversation);
 
         void onFailure(String message);
+    }
 
+    public interface OnConversationChangeListener {
+        void onConversationChange(Conversation conversation);
+
+        void onNewMessage(long messageId);
+
+        void onUpdateMessage(long messageId);
     }
 
 }

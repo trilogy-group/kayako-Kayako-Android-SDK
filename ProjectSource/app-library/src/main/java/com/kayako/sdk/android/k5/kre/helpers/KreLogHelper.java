@@ -12,22 +12,41 @@ public class KreLogHelper {
     }
 
     public static void d(String tag, String message) {
+        if (sPrintLogListener == null) {
+            return;
+        }
         sPrintLogListener.printDebugLogs(tag, message);
     }
 
     public static void v(String tag, String message) {
+        if (sPrintLogListener == null) {
+            return;
+        }
+
         sPrintLogListener.printVerboseLogs(tag, message);
     }
 
     public static void e(String tag, String message) {
+        if (sPrintLogListener == null) {
+            return;
+        }
+
         sPrintLogListener.printErrorLogs(tag, message);
     }
 
     public static void printStackTrace(String tag, Throwable e) {
+        if (sPrintLogListener == null) {
+            return;
+        }
+
         sPrintLogListener.printStackTrace(tag, e);
     }
 
     public static void logException(String tag, Throwable e) {
+        if (sPrintLogListener == null) {
+            return;
+        }
+
         sPrintLogListener.logPotentialCrash(tag, e);
     }
 
