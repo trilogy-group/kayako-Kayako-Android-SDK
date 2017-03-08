@@ -49,7 +49,6 @@ class KreConnection {
         }
 
         String url = generateUrlFromKreCredentials(kreCredentials);
-        KreLogHelper.d(TAG, url);
 
         try {
             mIsConnected = false;
