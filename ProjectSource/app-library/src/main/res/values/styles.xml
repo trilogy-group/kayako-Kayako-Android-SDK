@@ -13,10 +13,24 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
-    <style name="Ko__MessengerTheme" parent="Ko__AppTheme">
+    <style name="Ko__MessengerTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- TODO: Change primary colors for messenger -->
+        <item name="colorPrimary">@color/ko__colorAccent</item>
+        <item name="colorPrimaryDark">@color/ko__colorPrimaryDark</item>
+        <item name="colorAccent">@color/ko__colorAccent</item>
+
+
+        <!-- Added to remove toolbar -->
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
-        <!-- TODO: Configure all kinds of styles here -->
+
+        <!--Added to make background transparent-->
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:colorBackgroundCacheHint">
+            @color/ko__messenger_floating_background_color
+        </item>
+        <item name="android:windowBackground">@color/ko__messenger_floating_background_color</item>
     </style>
 
     <style name="Ko__ButtonStyle">
@@ -54,6 +68,16 @@
     <style name="Ko__ChatBubbleInputComponentStyle" parent="Ko__ChatBubbleStyle">
         <item name="android:background">@drawable/ko__speech_bubble_other</item>
         <item name="android:textColor">@color/ko__messenger_speech_bubble_other_text_color</item>
+    </style>
+
+    <style name="Ko__MessengerFloatingViewBackgroundLayer">
+        <item name="android:background">@color/ko__messenger_floating_background_color</item>
+        <item name="android:fitsSystemWindows">true</item>
+    </style>
+
+    <style name="Ko__MessengerFloatingViewForegroundLayer">
+        <item name="android:layout_marginTop">@dimen/ko__messenger_activity_top_height</item>
+        <item name="android:background">@color/ko__messenger_floating_foreground_color</item>
     </style>
 
 </resources>

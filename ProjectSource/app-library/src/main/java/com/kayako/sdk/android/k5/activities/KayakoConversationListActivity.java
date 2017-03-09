@@ -6,8 +6,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.kayako.sdk.android.k5.R;
+import com.kayako.sdk.android.k5.common.activities.BaseMessengerActivity;
 
-public class KayakoConversationListActivity extends AppCompatActivity {
+public class KayakoConversationListActivity extends BaseMessengerActivity {
 
     public static Intent getIntent(Context context) {
         return new Intent(context, KayakoConversationListActivity.class);

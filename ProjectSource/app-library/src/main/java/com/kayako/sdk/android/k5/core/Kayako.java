@@ -1,6 +1,7 @@
 package com.kayako.sdk.android.k5.core;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.webkit.URLUtil;
 
@@ -40,12 +41,16 @@ public class Kayako {
 
     public void openHelpCenter(Context context, String helpCenterUrl, Locale defaultLocale) {
         setUpCommonCredentials(helpCenterUrl, defaultLocale);
-        context.startActivity(KayakoHelpCenterActivity.getIntent(context));
+        Intent intent = KayakoHelpCenterActivity.getIntent(context);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 
     public void openMessenger(Context context, String helpCenterUrl, Locale defaultLocale) {
         setUpCommonCredentials(helpCenterUrl, defaultLocale);
-        context.startActivity(KayakoConversationListActivity.getIntent(context));
+        Intent intent = KayakoConversationListActivity.getIntent(context);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 
     private void setUpCommonCredentials(String helpCenterUrl, Locale defaultLocale) {

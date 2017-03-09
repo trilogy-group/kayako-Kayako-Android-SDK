@@ -6,8 +6,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.kayako.sdk.android.k5.R;
+import com.kayako.sdk.android.k5.common.activities.BaseMessengerActivity;
 
-public class KayakoSelectConversationActivity extends AppCompatActivity {
+public class KayakoSelectConversationActivity extends BaseMessengerActivity {
 
     public static final String ARG_CONVERSATION_ID = "conversation_id";
 

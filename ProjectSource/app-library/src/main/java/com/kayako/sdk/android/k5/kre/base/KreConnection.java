@@ -23,7 +23,7 @@ class KreConnection {
 
     private static final String TAG = "KreConnection";
 
-    private static final String KRE_SOCKET_URL = "wss://kre.kayako.net/socket/websocket";
+    private static final String KRE_SOCKET_URL = "ws://kre.kayako.net/socket/websocket";
     private static final String PARAM_SESSION_ID = "session_id";
     private static final String PARAM_FINGERPRINT_ID = "fingerprint_id";
     private static final String PARAM_INSTANCE = "instance";

@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Ko__MessengerFloatingViewBackgroundLayer"
+    android:id="@+id/ko__messenger_background_layer"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
 
-    <fragment
-        android:id="@+id/ko__conversation_list_container"
-        android:name="com.kayako.sdk.android.k5.conversationlistpage.ConversationListContainerFragment"
+    <FrameLayout
+        style="@style/Ko__MessengerFloatingViewForegroundLayer"
+        android:id="@+id/ko__messenger_foreground_layer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
 
+        <android.support.design.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-</android.support.design.widget.CoordinatorLayout>
+            <fragment
+                android:id="@+id/ko__conversation_list_container"
+                android:name="com.kayako.sdk.android.k5.conversationlistpage.ConversationListContainerFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </android.support.design.widget.CoordinatorLayout>
+
+    </FrameLayout>
+</FrameLayout>
