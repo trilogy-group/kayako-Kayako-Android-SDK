@@ -3,7 +3,6 @@ package com.kayako.sdk.android.k5.kre.base.kase;
 import android.support.annotation.NonNull;
 
 import com.kayako.sdk.android.k5.kre.base.KreSubscription;
-import com.kayako.sdk.android.k5.kre.base.KreSubscriptionFactory;
 import com.kayako.sdk.android.k5.kre.base.credentials.KreCredentials;
 import com.kayako.sdk.android.k5.kre.data.Change;
 import com.kayako.sdk.android.k5.kre.helpers.KreCaseChangeHelper;
@@ -13,6 +12,7 @@ import com.kayako.sdk.android.k5.kre.helpers.RawClientTypingListener;
 import com.kayako.sdk.android.k5.kre.helpers.RawUserOnCasePresenceListener;
 import com.kayako.sdk.android.k5.kre.helpers.presence.KrePresenceHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -35,16 +35,16 @@ public class KreCaseSubscription {
     private KreSubscription mKreSubscription;
     private KrePresenceHelper mKrePresenceHelper;
     private KreSubscription.OnSubscriptionListener mMainListener;
-    private List<KreSubscription.OnSubscriptionListener> mChildListeners = new CopyOnWriteArrayList<>();
+    private List<KreSubscription.OnSubscriptionListener> mChildListeners = new ArrayList<>();
 
     private AtomicBoolean hasSubscribeBeenCalledOnce = new AtomicBoolean(false);
-    private List<RawClientTypingListener> mClientTypingListeners = new CopyOnWriteArrayList<>();
-    private List<RawClientActivityListener> mClientActivityListeners = new CopyOnWriteArrayList<>();
-    private List<RawCaseChangeListener> mCaseChangeListeners = new CopyOnWriteArrayList<>();
-    private List<RawUserOnCasePresenceListener> mUserPresenceListeners = new CopyOnWriteArrayList<>();
+    private List<RawClientTypingListener> mClientTypingListeners = new ArrayList<>();
+    private List<RawClientActivityListener> mClientActivityListeners = new ArrayList<>();
+    private List<RawCaseChangeListener> mCaseChangeListeners = new ArrayList<>();
+    private List<RawUserOnCasePresenceListener> mUserPresenceListeners = new ArrayList<>();
 
-    KreCaseSubscription(long currentUserId) {
-        mKreSubscription = KreSubscriptionFactory.getConversationKreSubscription();
+    public KreCaseSubscription(@NonNull String name, long currentUserId) {
+        mKreSubscription = new KreSubscription(name);
         mKrePresenceHelper = new KrePresenceHelper(mKreSubscription, true, currentUserId);
     }
 

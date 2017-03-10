@@ -7,6 +7,7 @@ import com.kayako.sdk.android.k5.kre.base.credentials.KreCredentials;
 import com.kayako.sdk.android.k5.kre.helpers.KreOnlinePresenceHelper;
 import com.kayako.sdk.android.k5.kre.helpers.RawUserOnlinePresenceListener;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -14,11 +15,11 @@ public class KreUserSubscription {
 
     private KreSubscription mKreSubscription;
     private KreSubscription.OnSubscriptionListener mMainListener;
-    private List<KreSubscription.OnSubscriptionListener> mChildListeners = new CopyOnWriteArrayList<>();
-    private List<RawUserOnlinePresenceListener> mOnlinePresenceListeners = new CopyOnWriteArrayList<>();
+    private List<KreSubscription.OnSubscriptionListener> mChildListeners = new ArrayList<>();
+    private List<RawUserOnlinePresenceListener> mOnlinePresenceListeners = new ArrayList<>();
 
-    protected KreUserSubscription(KreSubscription kreSubscription) {
-        mKreSubscription = kreSubscription;
+    public KreUserSubscription(String name) {
+        mKreSubscription = new KreSubscription(name);
     }
 
     public void addUserOnlinePresenceListener(RawUserOnlinePresenceListener listener) {
