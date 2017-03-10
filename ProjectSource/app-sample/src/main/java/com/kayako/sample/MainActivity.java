@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.kayako.sample.store.Store;
 import com.kayako.sdk.android.k5.core.Kayako;
+import com.kayako.sdk.android.k5.core.MessengerPref;
 
 import java.util.Locale;
 
@@ -69,6 +70,16 @@ public class MainActivity extends AppCompatActivity {
 
                     Kayako.getInstance().openMessenger(MainActivity.this, url, Locale.US); // Command to open Messenger
                 }
+            }
+        });
+
+        Button buttonClear = (Button) findViewById(R.id.button_clear_all);
+        buttonClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Useful for testing situations when a new user joins
+                MessengerPref.getInstance().clearAll();
+                Toast.makeText(getApplicationContext(), R.string.cleared_all, Toast.LENGTH_SHORT).show();
             }
         });
 

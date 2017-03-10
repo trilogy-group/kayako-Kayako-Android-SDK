@@ -2,4 +2,6 @@
     <string name="app_name">Kayako Sample App</string>
     <string name="open_kayako_help_center">Open Kayako Help Center</string>
     <string name="open_messenger">Open Messenger</string>
+    <string name="clear_all">Clear saved values</string>
+    <string name="cleared_all">Cleared!</string>
 </resources>

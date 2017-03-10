@@ -62,4 +62,26 @@
             android:text="@string/open_messenger" />
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10px"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/colorPrimary" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/ko__activity_horizontal_margin"
+        android:paddingRight="@dimen/ko__activity_horizontal_margin">
+
+        <Button
+            android:id="@+id/button_clear_all"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/clear_all" />
+    </LinearLayout>
+
 </LinearLayout>
