@@ -139,7 +139,7 @@ dependencies {
     compile 'com.android.support:support-v4:24.2.0'
     compile 'com.android.support:design:24.2.0'
 
-    compile 'com.squareup.okhttp3:okhttp:3.6.0'
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'com.squareup.okio:okio:1.9.0'
     compile 'com.google.code.gson:gson:2.4'
     compile 'com.github.bumptech.glide:glide:3.7.0'
@@ -148,11 +148,11 @@ dependencies {
     // TODO: Uncomment when production ready
     // compile 'com.kayako:kayako:0.0.3'
     // compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile('com.github.metalwihen:Kayako-Java-SDK:v0.0.12') {
+    compile('com.github.metalwihen:Kayako-Java-SDK:v0.0.13') { // uses okhttp 3.4.1
         exclude group: 'com.squareup.okhttp3', module: 'okhttp'
     }
 
-    compile('com.github.metalwihen:JavaPhoenixChannels:v0.2.9') {
+    compile('com.github.metalwihen:JavaPhoenixChannels:v0.2.10') { // uses okhttp 3.4.1
         // used for real time updates - My fork of the official Java KRE Client
         exclude module: 'groovy-all'
     }
