@@ -200,8 +200,7 @@ public class KreCaseSubscription {
                     KreCaseChangeHelper.addRawCaseChangeListener(mKreSubscription, new RawCaseChangeListener() {
                         @Override
                         public void onCaseChange(final Change change) {
-                            KreLogHelper.e("KRE: CaseSubsctiption, Change object = ", change.toString());
-
+                            // KreLogHelper.e("KRE: CaseSubsctiption, Change object = ", change.toString());
                             if (mCaseChangeListeners != null) {
                                 for (RawCaseChangeListener listener : mCaseChangeListeners) {
                                     listener.onCaseChange(change);
