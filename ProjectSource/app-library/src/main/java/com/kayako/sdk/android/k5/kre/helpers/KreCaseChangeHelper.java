@@ -19,7 +19,11 @@ public class KreCaseChangeHelper {
             @Override
             public void onEvent(String event, String jsonBody) {
                 // KayakoLogger.d(TAG, "onChangeCase:" + jsonBody);
+
+                KreLogHelper.e("KRE: Before Parse, Json = ", jsonBody);
                 final Change pushData = PushDataHelper.convertFromJsonString(Change.class, jsonBody);
+                KreLogHelper.e("KRE: After Parse, Object = ", pushData.toString());
+
                 listener.onCaseChange(pushData);
             }
 

@@ -6,6 +6,7 @@ import com.kayako.sdk.android.k5.kre.base.KreSubscription;
 import com.kayako.sdk.android.k5.kre.base.credentials.KreCredentials;
 import com.kayako.sdk.android.k5.kre.data.Change;
 import com.kayako.sdk.android.k5.kre.helpers.KreCaseChangeHelper;
+import com.kayako.sdk.android.k5.kre.helpers.KreLogHelper;
 import com.kayako.sdk.android.k5.kre.helpers.RawCaseChangeListener;
 import com.kayako.sdk.android.k5.kre.helpers.RawClientActivityListener;
 import com.kayako.sdk.android.k5.kre.helpers.RawClientTypingListener;
@@ -199,6 +200,8 @@ public class KreCaseSubscription {
                     KreCaseChangeHelper.addRawCaseChangeListener(mKreSubscription, new RawCaseChangeListener() {
                         @Override
                         public void onCaseChange(final Change change) {
+                            KreLogHelper.e("KRE: CaseSubsctiption, Change object = ", change.toString());
+
                             if (mCaseChangeListeners != null) {
                                 for (RawCaseChangeListener listener : mCaseChangeListeners) {
                                     listener.onCaseChange(change);
