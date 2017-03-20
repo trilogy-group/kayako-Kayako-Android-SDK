@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="4dp"
+    android:paddingRight="4dp">
+
+    <include layout="@layout/ko__include_messenger_toolbar_common" />
+
+    <LinearLayout
+        android:id="@+id/ko__messenger_toolbar_avatars"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:orientation="vertical">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="8dp" />
+
+        <include
+            layout="@layout/ko__include_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1px" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="24dp" />
+
+
+        <include
+            layout="@layout/ko__include_messenger_toolbar_avatar_expanded"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</LinearLayout>

@@ -20,12 +20,11 @@ public class ConversationListContainerPresenter implements ConversationListConta
 
     @Override
     public void onOpenPage() {
-
+        mView.configureDefaultToolbar();
     }
 
     @Override
     public void onClosePage() {
-
     }
 
     /**

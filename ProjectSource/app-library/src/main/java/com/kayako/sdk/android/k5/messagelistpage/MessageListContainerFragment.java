@@ -14,6 +14,8 @@ import com.kayako.sdk.android.k5.activities.KayakoSelectConversationActivity;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.fragments.ListPageState;
 import com.kayako.sdk.android.k5.common.fragments.OnListPageStateChangeListener;
+import com.kayako.sdk.android.k5.toolbarview.child.LastActiveAgentsData;
+import com.kayako.sdk.android.k5.toolbarview.MessengerToolbarContract;
 
 import java.util.List;
 
@@ -22,6 +24,7 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
     private MessageListContainerContract.Presenter mPresenter;
     private MessageListContract.ConfigureView mMessageListView;
     private ReplyBoxContract.ConfigureView mReplyBoxView;
+    private MessengerToolbarContract.ConfigureView mToolbarView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,6 +64,9 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
                 mPresenter.onPageStateChange(state);
             }
         });
+
+        mToolbarView = (MessengerToolbarContract.ConfigureView) getChildFragmentManager().findFragmentById(R.id.ko__messenger_toolbar);
+
     }
 
     @Override
@@ -73,6 +79,9 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
         } else {
             mPresenter.initPage(true, null);
         }
+
+        // Call on Activity Created
+        mToolbarView.configureDefaultView();
     }
 
     private boolean hasPageLoaded() {

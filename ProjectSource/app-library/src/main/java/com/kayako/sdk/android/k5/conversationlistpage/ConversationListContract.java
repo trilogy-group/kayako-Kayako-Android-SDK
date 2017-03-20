@@ -5,6 +5,7 @@ import com.kayako.sdk.android.k5.common.fragments.OnListPageStateChangeListener;
 import com.kayako.sdk.android.k5.common.mvp.BaseData;
 import com.kayako.sdk.android.k5.common.mvp.BasePresenter;
 import com.kayako.sdk.android.k5.common.mvp.BaseView;
+import com.kayako.sdk.android.k5.toolbarview.MessengerToolbarContract;
 import com.kayako.sdk.messenger.conversation.Conversation;
 
 import java.util.List;

@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.utils.ImageUtils;
 import com.kayako.sdk.android.k5.common.utils.ViewUtils;
+import com.kayako.sdk.android.k5.common.view.CircleImageView;
 import com.kayako.sdk.android.k5.common.viewhelpers.DefaultStateViewHelper;
 import com.kayako.sdk.helpcenter.articles.Article;
 
@@ -68,7 +69,7 @@ public class ArticleFragment extends Fragment implements ArticleContract.View {
 
     @Override
     public void setAuthorAvatar(String avatarUrl) {
-        ImageView authorAvatar = (ImageView) mRoot.findViewById(R.id.ko__article_author_avatar);
+        CircleImageView authorAvatar = (CircleImageView) mRoot.findViewById(R.id.ko__article_author_avatar);
         ImageUtils.setAvatarImage(getContext(), authorAvatar, avatarUrl);
     }
 

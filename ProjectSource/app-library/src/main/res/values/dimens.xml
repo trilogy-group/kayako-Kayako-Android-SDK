@@ -46,5 +46,7 @@
     <dimen name="ko__messenger_button_new_conversation_corner">64dp</dimen>
 
     <dimen name="ko__messenger_activity_top_height">24dp</dimen>
+    <dimen name="ko__messenger_toolbar_back_button_size">48dp</dimen>
+    <dimen name="ko__messenger_toolbar_back_button_padding">16dp</dimen>
 
 </resources>

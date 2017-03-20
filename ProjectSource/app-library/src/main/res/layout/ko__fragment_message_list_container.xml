@@ -5,7 +5,11 @@
     android:orientation="vertical"
     android:weightSum="1">
 
-    <!-- TODO: Toolbar -->
+    <fragment
+        android:id="@+id/ko__messenger_toolbar"
+        android:name="com.kayako.sdk.android.k5.toolbarview.MessengerToolbarFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <fragment
         android:id="@+id/ko__message_list"

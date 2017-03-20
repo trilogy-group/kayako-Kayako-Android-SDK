@@ -4,7 +4,7 @@
     style="@style/Ko__MessengerFloatingViewBackgroundLayer"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+    
     <FrameLayout
         android:id="@+id/ko__messenger_foreground_layer"
         style="@style/Ko__MessengerFloatingViewForegroundLayer"

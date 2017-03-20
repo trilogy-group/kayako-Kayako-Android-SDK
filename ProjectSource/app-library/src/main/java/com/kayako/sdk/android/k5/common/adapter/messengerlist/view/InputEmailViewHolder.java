@@ -16,7 +16,7 @@ public class InputEmailViewHolder extends InputFieldViewHolder {
     public Button submitButton;
 
     public InputEmailViewHolder(View itemView) {
-        super(itemView, R.layout.ko__include__messenger_input_field_email);
+        super(itemView, R.layout.ko__include_messenger_input_field_email);
         emailEditText = (EditText) itemView.findViewById(R.id.input_email_edittext);
         emailFieldLayout = (LinearLayout) itemView.findViewById(R.id.email_field_layout);
         messageHint = (TextView) itemView.findViewById(R.id.message_hint);

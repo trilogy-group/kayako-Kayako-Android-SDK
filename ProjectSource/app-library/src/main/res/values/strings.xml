@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:xliff="http://schemas.android.com/tools">
     <string name="ko__title_above_search_bar">How can we help you?</string>
     <string name="ko__title_help_center">Help</string>
     <string name="ko__label_search_hint">Search here...</string>
@@ -25,5 +25,10 @@
     <string name="ko__label_submit">Submit</string>
     <string name="ko__messenger_label_new_conversation">Start a new conversation</string>
     <string name="ko__messenger_reply_box_hint">Message team...</string>
+
+    <string name="ko__messenger_toolbar_default_title">Support</string>
+    <string name="ko__messenger_toolbar_subtitle_average_reply_time_in_hours">We typically reply in under <xliff:g example="4" id="hours">%1$d</xliff:g> hours</string>
+    <string name="ko__messenger_toolbar_subtitle_average_reply_time_in_a_day">We typically reply in under a day</string>
+    <string name="ko__messenger_toolbar_subtitle_average_reply_time_in_days">We typically reply in under <xliff:g example="4" id="days">%1$d</xliff:g> days</string>
 
 </resources>

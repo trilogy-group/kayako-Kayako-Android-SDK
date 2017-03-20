@@ -1,12 +1,9 @@
 package com.kayako.sdk.android.k5.conversationlistpage;
 
-import android.support.annotation.Nullable;
-
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.conversationlist.ConversationListItem;
 import com.kayako.sdk.android.k5.core.MessengerPref;
 import com.kayako.sdk.messenger.conversation.Conversation;
-import com.kayako.sdk.messenger.conversation.fields.status.Status;
 import com.kayako.sdk.utils.FingerprintUtils;
 
 import java.util.ArrayList;
@@ -47,6 +44,7 @@ public class ConversationListPresenter implements ConversationListContract.Prese
         //.setFingerprintId("d0bc691c-62c5-468c-a4a5-3b096684dc96");
 
         reloadPage();
+
     }
 
     private void reloadPage() {

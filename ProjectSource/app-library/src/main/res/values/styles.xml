@@ -13,7 +13,7 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
-    <style name="Ko__MessengerTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="Ko__MessengerTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- TODO: Change primary colors for messenger -->
         <item name="colorPrimary">@color/ko__colorAccent</item>
         <item name="colorPrimaryDark">@color/ko__colorPrimaryDark</item>
@@ -76,6 +76,7 @@
     </style>
 
     <style name="Ko__MessengerFloatingViewForegroundLayer">
+        <item name="android:clickable">false</item>
         <item name="android:layout_marginTop">@dimen/ko__messenger_activity_top_height</item>
         <item name="android:background">@color/ko__messenger_floating_foreground_color</item>
     </style>

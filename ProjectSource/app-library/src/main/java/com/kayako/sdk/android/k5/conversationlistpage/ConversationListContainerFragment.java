@@ -12,11 +12,14 @@ import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.activities.KayakoSelectConversationActivity;
 import com.kayako.sdk.android.k5.common.fragments.ListPageState;
 import com.kayako.sdk.android.k5.common.fragments.OnListPageStateChangeListener;
+import com.kayako.sdk.android.k5.toolbarview.child.LastActiveAgentsData;
+import com.kayako.sdk.android.k5.toolbarview.MessengerToolbarContract;
 
 public class ConversationListContainerFragment extends Fragment implements ConversationListContainerContract.View {
 
     private ConversationListContainerContract.Presenter mPresenter;
     private ConversationListContract.ConfigureView mConversationListView;
+    private MessengerToolbarContract.ConfigureView mToolbarView;
     private View mRoot;
 
     @Override
@@ -55,6 +58,8 @@ public class ConversationListContainerFragment extends Fragment implements Conve
                 mPresenter.onPageStateChange(state);
             }
         });
+
+        mToolbarView = (MessengerToolbarContract.ConfigureView) getChildFragmentManager().findFragmentById(R.id.ko__messenger_toolbar);
     }
 
     @Override
@@ -116,5 +121,11 @@ public class ConversationListContainerFragment extends Fragment implements Conve
         }
 
         mConversationListView.reloadConversations();
+    }
+
+    @Override
+    public void configureDefaultToolbar() {
+        // TODO: Configure for this view?
+        mToolbarView.configureDefaultView(); // call onActivityCreated()
     }
 }
