@@ -9,6 +9,7 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.UserDecoration;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.BotMessageListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputEmailListItem;
 import com.kayako.sdk.android.k5.common.fragments.ListPageState;
+import com.kayako.sdk.android.k5.common.fragments.OnScrollListListener;
 import com.kayako.sdk.android.k5.core.MessengerPref;
 import com.kayako.sdk.messenger.conversation.Conversation;
 import com.kayako.sdk.messenger.conversation.PostConversationBodyParams;
@@ -54,6 +55,18 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     public void onPageStateChange(ListPageState state) {
         mListPageState = state;
         configureReplyBoxVisibility();
+    }
+
+    @Override
+    public void onScrollList(boolean isScrolling, OnScrollListListener.ScrollDirection direction) {
+        // Collapse the expanded toolbar if any scrolling operation is noticed
+        if (isScrolling && direction != null) {
+            switch (direction) {
+                case UP:
+                case DOWN:
+                    mView.collapseToolbar();
+            }
+        }
     }
 
     @Override

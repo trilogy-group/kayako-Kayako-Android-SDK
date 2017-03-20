@@ -30,5 +30,8 @@
     <string name="ko__messenger_toolbar_subtitle_average_reply_time_in_hours">We typically reply in under <xliff:g example="4" id="hours">%1$d</xliff:g> hours</string>
     <string name="ko__messenger_toolbar_subtitle_average_reply_time_in_a_day">We typically reply in under a day</string>
     <string name="ko__messenger_toolbar_subtitle_average_reply_time_in_days">We typically reply in under <xliff:g example="4" id="days">%1$d</xliff:g> days</string>
+    <string name="ko__messenger_toolbar_avatar_caption_text_one_agent"><xliff:g example="John" id="name">%1$s</xliff:g> is online.</string>
+    <string name="ko__messenger_toolbar_avatar_caption_text_two_agent"><xliff:g example="John" id="name">%1$s</xliff:g> and <xliff:g example="Jim" id="name2">%2$s</xliff:g> are online.</string>
+    <string name="ko__messenger_toolbar_avatar_caption_text_three_agent"><xliff:g example="John" id="name">%1$s</xliff:g>, <xliff:g example="Jim" id="name2">%2$s</xliff:g> and <xliff:g example="Tina" id="name3">%3$s</xliff:g> are online.</string>
 
 </resources>

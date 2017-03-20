@@ -2,20 +2,17 @@ package com.kayako.sdk.android.k5.messagelistpage;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.activities.KayakoSelectConversationActivity;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.BotMessageListItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputEmailListItem;
 import com.kayako.sdk.android.k5.common.fragments.ListPageState;
 import com.kayako.sdk.android.k5.common.fragments.MessengerListFragment;
 import com.kayako.sdk.android.k5.common.fragments.OnListPageStateChangeListener;
-import com.kayako.sdk.android.k5.common.utils.KeyboardUtils;
+import com.kayako.sdk.android.k5.common.fragments.OnScrollListListener;
 import com.kayako.sdk.android.k5.core.Kayako;
 
 import java.util.List;
@@ -25,6 +22,7 @@ public class MessageListView extends MessengerListFragment implements MessageLis
     private MessageListContract.Presenter mPresenter;
     private OnListPageStateChangeListener mOnListPageStateChangeListener;
     private MessageListContract.OnErrorListener mErrorListener;
+    private OnScrollListListener mOnScrollListener;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,6 +78,8 @@ public class MessageListView extends MessengerListFragment implements MessageLis
 
         initMessengerList(messageList);
         showListViewAndHideOthers();
+
+        super.addScrollListListener(mOnScrollListener);
         // TODO: Pagination
     }
 
@@ -111,6 +111,11 @@ public class MessageListView extends MessengerListFragment implements MessageLis
     @Override
     public void setOnListPageStateChangeListener(OnListPageStateChangeListener listener) {
         mOnListPageStateChangeListener = listener;
+    }
+
+    @Override
+    public void setOnListScrollListener(OnScrollListListener listener) {
+        mOnScrollListener = listener;
     }
 
     @Override

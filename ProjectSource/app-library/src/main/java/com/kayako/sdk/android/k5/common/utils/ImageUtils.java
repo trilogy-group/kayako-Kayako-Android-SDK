@@ -1,13 +1,10 @@
 package com.kayako.sdk.android.k5.common.utils;
 
 import android.content.Context;
-import android.support.annotation.ColorInt;
-import android.support.annotation.DrawableRes;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.signature.StringSignature;
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.ChannelDecoration;
 import com.kayako.sdk.android.k5.common.view.CircleImageView;
@@ -27,7 +24,7 @@ public class ImageUtils {
             Glide.with(context)
                     .load(avatarUrl)
                     .bitmapTransform(new CropCircleTransformation(context))
-                    .placeholder(R.color.ko__avatar_image_background)
+//                    .placeholder(R.color.ko__avatar_image_background)
                     .centerCrop()
                     .skipMemoryCache(false) // false because avatars are repeatedly used in message listing, case listing, etc - when true, it shows placeholders
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -52,8 +49,7 @@ public class ImageUtils {
         if (imageUrl != null) {
             Glide.with(context)
                     .load(imageUrl)
-                    .signature(new StringSignature(imageUrl))
-                    .placeholder(placeholderDrawable)
+//                    .placeholder(placeholderDrawable)
                     .centerCrop()
                     .skipMemoryCache(true)
                     .diskCacheStrategy(DiskCacheStrategy.RESULT)
@@ -76,7 +72,7 @@ public class ImageUtils {
         if (avatarUrl != null) {
             Glide.with(context)
                     .load(avatarUrl)
-                    .placeholder(R.color.ko__avatar_image_background)
+//                    .placeholder(R.color.ko__avatar_image_background)
                     .centerCrop()
                     .skipMemoryCache(false) // false because avatars are repeatedly used in message listing, case listing, etc - when true, it shows placeholders
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -98,7 +94,7 @@ public class ImageUtils {
     public static void setAvatarImage(Context context, CircleImageView avatarView, int avatarResId) {
         Glide.with(context)
                 .load(avatarResId)
-                .placeholder(R.color.ko__avatar_image_background)
+//                .placeholder(R.color.ko__avatar_image_background)
                 .centerCrop()
                 .skipMemoryCache(false) // false because avatars are repeatedly used in message listing, case listing, etc - when true, it shows placeholders
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -30,10 +31,24 @@
             android:layout_width="match_parent"
             android:layout_height="24dp" />
 
-
         <include
             layout="@layout/ko__include_messenger_toolbar_avatar_expanded"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <com.kayako.sdk.android.k5.common.view.RegularTextView
+            android:id="@+id/ko__messenger_toolbar_avatar_caption_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:layout_marginTop="16dp"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@color/ko__messenger_toolbar_avatar_caption_color"
+            android:textSize="12sp"
+            tools:text="Jack and Jill are online"
+            tools:textColor="#000"/>
+
     </LinearLayout>
 </LinearLayout>

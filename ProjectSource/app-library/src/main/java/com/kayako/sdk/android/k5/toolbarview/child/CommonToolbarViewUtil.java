@@ -70,6 +70,56 @@ public class CommonToolbarViewUtil {
         setLastActiveAgentAvatars(imageView1, user1);
         setLastActiveAgentAvatars(imageView2, user2);
         setLastActiveAgentAvatars(imageView3, user3);
+
+
+        TextView textView = (TextView) mRoot.findViewById(R.id.ko__messenger_toolbar_avatar_caption_text);
+        if (textView != null) { // available in expandable, not collapsed view
+
+            // TODO: Currently setting everyone as online.
+            String captionText;
+            if (user1 != null && user1.getFullName() != null &&
+                    user2 != null && user2.getFullName() != null &&
+                    user3 != null && user3.getFullName() != null) {
+                captionText = String.format(Kayako.getApplicationContext().getString(R.string.ko__messenger_toolbar_avatar_caption_text_three_agent),
+                        extractFirstName(user1.getFullName()),
+                        extractFirstName(user2.getFullName()),
+                        extractFirstName(user3.getFullName()));
+            } else if (user1 != null && user1.getFullName() != null &&
+                    user2 != null && user2.getFullName() != null) {
+                captionText = String.format(Kayako.getApplicationContext().getString(R.string.ko__messenger_toolbar_avatar_caption_text_two_agent),
+                        extractFirstName(user1.getFullName()),
+                        extractFirstName(user2.getFullName()));
+            } else if (user1 != null && user1.getFullName() != null) {
+                captionText = String.format(Kayako.getApplicationContext().getString(R.string.ko__messenger_toolbar_avatar_caption_text_one_agent),
+                        extractFirstName(user1.getFullName()));
+            } else {
+                captionText = null;
+            }
+
+            if (captionText == null) {
+                textView.setVisibility(View.GONE);
+            } else {
+                textView.setVisibility(View.VISIBLE);
+                textView.setText(captionText);
+            }
+        }
+    }
+
+    private static String extractFirstName(String fullName) {
+        if (fullName == null) {
+            return null;
+        }
+
+        // trim extra spaces
+        fullName = fullName.trim();
+
+        // break up name by spaces
+        String[] parts = fullName.split(" ");
+        if (parts.length > 0) {
+            return parts[0];
+        } else {
+            return fullName;
+        }
     }
 
     private static void setLastActiveAgentAvatars(ImageView imageView, ActiveUser user) {

@@ -35,6 +35,7 @@ public abstract class BaseListFragment extends Fragment {
     private DefaultStateViewHelper mDefaultStateViewHelper;
     private CustomStateViewHelper mCustomStateViewHelper;
     private OnListPageStateChangeListener mListPageChangeStateListener;
+    private OnScrollListListener mOnScrollListListener;
 
     @Override
     final public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -314,4 +315,42 @@ public abstract class BaseListFragment extends Fragment {
         mListPageChangeStateListener = listPageChangeStateListener;
     }
 
+    public void addScrollListListener(OnScrollListListener onScrollListener) {
+        assert mRecyclerView != null;
+
+        mOnScrollListListener = onScrollListener;
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && mOnScrollListListener != null) {
+                    mOnScrollListListener.onScrollList(false, OnScrollListListener.ScrollDirection.NONE);
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (mOnScrollListListener != null) {
+                    if (dx != 0 || dy != 0) {
+                        if (dx > 0) {
+                            mOnScrollListListener.onScrollList(true, OnScrollListListener.ScrollDirection.RIGHT);
+                        } else if (dx < 0) {
+                            mOnScrollListListener.onScrollList(true, OnScrollListListener.ScrollDirection.LEFT);
+                        }
+
+                        if (dy > 0) {
+                            mOnScrollListListener.onScrollList(true, OnScrollListListener.ScrollDirection.UP);
+                        } else {
+                            mOnScrollListListener.onScrollList(true, OnScrollListListener.ScrollDirection.DOWN);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    public void removeScrollListListener(OnScrollListListener onScrollListener) {
+        mOnScrollListListener = null;
+    }
 }

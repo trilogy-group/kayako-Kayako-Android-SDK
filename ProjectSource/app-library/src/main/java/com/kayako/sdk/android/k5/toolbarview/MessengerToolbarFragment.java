@@ -7,6 +7,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.transition.AutoTransition;
+import android.transition.ChangeBounds;
+import android.transition.ChangeImageTransform;
+import android.transition.Explode;
+import android.transition.PatternPathMotion;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -228,12 +232,16 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
 
     @Override
     public synchronized void expandToolbarView() {
-        setupToolbar(mToolbarType, mIsExpanded = true);
+        if(!mIsExpanded) {
+            setupToolbar(mToolbarType, mIsExpanded = true);
+        }
     }
 
     @Override
     public synchronized void collapseToolbarView() {
-        setupToolbar(mToolbarType, mIsExpanded = false);
+        if(mIsExpanded) {
+            setupToolbar(mToolbarType, mIsExpanded = false);
+        }
     }
 
 }

@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.fragments.ListPageState;
+import com.kayako.sdk.android.k5.common.fragments.OnScrollListListener;
 import com.kayako.sdk.android.k5.common.mvp.BaseData;
 import com.kayako.sdk.android.k5.common.mvp.BasePresenter;
 import com.kayako.sdk.android.k5.common.mvp.BaseView;
@@ -47,6 +48,10 @@ public class MessageListContainerContract {
         void showReplyBox();
 
         void focusOnReplyBox();
+
+        void collapseToolbar();
+
+        void expandToolbar();
     }
 
     public interface Presenter extends BasePresenter<MessageListContainerContract.View> {
@@ -60,6 +65,8 @@ public class MessageListContainerContract {
         void onClickRetryInErrorView();
 
         void onPageStateChange(ListPageState state);
+
+        void onScrollList(boolean isScrolling, OnScrollListListener.ScrollDirection direction);
     }
 
 

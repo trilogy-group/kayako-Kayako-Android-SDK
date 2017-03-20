@@ -14,6 +14,7 @@ import com.kayako.sdk.android.k5.activities.KayakoSelectConversationActivity;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.fragments.ListPageState;
 import com.kayako.sdk.android.k5.common.fragments.OnListPageStateChangeListener;
+import com.kayako.sdk.android.k5.common.fragments.OnScrollListListener;
 import com.kayako.sdk.android.k5.toolbarview.child.LastActiveAgentsData;
 import com.kayako.sdk.android.k5.toolbarview.MessengerToolbarContract;
 
@@ -62,6 +63,13 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
             @Override
             public void onListPageStateChanged(ListPageState state) {
                 mPresenter.onPageStateChange(state);
+            }
+        });
+
+        mMessageListView.setOnListScrollListener(new OnScrollListListener() {
+            @Override
+            public void onScrollList(boolean isScrolling, ScrollDirection direction) {
+                mPresenter.onScrollList(isScrolling, direction);
             }
         });
 
@@ -157,5 +165,24 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
         }
 
         mReplyBoxView.focusOnReplyBox();
+    }
+
+    @Override
+    public void collapseToolbar() {
+        if (!hasPageLoaded()) {
+            return;
+        }
+
+        mToolbarView.collapseToolbarView();
+
+    }
+
+    @Override
+    public void expandToolbar() {
+        if (!hasPageLoaded()) {
+            return;
+        }
+
+        mToolbarView.expandToolbarView();
     }
 }
