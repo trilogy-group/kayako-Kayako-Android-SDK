@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.kayako.sdk.android.k5.common.view.BoldButton xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ko__new_conversation_button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal|bottom"
+    android:layout_margin="16dp"
+    android:background="@drawable/ko__button_new_conversation"
+    android:drawableLeft="@drawable/ko__ic_new_conversation"
+    android:drawableStart="@drawable/ko__ic_new_conversation"
+    android:maxLines="1"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:singleLine="true"
+    android:text="@string/ko__messenger_label_new_conversation"
+    android:textAllCaps="false"
+    android:textColor="@color/ko__messenger_new_conversation_text_colour"
+    android:textSize="14sp" />

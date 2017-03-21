@@ -8,9 +8,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.kayako.sdk.android.k5.R;
-import com.kayako.sdk.android.k5.articlelistpage.ArticleListContainerFragment;
+import com.kayako.sdk.android.k5.helpcenter.articlelistpage.ArticleListContainerFragment;
 import com.kayako.sdk.android.k5.common.fragments.ActivityNavigationResourceCallback;
-import com.kayako.sdk.android.k5.sectionbycategorypage.SectionByCategoryContainerFragment;
+import com.kayako.sdk.android.k5.helpcenter.sectionbycategorypage.SectionByCategoryContainerFragment;
 import com.kayako.sdk.base.parser.Resource;
 import com.kayako.sdk.helpcenter.section.Section;
 

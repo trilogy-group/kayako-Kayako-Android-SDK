@@ -7,20 +7,20 @@
 
     <fragment
         android:id="@+id/ko__messenger_toolbar"
-        android:name="com.kayako.sdk.android.k5.toolbarview.MessengerToolbarFragment"
+        android:name="com.kayako.sdk.android.k5.messenger.toolbarview.MessengerToolbarFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <fragment
         android:id="@+id/ko__message_list"
-        android:name="com.kayako.sdk.android.k5.messagelistpage.MessageListView"
+        android:name="com.kayako.sdk.android.k5.messenger.messagelistpage.MessageListView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
 
     <fragment
         android:id="@+id/ko__reply_box"
-        android:name="com.kayako.sdk.android.k5.messagelistpage.ReplyBoxFragment"
+        android:name="com.kayako.sdk.android.k5.messenger.replyboxview.ReplyBoxFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

@@ -9,7 +9,6 @@ import com.kayako.sdk.android.k5.kre.helpers.RawUserOnlinePresenceListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class KreUserSubscription {
 

@@ -6,7 +6,6 @@ import com.kayako.sdk.android.k5.kre.base.KreSubscription;
 import com.kayako.sdk.android.k5.kre.base.credentials.KreCredentials;
 import com.kayako.sdk.android.k5.kre.data.Change;
 import com.kayako.sdk.android.k5.kre.helpers.KreCaseChangeHelper;
-import com.kayako.sdk.android.k5.kre.helpers.KreLogHelper;
 import com.kayako.sdk.android.k5.kre.helpers.RawCaseChangeListener;
 import com.kayako.sdk.android.k5.kre.helpers.RawClientActivityListener;
 import com.kayako.sdk.android.k5.kre.helpers.RawClientTypingListener;

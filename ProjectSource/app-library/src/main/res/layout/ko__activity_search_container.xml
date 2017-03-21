@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/ko__container"
-        android:name="com.kayako.sdk.android.k5.searcharticlepage.SearchArticleContainerFragment"
+        android:name="com.kayako.sdk.android.k5.helpcenter.searcharticlepage.SearchArticleContainerFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
