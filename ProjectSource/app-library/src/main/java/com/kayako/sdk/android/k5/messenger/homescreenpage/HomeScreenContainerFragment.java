@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kayako.sdk.android.k5.R;
+import com.kayako.sdk.android.k5.activities.KayakoSelectConversationActivity;
+import com.kayako.sdk.android.k5.messenger.style.MessengerTemplateHelper;
 
 public class HomeScreenContainerFragment extends Fragment implements HomeScreenContainerContract.View {
 
@@ -23,7 +25,19 @@ public class HomeScreenContainerFragment extends Fragment implements HomeScreenC
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mRoot = inflater.inflate(R.layout.ko__fragment_home_screen_container, container, false);
+        MessengerTemplateHelper.applyBackgroundTheme(mRoot);
         return mRoot;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mRoot.findViewById(R.id.ko__new_conversation_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.onClickNewConversationButton();
+            }
+        });
     }
 
     @Override
@@ -38,31 +52,28 @@ public class HomeScreenContainerFragment extends Fragment implements HomeScreenC
 
     @Override
     public void showNewConversationButton() {
+        if (!hasPageLoaded()) {
+            return;
+        }
+
         mRoot.findViewById(R.id.ko__new_conversation_button).setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideNewConversationButton() {
+        if (!hasPageLoaded()) {
+            return;
+        }
+
         mRoot.findViewById(R.id.ko__new_conversation_button).setVisibility(View.GONE);
     }
 
     @Override
-    public void showReplyBoxButton() {
+    public void openNewConversationPage() {
         if (!hasPageLoaded()) {
             return;
         }
 
-        Fragment replyBoxFragment = getChildFragmentManager().findFragmentById(R.id.ko__home_screen_reply_box_fragment);
-        getChildFragmentManager().beginTransaction().show(replyBoxFragment).commit();
-    }
-
-    @Override
-    public void hideReplyBoxButton() {
-        if (!hasPageLoaded()) {
-            return;
-        }
-
-        Fragment replyBoxFragment = getChildFragmentManager().findFragmentById(R.id.ko__home_screen_reply_box_fragment);
-        getChildFragmentManager().beginTransaction().hide(replyBoxFragment).commit();
+        startActivity(KayakoSelectConversationActivity.getIntent(getContext()));
     }
 }

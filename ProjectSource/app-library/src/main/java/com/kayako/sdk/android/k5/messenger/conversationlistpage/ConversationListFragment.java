@@ -186,7 +186,10 @@ public class ConversationListFragment extends BaseListFragment implements Conver
             return;
         }
 
-        Toast.makeText(Kayako.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+        Context context = Kayako.getApplicationContext();
+        if (context != null) {
+            Toast.makeText(Kayako.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

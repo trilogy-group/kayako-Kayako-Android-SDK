@@ -116,7 +116,10 @@
     <color name="ko__messenger_reply_box_background_colour">#F7F8F9</color>
     <color name="ko__messenger_floating_background_color">@android:color/transparent</color>
     <color name="ko__messenger_floating_foreground_color">#FFF</color>
-    <color name="ko__messenger_toolbar_title_color">#fff</color>
-    <color name="ko__messenger_toolbar_subtitle_color">#fff</color>
-    <color name="ko__messenger_toolbar_avatar_caption_color">#FFF</color>
+
+    <color name="ko__messenger_default_background_color">#40364D</color>
+    <color name="ko__messenger_default_dark_text_color">#000</color>
+    <color name="ko__messenger_default_light_text_color">#fff</color>
+    <color name="ko__messenger_default_dark_view_background_color">#000</color>
+    <color name="ko__messenger_default_light_view_background_color">#fff</color>
 </resources>

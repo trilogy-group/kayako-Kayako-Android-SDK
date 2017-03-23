@@ -8,6 +8,7 @@ import android.webkit.URLUtil;
 import com.kayako.sdk.android.k5.activities.KayakoConversationListActivity;
 import com.kayako.sdk.android.k5.activities.KayakoHelpCenterActivity;
 
+import java.lang.ref.WeakReference;
 import java.util.Locale;
 
 /**
@@ -16,16 +17,22 @@ import java.util.Locale;
 public class Kayako {
 
     private static Kayako mInstance;
-    private Context mAppContext;
+    private WeakReference<Context> mAppContext; // when the application is closed, this class will no longer be used
 
     private Kayako(Context mAppContext) {
-        this.mAppContext = mAppContext;
+        this.mAppContext = new WeakReference<>(mAppContext);
     }
 
     public static void initialize(Context applicationContext) {
         mInstance = new Kayako(applicationContext);
         HelpCenterPref.createInstance(applicationContext);
         MessengerPref.createInstance(applicationContext);
+        MessengerStylePref.createInstance(applicationContext);
+    }
+
+    public static void clearCache() {
+        MessengerPref.getInstance().clearAll();
+        MessengerStylePref.getInstance().clearAll();
     }
 
     public static Kayako getInstance() {
@@ -36,7 +43,7 @@ public class Kayako {
     }
 
     public static Context getApplicationContext() {
-        return getInstance().mAppContext;
+        return getInstance().mAppContext.get(); // assuming that when application is closed, this class will no longer be used
     }
 
     public void openHelpCenter(Context context, String helpCenterUrl, Locale defaultLocale) {
@@ -46,6 +53,7 @@ public class Kayako {
         context.startActivity(intent);
     }
 
+    // TODO: Create a Messenger Builder - Builder pattern here
     public void openMessenger(Context context, String helpCenterUrl, Locale defaultLocale) {
         setUpCommonCredentials(helpCenterUrl, defaultLocale);
         Intent intent = KayakoConversationListActivity.getIntent(context);
@@ -53,6 +61,7 @@ public class Kayako {
         context.startActivity(intent);
     }
 
+    // TODO: Redo this to separate Messenger and Helpcenter
     private void setUpCommonCredentials(String helpCenterUrl, Locale defaultLocale) {
         if (!URLUtil.isValidUrl(helpCenterUrl)) {
             throw new IllegalArgumentException("Help Center Url provided is not valid");

@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"
-        tools:context=".view.ListFragment"
         tools:listitem="@layout/ko__list_home_screen_header" />
 
 </FrameLayout>

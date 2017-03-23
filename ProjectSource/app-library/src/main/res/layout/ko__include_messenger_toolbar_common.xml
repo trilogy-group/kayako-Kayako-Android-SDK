@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#523755"
     android:minHeight="48dp"
     android:orientation="horizontal"
     android:paddingBottom="8dp"
@@ -36,7 +35,6 @@
             android:transitionName="ko__messenger_toolbar_title"
             android:maxLines="1"
             android:singleLine="true"
-            android:textColor="@color/ko__messenger_toolbar_title_color"
             android:textSize="16sp"
             tools:text="Kayako Team" />
 
@@ -53,7 +51,6 @@
             android:maxLines="1"
             android:singleLine="true"
             android:transitionName="ko__messenger_toolbar_subtitle"
-            android:textColor="@color/ko__messenger_toolbar_subtitle_color"
             android:textSize="12sp"
             tools:text="We usually reply in an hr" />
     </LinearLayout>

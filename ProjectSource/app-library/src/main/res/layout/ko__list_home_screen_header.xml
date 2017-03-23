@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@null"
     android:orientation="vertical">
 
     <com.kayako.sdk.android.k5.common.view.LightTextView
@@ -9,13 +10,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Howdy"
+        android:textColor="#fff"
         android:textSize="32sp" />
+
+    <!-- TODO: Move styles to proper xml files -->
 
     <com.kayako.sdk.android.k5.common.view.RegularTextView
         android:id="@+id/ko__home_screen_header_subtitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:textColor="#fff"
         android:text="Welcome to Kayako support. How can we help?"
         android:textSize="16sp" />
 

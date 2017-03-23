@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#523755"
-    android:orientation="vertical"
-    android:paddingLeft="4dp"
-    android:paddingRight="4dp">
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/ko__include_messenger_custom_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/ko__messenger_child_toolbar_container"
+        android:layout_alignTop="@+id/ko__messenger_child_toolbar_container" />
 
     <LinearLayout
         android:id="@+id/ko__messenger_child_toolbar_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" />
+        android:orientation="vertical"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp" />
 
-</FrameLayout>
+</RelativeLayout>

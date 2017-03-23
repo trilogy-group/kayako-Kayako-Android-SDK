@@ -10,8 +10,11 @@ import android.transition.AutoTransition;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.kayako.sdk.android.k5.R;
+import com.kayako.sdk.android.k5.core.Kayako;
+import com.kayako.sdk.android.k5.messenger.style.MessengerTemplateHelper;
 import com.kayako.sdk.android.k5.messenger.toolbarview.child.AssignedAgentData;
 import com.kayako.sdk.android.k5.messenger.toolbarview.child.LastActiveAgentsData;
 import com.kayako.sdk.android.k5.messenger.toolbarview.child.MessengerToolbarCollapsedFragment;
@@ -45,7 +48,9 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return mRoot = inflater.inflate(R.layout.ko__messenger_toolbar, container);
+        mRoot = inflater.inflate(R.layout.ko__messenger_toolbar, container);
+        MessengerTemplateHelper.applyBackgroundTheme(mRoot);
+        return mRoot;
     }
 
     @Override
@@ -65,6 +70,31 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
         return getActivity() != null
                 && !getActivity().isFinishing()
                 && isAdded();
+    }
+
+    private void setupToolbar(MessengerToolbarContract.MessengerToolbarType toolbarType,
+                              boolean isExpanded) {
+
+        if (mToolbarType == null) {
+            throw new IllegalStateException("The necessary fields are not initialized!");
+        }
+
+        Fragment childFragment = generateChildFragment();
+
+        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction().replace(R.id.ko__messenger_child_toolbar_container, childFragment);
+        setupSharedTransitions(mLastAddedChildFragment, childFragment, fragmentTransaction);
+        fragmentTransaction.commitNowAllowingStateLoss(); // ** NEEDS TO BE SYNCHRONOUS FOR CURRENT DESIGN
+
+        // Child fragments must be configured ONLY once it's added to activity
+        configureChildFragment(childFragment);
+
+        mContainer.setVisibility(View.VISIBLE);
+        mLastAddedChildFragment = childFragment;
+
+
+        // Customize Toolbar Text
+        customizeToolbarText();
+        customizeSeparators();
     }
 
     private Fragment generateChildFragment() {
@@ -136,26 +166,6 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
         }
     }
 
-    private void setupToolbar(MessengerToolbarContract.MessengerToolbarType toolbarType,
-                              boolean isExpanded) {
-
-        if (mToolbarType == null) {
-            throw new IllegalStateException("The necessary fields are not initialized!");
-        }
-
-        Fragment childFragment = generateChildFragment();
-
-        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction().replace(R.id.ko__messenger_child_toolbar_container, childFragment);
-        setupSharedTransitions(mLastAddedChildFragment, childFragment, fragmentTransaction);
-        fragmentTransaction.commitNowAllowingStateLoss(); // ** NEEDS TO BE SYNCHRONOUS FOR CURRENT DESIGN
-
-        // Child fragments must be configured ONLY once it's added to activity
-        configureChildFragment(childFragment);
-
-        mContainer.setVisibility(View.VISIBLE);
-        mLastAddedChildFragment = childFragment;
-    }
-
     private MessengerToolbarContract.ChildToolbarConfigureView configureChildFragment(Fragment fragment) {
         if (!fragment.isAdded()) {
             throw new IllegalStateException("This method should be called once the fragment is added!");
@@ -190,6 +200,20 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
         }
 
         return configureView;
+    }
+
+    private void customizeToolbarText() {
+        MessengerTemplateHelper.applyTextColor(((TextView) mRoot.findViewById(R.id.ko__messenger_toolbar_subtitle)));
+        MessengerTemplateHelper.applyTextColor(((TextView) mRoot.findViewById(R.id.ko__messenger_toolbar_title)));
+        if (mIsExpanded) {
+            MessengerTemplateHelper.applyTextColor(((TextView) mRoot.findViewById(R.id.ko__messenger_toolbar_avatar_caption_text)));
+        }
+    }
+
+    private void customizeSeparators() {
+        if (mIsExpanded) {
+            MessengerTemplateHelper.applyBackgroundColor(mRoot.findViewById(R.id.ko__messenger_toolbar_avatar_separator));
+        }
     }
 
     @Override
@@ -228,14 +252,14 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
 
     @Override
     public synchronized void expandToolbarView() {
-        if(!mIsExpanded) {
+        if (!mIsExpanded) {
             setupToolbar(mToolbarType, mIsExpanded = true);
         }
     }
 
     @Override
     public synchronized void collapseToolbarView() {
-        if(mIsExpanded) {
+        if (mIsExpanded) {
             setupToolbar(mToolbarType, mIsExpanded = false);
         }
     }

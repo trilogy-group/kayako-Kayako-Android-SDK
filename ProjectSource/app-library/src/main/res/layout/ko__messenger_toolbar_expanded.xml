@@ -24,6 +24,7 @@
 
         <include
             layout="@layout/ko__include_separator"
+            android:id="@+id/ko__messenger_toolbar_avatar_separator"
             android:layout_width="match_parent"
             android:layout_height="1px" />
 
@@ -45,7 +46,6 @@
             android:layout_marginTop="16dp"
             android:maxLines="1"
             android:singleLine="true"
-            android:textColor="@color/ko__messenger_toolbar_avatar_caption_color"
             android:textSize="12sp"
             tools:text="Jack and Jill are online"
             tools:textColor="#000"/>

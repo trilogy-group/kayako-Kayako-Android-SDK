@@ -1,0 +1,16 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ko__messenger_custom_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:background="@drawable/ko__gradient_bg_1">
+
+    <View
+        android:id="@+id/ko__messenger_custom_foreground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:background="@drawable/ko__texture_1_dark" />
+
+</FrameLayout>
+
+

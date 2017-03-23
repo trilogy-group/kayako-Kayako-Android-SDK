@@ -8,10 +8,7 @@ public class HomeScreenContainerContract {
 
         void hideNewConversationButton();
 
-        void showReplyBoxButton();
-
-        void hideReplyBoxButton();
-
+        void openNewConversationPage();
     }
 
     public interface Presenter {
@@ -19,5 +16,7 @@ public class HomeScreenContainerContract {
         void initPage();
 
         void onScrollList(boolean isScrolling);
+
+        void onClickNewConversationButton();
     }
 }

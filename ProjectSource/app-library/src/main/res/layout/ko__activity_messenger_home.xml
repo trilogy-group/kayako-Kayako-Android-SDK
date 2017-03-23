@@ -17,7 +17,7 @@
 
             <fragment
                 android:id="@+id/ko__messenger_container"
-                android:name="com.kayako.sdk.android.k5.messenger.homescreenpage.HomeScreenListFragment"
+                android:name="com.kayako.sdk.android.k5.messenger.homescreenpage.HomeScreenContainerFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
