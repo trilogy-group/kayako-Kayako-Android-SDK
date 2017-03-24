@@ -24,23 +24,29 @@ public class ConversationStarterRepositoryManyListeners implements IConversation
 
     @Override
     public synchronized void onLoadConversationMetrics(ConversationStarter conversationStarter) {
+        List<WeakReference<OnLoadConversationStarterListener>> listenersToRemove = new ArrayList<>();
         for (WeakReference<OnLoadConversationStarterListener> weakReference : listeners) {
             if (weakReference.get() == null) {
-                listeners.remove(weakReference);
+                listenersToRemove.add(weakReference);
             } else {
                 weakReference.get().onLoadConversationMetrics(conversationStarter);
             }
         }
+
+        listeners.removeAll(listenersToRemove);
     }
 
     @Override
     public synchronized void onFailure(KayakoException exception) {
+        List<WeakReference<OnLoadConversationStarterListener>> listenersToRemove = new ArrayList<>();
         for (WeakReference<OnLoadConversationStarterListener> weakReference : listeners) {
             if (weakReference.get() == null) {
-                listeners.remove(weakReference);
+                listenersToRemove.add(weakReference);
             } else {
                 weakReference.get().onFailure(exception);
             }
         }
+
+        listeners.removeAll(listenersToRemove);
     }
 }
