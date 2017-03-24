@@ -35,6 +35,8 @@ public class MessengerToolbarCollapsedFragment extends Fragment implements Messe
                         }
                     }
                 });
+
+        CommonToolbarViewUtil.customizeColorsToMatchMessengerStyle(mRoot);
     }
 
     private boolean isPageReady() {

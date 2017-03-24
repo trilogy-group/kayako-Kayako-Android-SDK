@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.kayako.sdk.android.k5.R;
-import com.kayako.sdk.android.k5.core.Kayako;
 import com.kayako.sdk.android.k5.messenger.style.MessengerTemplateHelper;
 import com.kayako.sdk.android.k5.messenger.toolbarview.child.AssignedAgentData;
 import com.kayako.sdk.android.k5.messenger.toolbarview.child.LastActiveAgentsData;
@@ -72,9 +71,7 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
                 && isAdded();
     }
 
-    private void setupToolbar(MessengerToolbarContract.MessengerToolbarType toolbarType,
-                              boolean isExpanded) {
-
+    private void setupToolbar() {
         if (mToolbarType == null) {
             throw new IllegalStateException("The necessary fields are not initialized!");
         }
@@ -90,11 +87,6 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
 
         mContainer.setVisibility(View.VISIBLE);
         mLastAddedChildFragment = childFragment;
-
-
-        // Customize Toolbar Text
-        customizeToolbarText();
-        customizeSeparators();
     }
 
     private Fragment generateChildFragment() {
@@ -174,8 +166,9 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
         MessengerToolbarContract.ChildToolbarConfigureView configureView = ((MessengerToolbarContract.ChildToolbarConfigureView) fragment);
         configureView.setExpandCollapseButtonClicked(new MessengerToolbarContract.OnExpandOrCollapseListener() {
             @Override
-            public void onCollapseOrExpand() {
-                setupToolbar(mToolbarType, mIsExpanded = !mIsExpanded);
+            public synchronized void onCollapseOrExpand() {
+                mIsExpanded = !mIsExpanded;
+                setupToolbar();
             }
         });
 
@@ -202,20 +195,6 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
         return configureView;
     }
 
-    private void customizeToolbarText() {
-        MessengerTemplateHelper.applyTextColor(((TextView) mRoot.findViewById(R.id.ko__messenger_toolbar_subtitle)));
-        MessengerTemplateHelper.applyTextColor(((TextView) mRoot.findViewById(R.id.ko__messenger_toolbar_title)));
-        if (mIsExpanded) {
-            MessengerTemplateHelper.applyTextColor(((TextView) mRoot.findViewById(R.id.ko__messenger_toolbar_avatar_caption_text)));
-        }
-    }
-
-    private void customizeSeparators() {
-        if (mIsExpanded) {
-            MessengerTemplateHelper.applyBackgroundColor(mRoot.findViewById(R.id.ko__messenger_toolbar_avatar_separator));
-        }
-    }
-
     @Override
     public void configureDefaultView() {
         mPresenter.configureDefaultView();
@@ -232,7 +211,8 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
         }
 
         mLastActiveAgentsData = data;
-        setupToolbar(mToolbarType = MessengerToolbarContract.MessengerToolbarType.LAST_ACTIVE_AGENTS, mIsExpanded);
+        mToolbarType = MessengerToolbarContract.MessengerToolbarType.LAST_ACTIVE_AGENTS;
+        setupToolbar();
     }
 
     @Override
@@ -246,21 +226,23 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
         }
 
         mAssignedAgentData = data;
-        setupToolbar(mToolbarType = MessengerToolbarContract.MessengerToolbarType.ASSIGNED_AGENT,
-                mIsExpanded);
+        mToolbarType = MessengerToolbarContract.MessengerToolbarType.ASSIGNED_AGENT;
+        setupToolbar();
     }
 
     @Override
     public synchronized void expandToolbarView() {
         if (!mIsExpanded) {
-            setupToolbar(mToolbarType, mIsExpanded = true);
+            mIsExpanded = true;
+            setupToolbar();
         }
     }
 
     @Override
     public synchronized void collapseToolbarView() {
         if (mIsExpanded) {
-            setupToolbar(mToolbarType, mIsExpanded = false);
+            mIsExpanded = false;
+            setupToolbar();
         }
     }
 

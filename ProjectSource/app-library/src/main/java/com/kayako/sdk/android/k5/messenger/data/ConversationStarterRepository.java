@@ -1,4 +1,4 @@
-package com.kayako.sdk.android.k5.messenger.toolbarview;
+package com.kayako.sdk.android.k5.messenger.data;
 
 import android.os.Handler;
 
@@ -10,12 +10,12 @@ import com.kayako.sdk.error.KayakoException;
 import com.kayako.sdk.messenger.Messenger;
 import com.kayako.sdk.messenger.conversationstarter.ConversationStarter;
 
-public class MessengerToolbarRepository implements MessengerToolbarContract.Data {
+public class ConversationStarterRepository implements IConversationStarterRepository {
 
     private Messenger mMessenger;
     private ConversationStarter mConversationStarter; // cached in memory since it's used throughout app
 
-    public MessengerToolbarRepository() {
+    public ConversationStarterRepository() {
         String fingerprintId = MessengerPref.getInstance().getFingerprintId();
         if (fingerprintId != null && fingerprintId.length() == 0) {
             FingerprintAuth fingerprintAuth = new FingerprintAuth(fingerprintId);
@@ -26,7 +26,7 @@ public class MessengerToolbarRepository implements MessengerToolbarContract.Data
     }
 
     @Override
-    public void getConversationStarter(final MessengerToolbarContract.OnLoadConversationStarterListener listener) {
+    public void getConversationStarter(final IConversationStarterRepository.OnLoadConversationStarterListener listener) {
         final Handler handler = new Handler();
         // If cached available, load it!
         if (mConversationStarter != null && listener != null) {

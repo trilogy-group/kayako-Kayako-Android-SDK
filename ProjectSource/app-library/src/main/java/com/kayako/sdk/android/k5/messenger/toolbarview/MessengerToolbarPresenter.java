@@ -1,5 +1,6 @@
 package com.kayako.sdk.android.k5.messenger.toolbarview;
 
+import com.kayako.sdk.android.k5.messenger.data.IConversationStarterRepository;
 import com.kayako.sdk.android.k5.messenger.toolbarview.child.ActiveUser;
 import com.kayako.sdk.android.k5.messenger.toolbarview.child.LastActiveAgentsData;
 import com.kayako.sdk.error.KayakoException;
@@ -7,18 +8,25 @@ import com.kayako.sdk.helpcenter.user.UserMinimal;
 import com.kayako.sdk.messenger.conversationstarter.ConversationStarter;
 import com.kayako.sdk.utils.LogUtils;
 
-public class MessengerToolbarPresenter implements MessengerToolbarContract.Presenter, MessengerToolbarContract.OnLoadConversationStarterListener {
+public class MessengerToolbarPresenter implements MessengerToolbarContract.Presenter, IConversationStarterRepository.OnLoadConversationStarterListener {
 
     private MessengerToolbarContract.ConfigureView mView;
-    private MessengerToolbarContract.Data mData;
+    private IConversationStarterRepository mData;
 
-    public MessengerToolbarPresenter(MessengerToolbarContract.ConfigureView view, MessengerToolbarContract.Data data) {
+    public MessengerToolbarPresenter(MessengerToolbarContract.ConfigureView view, IConversationStarterRepository data) {
         mView = view;
         mData = data;
     }
 
     @Override
     public void initPage() {
+        // Set in case there's a network error - otherwise toolbar covers entire screen
+        String brand = "Kayako"; // TODO: brand name?
+        mView.configureForLastActiveUsersView(new LastActiveAgentsData(
+                brand,
+                -1L, // Default average response time // TODO: Change it to a vague answer or remove line?
+                null, null, null));
+
         // TODO: Show this version of the toolbar ONLY
         // TODO: Set the default toolbar version
         mData.getConversationStarter(null);
@@ -26,16 +34,7 @@ public class MessengerToolbarPresenter implements MessengerToolbarContract.Prese
 
     @Override
     public void configureDefaultView() {
-         mData.getConversationStarter(this);
-
-        // TODO: Testing:
-        /*mView.configureForLastActiveUsersView(new LastActiveAgentsData(
-                "Test",
-                1000L,
-                null,
-                null,
-                null
-        ));*/
+        mData.getConversationStarter(this);
     }
 
     @Override

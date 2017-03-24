@@ -10,10 +10,6 @@ import com.kayako.sdk.messenger.conversationstarter.ConversationStarter;
 
 public class MessengerToolbarContract {
 
-    public interface Data {
-        void getConversationStarter(OnLoadConversationStarterListener metrics);
-    }
-
     public interface Presenter {
         void initPage();
 
@@ -51,11 +47,5 @@ public class MessengerToolbarContract {
 
     public interface OnExpandOrCollapseListener {
         void onCollapseOrExpand();
-    }
-
-    public interface OnLoadConversationStarterListener {
-        void onLoadConversationMetrics(ConversationStarter conversationStarter);
-
-        void onFailure(KayakoException exception);
     }
 }

@@ -1,18 +1,11 @@
 package com.kayako.sdk.android.k5.messenger.toolbarview;
 
+import com.kayako.sdk.android.k5.messenger.data.RepoFactory;
+
 public class MessengerToolbarFactory {
 
-    private static MessengerToolbarContract.Data mData; // Cached because it's used commonly across pages
-
     public static MessengerToolbarContract.Presenter getPresenter(MessengerToolbarContract.ConfigureView view) {
-        return new MessengerToolbarPresenter(view, getData());
+        return new MessengerToolbarPresenter(view, RepoFactory.getConversationStarterRepository());
     }
 
-    public static MessengerToolbarContract.Data getData() {
-        if (mData == null) {
-            return mData = new MessengerToolbarRepository();
-        } else {
-            return mData;
-        }
-    }
 }
