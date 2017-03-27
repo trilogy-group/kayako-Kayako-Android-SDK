@@ -1,5 +1,8 @@
 package com.kayako.sdk.android.k5.messenger.data;
 
+import com.kayako.sdk.android.k5.messenger.data.conversationstarter.ConversationStarterRepositoryManyListeners;
+import com.kayako.sdk.android.k5.messenger.data.conversationstarter.IConversationStarterRepository;
+
 public class RepoFactory {
 
     private RepoFactory() {

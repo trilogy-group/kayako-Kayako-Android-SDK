@@ -3,10 +3,8 @@ package com.kayako.sdk.android.k5.messenger.toolbarview;
 import android.support.annotation.NonNull;
 import android.view.View;
 
-import com.kayako.sdk.android.k5.messenger.toolbarview.child.AssignedAgentData;
-import com.kayako.sdk.android.k5.messenger.toolbarview.child.LastActiveAgentsData;
-import com.kayako.sdk.error.KayakoException;
-import com.kayako.sdk.messenger.conversationstarter.ConversationStarter;
+import com.kayako.sdk.android.k5.messenger.data.conversationstarter.AssignedAgentData;
+import com.kayako.sdk.android.k5.messenger.data.conversationstarter.LastActiveAgentsData;
 
 public class MessengerToolbarContract {
 

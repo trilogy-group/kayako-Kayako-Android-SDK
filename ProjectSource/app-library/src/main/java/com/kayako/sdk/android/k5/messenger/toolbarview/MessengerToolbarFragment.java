@@ -10,12 +10,11 @@ import android.transition.AutoTransition;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.messenger.style.MessengerTemplateHelper;
-import com.kayako.sdk.android.k5.messenger.toolbarview.child.AssignedAgentData;
-import com.kayako.sdk.android.k5.messenger.toolbarview.child.LastActiveAgentsData;
+import com.kayako.sdk.android.k5.messenger.data.conversationstarter.AssignedAgentData;
+import com.kayako.sdk.android.k5.messenger.data.conversationstarter.LastActiveAgentsData;
 import com.kayako.sdk.android.k5.messenger.toolbarview.child.MessengerToolbarCollapsedFragment;
 import com.kayako.sdk.android.k5.messenger.toolbarview.child.MessengerToolbarExpandedFragment;
 

@@ -1,4 +1,4 @@
-package com.kayako.sdk.android.k5.messenger.toolbarview.child;
+package com.kayako.sdk.android.k5.messenger.data.conversationstarter;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;

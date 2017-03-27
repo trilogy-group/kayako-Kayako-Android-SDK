@@ -1,10 +1,9 @@
 package com.kayako.sdk.android.k5.messenger.toolbarview;
 
-import com.kayako.sdk.android.k5.messenger.data.IConversationStarterRepository;
-import com.kayako.sdk.android.k5.messenger.toolbarview.child.ActiveUser;
-import com.kayako.sdk.android.k5.messenger.toolbarview.child.LastActiveAgentsData;
+import com.kayako.sdk.android.k5.messenger.data.conversationstarter.IConversationStarterRepository;
+import com.kayako.sdk.android.k5.messenger.data.conversationstarter.LastActiveAgentsData;
+import com.kayako.sdk.android.k5.messenger.style.ConversationStarterHelper;
 import com.kayako.sdk.error.KayakoException;
-import com.kayako.sdk.helpcenter.user.UserMinimal;
 import com.kayako.sdk.messenger.conversationstarter.ConversationStarter;
 import com.kayako.sdk.utils.LogUtils;
 
@@ -40,7 +39,7 @@ public class MessengerToolbarPresenter implements MessengerToolbarContract.Prese
     @Override
     public synchronized void onLoadConversationMetrics(ConversationStarter conversationStarter) {
         try {
-            LastActiveAgentsData lastActiveAgentsData = convert(conversationStarter);
+            LastActiveAgentsData lastActiveAgentsData = ConversationStarterHelper.convert(conversationStarter);
             if (lastActiveAgentsData != null) {
                 mView.configureForLastActiveUsersView(lastActiveAgentsData);
             }
@@ -52,61 +51,8 @@ public class MessengerToolbarPresenter implements MessengerToolbarContract.Prese
 
     @Override
     public synchronized void onFailure(KayakoException exception) {
-        // TODO: Show default view?
-    }
-
-    private long convert(double minutes) {
-        long seconds = (long) (minutes * 60 * 1000);
-        return seconds;
-    }
-
-    private ActiveUser convert(UserMinimal userMinimal) {
-        return new ActiveUser(
-                userMinimal.getAvatarUrl(),
-                userMinimal.getFullName(),
-                userMinimal.getLastActiveAt()
-        );
-    }
-
-    private LastActiveAgentsData convert(ConversationStarter conversationStarter) {
-        String brand = "Kayako"; // TODO: brand name?
-        long averageReplyTimeInMilliseconds;
-        ActiveUser user1 = null;
-        ActiveUser user2 = null;
-        ActiveUser user3 = null;
-
-        if (conversationStarter == null) {
-            throw new IllegalArgumentException("Null unacceptable!");
-        }
-
-        if (conversationStarter.getAverageReplyTime() != null) {
-            averageReplyTimeInMilliseconds = convert(conversationStarter.getAverageReplyTime());
-        } else {
-            averageReplyTimeInMilliseconds = -1L;
-        }
-
-        if (conversationStarter.getLastActiveAgents() != null) {
-            final int size = conversationStarter.getLastActiveAgents().size();
-            switch (size) {
-                case 3:
-                    user3 = convert(conversationStarter.getLastActiveAgents().get(2));
-                case 2:
-                    user2 = convert(conversationStarter.getLastActiveAgents().get(1));
-                case 1:
-                    user1 = convert(conversationStarter.getLastActiveAgents().get(0));
-                    break;
-            }
-        }
-
-        LastActiveAgentsData lastActiveAgentsData = new LastActiveAgentsData(
-                brand,
-                averageReplyTimeInMilliseconds,
-                user1,
-                user2,
-                user3
-        );
-
-        return lastActiveAgentsData;
+        // TODO: Show default view? - especially when there's no network
+        // TODO: Show a toast or some message?
     }
 
 }

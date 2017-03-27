@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kayako.sdk.android.k5.R;
+import com.kayako.sdk.android.k5.messenger.data.conversationstarter.AssignedAgentData;
+import com.kayako.sdk.android.k5.messenger.data.conversationstarter.LastActiveAgentsData;
 import com.kayako.sdk.android.k5.messenger.toolbarview.MessengerToolbarContract;
 
 public class MessengerToolbarCollapsedFragment extends Fragment implements MessengerToolbarContract.ChildToolbarConfigureView {
@@ -52,7 +54,7 @@ public class MessengerToolbarCollapsedFragment extends Fragment implements Messe
 
         CommonToolbarViewUtil.setTitle(mRoot, data.getBrandName());
         CommonToolbarViewUtil.setSubtitleForAverageResponseTime(mRoot, data.getAverageReplyTime());
-        CommonToolbarViewUtil.setLastActiveAgentAvatars(mRoot, data.getUser1(), data.getUser2(), data.getUser3());
+        CommonToolbarViewUtil.setLastActiveAgentAvatars(mRoot, data);
     }
 
     @Override

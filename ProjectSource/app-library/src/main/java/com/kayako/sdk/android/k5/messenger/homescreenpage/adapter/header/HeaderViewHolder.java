@@ -1,4 +1,4 @@
-package com.kayako.sdk.android.k5.messenger.homescreenpage.adapter;
+package com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.header;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

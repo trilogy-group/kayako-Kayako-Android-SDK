@@ -58,28 +58,32 @@ public class HomeScreenListFragment extends Fragment implements HomeScreenListCo
             return;
         }
 
-        mAdapter = new HomeScreenListAdapter(list);
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
+        if (mAdapter == null) {
+            mAdapter = new HomeScreenListAdapter(list);
+            mRecyclerView.setAdapter(mAdapter);
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
 
-                if (mScrollListener != null) {
-                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                        mScrollListener.onScroll(false);
-                    } else {
-                        mScrollListener.onScroll(true);
+                    if (mScrollListener != null) {
+                        if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                            mScrollListener.onScroll(false);
+                        } else {
+                            mScrollListener.onScroll(true);
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                }
+            });
+        } else {
+            mAdapter.replaceData(list);
+        }
     }
 
     @Override

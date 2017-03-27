@@ -47,9 +47,9 @@ public class FontUtils {
             case LIGHT:
                 return "fonts/SourceSansPro-Light.otf";
             case SEMIBOLD:
-                return "SourceSansPro-Semibold.otf";
+                return "fonts/SourceSansPro-Semibold.otf";
             default:
-                return "SourceSansPro-Regular.otf";
+                return "fonts/SourceSansPro-Regular.otf";
         }
     }
 

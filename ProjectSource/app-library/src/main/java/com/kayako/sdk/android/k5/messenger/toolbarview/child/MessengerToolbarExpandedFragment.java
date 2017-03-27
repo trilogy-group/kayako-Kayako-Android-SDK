@@ -7,10 +7,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.kayako.sdk.android.k5.R;
-import com.kayako.sdk.android.k5.messenger.style.MessengerTemplateHelper;
+import com.kayako.sdk.android.k5.messenger.data.conversationstarter.AssignedAgentData;
+import com.kayako.sdk.android.k5.messenger.data.conversationstarter.LastActiveAgentsData;
 import com.kayako.sdk.android.k5.messenger.toolbarview.MessengerToolbarContract;
 
 public class MessengerToolbarExpandedFragment extends Fragment implements MessengerToolbarContract.ChildToolbarConfigureView {
@@ -44,13 +44,13 @@ public class MessengerToolbarExpandedFragment extends Fragment implements Messen
 
     @Override
     public void update(@NonNull LastActiveAgentsData data) {
-        if (!isPageReady()) {
+        if (!isPageReady() && data != null) {
             return;
         }
 
         CommonToolbarViewUtil.setTitle(mRoot, data.getBrandName());
         CommonToolbarViewUtil.setSubtitleForAverageResponseTime(mRoot, data.getAverageReplyTime());
-        CommonToolbarViewUtil.setLastActiveAgentAvatars(mRoot, data.getUser1(), data.getUser2(), data.getUser3());
+        CommonToolbarViewUtil.setLastActiveAgentAvatars(mRoot, data);
 
         CommonToolbarViewUtil.customizeColorsToMatchMessengerStyle(mRoot);
         CommonToolbarViewUtil.customizeColorsToMatchMessengerStyleForExpandedToolbar(mRoot);
@@ -58,7 +58,7 @@ public class MessengerToolbarExpandedFragment extends Fragment implements Messen
 
     @Override
     public void update(@NonNull AssignedAgentData data) {
-        if (!isPageReady()) {
+        if (!isPageReady() && data != null) {
             return;
         }
 

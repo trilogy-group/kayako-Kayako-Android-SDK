@@ -1,4 +1,4 @@
-package com.kayako.sdk.android.k5.messenger.toolbarview.child;
+package com.kayako.sdk.android.k5.messenger.data.conversationstarter;
 
 public class AssignedAgentData {
 

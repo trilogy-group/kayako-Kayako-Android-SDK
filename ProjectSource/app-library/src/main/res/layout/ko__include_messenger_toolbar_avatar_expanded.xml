@@ -13,8 +13,8 @@
 
     <com.kayako.sdk.android.k5.common.view.CircleImageView
         android:id="@+id/ko__messenger_toolbar_avatar1"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="@dimen/ko__messenger_toolbar_expanded_avatar_size"
+        android:layout_height="@dimen/ko__messenger_toolbar_expanded_avatar_size"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:transitionName="ko__messenger_toolbar_avatar1"
@@ -24,10 +24,10 @@
 
     <com.kayako.sdk.android.k5.common.view.CircleImageView
         android:id="@+id/ko__messenger_toolbar_avatar2"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_width="@dimen/ko__messenger_toolbar_expanded_avatar_size"
+        android:layout_height="@dimen/ko__messenger_toolbar_expanded_avatar_size"
+        android:layout_marginLeft="@dimen/ko__messenger_toolbar_expanded_avatar_padding_horizontal"
+        android:layout_marginRight="@dimen/ko__messenger_toolbar_expanded_avatar_padding_horizontal"
         android:transitionName="ko__messenger_toolbar_avatar2"
         android:visibility="gone"
         tools:background="#880000"
@@ -35,10 +35,10 @@
 
     <com.kayako.sdk.android.k5.common.view.CircleImageView
         android:id="@+id/ko__messenger_toolbar_avatar3"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_width="@dimen/ko__messenger_toolbar_expanded_avatar_size"
+        android:layout_height="@dimen/ko__messenger_toolbar_expanded_avatar_size"
+        android:layout_marginLeft="@dimen/ko__messenger_toolbar_expanded_avatar_padding_horizontal"
+        android:layout_marginRight="@dimen/ko__messenger_toolbar_expanded_avatar_padding_horizontal"
         android:transitionName="ko__messenger_toolbar_avatar3"
         android:visibility="gone"
         tools:background="#000088"

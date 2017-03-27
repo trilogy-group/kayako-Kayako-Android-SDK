@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/ko__messenger_home_screen_list_item_padding_vertical"
+    android:paddingLeft="@dimen/ko__messenger_home_screen_widget_padding_horizontal"
+    android:paddingRight="@dimen/ko__messenger_home_screen_widget_padding_horizontal"
+    android:paddingTop="@dimen/ko__messenger_home_screen_list_item_padding_vertical"
+    android:elevation="@dimen/ko__messenger_home_screen_widget_elevation"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ko__messenger_home_screen_widget_header_background"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/ko__messenger_home_screen_widget_header_padding_horizontal"
+        android:paddingRight="@dimen/ko__messenger_home_screen_widget_header_padding_horizontal"
+        android:paddingTop="@dimen/ko__messenger_home_screen_widget_header_padding_vertical"
+        android:paddingBottom="@dimen/ko__messenger_home_screen_widget_header_padding_vertical">
+
+        <com.kayako.sdk.android.k5.common.view.BoldTextView
+            android:id="@+id/ko__messenger_home_screen_widget_title"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="left|center_vertical"
+            android:textAllCaps="true"
+            android:textSize="12sp"
+            android:textColor="@color/ko__messenger_primary_color"
+            tools:text="RECENT CONVERSATIONS" />
+
+        <com.kayako.sdk.android.k5.common.view.RegularTextView
+            android:id="@+id/ko__messenger_home_screen_widget_action_button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="left|center_vertical"
+            android:textSize="14sp"
+            android:textColor="@color/ko__messenger_home_screen_widget_header_action_button_text_color"
+            tools:text="View All ->" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ko__messenger_home_screen_widget_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ko__messenger_home_screen_widget_content_background"
+        android:orientation="vertical"
+        android:padding="8dp" />
+
+
+</LinearLayout>

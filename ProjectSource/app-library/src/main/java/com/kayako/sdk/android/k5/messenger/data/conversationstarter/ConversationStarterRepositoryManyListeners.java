@@ -1,4 +1,4 @@
-package com.kayako.sdk.android.k5.messenger.data;
+package com.kayako.sdk.android.k5.messenger.data.conversationstarter;
 
 import com.kayako.sdk.error.KayakoException;
 import com.kayako.sdk.messenger.conversationstarter.ConversationStarter;

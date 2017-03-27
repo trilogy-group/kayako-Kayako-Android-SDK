@@ -49,4 +49,24 @@
     <dimen name="ko__messenger_toolbar_back_button_size">48dp</dimen>
     <dimen name="ko__messenger_toolbar_back_button_padding">16dp</dimen>
 
+    <dimen name="ko__messenger_toolbar_expanded_avatar_size">48dp</dimen>
+    <dimen name="ko__messenger_toolbar_expanded_avatar_padding_horizontal">8dp</dimen>
+    <dimen name="ko__messenger_toolbar_collapsed_avatar_size">24dp</dimen>
+
+    <dimen name="ko__messenger_home_screen_widget_header_corner_top">8dp</dimen>
+    <dimen name="ko__messenger_home_screen_widget_header_corner_bottom">0dp</dimen>
+    <dimen name="ko__messenger_home_screen_widget_content_corner_top">0dp</dimen>
+    <dimen name="ko__messenger_home_screen_widget_content_corner_bottom">8dp</dimen>
+    <dimen name="ko__messenger_home_screen_widget_header_padding_horizontal">16dp</dimen>
+    <dimen name="ko__messenger_home_screen_widget_header_padding_vertical">8dp</dimen>
+    <dimen name="ko__messenger_home_screen_header_top_padding">48dp</dimen>
+    <dimen name="ko__messenger_home_screen_header_padding_horizontal">32dp</dimen>
+    <dimen name="ko__messenger_home_screen_widget_padding_horizontal">16dp</dimen>
+    <dimen name="ko__messenger_home_screen_list_item_padding_vertical">16dp</dimen>
+    <dimen name="ko__messenger_home_screen_header_padding_between_text">4dp</dimen>
+
+    <dimen name="ko__messenger_home_screen_widget_presence_avatar_size">48dp</dimen>
+    <dimen name="ko__messenger_home_screen_widget_presence_avatar_padding_horizontal">8dp</dimen>
+    <dimen name="ko__messenger_home_screen_widget_elevation">8dp</dimen>
+
 </resources>
