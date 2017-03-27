@@ -32,10 +32,11 @@
     <dimen name="ko__messenger_channel_size">18dp</dimen>
 
     <dimen name="ko__conversation_list_item_avatar_size">45dp</dimen>
-    <dimen name="ko__conversation_list_item_avatar_with_assignee_size">30dp</dimen>
-    <dimen name="ko__conversation_list_item_assignee_avatar_size">30dp</dimen>
-    <dimen name="ko__conversation_list_item_assignee_avatar_margin_top_left_corner">15dp</dimen>
     <dimen name="ko__conversation_list_item_gap_between_avatar_and_messages">16dp</dimen>
+    <dimen name="ko__conversation_list_item_subject_text_size">16sp</dimen>
+    <dimen name="ko__conversation_list_item_name_text_size">16sp</dimen>
+    <dimen name="ko__conversation_list_item_time_text_size">12sp</dimen>
+
 
     <dimen name="ko__messenger_input_item_submit_button_padding">8dp</dimen>
     <dimen name="ko__messenger_input_container_stroke_width">1dp</dimen>
@@ -68,5 +69,11 @@
     <dimen name="ko__messenger_home_screen_widget_presence_avatar_size">48dp</dimen>
     <dimen name="ko__messenger_home_screen_widget_presence_avatar_padding_horizontal">8dp</dimen>
     <dimen name="ko__messenger_home_screen_widget_elevation">8dp</dimen>
+
+    <dimen name="ko__messenger_home_screen_widget_recent_cases__conversation_list_item_avatar_size">30dp</dimen>
+    <dimen name="ko__messenger_home_screen_widget_recent_cases__conversation_list_item_gap_between_avatar_and_messages">8dp</dimen>
+    <dimen name="ko__messenger_home_screen_widget_recent_cases__conversation_list_item_subject_text_size">12sp</dimen>
+    <dimen name="ko__messenger_home_screen_widget_recent_cases__conversation_list_item_name_text_size">12sp</dimen>
+    <dimen name="ko__messenger_home_screen_widget_recent_cases__conversation_list_item_time_text_size">10sp</dimen>
 
 </resources>

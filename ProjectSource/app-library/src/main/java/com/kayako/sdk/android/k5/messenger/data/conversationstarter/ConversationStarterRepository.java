@@ -20,7 +20,7 @@ public class ConversationStarterRepository implements IConversationStarterReposi
 
     public ConversationStarterRepository() {
         String fingerprintId = MessengerPref.getInstance().getFingerprintId();
-        if (fingerprintId != null && fingerprintId.length() == 0) {
+        if (fingerprintId != null && fingerprintId.length() != 0) {
             FingerprintAuth fingerprintAuth = new FingerprintAuth(fingerprintId);
             mMessenger = new Messenger(HelpCenterPref.getInstance().getHelpCenterUrl(), fingerprintAuth);
         } else {

@@ -7,6 +7,7 @@ import android.webkit.URLUtil;
 
 import com.kayako.sdk.android.k5.activities.KayakoConversationListActivity;
 import com.kayako.sdk.android.k5.activities.KayakoHelpCenterActivity;
+import com.kayako.sdk.android.k5.activities.KayakoMessengerActivity;
 
 import java.lang.ref.WeakReference;
 import java.util.Locale;
@@ -56,7 +57,7 @@ public class Kayako {
     // TODO: Create a Messenger Builder - Builder pattern here
     public void openMessenger(Context context, String helpCenterUrl, Locale defaultLocale) {
         setUpCommonCredentials(helpCenterUrl, defaultLocale);
-        Intent intent = KayakoConversationListActivity.getIntent(context);
+        Intent intent = KayakoMessengerActivity.getIntent(context);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }

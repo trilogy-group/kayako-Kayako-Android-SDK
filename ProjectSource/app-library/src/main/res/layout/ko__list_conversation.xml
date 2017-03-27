@@ -27,22 +27,19 @@
         android:layout_alignTop="@+id/name"
         android:gravity="center">
 
-        <TextView
+        <com.kayako.sdk.android.k5.common.view.RegularTextView
             android:id="@+id/time"
-            fontPath="fonts/SourceSansPro-Regular.otf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
             android:maxLines="1"
             android:textColor="@color/ko__conversation_item_default_text_color"
-            android:textSize="12sp"
-            tools:ignore="MissingPrefix"
+            android:textSize="@dimen/ko__conversation_list_item_time_text_size"
             tools:text="3h" />
     </LinearLayout>
 
-    <TextView
+    <com.kayako.sdk.android.k5.common.view.RegularTextView
         android:id="@+id/subject"
-        fontPath="fonts/SourceSansPro-Regular.otf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/avatar"
@@ -55,13 +52,11 @@
         android:gravity="center_vertical|left"
         android:maxLines="1"
         android:textColor="@color/ko__conversation_item_subject_text_color"
-        android:textSize="16sp"
-        tools:ignore="MissingPrefix"
+        android:textSize="@dimen/ko__conversation_list_item_subject_text_size"
         tools:text="@string/lorem_ipsum" />
 
-    <TextView
+    <com.kayako.sdk.android.k5.common.view.BoldTextView
         android:id="@+id/name"
-        fontPath="fonts/SourceSansPro-Semibold.otf"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/avatar"
@@ -74,8 +69,7 @@
         android:gravity="center_vertical|left"
         android:maxLines="1"
         android:textColor="@color/ko__conversation_item_name_text_color"
-        android:textSize="16sp"
-        tools:ignore="MissingPrefix"
+        android:textSize="@dimen/ko__conversation_list_item_name_text_size"
         tools:text="Himanshu Likhyani" />
 
     <LinearLayout

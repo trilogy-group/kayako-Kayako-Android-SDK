@@ -1,0 +1,86 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:selectableItemBackground"
+    android:gravity="center"
+    android:minHeight="40dp"
+    android:paddingBottom="4dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:paddingTop="4dp">
+
+    <!--TODO: Create dimens for the top too -->
+
+    <com.kayako.sdk.android.k5.common.view.CircleImageView
+        android:id="@+id/avatar"
+        android:layout_width="@dimen/ko__messenger_home_screen_widget_recent_cases__conversation_list_item_avatar_size"
+        android:layout_height="@dimen/ko__messenger_home_screen_widget_recent_cases__conversation_list_item_avatar_size"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        tools:src="@color/ko__conversation_item_avatar_default_background_color" />
+
+    <LinearLayout
+        android:id="@+id/info"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/name"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/name"
+        android:gravity="center">
+
+        <com.kayako.sdk.android.k5.common.view.RegularTextView
+            android:id="@+id/time"
+            fontPath="fonts/SourceSansPro-Regular.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:maxLines="1"
+            android:textColor="#5F6C73"
+            android:textSize="@dimen/ko__messenger_home_screen_widget_recent_cases__conversation_list_item_time_text_size"
+            tools:ignore="MissingPrefix"
+            tools:text="3h" />
+    </LinearLayout>
+
+
+    <!--TODO: Change color of time
+     android:textColor="@color/ko__conversation_item_subject_text_color"
+     -->
+
+    <com.kayako.sdk.android.k5.common.view.RegularTextView
+        android:id="@+id/subject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/avatar"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="@dimen/ko__messenger_home_screen_widget_recent_cases__conversation_list_item_gap_between_avatar_and_messages"
+        android:layout_marginTop="4dp"
+        android:layout_toRightOf="@+id/avatar"
+        android:ellipsize="end"
+        android:gravity="center_vertical|left"
+        android:maxLines="1"
+        android:textColor="#5F6C73"
+
+        android:textSize="@dimen/ko__messenger_home_screen_widget_recent_cases__conversation_list_item_subject_text_size"
+        tools:text="@string/lorem_ipsum" />
+
+    <com.kayako.sdk.android.k5.common.view.BoldTextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/avatar"
+        android:layout_marginLeft="@dimen/ko__messenger_home_screen_widget_recent_cases__conversation_list_item_gap_between_avatar_and_messages"
+        android:layout_toEndOf="@+id/avatar"
+        android:layout_toLeftOf="@+id/info"
+        android:layout_toRightOf="@+id/avatar"
+        android:layout_toStartOf="@+id/info"
+        android:ellipsize="end"
+        android:gravity="center_vertical|left"
+        android:maxLines="1"
+        android:textColor="@color/ko__conversation_item_name_text_color"
+        android:textSize="@dimen/ko__messenger_home_screen_widget_recent_cases__conversation_list_item_name_text_size"
+        tools:text="Himanshu Likhyani" />
+
+</RelativeLayout>

@@ -1,7 +1,6 @@
 package com.kayako.sdk.android.k5.common.adapter.conversationlist;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +21,7 @@ import java.util.List;
  */
 public class ConversationListAdapter extends EndlessRecyclerViewScrollAdapter {
 
+
     private OnClickConversationListener mListener;
 
     public ConversationListAdapter(List<BaseListItem> items, OnClickConversationListener listener) {
@@ -39,7 +39,7 @@ public class ConversationListAdapter extends EndlessRecyclerViewScrollAdapter {
         switch (viewType) {
             case ConversationListType.CONVERSATION_LIST_ITEM:
                 View viewItem = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.ko__list_conversations, parent, false);
+                        .inflate(R.layout.ko__list_conversation, parent, false);
                 return new ConversationItemViewHolder(viewItem);
             default:
                 return super.onCreateViewHolder(parent, viewType);

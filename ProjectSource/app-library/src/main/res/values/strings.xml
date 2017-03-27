@@ -35,5 +35,6 @@
     <string name="ko__messenger_toolbar_avatar_caption_text_three_agent"><xliff:g example="John" id="name">%1$s</xliff:g>, <xliff:g example="Jim" id="name2">%2$s</xliff:g> and <xliff:g example="Tina" id="name3">%3$s</xliff:g> are online.</string>
 
     <string name="ko__messenger_home_screen_widget_presence_title">We are here to help!</string>
-
+    <string name="ko__messenger_home_screen_widget_recent_cases_title">Recent conversations</string>
+    <string name="ko__messenger_home_screen_widget_recent_cases_action_button_label">View all</string>
 </resources>

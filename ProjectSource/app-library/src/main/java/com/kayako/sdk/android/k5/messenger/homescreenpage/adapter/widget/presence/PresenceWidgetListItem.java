@@ -1,8 +1,9 @@
-package com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.widget;
+package com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.widget.presence;
 
 import android.support.annotation.NonNull;
 
 import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.HomeScreenListType;
+import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.widget.BaseWidgetListItem;
 
 public class PresenceWidgetListItem extends BaseWidgetListItem {
 

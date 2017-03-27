@@ -10,8 +10,12 @@ import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.header.HeaderListItem;
 import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.header.HeaderViewHolder;
 import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.widget.BaseWidgetListItem;
-import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.widget.PresenceWidgetListItem;
-import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.widget.PresenceWidgetViewHolder;
+import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.widget.presence.PresenceWidgetListItem;
+import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.widget.presence.PresenceWidgetViewHolder;
+import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.widget.recentcases.OnClickRecentConversationListener;
+import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.widget.recentcases.RecentConversationAdapter;
+import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.widget.recentcases.RecentConversationsWidgetListItem;
+import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.widget.recentcases.RecentConversationsWidgetViewHolder;
 import com.kayako.sdk.android.k5.messenger.style.ConversationStarterHelper;
 import com.kayako.sdk.android.k5.messenger.style.MessengerTemplateHelper;
 
@@ -47,12 +51,14 @@ public class HomeScreenListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 return new HeaderViewHolder(headerView);
 
             case HomeScreenListType.WIDGET_PRESENCE:
-                View widgetView = LayoutInflater.from(parent.getContext())
+                View presenceWidgetView = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.ko__list_messenger_home_screen_widget, parent, false);
-                return new PresenceWidgetViewHolder(widgetView, R.layout.ko__include_messenger_home_screen_widget_presence);
+                return new PresenceWidgetViewHolder(presenceWidgetView);
 
             case HomeScreenListType.WIDGET_RECENT_CONVERSATIONS:
-                // TODO;
+                View recentConversationWidgetView = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.ko__list_messenger_home_screen_widget, parent, false);
+                return new RecentConversationsWidgetViewHolder(recentConversationWidgetView);
         }
         return null;
     }
@@ -93,6 +99,29 @@ public class HomeScreenListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         }
                     });
                 }
+                break;
+
+            case HomeScreenListType.WIDGET_RECENT_CONVERSATIONS:
+                final RecentConversationsWidgetListItem recentConversationListItem = (RecentConversationsWidgetListItem) mItems.get(position);
+                RecentConversationsWidgetViewHolder recentCasesWidgetViewHolder = (RecentConversationsWidgetViewHolder) holder;
+
+                recentCasesWidgetViewHolder.title.setText(recentConversationListItem.getTitle());
+                recentCasesWidgetViewHolder.actionButton.setText(recentConversationListItem.getActionButtonLabel());
+                recentCasesWidgetViewHolder.actionButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        recentConversationListItem.getOnClickActionListener().onClickActionButton();
+                    }
+                });
+                recentCasesWidgetViewHolder.recyclerView.setAdapter(new RecentConversationAdapter(
+                        recentConversationListItem.getConversations(),
+                        new OnClickRecentConversationListener() {
+                            @Override
+                            public void onClickRecentConversation(long conversationId) {
+                                recentConversationListItem.getOnClickRecentConversationListener().onClickRecentConversation(conversationId);
+                            }
+                        }
+                ));
                 break;
         }
     }

@@ -18,7 +18,9 @@ public class ConversationStarterRepositoryManyListeners implements IConversation
 
     @Override
     public synchronized void getConversationStarter(OnLoadConversationStarterListener listener) {
-        listeners.add(new WeakReference<>(listener));
+        if (listener != null) {
+            listeners.add(new WeakReference<>(listener));
+        }
         conversationStarterRepository.getConversationStarter(this);
     }
 

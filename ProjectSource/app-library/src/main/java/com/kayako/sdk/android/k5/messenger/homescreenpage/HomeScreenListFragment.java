@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kayako.sdk.android.k5.R;
+import com.kayako.sdk.android.k5.activities.KayakoConversationListActivity;
+import com.kayako.sdk.android.k5.activities.KayakoSelectConversationActivity;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.HomeScreenListAdapter;
 
@@ -53,7 +55,7 @@ public class HomeScreenListFragment extends Fragment implements HomeScreenListCo
     }
 
     @Override
-    public void setupList(List<BaseListItem> list) {
+    public synchronized void setupList(List<BaseListItem> list) {
         if (!hasPageLoaded()) {
             return;
         }
@@ -84,6 +86,24 @@ public class HomeScreenListFragment extends Fragment implements HomeScreenListCo
         } else {
             mAdapter.replaceData(list);
         }
+    }
+
+    @Override
+    public synchronized void openConversationListingPage() {
+        if (!hasPageLoaded()) {
+            return;
+        }
+
+        startActivity(KayakoConversationListActivity.getIntent(getActivity()));
+    }
+
+    @Override
+    public synchronized void openSelectConversationPage(long conversationId) {
+        if (!hasPageLoaded()) {
+            return;
+        }
+
+        startActivity(KayakoSelectConversationActivity.getIntent(getActivity(), conversationId));
     }
 
     @Override

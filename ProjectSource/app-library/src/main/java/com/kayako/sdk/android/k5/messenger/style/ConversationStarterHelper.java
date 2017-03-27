@@ -9,15 +9,22 @@ import com.kayako.sdk.android.k5.common.utils.ImageUtils;
 import com.kayako.sdk.android.k5.core.Kayako;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.ActiveUser;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.LastActiveAgentsData;
+import com.kayako.sdk.android.k5.messenger.data.conversationstarter.RecentConversation;
 import com.kayako.sdk.helpcenter.user.UserMinimal;
+import com.kayako.sdk.messenger.conversation.Conversation;
 import com.kayako.sdk.messenger.conversationstarter.ConversationStarter;
+import com.kayako.sdk.utils.LogUtils;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ConversationStarterHelper {
 
     private ConversationStarterHelper() {
     }
 
-    public static LastActiveAgentsData convert(ConversationStarter conversationStarter) {
+    public static LastActiveAgentsData convertToLastActiveAgentsData(ConversationStarter conversationStarter) {
         String brand = "Kayako"; // TODO: brand name?
         long averageReplyTimeInMilliseconds;
         ActiveUser user1 = null;
@@ -55,6 +62,22 @@ public class ConversationStarterHelper {
                 user3
         );
 
+    }
+
+    public static List<RecentConversation> convertToRecentConversation(ConversationStarter conversationStarter) {
+        List<Conversation> conversationList = conversationStarter.getActiveConversations();
+        List<RecentConversation> recentConversationList = new ArrayList<>();
+
+        if (conversationList == null || conversationList.size() == 0) {
+            return Collections.emptyList();
+        }
+
+        for (Conversation conversation : conversationList) {
+            RecentConversation recentConversation = convert(conversation);
+            recentConversationList.add(recentConversation);
+        }
+
+        return recentConversationList;
     }
 
     public static String getAverageResponseTimeCaption(Long averageReplyTimeInMilliseconds) {
@@ -168,6 +191,20 @@ public class ConversationStarterHelper {
                 userMinimal.getAvatarUrl(),
                 userMinimal.getFullName(),
                 userMinimal.getLastActiveAt()
+        );
+    }
+
+    private static RecentConversation convert(Conversation conversation) {
+        if (conversation == null) {
+            return null;
+        }
+
+        return new RecentConversation(
+                conversation.getId(),
+                conversation.getLastReplier().getAvatarUrl(), // TODO: Confirm if the last replier is shown instead of the Agent or Requester?
+                conversation.getLastReplier().getFullName(),
+                conversation.getUpdatedAt(),
+                conversation.getSubject()
         );
     }
 }

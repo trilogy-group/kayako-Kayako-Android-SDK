@@ -10,6 +10,9 @@ public class HomeScreenListContract {
 
         void setupList(List<BaseListItem> list);
 
+        void openConversationListingPage();
+
+        void openSelectConversationPage(long conversationId);
     }
 
     public interface Presenter {

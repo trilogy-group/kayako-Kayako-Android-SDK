@@ -39,7 +39,7 @@ public class MessengerToolbarPresenter implements MessengerToolbarContract.Prese
     @Override
     public synchronized void onLoadConversationMetrics(ConversationStarter conversationStarter) {
         try {
-            LastActiveAgentsData lastActiveAgentsData = ConversationStarterHelper.convert(conversationStarter);
+            LastActiveAgentsData lastActiveAgentsData = ConversationStarterHelper.convertToLastActiveAgentsData(conversationStarter);
             if (lastActiveAgentsData != null) {
                 mView.configureForLastActiveUsersView(lastActiveAgentsData);
             }
