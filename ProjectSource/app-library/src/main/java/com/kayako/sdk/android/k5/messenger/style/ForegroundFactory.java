@@ -11,17 +11,17 @@ public class ForegroundFactory {
     }
 
     public enum ForegroundOption {
-        NONE,
-        CONFETTI_TEXTURE,
-        DOTS_TEXTURE,
-        CONSTELLATION_TEXTURE,
-        SAND_TEXTURE,
-        CHEERIOS_TEXTURE,
-        MOSAIC_TEXTURE,
-        POLKA_TEXTURE,
-        STARS_TEXTURE,
-        NACHOS_TEXTURE,
-        ZIGZAG_TEXTURE
+        NO_TEXTURE,
+        CONFETTI,
+        DOTS,
+        CONSTELLATION,
+        SAND,
+        CHEERIOS,
+        MOSAIC,
+        POLKA,
+        STARS,
+        NACHOS,
+        ZIGZAG
     }
 
 
@@ -31,37 +31,37 @@ public class ForegroundFactory {
         }
 
         switch (foregroundOption) {
-            case NONE:
+            case NO_TEXTURE:
                 return new BlankForground();
 
-            case CONFETTI_TEXTURE:
+            case CONFETTI:
                 return new Texture(R.drawable.ko__texture_1_dark, R.drawable.ko__texture_1_light);
 
-            case DOTS_TEXTURE:
+            case DOTS:
                 return new Texture(R.drawable.ko__texture_2_dark, R.drawable.ko__texture_2_light);
 
-            case CONSTELLATION_TEXTURE:
+            case CONSTELLATION:
                 return new Texture(R.drawable.ko__texture_3_dark, R.drawable.ko__texture_3_light);
 
-            case SAND_TEXTURE:
+            case SAND:
                 return new Texture(R.drawable.ko__texture_4_dark, R.drawable.ko__texture_4_light);
 
-            case CHEERIOS_TEXTURE:
+            case CHEERIOS:
                 return new Texture(R.drawable.ko__texture_5_dark, R.drawable.ko__texture_5_light);
 
-            case MOSAIC_TEXTURE:
+            case MOSAIC:
                 return new Texture(R.drawable.ko__texture_6_dark, R.drawable.ko__texture_6_light);
 
-            case POLKA_TEXTURE:
+            case POLKA:
                 return new Texture(R.drawable.ko__texture_7_dark, R.drawable.ko__texture_7_light);
 
-            case STARS_TEXTURE:
+            case STARS:
                 return new Texture(R.drawable.ko__texture_8_dark, R.drawable.ko__texture_8_light);
 
-            case NACHOS_TEXTURE:
+            case NACHOS:
                 return new Texture(R.drawable.ko__texture_9_dark, R.drawable.ko__texture_9_light);
 
-            case ZIGZAG_TEXTURE:
+            case ZIGZAG:
                 return new Texture(R.drawable.ko__texture_10_dark, R.drawable.ko__texture_10_light);
 
         }

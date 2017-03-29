@@ -83,11 +83,11 @@ public class MessengerTemplateHelper {
     }
 
     public static Background getDefaultBackground() {
-        return BackgroundFactory.getBackground(BackgroundFactory.BackgroundOption.GRADIENT_1);
+        return BackgroundFactory.getBackground(BackgroundFactory.BackgroundOption.EGGPLANT);
     }
 
     public static Foreground getDefaultForeground() {
-        return ForegroundFactory.getForeground(ForegroundFactory.ForegroundOption.CONFETTI_TEXTURE);
+        return ForegroundFactory.getForeground(ForegroundFactory.ForegroundOption.CONFETTI);
     }
 
     public static Background getSelectedBackground() {

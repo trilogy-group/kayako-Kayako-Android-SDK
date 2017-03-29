@@ -290,7 +290,6 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
     private List<BaseListItem> reloadOnboardingMessagesWithoutEmail() {
         List<BaseListItem> baseListItems = new ArrayList<>();
-        baseListItems.add(new BotMessageListItem("What would you like to talk about?", 0, null)); // TODO: Convert to resId instead of string msg
         return baseListItems;
     }
 

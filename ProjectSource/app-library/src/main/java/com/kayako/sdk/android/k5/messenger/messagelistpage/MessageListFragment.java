@@ -16,7 +16,7 @@ import com.kayako.sdk.android.k5.core.Kayako;
 
 import java.util.List;
 
-public class MessageListView extends MessengerListFragment implements MessageListContract.View, MessageListContract.ConfigureView {
+public class MessageListFragment extends MessengerListFragment implements MessageListContract.View, MessageListContract.ConfigureView {
 
     private MessageListContract.Presenter mPresenter;
     private OnListPageStateChangeListener mOnListPageStateChangeListener;
