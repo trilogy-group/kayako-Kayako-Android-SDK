@@ -14,6 +14,7 @@ public class MessengerStylePref extends JsonStore {
 
     final static private String KEY_FOREGROUND = "key_foreground";
     final static private String KEY_BACKGROUND = "key_background";
+    final static private String KEY_PRIMARY_COLOR = "key_primary_color";
 
     private static MessengerStylePref sInstance;
 
@@ -27,35 +28,42 @@ public class MessengerStylePref extends JsonStore {
 
     public static MessengerStylePref getInstance() {
         if (sInstance == null) {
-            throw new NullPointerException("Please call Kayako.initialize() in your Application class");
+            throw new IllegalStateException("Please call Kayako.initialize() in your Application class");
         }
         return sInstance;
     }
 
-    public static void setForeground(Foreground foreground) {
-        sInstance.saveItem(KEY_FOREGROUND, JsonStoreHelper.getJsonStringRepresentation(foreground, Foreground.class));
+    public void setForeground(Foreground foreground) {
+        saveItem(KEY_FOREGROUND, JsonStoreHelper.getJsonStringRepresentation(foreground, Foreground.class));
     }
 
-    public static Foreground getForeground() {
-        String json = sInstance.retrieveItem(KEY_FOREGROUND);
-        if (sInstance == null) {
+    public Foreground getForeground() {
+        String json = retrieveItem(KEY_FOREGROUND);
+        if (json == null) {
             return null;
         } else {
             return JsonStoreHelper.getOriginalClassRepresentation(json, Foreground.class);
         }
     }
 
-    public static void setBackground(Background background) {
-        sInstance.saveItem(KEY_BACKGROUND, JsonStoreHelper.getJsonStringRepresentation(background, Background.class));
+    public void setBackground(Background background) {
+        saveItem(KEY_BACKGROUND, JsonStoreHelper.getJsonStringRepresentation(background, Background.class));
     }
 
-    public static Background getBackground() {
-        String json = sInstance.retrieveItem(KEY_BACKGROUND);
-        if (sInstance == null) {
+    public Background getBackground() {
+        String json = retrieveItem(KEY_BACKGROUND);
+        if (json == null) {
             return null;
         } else {
             return JsonStoreHelper.getOriginalClassRepresentation(json, Background.class);
         }
     }
 
+    public void setPrimaryColor(String hexColor) {
+        saveItem(KEY_PRIMARY_COLOR, hexColor);
+    }
+
+    public String getPrimaryColor() {
+        return retrieveItem(KEY_BACKGROUND);
+    }
 }

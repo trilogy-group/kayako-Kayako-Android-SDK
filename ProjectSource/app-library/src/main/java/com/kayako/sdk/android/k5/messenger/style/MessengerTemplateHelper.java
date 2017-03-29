@@ -87,11 +87,11 @@ public class MessengerTemplateHelper {
     }
 
     public static Foreground getDefaultForeground() {
-        return ForegroundFactory.getForeground(ForegroundFactory.ForegroundOption.TEXTURE_1);
+        return ForegroundFactory.getForeground(ForegroundFactory.ForegroundOption.CONFETTI_TEXTURE);
     }
 
     public static Background getSelectedBackground() {
-        Background background = MessengerStylePref.getBackground();
+        Background background = MessengerStylePref.getInstance().getBackground();
         if (background == null) { // Background is mandatory
             background = getDefaultBackground(); // GET DEFAULT FOREGROUND
         }
@@ -99,6 +99,6 @@ public class MessengerTemplateHelper {
     }
 
     public static Foreground getSelectedForeground() {
-        return MessengerStylePref.getForeground();
+        return MessengerStylePref.getInstance().getForeground();
     }
 }

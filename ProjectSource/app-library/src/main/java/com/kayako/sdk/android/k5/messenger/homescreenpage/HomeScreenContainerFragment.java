@@ -38,6 +38,15 @@ public class HomeScreenContainerFragment extends Fragment implements HomeScreenC
                 mPresenter.onClickNewConversationButton();
             }
         });
+
+        HomeScreenListFragment homeScreenListFragment = (HomeScreenListFragment) getChildFragmentManager().findFragmentById(R.id.ko__home_screen_list_fragment);
+        homeScreenListFragment.setOnScrollListener(new HomeScreenListContract.OnScrollListListener() {
+            @Override
+            public void onScroll(boolean isScrolling) {
+                mPresenter.onScrollList(isScrolling);
+            }
+        });
+
     }
 
     @Override

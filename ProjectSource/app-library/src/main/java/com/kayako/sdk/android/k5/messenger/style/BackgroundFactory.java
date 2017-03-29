@@ -5,6 +5,9 @@ import com.kayako.sdk.android.k5.messenger.style.type.Background;
 import com.kayako.sdk.android.k5.messenger.style.type.Gradient;
 import com.kayako.sdk.android.k5.messenger.style.type.SolidColor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BackgroundFactory {
 
     private BackgroundFactory() {
@@ -24,7 +27,7 @@ public class BackgroundFactory {
         SOLID_COLOR_4,
         SOLID_COLOR_5,
         SOLID_COLOR_6,
-        SOLID_COLOR_7,
+        SOLID_COLOR_7;
     }
 
     public static Background getBackground(BackgroundOption option) {
@@ -63,7 +66,7 @@ public class BackgroundFactory {
                 return new SolidColor("#4CD964", true);
 
             case SOLID_COLOR_5:
-                return new SolidColor("#FC0", false);
+                return new SolidColor("#FFCC00", false);
 
             case SOLID_COLOR_6:
                 return new SolidColor("#FF9500", true);

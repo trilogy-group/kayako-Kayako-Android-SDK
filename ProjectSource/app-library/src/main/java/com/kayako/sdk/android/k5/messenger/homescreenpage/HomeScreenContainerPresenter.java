@@ -16,9 +16,9 @@ public class HomeScreenContainerPresenter implements HomeScreenContainerContract
     @Override
     public void onScrollList(boolean isScrolling) {
         if (isScrolling) {
-            mView.showNewConversationButton();
-        } else {
             mView.hideNewConversationButton();
+        } else {
+            mView.showNewConversationButton();
         }
     }
 
