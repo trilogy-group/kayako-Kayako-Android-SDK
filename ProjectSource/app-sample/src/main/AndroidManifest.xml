@@ -34,10 +34,6 @@
             android:name="com.kayako.sdk.android.k5.activities.KayakoArticleActivity"
             android:theme="@style/HelpCenterTheme" />
 
-        <activity
-            android:name="com.kayako.sdk.android.k5.activities.KayakoMessengerActivity"
-            android:theme="@style/HelpCenterTheme" />
-
         <!--TODO: Figure out the theming -->
         <!--TODO: Document the activities -->
 
@@ -47,6 +43,11 @@
         <activity
             android:name="com.kayako.sdk.android.k5.activities.KayakoSelectConversationActivity"
             android:theme="@style/Ko__MessengerTheme" />
+
+        <activity
+            android:name="com.kayako.sdk.android.k5.activities.KayakoMessengerActivity"
+            android:theme="@style/Ko__MessengerTheme" />
+
 
     </application>
 
