@@ -100,6 +100,10 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     public void onClickSendInReplyView(String message) {
         // TODO: Optimisitc Sending? Show it in messagelist?
         // TODO: Should both MessageListContainerView and MessageListView determine if it's a new conversation separately?
+
+        // Collapse toolbar once a message has been sent!
+        mView.collapseToolbar();
+
         if (mIsNewConversation) {
             if (mEmail == null) {
                 throw new AssertionError("If it's a new conversation and email is null, the user should not have had the chance to send a reply!");
