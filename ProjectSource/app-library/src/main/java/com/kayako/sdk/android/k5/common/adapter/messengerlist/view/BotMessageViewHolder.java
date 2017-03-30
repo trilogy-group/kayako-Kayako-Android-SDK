@@ -16,9 +16,9 @@ public class BotMessageViewHolder extends RecyclerView.ViewHolder {
 
     public BotMessageViewHolder(View itemView) {
         super(itemView);
-        avatar = (CircleImageView) itemView.findViewById(R.id.avatar);
-        channel = (CircleImageView) itemView.findViewById(R.id.channel);
-        message = (TextView) itemView.findViewById(R.id.message);
-        time = (TextView) itemView.findViewById(R.id.time);
+        avatar = (CircleImageView) itemView.findViewById(R.id.ko__avatar);
+        channel = (CircleImageView) itemView.findViewById(R.id.ko__channel);
+        message = (TextView) itemView.findViewById(R.id.ko__message);
+        time = (TextView) itemView.findViewById(R.id.ko__time);
     }
 }

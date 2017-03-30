@@ -24,7 +24,7 @@ public class InputFieldViewHolder extends RecyclerView.ViewHolder {
 
         messageInstruction = (TextView) itemView.findViewById(R.id.message_instruction);
         submittedAnswer = (TextView) itemView.findViewById(R.id.submitted_value);
-        avatar = (CircleImageView) itemView.findViewById(R.id.avatar);
+        avatar = (CircleImageView) itemView.findViewById(R.id.ko__avatar);
 
         inputLayout = (LinearLayout) itemView.findViewById(R.id.input_layout);
         submittedLayout = (LinearLayout) itemView.findViewById(R.id.submitted_layout);

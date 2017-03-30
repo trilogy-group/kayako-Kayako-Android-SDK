@@ -9,6 +9,7 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputEmailLis
 import com.kayako.sdk.android.k5.common.fragments.ListPageState;
 import com.kayako.sdk.android.k5.common.fragments.OnScrollListListener;
 import com.kayako.sdk.android.k5.core.MessengerPref;
+import com.kayako.sdk.android.k5.messenger.data.ResourceList;
 import com.kayako.sdk.messenger.conversation.Conversation;
 import com.kayako.sdk.messenger.conversation.PostConversationBodyParams;
 import com.kayako.sdk.messenger.message.Message;
@@ -31,6 +32,8 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private boolean mIsEmailAskedInThisConversation;
     private List<BaseListItem> mOnboardingItems = new ArrayList<>();
     private ListPageState mListPageState;
+
+    private ResourceList<Message> mMessageList = new ResourceList<>();
 
     // TODO: Group onboarding messages logic in a private class? - confusing otherwise as more and more methods are used
 
@@ -302,6 +305,8 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                 if (dataItems.size() == 0) {
                     mView.showEmptyViewInMessageListingView();
                 } else {
+                    mMessageList.addOrReplaceIfExisting(messageList);
+
                     Collections.reverse(dataItems);
                     List<BaseListItem> baseListItems = DataItemHelper.getInstance().convertDataItemToListItems(dataItems);
 

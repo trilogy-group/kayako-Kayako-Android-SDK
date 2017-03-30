@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
@@ -17,7 +16,7 @@
         android:layout_weight="1"
         android:background="@color/ko__messenger_unread_separator_line_color" />
 
-    <TextView
+    <com.kayako.sdk.android.k5.common.view.RegularTextView
         android:id="@+id/ko__unread_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,8 +24,7 @@
         android:maxLines="1"
         android:text="@string/ko__msg_unread_message"
         android:textColor="@color/ko__messenger_unread_separator_text_color"
-        android:textSize="16sp"
-        tools:text="Unread" />
+        android:textSize="16sp" />
 
 
 </LinearLayout>

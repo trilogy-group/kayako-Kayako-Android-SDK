@@ -20,9 +20,9 @@ public class ConversationItemViewHolder extends RecyclerView.ViewHolder {
     public ConversationItemViewHolder(View v) {
         super(v);
         itemView = v;
-        avatar = (ImageView) v.findViewById(R.id.avatar);
+        avatar = (ImageView) v.findViewById(R.id.ko__avatar);
         name = (TextView) v.findViewById(R.id.name);
-        time = (TextView) v.findViewById(R.id.time);
+        time = (TextView) v.findViewById(R.id.ko__time);
         subject = (TextView) v.findViewById(R.id.subject);
         layout = (RelativeLayout) v.findViewById(R.id.layout);
     }

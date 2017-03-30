@@ -19,12 +19,12 @@ public class AttachmentMessageSelfViewHolder extends RecyclerView.ViewHolder {
 
     public AttachmentMessageSelfViewHolder(View itemView) {
         super(itemView);
-        message = (TextView) itemView.findViewById(R.id.message);
-        avatar = (CircleImageView) itemView.findViewById(R.id.avatar);
-        attachmentPlaceholder = (ImageView) itemView.findViewById(R.id.attachment_placeholder);
-        attachmentThumbnail = (ImageView) itemView.findViewById(R.id.attachment_image);
-        channel = (CircleImageView) itemView.findViewById(R.id.channel);
-        time = (TextView) itemView.findViewById(R.id.time);
+        message = (TextView) itemView.findViewById(R.id.ko__message);
+        avatar = (CircleImageView) itemView.findViewById(R.id.ko__avatar);
+        attachmentPlaceholder = (ImageView) itemView.findViewById(R.id.ko__attachment_placeholder);
+        attachmentThumbnail = (ImageView) itemView.findViewById(R.id.ko__attachment_image);
+        channel = (CircleImageView) itemView.findViewById(R.id.ko__channel);
+        time = (TextView) itemView.findViewById(R.id.ko__time);
     }
 
 }

@@ -19,12 +19,12 @@ public class AttachmentMessageOtherViewHolder extends RecyclerView.ViewHolder {
 
     public AttachmentMessageOtherViewHolder(View itemView) {
         super(itemView);
-        message = (TextView) itemView.findViewById(R.id.message);
-        attachmentPlaceholder = (ImageView) itemView.findViewById(R.id.attachment_placeholder);
-        attachmentThumbnail = (ImageView) itemView.findViewById(R.id.attachment_image);
-        avatar = (CircleImageView) itemView.findViewById(R.id.avatar);
-        channel = (CircleImageView) itemView.findViewById(R.id.channel);
-        time = (TextView) itemView.findViewById(R.id.time);
+        message = (TextView) itemView.findViewById(R.id.ko__message);
+        attachmentPlaceholder = (ImageView) itemView.findViewById(R.id.ko__attachment_placeholder);
+        attachmentThumbnail = (ImageView) itemView.findViewById(R.id.ko__attachment_image);
+        avatar = (CircleImageView) itemView.findViewById(R.id.ko__avatar);
+        channel = (CircleImageView) itemView.findViewById(R.id.ko__channel);
+        time = (TextView) itemView.findViewById(R.id.ko__time);
     }
 
 }

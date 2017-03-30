@@ -11,7 +11,7 @@
     android:paddingTop="16dp">
 
     <com.kayako.sdk.android.k5.common.view.CircleImageView
-        android:id="@+id/avatar"
+        android:id="@+id/ko__avatar"
         android:layout_width="@dimen/ko__conversation_list_item_avatar_size"
         android:layout_height="@dimen/ko__conversation_list_item_avatar_size"
         android:layout_alignParentLeft="true"
@@ -28,7 +28,7 @@
         android:gravity="center">
 
         <com.kayako.sdk.android.k5.common.view.RegularTextView
-            android:id="@+id/time"
+            android:id="@+id/ko__time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
@@ -42,12 +42,12 @@
         android:id="@+id/subject"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/avatar"
+        android:layout_alignBottom="@+id/ko__avatar"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="@dimen/ko__conversation_list_item_gap_between_avatar_and_messages"
         android:layout_marginTop="4dp"
-        android:layout_toRightOf="@+id/avatar"
+        android:layout_toRightOf="@+id/ko__avatar"
         android:ellipsize="end"
         android:gravity="center_vertical|left"
         android:maxLines="1"
@@ -59,11 +59,11 @@
         android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/avatar"
+        android:layout_alignTop="@+id/ko__avatar"
         android:layout_marginLeft="@dimen/ko__conversation_list_item_gap_between_avatar_and_messages"
-        android:layout_toEndOf="@+id/avatar"
+        android:layout_toEndOf="@+id/ko__avatar"
         android:layout_toLeftOf="@+id/info"
-        android:layout_toRightOf="@+id/avatar"
+        android:layout_toRightOf="@+id/ko__avatar"
         android:layout_toStartOf="@+id/info"
         android:ellipsize="end"
         android:gravity="center_vertical|left"

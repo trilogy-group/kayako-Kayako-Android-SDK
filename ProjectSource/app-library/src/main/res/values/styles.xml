@@ -53,11 +53,13 @@
     <style name="Ko__ChatBubbleStyleOther" parent="Ko__ChatBubbleStyle">
         <item name="android:background">@drawable/ko__speech_bubble_other</item>
         <item name="android:textColor">@color/ko__messenger_speech_bubble_other_text_color</item>
+        <item name="android:textSize">@dimen/ko__messenger_speech_bubble_message_text_size</item>
     </style>
 
     <style name="Ko__ChatBubbleStyleSelf" parent="Ko__ChatBubbleStyle">
         <item name="android:background">@drawable/ko__speech_bubble_self</item>
         <item name="android:textColor">@color/ko__messenger_speech_bubble_self_text_color</item>
+        <item name="android:textSize">@dimen/ko__messenger_speech_bubble_message_text_size</item>
     </style>
 
     <style name="Ko__ChatBubbleDateStyle">

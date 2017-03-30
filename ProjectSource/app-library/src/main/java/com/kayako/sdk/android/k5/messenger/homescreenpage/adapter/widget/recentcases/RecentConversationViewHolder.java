@@ -18,9 +18,9 @@ public class RecentConversationViewHolder extends RecyclerView.ViewHolder {
     public RecentConversationViewHolder(View v) {
         super(v);
         itemView = v;
-        avatar = (ImageView) v.findViewById(R.id.avatar);
+        avatar = (ImageView) v.findViewById(R.id.ko__avatar);
         name = (TextView) v.findViewById(R.id.name);
-        time = (TextView) v.findViewById(R.id.time);
+        time = (TextView) v.findViewById(R.id.ko__time);
         subject = (TextView) v.findViewById(R.id.subject);
     }
 }

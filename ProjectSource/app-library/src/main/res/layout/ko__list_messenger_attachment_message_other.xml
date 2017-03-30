@@ -10,20 +10,20 @@
     android:paddingTop="@dimen/ko__messenger_list_item_margin">
 
     <FrameLayout
-        android:id="@+id/image_container"
+        android:id="@+id/ko__image_container"
         style="@style/Ko__ChatBubbleStyleOther"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="@dimen/ko__messenger_gap_between_avatar_and_message"
         android:layout_marginRight="@dimen/ko__messenger_gap_between_message_and_end"
-        android:layout_toRightOf="@+id/avatar"
+        android:layout_toRightOf="@+id/ko__avatar"
         android:maxHeight="@dimen/ko__messenger_attachment_max_height"
         android:minHeight="@dimen/ko__messenger_attachment_min_height"
         android:minWidth="@dimen/ko__messenger_attachment_min_width">
 
         <ImageView
-            android:id="@+id/attachment_image"
+            android:id="@+id/ko__attachment_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/ko__messenger_attachment_margin_inside_chat_bubble"
@@ -31,7 +31,7 @@
             android:scaleType="centerCrop" />
 
         <ImageView
-            android:id="@+id/attachment_placeholder"
+            android:id="@+id/ko__attachment_placeholder"
             android:layout_width="24dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
@@ -39,19 +39,19 @@
 
     </FrameLayout>
 
-    <TextView
-        android:id="@+id/message"
+    <com.kayako.sdk.android.k5.common.view.RegularTextView
+        android:id="@+id/ko__message"
         style="@style/Ko__ChatBubbleStyleOther"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@id/image_container"
-        android:layout_alignLeft="@+id/image_container"
-        android:layout_alignRight="@+id/image_container"
-        android:layout_alignStart="@+id/image_container"
-        android:layout_below="@+id/image_container"
+        android:layout_alignEnd="@id/ko__image_container"
+        android:layout_alignLeft="@+id/ko__image_container"
+        android:layout_alignRight="@+id/ko__image_container"
+        android:layout_alignStart="@+id/ko__image_container"
+        android:layout_below="@+id/ko__image_container"
         android:layout_marginTop="@dimen/ko__messenger_gap_between_attachment_image_and_label"
-        android:layout_toLeftOf="@+id/avatar"
-        android:layout_toStartOf="@+id/avatar"
+        android:layout_toLeftOf="@+id/ko__avatar"
+        android:layout_toStartOf="@+id/ko__avatar"
         android:ellipsize="middle"
         android:gravity="start|center_vertical"
         android:maxLines="1"
@@ -59,7 +59,7 @@
 
 
     <com.kayako.sdk.android.k5.common.view.CircleImageView
-        android:id="@+id/avatar"
+        android:id="@+id/ko__avatar"
         android:layout_width="@dimen/ko__messenger_avatar_size"
         android:layout_height="@dimen/ko__messenger_avatar_size"
         android:layout_alignParentLeft="true"
@@ -67,22 +67,22 @@
         android:layout_alignParentTop="true"
         tools:src="#808080" />
 
-    <TextView
-        android:id="@+id/time"
+    <com.kayako.sdk.android.k5.common.view.RegularTextView
+        android:id="@+id/ko__time"
         style="@style/Ko__ChatBubbleDateStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/message"
-        android:layout_below="@+id/message"
+        android:layout_alignRight="@+id/ko__message"
+        android:layout_below="@+id/ko__message"
         android:layout_marginTop="@dimen/ko__messenger_gap_between_time_and_message"
         tools:text="12:30 PM" />
 
     <com.kayako.sdk.android.k5.common.view.CircleImageView
-        android:id="@+id/channel"
+        android:id="@+id/ko__channel"
         android:layout_width="@dimen/ko__messenger_channel_size"
         android:layout_height="@dimen/ko__messenger_channel_size"
-        android:layout_alignTop="@+id/avatar"
-        android:layout_alignLeft="@+id/avatar"
+        android:layout_alignTop="@+id/ko__avatar"
+        android:layout_alignLeft="@+id/ko__avatar"
         android:layout_marginTop="@dimen/ko__messenger_gap_between_channel_and_avatar_top_corner"
         android:layout_marginLeft="@dimen/ko__messenger_gap_between_channel_and_avatar_top_corner"
         app:civ_border_color="#fff"

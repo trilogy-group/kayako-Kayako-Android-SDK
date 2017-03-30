@@ -13,8 +13,8 @@ public class SimpleMessageContinuedSelfViewHolder extends RecyclerView.ViewHolde
 
     public SimpleMessageContinuedSelfViewHolder(View itemView) {
         super(itemView);
-        message = (TextView) itemView.findViewById(R.id.message);
-        time = (TextView) itemView.findViewById(R.id.time);
+        message = (TextView) itemView.findViewById(R.id.ko__message);
+        time = (TextView) itemView.findViewById(R.id.ko__time);
     }
 
 }

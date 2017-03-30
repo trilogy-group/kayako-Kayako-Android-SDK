@@ -16,10 +16,10 @@ public class AttachmentMessageContinuedSelfViewHolder extends RecyclerView.ViewH
 
     public AttachmentMessageContinuedSelfViewHolder(View itemView) {
         super(itemView);
-        message = (TextView) itemView.findViewById(R.id.message);
-        attachmentPlaceholder = (ImageView) itemView.findViewById(R.id.attachment_placeholder);
-        attachmentThumbnail = (ImageView) itemView.findViewById(R.id.attachment_image);
-        time = (TextView) itemView.findViewById(R.id.time);
+        message = (TextView) itemView.findViewById(R.id.ko__message);
+        attachmentPlaceholder = (ImageView) itemView.findViewById(R.id.ko__attachment_placeholder);
+        attachmentThumbnail = (ImageView) itemView.findViewById(R.id.ko__attachment_image);
+        time = (TextView) itemView.findViewById(R.id.ko__time);
     }
 
 }

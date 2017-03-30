@@ -12,13 +12,13 @@
 
     <View
         android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:layout_margin="8dp"
+        android:layout_height="1dp"
+        android:layout_marginRight="8dp"
         android:layout_weight="1"
         android:background="@color/ko__messenger_date_separator_line_color" />
-    <!-- TODO: Rename time and other non ko prefixed names -->
-    <TextView
-        android:id="@+id/time"
+
+    <com.kayako.sdk.android.k5.common.view.BoldTextView
+        android:id="@+id/ko__time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="start|center_vertical"
@@ -29,8 +29,8 @@
 
     <View
         android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:layout_margin="8dp"
+        android:layout_height="1dp"
+        android:layout_marginLeft="8dp"
         android:layout_weight="1"
         android:background="@color/ko__messenger_date_separator_line_color" />
 

@@ -70,13 +70,15 @@
 
     <!-- Messenger -->
     <color name="ko__messenger_speech_bubble_self_background_color">#F1703F</color>
+    <!-- TODO: Should be primary messenger color-->
+
     <color name="ko__messenger_speech_bubble_self_text_color">#fff</color>
 
     <color name="ko__messenger_speech_bubble_other_background_color">#EDEEEF</color>
-    <color name="ko__messenger_speech_bubble_other_text_color">#000</color>
+    <color name="ko__messenger_speech_bubble_other_text_color">#2D3138</color>
 
-    <color name="ko__messenger_date_separator_line_color">#3C808080</color>
-    <color name="ko__messenger_date_separator_text_color">#808080</color>
+    <color name="ko__messenger_date_separator_line_color">#ebeef0</color>
+    <color name="ko__messenger_date_separator_text_color">#2d3138</color>
 
     <color name="ko__messenger_unread_separator_line_color">#F1703F</color>
     <color name="ko__messenger_unread_separator_text_color">#F1703F</color>
