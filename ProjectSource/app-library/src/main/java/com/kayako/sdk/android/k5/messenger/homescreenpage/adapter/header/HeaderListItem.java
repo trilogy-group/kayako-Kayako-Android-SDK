@@ -9,7 +9,7 @@ public class HeaderListItem extends BaseListItem {
     public String subtitle;
 
     public HeaderListItem(String title, String subtitle) {
-        super(HomeScreenListType.WIDGET_HEADER);
+        super(HomeScreenListType.HEADER);
         this.title = title;
         this.subtitle = subtitle;
 

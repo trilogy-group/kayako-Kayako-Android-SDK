@@ -3,6 +3,7 @@ package com.kayako.sdk.android.k5.messenger.homescreenpage;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.IConversationStarterRepository;
 import com.kayako.sdk.android.k5.messenger.data.RepoFactory;
+import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.header.FooterListItem;
 import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.header.HeaderListItem;
 import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.helper.WidgetFactory;
 import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.widget.BaseWidgetListItem;
@@ -74,7 +75,6 @@ public class HomeScreenListPresenter implements HomeScreenListContract.Presenter
 
     private synchronized void setupList() {
         List<BaseListItem> baseListItems = new ArrayList<>();
-        baseListItems.add(new HeaderListItem("Howdy Taylor", "Welcome back to Kayako support. Start a new conversation using button below...")); // TODO: Default from strings.xml
 
         // TODO: Define order and whether a widget is enabled or disabled
         if (mRecentCasesWidgetListItem != null) {
@@ -86,6 +86,8 @@ public class HomeScreenListPresenter implements HomeScreenListContract.Presenter
             baseListItems.add(mPresenceWidgetListItem);
         }
 
+        baseListItems.add(0, new HeaderListItem("Howdy Taylor", "Welcome back to Kayako support. Start a new conversation using button below...")); // TODO: Default from strings.xml
+        baseListItems.add(new FooterListItem());
         mView.setupList(baseListItems);
     }
 }

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.header.FooterViewHolder;
 import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.header.HeaderListItem;
 import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.header.HeaderViewHolder;
 import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.widget.BaseWidgetListItem;
@@ -45,10 +46,15 @@ public class HomeScreenListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
-            case HomeScreenListType.WIDGET_HEADER:
+            case HomeScreenListType.HEADER:
                 View headerView = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.ko__list_home_screen_header, parent, false);
                 return new HeaderViewHolder(headerView);
+
+            case HomeScreenListType.FOOTER:
+                View footerView = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.ko__list_home_screen_footer, parent, false);
+                return new FooterViewHolder(footerView);
 
             case HomeScreenListType.WIDGET_PRESENCE:
                 View presenceWidgetView = LayoutInflater.from(parent.getContext())
@@ -67,7 +73,7 @@ public class HomeScreenListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
         switch (holder.getItemViewType()) {
-            case HomeScreenListType.WIDGET_HEADER:
+            case HomeScreenListType.HEADER:
                 HeaderListItem headerListItem = (HeaderListItem) mItems.get(position);
                 HeaderViewHolder headerViewHolder = (HeaderViewHolder) holder;
                 headerViewHolder.title.setText(headerListItem.getTitle());
@@ -75,6 +81,10 @@ public class HomeScreenListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
                 MessengerTemplateHelper.applyTextColor(headerViewHolder.title);
                 MessengerTemplateHelper.applyTextColor(headerViewHolder.subtitle);
+                break;
+
+            case HomeScreenListType.FOOTER:
+                // No data to bind - used as an empty space for the 'New Conversation' button
                 break;
 
             case HomeScreenListType.WIDGET_PRESENCE:

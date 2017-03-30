@@ -5,14 +5,10 @@
     android:layout_height="wrap_content"
     android:background="@null"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/ko__messenger_home_screen_list_item_padding_vertical"
+    android:paddingBottom="@dimen/ko__messenger_home_screen_header_padding_vertical"
     android:paddingLeft="@dimen/ko__messenger_home_screen_header_padding_horizontal"
     android:paddingRight="@dimen/ko__messenger_home_screen_header_padding_horizontal"
-    android:paddingTop="@dimen/ko__messenger_home_screen_list_item_padding_vertical">
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/ko__messenger_home_screen_header_top_padding" />
+    android:paddingTop="@dimen/ko__messenger_home_screen_header_padding_vertical">
 
     <com.kayako.sdk.android.k5.common.view.LightTextView
         android:id="@+id/ko__home_screen_header_title"

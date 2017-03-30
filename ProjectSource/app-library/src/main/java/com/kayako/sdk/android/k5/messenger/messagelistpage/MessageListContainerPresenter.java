@@ -319,7 +319,6 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                 mView.showErrorViewInMessageListingView();
             }
         }, mConversationId, 0, 10);
-
     }
 
     private List<DataItem> convertMessagesToDataItems(List<Message> messageList) {
