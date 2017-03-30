@@ -20,8 +20,10 @@ public class MessengerActivityTracker {
                     return;
                 }
 
-                openMessengerActivities.add(new WeakReference<>(activity));
-                refreshList();
+                synchronized (openMessengerActivities) {
+                    openMessengerActivities.add(new WeakReference<>(activity));
+                    refreshList();
+                }
             }
         });
     }
@@ -30,11 +32,13 @@ public class MessengerActivityTracker {
         addToMessageQueue(new Runnable() {
             @Override
             public void run() {
-                for (WeakReference weakReference : openMessengerActivities) {
-                    if (weakReference == null  // Null list item
-                            || weakReference.get() == null  // Null activity
-                            || ((AppCompatActivity) weakReference.get()).isFinishing()) { // If the activity is finishing
-                        openMessengerActivities.remove(weakReference);
+                synchronized (openMessengerActivities) {
+                    for (WeakReference weakReference : openMessengerActivities) {
+                        if (weakReference == null  // Null list item
+                                || weakReference.get() == null  // Null activity
+                                || ((AppCompatActivity) weakReference.get()).isFinishing()) { // If the activity is finishing
+                            openMessengerActivities.remove(weakReference);
+                        }
                     }
                 }
             }
@@ -45,15 +49,17 @@ public class MessengerActivityTracker {
         addToMessageQueue(new Runnable() {
             @Override
             public void run() {
-                for (WeakReference weakReference : openMessengerActivities) {
-                    if (weakReference != null && weakReference.get() != null) {
-                        AppCompatActivity appCompatActivity = (AppCompatActivity) weakReference.get();
-                        if (!appCompatActivity.isFinishing()) {
-                            appCompatActivity.finish();
+                synchronized (openMessengerActivities) {
+                    for (WeakReference weakReference : openMessengerActivities) {
+                        if (weakReference != null && weakReference.get() != null) {
+                            AppCompatActivity appCompatActivity = (AppCompatActivity) weakReference.get();
+                            if (!appCompatActivity.isFinishing()) {
+                                appCompatActivity.finish();
+                            }
                         }
                     }
+                    openMessengerActivities.clear();
                 }
-                openMessengerActivities.clear();
             }
         });
     }
