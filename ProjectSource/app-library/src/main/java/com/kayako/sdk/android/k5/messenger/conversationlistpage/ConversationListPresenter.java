@@ -137,7 +137,7 @@ public class ConversationListPresenter implements ConversationListContract.Prese
                     conversation.getCreator().getAvatarUrl(), // TODO: Which photo to show? The agent?
                     conversation.getCreator().getFullName(),// TODO: Whose name? The agent?
                     conversation.getUpdatedAt(),
-                    conversation.getSubject(), // TODO: Shouldn't we show the preview message
+                    conversation.getLastMessagePreview(),
                     conversation));
 
         }

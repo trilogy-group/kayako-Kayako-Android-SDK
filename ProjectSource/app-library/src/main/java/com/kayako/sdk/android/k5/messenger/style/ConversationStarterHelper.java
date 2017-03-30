@@ -202,10 +202,10 @@ public class ConversationStarterHelper {
 
         return new RecentConversation(
                 conversation.getId(),
-                conversation.getLastReplier().getAvatarUrl(), // TODO: Confirm if the last replier is shown instead of the Agent or Requester?
+                conversation.getLastReplier().getAvatarUrl(),
                 conversation.getLastReplier().getFullName(),
                 conversation.getUpdatedAt(),
-                conversation.getSubject()
+                conversation.getLastMessagePreview()
         );
     }
 }
