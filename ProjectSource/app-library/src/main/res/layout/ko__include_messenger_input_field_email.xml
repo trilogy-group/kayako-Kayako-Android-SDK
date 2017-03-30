@@ -11,8 +11,8 @@
         android:background="@drawable/ko__speech_bubble_input_field_background_blue"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/message_hint"
+        <com.kayako.sdk.android.k5.common.view.RegularTextView
+            android:id="@+id/ko__email_input_field_message_hint"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="16dp"
@@ -21,8 +21,8 @@
             android:textColor="@color/ko__messenger_input_field_blue_hint_text_color"
             android:textSize="12sp" />
 
-        <EditText
-            android:id="@+id/input_email_edittext"
+        <com.kayako.sdk.android.k5.common.view.RegularEditText
+            android:id="@+id/ko__email_input_field_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -32,7 +32,7 @@
             android:ellipsize="end"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:hint="monco@hunter.com"
+            android:hint="@string/ko__label_email_input_field_hint"
             android:inputType="textEmailAddress"
             android:maxLines="1"
             android:paddingBottom="16dp"
@@ -46,8 +46,8 @@
         android:layout_height="2dp"
         android:background="@color/ko__messenger_speech_bubble_other_background_color" />
 
-    <Button
-        android:id="@+id/submit_button"
+    <com.kayako.sdk.android.k5.common.view.BoldButton
+        android:id="@+id/ko__email_input_field_submit_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@null"

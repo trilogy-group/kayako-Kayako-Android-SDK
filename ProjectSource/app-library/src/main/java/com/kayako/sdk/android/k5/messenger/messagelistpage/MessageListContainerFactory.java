@@ -1,6 +1,5 @@
 package com.kayako.sdk.android.k5.messenger.messagelistpage;
 
-import com.kayako.sdk.android.k5.core.HelpCenterPref;
 import com.kayako.sdk.android.k5.core.MessengerPref;
 import com.kayako.sdk.auth.FingerprintAuth;
 
@@ -26,6 +25,6 @@ public class MessageListContainerFactory {
     }
 
     public static MessageListContainerContract.Data getData() {
-        return new MessageListContainerRepository(HelpCenterPref.getInstance().getHelpCenterUrl(), new FingerprintAuth(MessengerPref.getInstance().getFingerprintId()));
+        return new MessageListContainerRepository(MessengerPref.getInstance().getUrl(), new FingerprintAuth(MessengerPref.getInstance().getFingerprintId()));
     }
 }

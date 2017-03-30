@@ -15,7 +15,7 @@
 
     <style name="Ko__MessengerTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- TODO: Change primary colors for messenger -->
-        <item name="colorPrimary">@color/ko__colorAccent</item>
+        <item name="colorPrimary">@color/ko__colorPrimary</item>
         <item name="colorPrimaryDark">@color/ko__colorPrimaryDark</item>
         <item name="colorAccent">@color/ko__colorAccent</item>
 

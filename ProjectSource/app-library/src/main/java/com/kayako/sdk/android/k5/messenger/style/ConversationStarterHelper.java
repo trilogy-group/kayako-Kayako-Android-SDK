@@ -7,6 +7,7 @@ import android.widget.TextView;
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.utils.ImageUtils;
 import com.kayako.sdk.android.k5.core.Kayako;
+import com.kayako.sdk.android.k5.core.MessengerPref;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.ActiveUser;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.LastActiveAgentsData;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.RecentConversation;
@@ -25,7 +26,7 @@ public class ConversationStarterHelper {
     }
 
     public static LastActiveAgentsData convertToLastActiveAgentsData(ConversationStarter conversationStarter) {
-        String brand = "Kayako"; // TODO: brand name?
+        String brand = MessengerPref.getInstance().getBrandName();
         long averageReplyTimeInMilliseconds;
         ActiveUser user1 = null;
         ActiveUser user2 = null;

@@ -12,7 +12,7 @@ public class ConversationListFactory {
     public static ConversationListContract.Presenter getPresenter(ConversationListContract.View view) {
         // TODO: ArticleListFactory takes into consideration that multiple Helpcenters are possible - should messenger too?
         // Reset mData every time - especially important if helpCenterUrl changes, etc
-        mData = getDataSource(HelpCenterPref.getInstance().getHelpCenterUrl(), MessengerPref.getInstance().getFingerprintId());
+        mData = getDataSource(MessengerPref.getInstance().getUrl(), MessengerPref.getInstance().getFingerprintId());
 
         if (mPresenter == null) {
             return mPresenter = new ConversationListPresenter(view, mData);

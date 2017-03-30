@@ -61,4 +61,8 @@ public class HelpCenterPref {
             return new Locale(selectedLanguage, selectedRegion);
         }
     }
+
+    public void clearAll() {
+        mPrefs.edit().clear().apply();
+    }
 }

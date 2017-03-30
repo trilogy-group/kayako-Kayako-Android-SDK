@@ -231,6 +231,10 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
 
     @Override
     public synchronized void expandToolbarView() {
+        if (!isViewReady()) {
+            return;
+        }
+
         if (!mIsExpanded) {
             mIsExpanded = true;
             setupToolbar();
@@ -239,6 +243,10 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
 
     @Override
     public synchronized void collapseToolbarView() {
+        if (!isViewReady()) {
+            return;
+        }
+
         if (mIsExpanded) {
             mIsExpanded = false;
             setupToolbar();

@@ -56,12 +56,14 @@
                 android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:maxLines="1"
+                android:textColor="@color/ko__default_dark_text_color"
                 tools:text="john@doe.com" />
 
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:background="#4EAC5E" />
+                android:scaleType="centerInside"
+                android:src="@drawable/ko__ic_tick" />
 
         </LinearLayout>
 

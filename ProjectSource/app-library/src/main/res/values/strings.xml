@@ -37,4 +37,5 @@
     <string name="ko__messenger_home_screen_widget_presence_title">We are here to help</string>
     <string name="ko__messenger_home_screen_widget_recent_cases_title">Recent conversations</string>
     <string name="ko__messenger_home_screen_widget_recent_cases_action_button_label">View all →</string>
+    <string name="ko__label_email_input_field_hint">john@doe.com</string>
 </resources>

@@ -17,7 +17,7 @@ public class ConversationStarterRepositoryManyListeners implements IConversation
     }
 
     @Override
-    public synchronized void getConversationStarter(OnLoadConversationStarterListener listener) {
+    public synchronized void getConversationStarter(final OnLoadConversationStarterListener listener) {
         if (listener != null) {
             listeners.add(new WeakReference<>(listener));
         }
@@ -25,7 +25,7 @@ public class ConversationStarterRepositoryManyListeners implements IConversation
     }
 
     @Override
-    public synchronized void onLoadConversationMetrics(ConversationStarter conversationStarter) {
+    public synchronized void onLoadConversationMetrics(final ConversationStarter conversationStarter) {
         List<WeakReference<OnLoadConversationStarterListener>> listenersToRemove = new ArrayList<>();
         for (WeakReference<OnLoadConversationStarterListener> weakReference : listeners) {
             if (weakReference.get() == null) {
@@ -39,7 +39,7 @@ public class ConversationStarterRepositoryManyListeners implements IConversation
     }
 
     @Override
-    public synchronized void onFailure(KayakoException exception) {
+    public synchronized void onFailure(final KayakoException exception) {
         List<WeakReference<OnLoadConversationStarterListener>> listenersToRemove = new ArrayList<>();
         for (WeakReference<OnLoadConversationStarterListener> weakReference : listeners) {
             if (weakReference.get() == null) {

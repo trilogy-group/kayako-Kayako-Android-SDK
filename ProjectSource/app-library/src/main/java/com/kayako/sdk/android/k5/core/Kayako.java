@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.webkit.URLUtil;
 
-import com.kayako.sdk.android.k5.activities.KayakoConversationListActivity;
 import com.kayako.sdk.android.k5.activities.KayakoHelpCenterActivity;
 import com.kayako.sdk.android.k5.activities.KayakoMessengerActivity;
 
@@ -29,11 +28,14 @@ public class Kayako {
         HelpCenterPref.createInstance(applicationContext);
         MessengerPref.createInstance(applicationContext);
         MessengerStylePref.createInstance(applicationContext);
+        MessengerUserPref.createInstance(applicationContext);
     }
 
     public static void clearCache() {
+        HelpCenterPref.getInstance().clearAll();
         MessengerPref.getInstance().clearAll();
         MessengerStylePref.getInstance().clearAll();
+        MessengerUserPref.getInstance().clearAll();
     }
 
     public static Kayako getInstance() {
@@ -54,8 +56,13 @@ public class Kayako {
         context.startActivity(intent);
     }
 
+    public MessengerBuilder getMessenger() {
+        return new MessengerBuilder();
+    }
+
     // TODO: Create a Messenger Builder - Builder pattern here
-    public void openMessenger(Context context, String helpCenterUrl, Locale defaultLocale) {
+    // default visibility scope
+    void openMessenger(Context context, String helpCenterUrl, Locale defaultLocale) {
         setUpCommonCredentials(helpCenterUrl, defaultLocale);
         Intent intent = KayakoMessengerActivity.getIntent(context);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

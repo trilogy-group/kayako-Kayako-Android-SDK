@@ -1,5 +1,6 @@
 package com.kayako.sdk.android.k5.messenger.toolbarview;
 
+import com.kayako.sdk.android.k5.core.MessengerPref;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.IConversationStarterRepository;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.LastActiveAgentsData;
 import com.kayako.sdk.android.k5.messenger.style.ConversationStarterHelper;
@@ -20,7 +21,7 @@ public class MessengerToolbarPresenter implements MessengerToolbarContract.Prese
     @Override
     public void initPage() {
         // Set in case there's a network error - otherwise toolbar covers entire screen
-        String brand = "Kayako"; // TODO: brand name?
+        String brand = MessengerPref.getInstance().getBrandName();
         mView.configureForLastActiveUsersView(new LastActiveAgentsData(
                 brand,
                 -1L, // Default average response time // TODO: Change it to a vague answer or remove line?

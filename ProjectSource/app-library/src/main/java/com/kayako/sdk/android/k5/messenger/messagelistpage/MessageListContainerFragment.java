@@ -81,15 +81,16 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        // Call on Activity Created
+        // Call before initPage()
+        mToolbarView.configureDefaultView();
+
         Bundle bundle = getActivity().getIntent().getExtras();
         if (bundle != null && bundle.containsKey(KayakoSelectConversationActivity.ARG_CONVERSATION_ID)) {
             mPresenter.initPage(false, bundle.getLong(KayakoSelectConversationActivity.ARG_CONVERSATION_ID));
         } else {
             mPresenter.initPage(true, null);
         }
-
-        // Call on Activity Created
-        mToolbarView.configureDefaultView();
     }
 
     private boolean hasPageLoaded() {

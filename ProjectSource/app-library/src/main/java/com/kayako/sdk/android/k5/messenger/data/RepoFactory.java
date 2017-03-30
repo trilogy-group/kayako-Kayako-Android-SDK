@@ -5,6 +5,9 @@ import com.kayako.sdk.android.k5.messenger.data.conversationstarter.IConversatio
 
 public class RepoFactory {
 
+    // TODO: One problem with having a universal ConversationStarter data - when the data is cleared - old data persists in-memory
+    // TODO: Need to clear all in-memory cache too!
+
     private RepoFactory() {
     }
 

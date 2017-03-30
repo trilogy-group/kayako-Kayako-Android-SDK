@@ -64,6 +64,6 @@ public class MessengerStylePref extends JsonStore {
     }
 
     public String getPrimaryColor() {
-        return retrieveItem(KEY_BACKGROUND);
+        return retrieveItem(KEY_PRIMARY_COLOR);
     }
 }

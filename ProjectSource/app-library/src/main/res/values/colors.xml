@@ -69,6 +69,7 @@
     </color>
 
     <!-- Messenger -->
+    <color name="ko__default_dark_text_color">#2D3138</color>
     <color name="ko__messenger_speech_bubble_self_background_color">#F1703F</color>
     <!-- TODO: Should be primary messenger color-->
 

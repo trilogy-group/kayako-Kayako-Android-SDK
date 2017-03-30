@@ -9,7 +9,7 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputEmailLis
 import com.kayako.sdk.android.k5.common.fragments.ListPageState;
 import com.kayako.sdk.android.k5.common.fragments.OnScrollListListener;
 import com.kayako.sdk.android.k5.core.MessengerPref;
-import com.kayako.sdk.android.k5.messenger.data.ResourceList;
+import com.kayako.sdk.android.k5.core.MessengerUserPref;
 import com.kayako.sdk.messenger.conversation.Conversation;
 import com.kayako.sdk.messenger.conversation.PostConversationBodyParams;
 import com.kayako.sdk.messenger.message.Message;
@@ -33,7 +33,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private List<BaseListItem> mOnboardingItems = new ArrayList<>();
     private ListPageState mListPageState;
 
-    private ResourceList<Message> mMessageList = new ResourceList<>();
+//    private ResourceList<Message> mMessageList = new ResourceList<>();
 
     // TODO: Group onboarding messages logic in a private class? - confusing otherwise as more and more methods are used
 
@@ -90,7 +90,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             mIsEmailAskedInThisConversation = false;
         }
 
-        mCurrentUserId = MessengerPref.getInstance().getUserId();
+        mCurrentUserId = MessengerUserPref.getInstance().getUserId();
         // TODO: Ensure that the above two values are assigned early on
 
         reloadPage(true);
@@ -183,6 +183,9 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         }
 
         if (mIsNewConversation) {
+            // Show expanded toolbar when it's a new conversation
+            mView.expandToolbar();
+
             // Load view
             reloadOnboardingMessages();
         } else {
@@ -249,8 +252,8 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         }
 
         MessengerPref.getInstance().setEmailId(email);
-        MessengerPref.getInstance().setUserId(currentUserId);
-        MessengerPref.getInstance().setFullName(fullName);
+        MessengerUserPref.getInstance().setUserId(currentUserId);
+        MessengerUserPref.getInstance().setFullName(fullName);
     }
 
     private void reloadOnboardingMessages() {
@@ -287,7 +290,8 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private List<BaseListItem> reloadOnboardingMessagesWithPrefilledEmail() {
         List<BaseListItem> baseListItems = new ArrayList<>();
         baseListItems.add(new InputEmailListItem(mEmail));
-        baseListItems.add(new BotMessageListItem("What would you like to talk about?", 0, null)); // TODO: Convert to resId instead of string msg
+        // TODO: Varun wants email to be asked after the first message is sent?
+        // baseListItems.add(new BotMessageListItem("What would you like to talk about?", 0, null));
         return baseListItems;
     }
 
@@ -305,7 +309,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                 if (dataItems.size() == 0) {
                     mView.showEmptyViewInMessageListingView();
                 } else {
-                    mMessageList.addOrReplaceIfExisting(messageList);
+                    // TODO: mMessageList.addOrReplaceIfExisting(messageList);
 
                     Collections.reverse(dataItems);
                     List<BaseListItem> baseListItems = DataItemHelper.getInstance().convertDataItemToListItems(dataItems);
@@ -328,7 +332,17 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
     private List<DataItem> convertMessagesToDataItems(List<Message> messageList) {
         List<DataItem> dataItems = new ArrayList<>();
+
         for (Message message : messageList) {
+
+            boolean isRead = false;
+            if (mConversation != null
+                    && mConversation.getReadMarker() != null
+                    && mConversation.getReadMarker().getLastReadPostId() > message.getId()) {
+                isRead = true;
+            } else {
+                isRead = false;
+            }
 
             // TODO: Leverage client_ids for optimistic sending
             dataItems.add(
@@ -344,7 +358,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                             message.getContentText(),
                             message.getCreatedAt(),
                             Collections.EMPTY_LIST, // TODO: Attachments
-                            false
+                            isRead
                     )
             );
         }
