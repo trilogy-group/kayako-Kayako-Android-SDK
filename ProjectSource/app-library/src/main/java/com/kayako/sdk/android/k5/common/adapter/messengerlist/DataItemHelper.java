@@ -183,9 +183,9 @@ public class DataItemHelper {
     protected boolean getTimeVisibility(DataItem currentDataItem, DataItem nextDataItem) {
         assert currentDataItem != null;
 
-        // Don't show Time if is last element of list
+        // Show Time if is last element of list
         if (nextDataItem == null) {
-            return false;
+            return true;
         }
 
         // Show time if the next message is sent by someone other than who sent the current message
