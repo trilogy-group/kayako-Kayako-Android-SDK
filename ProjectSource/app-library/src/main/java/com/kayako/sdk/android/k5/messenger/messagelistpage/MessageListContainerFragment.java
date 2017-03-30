@@ -175,7 +175,6 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
         }
 
         mToolbarView.collapseToolbarView();
-
     }
 
     @Override

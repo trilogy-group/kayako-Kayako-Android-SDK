@@ -71,7 +71,7 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
     }
 
     private void setupToolbar() {
-        if (mToolbarType == null) {
+        if (mToolbarType == null) { // Default toolbar type
             throw new IllegalStateException("The necessary fields are not initialized!");
         }
 
@@ -231,26 +231,33 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
 
     @Override
     public synchronized void expandToolbarView() {
-        if (!isViewReady()) {
+        mIsExpanded = true;
+
+        if (!isViewReady() || mToolbarType == null) {
             return;
         }
 
-        if (!mIsExpanded) {
-            mIsExpanded = true;
-            setupToolbar();
+        if (mIsExpanded) { // Prevent expanding an already expanded toolbar
+            return;
         }
+
+        setupToolbar();
+
     }
 
     @Override
     public synchronized void collapseToolbarView() {
-        if (!isViewReady()) {
+        mIsExpanded = false;
+
+        if (!isViewReady() || mToolbarType == null) {
             return;
         }
 
-        if (mIsExpanded) {
-            mIsExpanded = false;
-            setupToolbar();
+        if (!mIsExpanded) { // Prevent collapsing an already collapsed toolbar
+            return;
         }
+
+        setupToolbar();
     }
 
 }
