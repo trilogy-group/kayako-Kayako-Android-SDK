@@ -17,6 +17,8 @@ public class ConversationListContainerContract {
         void reloadConversations();
 
         void configureDefaultToolbar();
+
+        void collapseToolbar();
     }
 
     interface Presenter extends BasePresenter<View> {

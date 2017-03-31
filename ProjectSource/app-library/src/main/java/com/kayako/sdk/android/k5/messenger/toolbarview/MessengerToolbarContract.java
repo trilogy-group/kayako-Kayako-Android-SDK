@@ -25,6 +25,10 @@ public class MessengerToolbarContract {
         void expandToolbarView();
 
         void collapseToolbarView();
+
+        boolean isToolbarCollapsed();
+
+        boolean isToolbarExpanded();
     }
 
     public interface ChildToolbarConfigureView {

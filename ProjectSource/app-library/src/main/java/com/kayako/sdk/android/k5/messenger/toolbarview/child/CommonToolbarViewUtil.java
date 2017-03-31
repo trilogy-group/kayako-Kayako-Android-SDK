@@ -32,15 +32,11 @@ public class CommonToolbarViewUtil {
     }
 
     public static void setTitle(View mRoot, String brandName) {
-        String title;
-
         if (brandName == null) { // Get default title
-            title = Kayako.getApplicationContext().getResources().getString(R.string.ko__messenger_toolbar_default_title);
-        } else {
-            title = brandName;
+            throw new IllegalArgumentException("Brand Name can not be null!");
         }
 
-        ((TextView) mRoot.findViewById(R.id.ko__messenger_toolbar_title)).setText(title);
+        ((TextView) mRoot.findViewById(R.id.ko__messenger_toolbar_title)).setText(brandName);
     }
 
     public static void setSubtitleForAverageResponseTime(View mRoot, Long averageReplyTimeInMilliseconds) {

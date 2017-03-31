@@ -4,7 +4,6 @@ import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.DataItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.DataItemHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.UserDecoration;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.BotMessageListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputEmailListItem;
 import com.kayako.sdk.android.k5.common.fragments.ListPageState;
 import com.kayako.sdk.android.k5.common.fragments.OnScrollListListener;
@@ -18,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class MessageListContainerPresenter implements MessageListContainerContract.Presenter {
+public class MessageListContainerPresenter implements MessageListContainerContract.Presenter, MessageListContainerContract.OnLoadConversationListener {
 
     private MessageListContainerContract.View mView;
     private MessageListContainerContract.Data mData;
@@ -36,6 +35,8 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 //    private ResourceList<Message> mMessageList = new ResourceList<>();
 
     // TODO: Group onboarding messages logic in a private class? - confusing otherwise as more and more methods are used
+
+    // TODO: Mark conversation as READ - add API Endpoint to Java SDK too.
 
     public MessageListContainerPresenter(MessageListContainerContract.View view, MessageListContainerContract.Data data) {
         mView = view;
@@ -115,19 +116,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             String contents = message;
 
             // This method should only be called (during onboarding) when a new conversation needs to be made
-            mData.startNewConversation(new PostConversationBodyParams(name, email, subject, contents), new MessageListContainerContract.OnLoadConversationListener() {
-                @Override
-                public void onSuccess(Conversation conversation) {
-                    mConversation = conversation;
-                    setCurrentConversation(conversation);
-                    reloadMessagesOfConversation();
-                }
-
-                @Override
-                public void onFailure(String message) {
-                    // TODO: Show error mesasage?
-                }
-            });
+            mData.startNewConversation(new PostConversationBodyParams(name, email, subject, contents), this);
             reloadOnboardingMessages();
 
         } else {
@@ -201,18 +190,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     }
 
     private void reloadConversation(final long conversationId) {
-        mData.getConversation(conversationId, new MessageListContainerContract.OnLoadConversationListener() {
-            @Override
-            public void onSuccess(Conversation conversation) {
-                setCurrentConversation(conversation);
-                // TODO: Check for status - completed/closed to hide replybox
-            }
-
-            @Override
-            public void onFailure(String message) {
-                // TODO: show message?
-            }
-        });
+        mData.getConversation(conversationId, this);
     }
 
     private void setCurrentConversation(Conversation conversation) {
@@ -370,4 +348,14 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         return dataItems;
     }
 
+    @Override
+    public void onSuccess(Conversation conversation) {
+        setCurrentConversation(conversation);
+        reloadMessagesOfConversation();
+    }
+
+    @Override
+    public void onFailure(String message) {
+        // TODO: Show error mesasage?
+    }
 }

@@ -231,33 +231,31 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
 
     @Override
     public synchronized void expandToolbarView() {
-        mIsExpanded = true;
-
         if (!isViewReady() || mToolbarType == null) {
             return;
+        } else if (isToolbarCollapsed()) { // Prevent multiple UI changes if already expanded
+            mIsExpanded = true;
+            setupToolbar();
         }
-
-        if (mIsExpanded) { // Prevent expanding an already expanded toolbar
-            return;
-        }
-
-        setupToolbar();
-
     }
 
     @Override
     public synchronized void collapseToolbarView() {
-        mIsExpanded = false;
-
         if (!isViewReady() || mToolbarType == null) {
             return;
+        } else if (isToolbarExpanded()) { // Prevent multiple UI changes if already collapsed
+            mIsExpanded = false;
+            setupToolbar();
         }
-
-        if (!mIsExpanded) { // Prevent collapsing an already collapsed toolbar
-            return;
-        }
-
-        setupToolbar();
     }
 
+    @Override
+    public boolean isToolbarCollapsed() {
+        return mLastAddedChildFragment != null && mLastAddedChildFragment instanceof MessengerToolbarCollapsedFragment;
+    }
+
+    @Override
+    public boolean isToolbarExpanded() {
+        return mLastAddedChildFragment != null && mLastAddedChildFragment instanceof MessengerToolbarExpandedFragment;
+    }
 }

@@ -10,6 +10,8 @@ import com.kayako.sdk.utils.LogUtils;
 
 public class MessengerToolbarPresenter implements MessengerToolbarContract.Presenter, IConversationStarterRepository.OnLoadConversationStarterListener {
 
+    // TODO: Handle situation where toolbar is configured to stay expanded - BUT there is not data to show in expanded view. Collapse then?
+
     private MessengerToolbarContract.ConfigureView mView;
     private IConversationStarterRepository mData;
 

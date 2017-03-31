@@ -124,7 +124,20 @@ public class ConversationListContainerFragment extends Fragment implements Conve
 
     @Override
     public void configureDefaultToolbar() {
+        if (!hasPageLoaded()) {
+            return;
+        }
+
         // TODO: Configure for this view?
         mToolbarView.configureDefaultView(); // call onActivityCreated()
+    }
+
+    @Override
+    public void collapseToolbar() {
+        if (!hasPageLoaded()) {
+            return;
+        }
+
+        mToolbarView.collapseToolbarView();
     }
 }
