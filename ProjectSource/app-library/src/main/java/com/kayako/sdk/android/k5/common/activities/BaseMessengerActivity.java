@@ -30,7 +30,7 @@ public class BaseMessengerActivity extends AppCompatActivity {
     }
 
     private void setupFloatingViewFunctionality() {
-        findViewById(R.id.ko__messenger_background_layer).setOnDragListener(new View.OnDragListener() {
+        findViewById(R.id.ko__messenger_custom_foreground).setOnDragListener(new View.OnDragListener() {
             @Override
             public boolean onDrag(View v, DragEvent event) {
                 finishAllActivitiesOfTask();
@@ -38,15 +38,13 @@ public class BaseMessengerActivity extends AppCompatActivity {
             }
         });
 
-// TODO: Causing problems with the toolbar
-//        findViewById(R.id.ko__messenger_background_layer).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                finishAllActivitiesOfTask();
-//            }
-//        });
-
-
+        // TODO: Causing problems with the toolbar
+        findViewById(R.id.ko__space_to_close_messenger).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finishAllActivitiesOfTask();
+            }
+        });
     }
 
     private void finishAllActivitiesOfTask() {

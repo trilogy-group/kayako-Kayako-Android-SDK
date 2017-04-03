@@ -16,12 +16,14 @@ public class MessengerActivityTracker {
         addToMessageQueue(new Runnable() {
             @Override
             public void run() {
-                if (activity == null) {
-                    return;
-                }
+                synchronized (openMessengerActivities) {
+                    if (activity == null) {
+                        return;
+                    }
 
-                openMessengerActivities.add(new WeakReference<>(activity));
-                refreshList();
+                    openMessengerActivities.add(new WeakReference<>(activity));
+                    refreshList();
+                }
             }
         });
     }
@@ -30,30 +32,34 @@ public class MessengerActivityTracker {
         addToMessageQueue(new Runnable() {
             @Override
             public void run() {
-                for (WeakReference weakReference : openMessengerActivities) {
-                    if (weakReference == null  // Null list item
-                            || weakReference.get() == null  // Null activity
-                            || ((AppCompatActivity) weakReference.get()).isFinishing()) { // If the activity is finishing
-                        openMessengerActivities.remove(weakReference);
+                synchronized (openMessengerActivities) {
+                    for (WeakReference weakReference : openMessengerActivities) {
+                        if (weakReference == null  // Null list item
+                                || weakReference.get() == null  // Null activity
+                                || ((AppCompatActivity) weakReference.get()).isFinishing()) { // If the activity is finishing
+                            openMessengerActivities.remove(weakReference);
+                        }
                     }
                 }
             }
         });
     }
 
-    public static synchronized void finishAllActivities() {
+    public static void finishAllActivities() {
         addToMessageQueue(new Runnable() {
             @Override
             public void run() {
-                for (WeakReference weakReference : openMessengerActivities) {
-                    if (weakReference != null && weakReference.get() != null) {
-                        AppCompatActivity appCompatActivity = (AppCompatActivity) weakReference.get();
-                        if (!appCompatActivity.isFinishing()) {
-                            appCompatActivity.finish();
+                synchronized (openMessengerActivities) {
+                    for (WeakReference weakReference : openMessengerActivities) {
+                        if (weakReference != null && weakReference.get() != null) {
+                            AppCompatActivity appCompatActivity = (AppCompatActivity) weakReference.get();
+                            if (!appCompatActivity.isFinishing()) {
+                                appCompatActivity.finish();
+                            }
                         }
                     }
+                    openMessengerActivities.clear();
                 }
-                openMessengerActivities.clear();
             }
         });
     }
@@ -67,9 +73,7 @@ public class MessengerActivityTracker {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                synchronized (openMessengerActivities) {
-                    runnable.run();
-                }
+                runnable.run();
             }
         });
     }
