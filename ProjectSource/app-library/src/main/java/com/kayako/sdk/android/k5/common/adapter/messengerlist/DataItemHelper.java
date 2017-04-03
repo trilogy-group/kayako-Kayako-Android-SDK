@@ -1,5 +1,7 @@
 package com.kayako.sdk.android.k5.common.adapter.messengerlist;
 
+import android.support.annotation.NonNull;
+
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageContinuedOtherListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageContinuedSelfListItem;
@@ -75,7 +77,7 @@ public class DataItemHelper {
             }
 
             // Add Unread Separator wherever applicable
-            if (previousDataItem != null) {
+            if (previousDataItem != null) { // Prevent it from showing before first message
                 addUnreadSeparator(viewItems, currentDataItem, previousDataItem);
             }
 
@@ -121,17 +123,33 @@ public class DataItemHelper {
 
     /**
      * Check if the current data item was posted on a day after the previous data item.
-     * If true, add the DATE SEPARATOR.
+     */
+    protected boolean getDateSeparatorVisibility(@NonNull DataItem currentDataItem, DataItem previousDataItem) {
+        // Show date separator if previous item = null
+        if (previousDataItem == null) {
+            return true;
+        } else {
+            // Else, show it only if the day of year is different between the previous item and the current item
+            Calendar currentDate = Calendar.getInstance();
+            currentDate.setTimeInMillis(currentDataItem.getTimeInMilliseconds());
+
+            Calendar previousDate = Calendar.getInstance();
+            previousDate.setTimeInMillis(previousDataItem.getTimeInMilliseconds());
+
+            if (currentDate.get(Calendar.DAY_OF_YEAR) > previousDate.get(Calendar.DAY_OF_YEAR)
+                    || currentDate.get(Calendar.YEAR) > previousDate.get(Calendar.YEAR)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * If date visibility returns true, add the DATE SEPARATOR.
      */
     protected void addDateSeparators(List<BaseListItem> viewItems, DataItem currentDataItem, DataItem previousDataItem) {
-        Calendar currentDate = Calendar.getInstance();
-        currentDate.setTimeInMillis(currentDataItem.getTimeInMilliseconds());
-
-        Calendar previousDate = Calendar.getInstance();
-        previousDate.setTimeInMillis(previousDataItem.getTimeInMilliseconds());
-
-        if (currentDate.get(Calendar.DAY_OF_YEAR) > previousDate.get(Calendar.DAY_OF_YEAR)
-                || currentDate.get(Calendar.YEAR) > previousDate.get(Calendar.YEAR)) {
+        if (getDateSeparatorVisibility(currentDataItem, previousDataItem)) {
             viewItems.add(new DateSeparatorListItem(currentDataItem.getTimeInMilliseconds()));
         }
     }

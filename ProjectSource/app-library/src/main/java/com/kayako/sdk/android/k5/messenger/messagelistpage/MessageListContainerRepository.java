@@ -5,6 +5,7 @@ import android.os.Handler;
 import com.kayako.sdk.android.k5.kre.base.KreSubscription;
 import com.kayako.sdk.android.k5.kre.base.kase.KreCaseSubscription;
 import com.kayako.sdk.auth.FingerprintAuth;
+import com.kayako.sdk.base.callback.EmptyCallback;
 import com.kayako.sdk.base.callback.ItemCallback;
 import com.kayako.sdk.base.callback.ListCallback;
 import com.kayako.sdk.error.KayakoException;
@@ -16,6 +17,7 @@ import com.kayako.sdk.messenger.conversation.PostConversationBodyParams;
 import com.kayako.sdk.messenger.message.Message;
 import com.kayako.sdk.messenger.message.MessageSourceType;
 import com.kayako.sdk.messenger.message.PostMessageBodyParams;
+import com.kayako.sdk.messenger.message.PutMessageBodyParams;
 
 import java.util.List;
 
@@ -165,6 +167,45 @@ public class MessageListContainerRepository implements MessageListContainerContr
                 });
             }
         });
+    }
+
+    @Override
+    public void markMessageAsRead(long conversationId, long messageId, final MessageListContainerContract.OnMarkMessageAsReadListener onLoadConversationListener) {
+        final Handler handler = new Handler(); // Needed to ensure that the callbacks run on the UI Thread
+        mMessenger.putMessage(
+                conversationId,
+                messageId,
+                new PutMessageBodyParams(PutMessageBodyParams.MessageStatus.SEEN),
+                new EmptyCallback() {
+                    @Override
+                    public void onSuccess() {
+                        if (onLoadConversationListener == null) {
+                            return;
+                        }
+
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                onLoadConversationListener.onSuccess();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(final KayakoException exception) {
+                        if (onLoadConversationListener == null) {
+                            return;
+                        }
+
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                onLoadConversationListener.onFailure(exception.getMessage());
+                            }
+                        });
+
+                    }
+                });
     }
 
     @Override

@@ -26,6 +26,8 @@ public class MessageListContainerContract {
 
         void getConversation(long conversationId, final OnLoadConversationListener onLoadConversationListener);
 
+        void markMessageAsRead(long conversationId, long messageId, final OnMarkMessageAsReadListener onLoadConversationListener);
+
         void registerCaseChangeListener(long currentUserId, String conversationPresenceChannel, OnConversationChangeListener listener);
 
         void unregisterCaseChangeListener();
@@ -94,6 +96,13 @@ public class MessageListContainerContract {
         void onNewMessage(long messageId);
 
         void onUpdateMessage(long messageId);
+    }
+
+    public interface OnMarkMessageAsReadListener {
+
+        void onSuccess();
+
+        void onFailure(String message);
     }
 
 }
