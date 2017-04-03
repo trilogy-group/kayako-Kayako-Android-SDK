@@ -19,4 +19,8 @@ public class RepoFactory {
         }
         return mConversationStarterData;
     }
+
+    public static void reset() {
+        mConversationStarterData = null;
+    }
 }

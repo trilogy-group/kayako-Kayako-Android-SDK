@@ -7,6 +7,7 @@ import android.webkit.URLUtil;
 
 import com.kayako.sdk.android.k5.activities.KayakoHelpCenterActivity;
 import com.kayako.sdk.android.k5.activities.KayakoMessengerActivity;
+import com.kayako.sdk.android.k5.messenger.data.RepoFactory;
 
 import java.lang.ref.WeakReference;
 import java.util.Locale;
@@ -36,6 +37,7 @@ public class Kayako {
         MessengerPref.getInstance().clearAll();
         MessengerStylePref.getInstance().clearAll();
         MessengerUserPref.getInstance().clearAll();
+        RepoFactory.reset();
     }
 
     public static Kayako getInstance() {
