@@ -2,6 +2,8 @@ package com.kayako.sdk.android.k5.common.adapter.messengerlist;
 
 import android.support.annotation.NonNull;
 
+import com.kayako.sdk.messenger.message.Message;
+
 public class UserDecoration {
     private String name;
     private Long userId;
@@ -52,4 +54,6 @@ public class UserDecoration {
     public void setSelf(boolean self) {
         isSelf = self;
     }
+
+
 }

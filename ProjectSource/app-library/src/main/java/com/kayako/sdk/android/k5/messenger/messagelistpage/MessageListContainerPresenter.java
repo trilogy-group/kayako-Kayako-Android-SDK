@@ -2,8 +2,9 @@ package com.kayako.sdk.android.k5.messenger.messagelistpage;
 
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.DataItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.DataItemHelper;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.UserDecoration;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.DataItemHelper;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.DeliveryIndicatorHelper;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.UserDecorationHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.BotMessageListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputEmailListItem;
 import com.kayako.sdk.android.k5.common.fragments.ListPageState;
@@ -354,12 +355,9 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                         new DataItem(
                                 message.getId(),
                                 null,
-                                new UserDecoration(
-                                        message.getCreator().getFullName(),
-                                        message.getCreator().getAvatarUrl(),
-                                        message.getCreator().getId(),
-                                        mMessengerPrefHelper.getUserId() != null && message.getCreator().getId().equals(mMessengerPrefHelper.getUserId())),
+                                UserDecorationHelper.getUserDecoration(message, mMessengerPrefHelper.getUserId()),
                                 null, // no channelDecoration
+                                DeliveryIndicatorHelper.getDeliveryIndicator(message, mMessengerPrefHelper.getUserId()), // TODO:
                                 message.getContentText(),
                                 message.getCreatedAt(),
                                 Collections.EMPTY_LIST, // TODO: Attachments

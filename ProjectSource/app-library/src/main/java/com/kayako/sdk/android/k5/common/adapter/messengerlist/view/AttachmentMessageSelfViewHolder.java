@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.view.CircleImageView;
 
-public class AttachmentMessageSelfViewHolder extends RecyclerView.ViewHolder {
+public class AttachmentMessageSelfViewHolder extends BaseDeliveryIndicatorViewHolder {
 
     public TextView message;
     public TextView time;

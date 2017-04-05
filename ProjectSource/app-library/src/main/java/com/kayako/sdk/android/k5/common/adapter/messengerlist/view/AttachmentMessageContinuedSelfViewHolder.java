@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.kayako.sdk.android.k5.R;
 
-public class AttachmentMessageContinuedSelfViewHolder extends RecyclerView.ViewHolder {
+public class AttachmentMessageContinuedSelfViewHolder extends BaseDeliveryIndicatorViewHolder {
 
     public TextView message;
     public TextView time;

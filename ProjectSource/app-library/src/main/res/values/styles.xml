@@ -63,7 +63,7 @@
     </style>
 
     <style name="Ko__ChatBubbleDateStyle">
-        <item name="android:textSize">10sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:layout_margin">@dimen/ko__messenger_list_item_time_margin</item>
     </style>
 

@@ -18,6 +18,7 @@ public class DataItem {
 
     /* Not Mandatory fields (needed to generate views) */
     private ChannelDecoration channelDecoration;
+    private DeliveryIndicator deliveryIndicator;
     private boolean isRead;
     private List<Attachment> attachments;
 
@@ -25,7 +26,7 @@ public class DataItem {
     // TODO: Activity Message? isActivity <-- checks should be added before isSelf
     // TODO: Delivery Indicators? Blue Tick, Double Tick...
 
-    public DataItem(Long id, Map<String, Object> data, UserDecoration userDecoration, ChannelDecoration channelDecoration, String message, Long timeInMilliseconds, List<Attachment> attachments, boolean isRead) {
+    public DataItem(Long id, Map<String, Object> data, UserDecoration userDecoration, ChannelDecoration channelDecoration, DeliveryIndicator deliveryIndicator, String message, Long timeInMilliseconds, List<Attachment> attachments, boolean isRead) {
         assert userDecoration != null;
         assert message != null;
         assert timeInMilliseconds != null;
@@ -34,6 +35,7 @@ public class DataItem {
         this.data = data;
         this.userDecoration = userDecoration;
         this.channelDecoration = channelDecoration;
+        this.deliveryIndicator = deliveryIndicator;
         this.message = message;
         this.timeInMilliseconds = timeInMilliseconds;
         this.attachments = attachments;
@@ -68,39 +70,23 @@ public class DataItem {
         return timeInMilliseconds;
     }
 
-    public void setTimeInMilliseconds(Long timeInMilliseconds) {
-        this.timeInMilliseconds = timeInMilliseconds;
-    }
-
     public UserDecoration getUserDecoration() {
         return userDecoration;
-    }
-
-    public void setUserDecoration(UserDecoration userDecoration) {
-        this.userDecoration = userDecoration;
     }
 
     public ChannelDecoration getChannelDecoration() {
         return channelDecoration;
     }
 
-    public void setChannelDecoration(ChannelDecoration channelDecoration) {
-        this.channelDecoration = channelDecoration;
-    }
-
     public boolean isRead() {
         return isRead;
-    }
-
-    public void setRead(boolean read) {
-        isRead = read;
     }
 
     public List<Attachment> getAttachments() {
         return attachments;
     }
 
-    public void setAttachments(List<Attachment> attachments) {
-        this.attachments = attachments;
+    public DeliveryIndicator getDeliveryIndicator() {
+        return deliveryIndicator;
     }
 }

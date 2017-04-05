@@ -55,14 +55,13 @@
         android:maxLines="1"
         tools:text="something.txt" />
 
-    <com.kayako.sdk.android.k5.common.view.RegularTextView
-        android:id="@+id/ko__time"
-        style="@style/Ko__ChatBubbleDateStyle"
+
+    <include
+        layout="@layout/ko__include_messenger_delivery_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/ko__message"
+        android:layout_alignLeft="@+id/ko__message"
         android:layout_below="@+id/ko__message"
-        android:layout_marginTop="@dimen/ko__messenger_gap_between_time_and_message"
-        tools:text="12:30 PM" />
+        android:layout_marginTop="@dimen/ko__messenger_gap_between_time_and_message" />
 
 </RelativeLayout>

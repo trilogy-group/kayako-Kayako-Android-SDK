@@ -1,8 +1,12 @@
-package com.kayako.sdk.android.k5.common.adapter.messengerlist;
+package com.kayako.sdk.android.k5.common.adapter.messengerlist.helper;
 
 import android.support.annotation.NonNull;
 
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.Attachment;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.DataItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.DeliveryIndicator;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.ViewBehaviour;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageContinuedOtherListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageContinuedSelfListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageOtherListItem;
@@ -118,7 +122,9 @@ public class DataItemHelper {
         boolean showChannel = getChannelVisibility(showAvatar, currentDataItem);
         boolean showAsSelf = getIfSelf(currentDataItem);
 
-        return new ViewBehaviour(showTime, showAvatar, showChannel, showAsSelf, messageType);
+        boolean showDeliveryIndicator = getDeliveryIndicatorVisibility(currentDataItem, nextDataItem);
+
+        return new ViewBehaviour(showTime, showAvatar, showChannel, showAsSelf, showDeliveryIndicator, messageType);
     }
 
     /**
@@ -187,7 +193,7 @@ public class DataItemHelper {
      * @param currentDataItem
      * @return
      */
-    protected boolean isGroupable(DataItem previousDataItem, DataItem currentDataItem) {
+    protected boolean isGroupableByTime(DataItem previousDataItem, DataItem currentDataItem) {
         return Math.abs(currentDataItem.getTimeInMilliseconds() - previousDataItem.getTimeInMilliseconds()) <= MINIMUM_MILLISECONDS_TO_GROUP;
     }
 
@@ -212,7 +218,7 @@ public class DataItemHelper {
         }
 
         // Show time if current item can NOT be grouped with the next item
-        return !isGroupable(currentDataItem, nextDataItem);
+        return !isGroupableByTime(currentDataItem, nextDataItem);
     }
 
     /**
@@ -245,7 +251,26 @@ public class DataItemHelper {
         }
 
         // Show Avatar if current item can NOT be grouped with previous item
-        return !isGroupable(previousDataItem, currentDataItem);
+        return !isGroupableByTime(previousDataItem, currentDataItem);
+    }
+
+    /**
+     * Check if the current view should show delivery indicator
+     *
+     * @param currentDataItem
+     * @param previousDataItem
+     * @return
+     */
+    /**
+     * @return
+     */
+    protected boolean getDeliveryIndicatorVisibility(DataItem currentDataItem, DataItem nextDataItem) {
+        /* Show Delivery Indicator if:
+            1. It is the last message (Assuming whenever an agent replies, the messages before that are considered read by the customer)
+            2. The message was sent by the current user (delivery indicators are not relevant to other users messages)
+            2. It is only shown at the end of a group of messages (same rules as time visibility)
+         */
+        return getTimeVisibility(currentDataItem, nextDataItem) && getIfSelf(currentDataItem) && nextDataItem == null;
     }
 
     /**
@@ -277,12 +302,19 @@ public class DataItemHelper {
             time = 0;
         }
 
+        DeliveryIndicator deliveryIndicator = null;
+        if (viewBehaviour.showDeliveryIndicator) {
+            deliveryIndicator = currentDataItem.getDeliveryIndicator();
+        } else {
+            deliveryIndicator = null;
+        }
+
         if (viewBehaviour.showAvatar && viewBehaviour.showAsSelf) {
-            return new SimpleMessageSelfListItem(currentDataItem.getId(), currentDataItem.getMessage(), currentDataItem.getUserDecoration().getAvatarUrl(), currentDataItem.getChannelDecoration(), time, currentDataItem.getData());
+            return new SimpleMessageSelfListItem(currentDataItem.getId(), currentDataItem.getMessage(), currentDataItem.getUserDecoration().getAvatarUrl(), currentDataItem.getChannelDecoration(), time, deliveryIndicator, currentDataItem.getData());
         } else if (viewBehaviour.showAvatar) {
             return new SimpleMessageOtherListItem(currentDataItem.getId(), currentDataItem.getMessage(), currentDataItem.getUserDecoration().getAvatarUrl(), currentDataItem.getChannelDecoration(), time, currentDataItem.getData());
         } else if (viewBehaviour.showAsSelf) {
-            return new SimpleMessageContinuedSelfListItem(currentDataItem.getId(), currentDataItem.getMessage(), time, currentDataItem.getData());
+            return new SimpleMessageContinuedSelfListItem(currentDataItem.getId(), currentDataItem.getMessage(), time, deliveryIndicator, currentDataItem.getData());
         } else {
             return new SimpleMessageContinuedOtherListItem(currentDataItem.getId(), currentDataItem.getMessage(), time, currentDataItem.getData());
         }
@@ -297,12 +329,19 @@ public class DataItemHelper {
             time = 0;
         }
 
+        DeliveryIndicator deliveryIndicator = null;
+        if (viewBehaviour.showDeliveryIndicator) {
+            deliveryIndicator = currentDataItem.getDeliveryIndicator();
+        } else {
+            deliveryIndicator = null;
+        }
+
         if (viewBehaviour.showAvatar && viewBehaviour.showAsSelf) {
-            return new AttachmentMessageSelfListItem(currentDataItem.getId(), currentDataItem.getUserDecoration().getAvatarUrl(), currentDataItem.getChannelDecoration(), attachment, time, currentDataItem.getData());
+            return new AttachmentMessageSelfListItem(currentDataItem.getId(), currentDataItem.getUserDecoration().getAvatarUrl(), currentDataItem.getChannelDecoration(), deliveryIndicator, attachment, time, currentDataItem.getData());
         } else if (viewBehaviour.showAvatar) {
             return new AttachmentMessageOtherListItem(currentDataItem.getId(), currentDataItem.getUserDecoration().getAvatarUrl(), currentDataItem.getChannelDecoration(), attachment, time, currentDataItem.getData());
         } else if (viewBehaviour.showAsSelf) {
-            return new AttachmentMessageContinuedSelfListItem(currentDataItem.getId(), attachment, time, currentDataItem.getData());
+            return new AttachmentMessageContinuedSelfListItem(currentDataItem.getId(), attachment, time, deliveryIndicator, currentDataItem.getData());
         } else {
             return new AttachmentMessageContinuedOtherListItem(currentDataItem.getId(), attachment, time, currentDataItem.getData());
         }
@@ -332,7 +371,6 @@ public class DataItemHelper {
 
         return attachmentMessages;
     }
-
 }
 
 

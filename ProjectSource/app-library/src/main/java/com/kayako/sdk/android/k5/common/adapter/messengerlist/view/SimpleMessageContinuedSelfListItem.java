@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.kayako.sdk.android.k5.common.adapter.BaseDataListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.DeliveryIndicator;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerListType;
 
 import java.util.Map;
@@ -12,11 +13,13 @@ public class SimpleMessageContinuedSelfListItem extends BaseDataListItem {
 
     private String message;
     private long time;
+    private DeliveryIndicator deliveryIndicator;
 
-    public SimpleMessageContinuedSelfListItem(@Nullable Long id,@NonNull String message, @Nullable long time, @Nullable Map<String, Object> data) {
+    public SimpleMessageContinuedSelfListItem(@Nullable Long id, @NonNull String message, @Nullable long time, @Nullable DeliveryIndicator deliveryIndicator, @Nullable Map<String, Object> data) {
         super(MessengerListType.SIMPLE_MESSAGE_CONTINUED_SELF, id, data);
         this.message = message;
         this.time = time;
+        this.deliveryIndicator = deliveryIndicator;
     }
 
     public String getMessage() {
@@ -33,5 +36,9 @@ public class SimpleMessageContinuedSelfListItem extends BaseDataListItem {
 
     public void setTime(long time) {
         this.time = time;
+    }
+
+    public DeliveryIndicator getDeliveryIndicator() {
+        return deliveryIndicator;
     }
 }

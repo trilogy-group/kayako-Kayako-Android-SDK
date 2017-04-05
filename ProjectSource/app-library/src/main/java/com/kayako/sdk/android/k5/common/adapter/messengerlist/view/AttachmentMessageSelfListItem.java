@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import com.kayako.sdk.android.k5.common.adapter.BaseDataListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.Attachment;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.ChannelDecoration;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.DeliveryIndicator;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerListType;
 
 import java.util.Map;
@@ -16,13 +17,15 @@ public class AttachmentMessageSelfListItem extends BaseDataListItem {
     private long time;
     private ChannelDecoration channel;
     private Attachment attachment;
+    private DeliveryIndicator deliveryIndicator;
 
-    public AttachmentMessageSelfListItem(@Nullable Long id,@NonNull String avatarUrl, @Nullable ChannelDecoration channel, @NonNull Attachment attachment, @Nullable long time, @Nullable Map<String, Object> data) {
-        super(MessengerListType.ATTACHMENT_MESSAGE_SELF, id,data);
+    public AttachmentMessageSelfListItem(@Nullable Long id, @NonNull String avatarUrl, @Nullable ChannelDecoration channel, @Nullable DeliveryIndicator deliveryIndicator, @NonNull Attachment attachment, @Nullable long time, @Nullable Map<String, Object> data) {
+        super(MessengerListType.ATTACHMENT_MESSAGE_SELF, id, data);
         this.attachment = attachment;
         this.time = time;
         this.avatarUrl = avatarUrl;
         this.channel = channel;
+        this.deliveryIndicator = deliveryIndicator;
     }
 
     public Attachment getAttachment() {
@@ -55,5 +58,9 @@ public class AttachmentMessageSelfListItem extends BaseDataListItem {
 
     public void setChannel(ChannelDecoration channel) {
         this.channel = channel;
+    }
+
+    public DeliveryIndicator getDeliveryIndicator() {
+        return deliveryIndicator;
     }
 }

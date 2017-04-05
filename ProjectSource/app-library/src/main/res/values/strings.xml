@@ -37,5 +37,14 @@
     <string name="ko__messenger_home_screen_widget_presence_title">We are here to help</string>
     <string name="ko__messenger_home_screen_widget_recent_cases_title">Recent conversations</string>
     <string name="ko__messenger_home_screen_widget_recent_cases_action_button_label">View all →</string>
+
+    <string name="ko__messenger_delivery_indicators_sent">Sent</string>
+    <string name="ko__messenger_delivery_indicators_delivered">Delivered. Not seen yet</string>
+    <string name="ko__messenger_delivery_indicators_seen">Seen</string>
+    <string name="ko__messenger_delivery_indicators_sending">Sending…</string>
+    <string name="ko__messenger_delivery_indicators_failed">This message failed to send. Would you like to Resend?</string>
+
     <string name="ko__label_email_input_field_hint">john@doe.com</string>
+
+
 </resources>
