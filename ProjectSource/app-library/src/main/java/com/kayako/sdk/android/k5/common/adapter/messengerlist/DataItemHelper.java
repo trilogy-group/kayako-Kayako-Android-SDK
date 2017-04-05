@@ -159,7 +159,7 @@ public class DataItemHelper {
      * If true, add the UNREAD SEPARATOR
      */
     protected void addUnreadSeparator(List<BaseListItem> viewItems, DataItem currentDataItem, DataItem previousDataItem) {
-        if (previousDataItem.isRead() && !currentDataItem.isRead()) {
+        if (previousDataItem.isRead() && !currentDataItem.isRead()) { // If the current message is sent by the current user, it's assumed to be read
             viewItems.add(new UnreadSeparatorListItem());
         }
     }

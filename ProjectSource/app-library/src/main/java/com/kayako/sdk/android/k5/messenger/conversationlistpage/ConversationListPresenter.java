@@ -68,7 +68,7 @@ public class ConversationListPresenter implements ConversationListContract.Prese
                         return;
                     }
 
-                    // Configuring list - load more or setup list
+                    // Configuring list - load more or setWasNewConversation list
                     if (offset == 0) {
                         mView.setupList(convertConversationToListItems(conversations));
                     } else {
@@ -138,7 +138,9 @@ public class ConversationListPresenter implements ConversationListContract.Prese
                     conversation.getCreator().getFullName(),// TODO: Whose name? The agent?
                     conversation.getUpdatedAt(),
                     conversation.getLastMessagePreview(),
-                    conversation));
+                    conversation.getReadMarker() == null ? 0 : conversation.getReadMarker().getUnreadCount() == null ? 0 : conversation.getReadMarker().getUnreadCount(),
+                    conversation
+            ));
 
         }
         return baseListItems;

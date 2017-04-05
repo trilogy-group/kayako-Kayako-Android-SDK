@@ -18,7 +18,7 @@ public class SectionByCategoryContainerPresenter implements SectionByCategoryCon
 
     private List<SpinnerItem> mSpinnerItems;
     private SpinnerItem mSelectedItem;
-    // Ensure that during spinner setup, the page is not unnecessarily loaded due to spinner onItemSelected() being called.
+    // Ensure that during spinner setWasNewConversation, the page is not unnecessarily loaded due to spinner onItemSelected() being called.
 
     public SectionByCategoryContainerPresenter(SectionByCategoryContainerContract.View view, SectionByCategoryContainerContract.Data data) {
         mView = view;

@@ -15,15 +15,17 @@ public class ConversationItemViewHolder extends RecyclerView.ViewHolder {
     public TextView time;
     public TextView subject;
     public RelativeLayout layout;
+    public TextView unreadCounter;
     public View itemView;
 
     public ConversationItemViewHolder(View v) {
         super(v);
         itemView = v;
         avatar = (ImageView) v.findViewById(R.id.ko__avatar);
-        name = (TextView) v.findViewById(R.id.name);
+        name = (TextView) v.findViewById(R.id.ko__name);
         time = (TextView) v.findViewById(R.id.ko__time);
-        subject = (TextView) v.findViewById(R.id.subject);
+        subject = (TextView) v.findViewById(R.id.ko__subject);
         layout = (RelativeLayout) v.findViewById(R.id.layout);
+        unreadCounter = (TextView) v.findViewById(R.id.ko__unread_counter);
     }
 }

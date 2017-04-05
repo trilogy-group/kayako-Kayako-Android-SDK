@@ -24,7 +24,7 @@
     <string name="ko__messenger_input_email_message_hint_default">Your Email</string>
     <string name="ko__label_submit">Submit</string>
     <string name="ko__messenger_label_new_conversation">Start a new conversation</string>
-    <string name="ko__messenger_reply_box_hint">Message team...</string>
+    <string name="ko__messenger_reply_box_hint">Enter message…</string>
 
     <string name="ko__messenger_toolbar_default_title">Support</string>
     <string name="ko__messenger_toolbar_subtitle_average_reply_time_in_hours">We typically reply in under <xliff:g example="4" id="hours">%1$d</xliff:g> hours</string>

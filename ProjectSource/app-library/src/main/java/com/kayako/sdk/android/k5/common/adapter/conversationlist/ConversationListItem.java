@@ -9,15 +9,17 @@ public class ConversationListItem extends BaseListItem {
     public String name;
     public Long timeInMilleseconds;
     public String subject;
+    public int unreadCount;
 
     public Conversation conversation;
 
-    public ConversationListItem(String avatarUrl, String name, Long timeInMilleseconds, String subject, Conversation conversation) {
+    public ConversationListItem(String avatarUrl, String name, Long timeInMilleseconds, String subject, int unreadCount, Conversation conversation) {
         super(ConversationListType.CONVERSATION_LIST_ITEM);
         this.avatarUrl = avatarUrl;
         this.name = name;
         this.timeInMilleseconds = timeInMilleseconds;
         this.subject = subject;
+        this.unreadCount = unreadCount;
         this.conversation = conversation;
     }
 }

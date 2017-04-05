@@ -132,4 +132,8 @@
     <!-- TODO Shift to code? THen make this default -->
     <color name="ko__messenger_primary_color">#F1703F</color>
     <color name="ko__messenger_home_screen_widget_header_action_button_text_color">#2D3138</color>
+
+    <color name="ko__messenger_unread_message_counter_background_color">#E86048</color>
+    <color name="ko__messenger_unread_message_counter_text_color">#FFFFFF</color>
+
 </resources>

@@ -205,7 +205,9 @@ public class ConversationStarterHelper {
                 conversation.getLastReplier().getAvatarUrl(),
                 conversation.getLastReplier().getFullName(),
                 conversation.getUpdatedAt(),
-                conversation.getLastMessagePreview()
+                conversation.getLastMessagePreview(),
+                conversation.getReadMarker() == null ? 0 :
+                        conversation.getReadMarker().getUnreadCount() == null ? 0 : conversation.getReadMarker().getUnreadCount()
         );
     }
 }

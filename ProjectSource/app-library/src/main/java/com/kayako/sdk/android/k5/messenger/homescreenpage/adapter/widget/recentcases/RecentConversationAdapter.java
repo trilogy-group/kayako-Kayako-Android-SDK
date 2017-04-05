@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kayako.sdk.android.k5.R;
+import com.kayako.sdk.android.k5.common.adapter.conversationlist.ConversationListItemHelper;
 import com.kayako.sdk.android.k5.common.utils.DateTimeUtils;
 import com.kayako.sdk.android.k5.common.utils.ImageUtils;
 import com.kayako.sdk.android.k5.core.Kayako;
@@ -45,8 +46,6 @@ public class RecentConversationAdapter extends RecyclerView.Adapter {
         ImageUtils.setAvatarImage(context, viewHolder.avatar, recentConversation.getAvatarUrl());
         viewHolder.name.setText(recentConversation.getName());
         viewHolder.subject.setText(recentConversation.getSubject());
-        viewHolder.time.setText(DateTimeUtils.formatShortDateTime(System.currentTimeMillis(), recentConversation.getTimeInMilleseconds()));
-
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,6 +54,9 @@ public class RecentConversationAdapter extends RecyclerView.Adapter {
                 }
             }
         });
+
+        ConversationListItemHelper.setUnreadCounter(viewHolder.unreadCounter, recentConversation.getUnreadCount());
+        ConversationListItemHelper.setFormattedTime(viewHolder.time, recentConversation.getTimeInMilleseconds());
     }
 
     @Override

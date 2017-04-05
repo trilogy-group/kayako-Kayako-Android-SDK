@@ -17,8 +17,15 @@ import com.kayako.sdk.messenger.message.Message;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
+/**
+ * Terms used:
+ * <p>
+ * New Conversation : a conversation that is yet to be created via APIs
+ * Existing Conversation : a conversation that has been created via APIs
+ */
 public class MessageListContainerPresenter implements MessageListContainerContract.Presenter {
 
     private MessageListContainerContract.View mView;
@@ -34,7 +41,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private NewConversationHelper mNewConversationHelper = new NewConversationHelper();
     private ExistingConversationHelper mExistingConversationHelper = new ExistingConversationHelper();
     private ReplyBoxHelper mReplyBoxHelper = new ReplyBoxHelper();
-
+    private ListHelper mListHelper = new ListHelper();
 
     // private ResourceList<Message> mMessageList = new ResourceList<>();
     // TODO: Group onboarding messages logic in a private class? - confusing otherwise as more and more methods are used
@@ -82,6 +89,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     public void initPage(boolean isNewConversation, Long conversationId) {
         resetVariables(); // TODO: Figure out how to handle orientations
 
+        mOnboardingHelper.setWasNewConversation(isNewConversation);
         mNewConversationHelper.setIsNewConversation(isNewConversation);
         if (conversationId != null) {
             mConversationId = conversationId;
@@ -102,25 +110,13 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
         if (mNewConversationHelper.isNewConversation()) {
             mNewConversationHelper.onClickSendInReplyView(message);
-
         } else {
 
+            // Assertion
             if (mConversationId == null) {
                 throw new AssertionError("If it is NOT a new conversation, conversation id should NOT be null");
             }
-
-            mData.postNewMessage(mConversationId, message, new MessageListContainerContract.PostNewMessageCallback() {
-                @Override
-                public void onSuccess(Message message) {
-                    mExistingConversationHelper.reloadMessagesOfConversation(mConversationId);
-                }
-
-                @Override
-                public void onFailure(final String errorMessage) {
-                    // TODO: show error message
-                    mView.showToastMessage(errorMessage);
-                }
-            });
+            mExistingConversationHelper.onClickSendInReplyView(message);
         }
     }
 
@@ -138,7 +134,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             mView.expandToolbar();
 
             // Load view
-            mOnboardingHelper.reloadOnboardingMessages();
+            mListHelper.reloadMessages();
         } else {
             mExistingConversationHelper.reloadMessagesOfConversation(mConversationId);
             mExistingConversationHelper.reloadConversation(mConversationId);
@@ -154,6 +150,8 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             // Update global variables
             mConversation = conversation;
             mConversationId = conversation.getId();
+
+            mMarkReadHelper.setOriginalLastMessageMarkedReadIfNotSetBefore(mConversation.getReadMarker() == null ? 0 : mConversation.getReadMarker().getLastReadPostId());
 
             // Update user details (creator of new conversation) - This has been done EVERY TIME to ensure that even if the current userid is lost due to any reason, a new conversation will get it back! - eg: using the same fingerprint for multiple users
             mMessengerPrefHelper
@@ -177,11 +175,74 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         }
     };
 
+    /**
+     * Logic to show onboarding messages, actual api messages, optimistic sending messages and KRE indicator messages
+     */
+    private class ListHelper {
+
+        // TODO: Created a problem - The onboarding messages disappear
+
+        public void reloadMessages() {
+            List<BaseListItem> onboardingItems = mOnboardingHelper.getOnboardingItems();
+            // TODO: Move the messsages listing too
+
+            List<BaseListItem> allListItems = new ArrayList<>();
+            allListItems.addAll(0, onboardingItems);
+            mView.setupListInMessageListingView(allListItems);
+        }
+    }
+
     private class MarkReadHelper {
 
-        private AtomicLong lastMessageMarkedRead = new AtomicLong(0);
+        private AtomicBoolean useOriginalLastMessage = new AtomicBoolean(true);
+        private AtomicLong originalLastMessageMarkedRead = new AtomicLong(0); // the getOriginalLastMessageMarkedReadlatest message that was read (only when this page is opened, should not update later!)
+        private AtomicLong lastMessageMarkedRead = new AtomicLong(0); // the latest message that has been read (constantly updates are the latest messages gets read)
 
-        private synchronized boolean setLastMessageMarkedRead(final Long lastMessageMarkedRead, final Long conversationId) {
+        // TODO: When KRE is implemented, ensure the messages and conversartion is not reloaded unless there is a change made!
+        // This should be done because the app is already making requests on its own
+
+        /**
+         * Call this to set the lastMessageMarkedRead.
+         * This method only sets the value if it hasn't been set before, thus ensuring only the original is saved
+         *
+         * @param lastMessageMarkedRead
+         */
+        public void setOriginalLastMessageMarkedReadIfNotSetBefore(Long lastMessageMarkedRead) {
+            // Set the original last message read (This will be the first non-zero value set)
+            if (originalLastMessageMarkedRead.get() == 0) {
+                originalLastMessageMarkedRead.set(lastMessageMarkedRead);
+            }
+        }
+
+        public long getOriginalLastMessageMarkedRead() {
+            // Save the unread marker so that it doesn't go away when conversation is reloaded.
+            // Instead, it should only be reset when the user leaves the conversation.
+            // Code should rely on this presaved value, and not the conversation variable to check read marker status
+            if (useOriginalLastMessage.get()) {
+                return originalLastMessageMarkedRead.get();
+            } else {
+                return 0; // If original last message is not used, then no read marker should be shown!
+            }
+        }
+
+        /**
+         * This method should be called when the originalLastMessageRead is no longer needed.
+         * Example: When a reply is made by the user, the "new messages" separator should disappear.
+         *
+         * @return
+         */
+        public void disableOriginalLastMessageMarked() {
+            useOriginalLastMessage.set(false);
+        }
+
+        /**
+         * Call this method to mark the last message as read by the current customer. It involves making an API request.
+         *
+         * @param lastMessageMarkedRead
+         * @param conversationId
+         * @return
+         */
+        public boolean markLastMessageAsRead(final Long lastMessageMarkedRead, final Long conversationId) {
             // If the argument is null, skip
             if (lastMessageMarkedRead == null || conversationId == null) {
                 return false;
@@ -193,33 +254,45 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             }
 
             // Call API to mark message read
-            mData.markMessageAsRead(conversationId, lastMessageMarkedRead, new MessageListContainerContract.OnMarkMessageAsReadListener() {
-                @Override
-                public void onSuccess() {
-                    // Set last read message
-                    MarkReadHelper.this.lastMessageMarkedRead.set(lastMessageMarkedRead);
-                }
+            mData.markMessageAsRead(conversationId,
+                    lastMessageMarkedRead,
+                    new MessageListContainerContract.OnMarkMessageAsReadListener() {
+                        @Override
+                        public void onSuccess() {
+                            // Set last read message
+                            MarkReadHelper.this.lastMessageMarkedRead.set(lastMessageMarkedRead);
+                        }
 
-                @Override
-                public void onFailure(String message) {
-                }
-            });
-
+                        @Override
+                        public void onFailure(String message) {
+                        }
+                    }
+            );
             return true;
         }
 
-        private Long extractLastMessageId(List<Message> messageList) {
+        public Long extractLastMessageId(List<Message> messageList) {
             if (messageList == null || messageList.size() == 0) {
                 return null;
             }
 
-            Message message = messageList.get(messageList.size() - 1);
-            return message.getId();
+            /*
+            There's a lot of order reversing going on in the code which may cause issues in this snippet
+            Therefore, to be absolutely certain the last element (greatest id) is selected, messages at the extremes are collected and the largest id is returned.
+            This is based on the assumption that the items are sorted (which it should be!)
+             */
+            Message firstMessage = messageList.get(0);
+            Message lastMessage = messageList.get(messageList.size() - 1);
+
+            return firstMessage.getId() > lastMessage.getId() ? firstMessage.getId() : lastMessage.getId();
         }
 
     }
 
     private class ExistingConversationHelper {
+
+        private List<Message> messageList = new ArrayList<>();
+        // TODO: A list that automatically replaces old with new, sorts by id, etc
 
         public void reloadConversation(final long conversationId) {
             mData.getConversation(conversationId, onLoadConversationListener);
@@ -229,6 +302,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             mData.getMessages(new MessageListContainerContract.OnLoadMessagesListener() {
                 @Override
                 public void onSuccess(List<Message> messageList) {
+                    ExistingConversationHelper.this.messageList = messageList;
                     List<DataItem> dataItems = convertMessagesToDataItems(messageList);
 
                     if (dataItems.size() == 0) {
@@ -239,14 +313,12 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                         Collections.reverse(dataItems);
                         List<BaseListItem> baseListItems = DataItemHelper.getInstance().convertDataItemToListItems(dataItems);
 
-                        if (mOnboardingHelper.getOnboardingItems() != null && mOnboardingHelper.getOnboardingItems().size() != 0) {
-                            baseListItems.addAll(0, mOnboardingHelper.getOnboardingItems());
-                        }
+                        baseListItems.addAll(0, mOnboardingHelper.getOnboardingItems());
 
                         mView.setupListInMessageListingView(baseListItems);
 
                         // Once messages have been loaded AND displayed in view, mark the last message as read
-                        mMarkReadHelper.setLastMessageMarkedRead(
+                        mMarkReadHelper.markLastMessageAsRead(
                                 mMarkReadHelper.extractLastMessageId(messageList),
                                 conversationId);
                     }
@@ -263,12 +335,15 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         private List<DataItem> convertMessagesToDataItems(List<Message> messageList) {
             List<DataItem> dataItems = new ArrayList<>();
 
+            final long lastOriginalMessageMarkedRead = mMarkReadHelper.getOriginalLastMessageMarkedRead();
             for (Message message : messageList) {
 
                 boolean isRead = false;
-                if (mConversation != null
-                        && mConversation.getReadMarker() != null
-                        && mConversation.getReadMarker().getLastReadPostId() > message.getId()) {
+                /* Note: Using MarkReadHelper and not Conversation variable directly because the unread status should be preserved
+                   That is, even though a conversation is marked read, the unread marker should not disappear until the user reopens the page!
+                 */
+                if (lastOriginalMessageMarkedRead != 0
+                        && lastOriginalMessageMarkedRead >= message.getId()) {
                     isRead = true;
                 } else {
                     isRead = false;
@@ -295,6 +370,22 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
             return dataItems;
         }
+
+        public void onClickSendInReplyView(String message) {
+            mData.postNewMessage(mConversationId, message, new MessageListContainerContract.PostNewMessageCallback() {
+                @Override
+                public void onSuccess(Message message) {
+                    mMarkReadHelper.disableOriginalLastMessageMarked(); // Should be called before any list rendering is done
+                    mExistingConversationHelper.reloadMessagesOfConversation(mConversationId);
+                }
+
+                @Override
+                public void onFailure(final String errorMessage) {
+                    // TODO: show error message
+                    mView.showToastMessage(errorMessage);
+                }
+            });
+        }
     }
 
     private class NewConversationHelper {
@@ -320,7 +411,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
             // This method should only be called (during onboarding) when a new conversation needs to be made
             mData.startNewConversation(new PostConversationBodyParams(name, email, subject, message), onLoadConversationListener);
-            mOnboardingHelper.reloadOnboardingMessages();
+            mListHelper.reloadMessages();
         }
 
         private String extractName(String email) {
@@ -375,29 +466,25 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private class OnboardingHelper {
 
         // TODO: Varun wants email to be asked after the first message is sent?
-
+        private boolean mWasNewConversation; // If this was originally a new conversation (that may have become an existing conversation later)
         private boolean mWasEmailAskedInThisConversation; // Where email was not known before, but was set by user in this conversation
         private List<BaseListItem> mOnboardingItems = new ArrayList<>();
 
-        public List<BaseListItem> getOnboardingItems() {
-            return mOnboardingItems;
+        public void setWasNewConversation(boolean isNewConversation) {
+            mWasNewConversation = isNewConversation; //  Since a new conversation can become a new conversation, we need to remember original state
         }
 
-        /**
-         * Decides what kind of onboarding messages to show
-         */
-        // TODO: There should only be RELOAD MESSAGES and getOnboardingitems should be used
-        public void reloadOnboardingMessages() {
-            if (mNewConversationHelper.isNewConversation() && mMessengerPrefHelper.getEmail() == null) { // New conversation (first time) where email is unknown
+        public List<BaseListItem> getOnboardingItems() {
+            if (mWasNewConversation && mMessengerPrefHelper.getEmail() == null) { // New conversation (first time) where email is unknown
                 mOnboardingItems = generateOnboardingMessagesAskingForEmail();
                 mWasEmailAskedInThisConversation = true;
-            } else if (mNewConversationHelper.isNewConversation() && mWasEmailAskedInThisConversation) { // New conversation (first time) where email is now known (but was asked in this conversation)
+            } else if (mWasNewConversation && mWasEmailAskedInThisConversation) { // New conversation (first time) where email is now known (but was asked in this conversation)
                 mOnboardingItems = generateOnboardingMessagesWithPrefilledEmail();
             } else { // New conversation (not the first time)
                 mOnboardingItems = generateOnboardingMessagesWithoutEmail();
             }
 
-            mView.setupListInMessageListingView(mOnboardingItems);
+            return mOnboardingItems;
         }
 
         private List<BaseListItem> generateOnboardingMessagesAskingForEmail() {
@@ -409,10 +496,9 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                     mMessengerPrefHelper.setEmail(email);
 
                     mReplyBoxHelper.configureReplyBoxVisibility();
-                    mView.focusOnReplyBox();
+                    mReplyBoxHelper.focusOnReplyBox(); // Immediately after the Email is entered, the reply box should be focused upon for more information
 
-                    reloadOnboardingMessages();
-                    // TODO: Some loading indicator - Optimistic Sending
+                    mListHelper.reloadMessages();
                 }
             }));
             return baseListItems;
@@ -439,7 +525,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         /**
          * Anywhere on this class, by calling one method, configureReplyBoxVisibility(), the reply box will make the necessary checks to alter it's visibility
          */
-        private void configureReplyBoxVisibility() {
+        public void configureReplyBoxVisibility() {
             if (mListPageState != null) {
                 switch (mListPageState) {
                     case LIST:
@@ -468,6 +554,10 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             } else {
                 mView.hideReplyBox();
             }
+        }
+
+        private void focusOnReplyBox() {
+            mView.focusOnReplyBox(); // refocus on reply box for easy typing
         }
     }
 }

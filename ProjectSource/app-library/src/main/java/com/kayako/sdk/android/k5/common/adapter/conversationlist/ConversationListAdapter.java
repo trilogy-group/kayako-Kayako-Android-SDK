@@ -58,8 +58,6 @@ public class ConversationListAdapter extends EndlessRecyclerViewScrollAdapter {
 
                 conversationViewHolder.name.setText(conversationListItem.name);
                 conversationViewHolder.subject.setText(conversationListItem.subject);
-                conversationViewHolder.time.setText(DateTimeUtils.formatShortDateTime(System.currentTimeMillis(), conversationListItem.timeInMilleseconds));
-
                 conversationViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -68,6 +66,8 @@ public class ConversationListAdapter extends EndlessRecyclerViewScrollAdapter {
                     }
                 });
 
+                ConversationListItemHelper.setFormattedTime(conversationViewHolder.time, conversationListItem.timeInMilleseconds.longValue());
+                ConversationListItemHelper.setUnreadCounter(conversationViewHolder.unreadCounter, conversationListItem.unreadCount);
             default:
                 super.onBindViewHolder(viewHolder, position);
         }
