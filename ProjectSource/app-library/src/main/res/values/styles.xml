@@ -73,8 +73,8 @@
     </style>
 
     <style name="Ko__MessengerFloatingViewBackgroundLayer">
-        <item name="android:background">@color/ko__messenger_floating_background_color</item>
-        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:background">@null</item>
+        <item name="android:fitsSystemWindows">false</item>
     </style>
 
     <style name="Ko__MessengerFloatingViewForegroundLayer">
