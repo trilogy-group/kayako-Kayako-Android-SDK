@@ -31,7 +31,7 @@ public class DeliveryIndicatorHelper {
         return null;
     }
 
-    public static DeliveryIndicator getDeliveryIndicator(Message message, Long currentUserId) {
+    public static DeliveryIndicator getDeliveryIndicator(Message message) {
         if (message == null || message.getMessageStatus() == null) {
             return null;
         }
@@ -56,19 +56,24 @@ public class DeliveryIndicatorHelper {
 
     public static void setDeliveryIndicatorView(DeliveryIndicator deliveryIndicator, Long timeMessageCreated, BaseDeliveryIndicatorViewHolder deliveryIndicatorViewHolder) {
         if (deliveryIndicator == null && timeMessageCreated != null && timeMessageCreated != 0) {
+            deliveryIndicatorViewHolder.deliveryIndicatorView.setVisibility(View.VISIBLE);
+
             deliveryIndicatorViewHolder.deliveryIndicatorIcon.setVisibility(View.GONE);
             deliveryIndicatorViewHolder.dotSeparator.setVisibility(View.GONE);
             deliveryIndicatorViewHolder.deliveryIndicatorText.setVisibility(View.GONE);
+
             setDeliveryIndicatorTime(timeMessageCreated, deliveryIndicatorViewHolder); // Set time without any delivery indication mentioned
 
         } else if (deliveryIndicator == null) {
+            deliveryIndicatorViewHolder.deliveryIndicatorView.setVisibility(View.GONE);
+
             deliveryIndicatorViewHolder.deliveryIndicatorIcon.setVisibility(View.GONE);
             deliveryIndicatorViewHolder.dotSeparator.setVisibility(View.GONE);
             deliveryIndicatorViewHolder.deliveryIndicatorText.setVisibility(View.GONE);
             deliveryIndicatorViewHolder.deliveryIndicatorTime.setVisibility(View.GONE);
-
-            deliveryIndicatorViewHolder.deliveryIndicatorView.setVisibility(View.GONE); // hide complete row! Added becaused some child views have fixed heights
         } else {
+            deliveryIndicatorViewHolder.deliveryIndicatorView.setVisibility(View.VISIBLE);
+
             // Configure Delivery Indicator Icon
             setDeliveryIndicatorIcon(deliveryIndicator, deliveryIndicatorViewHolder);
 
