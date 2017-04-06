@@ -13,12 +13,13 @@ import com.kayako.sdk.messenger.conversation.PostConversationBodyParams;
 import com.kayako.sdk.messenger.message.Message;
 
 import java.util.List;
+import java.util.Map;
 
 public class MessageListContainerContract {
 
     public interface Data extends BaseData {
 
-        void postNewMessage(long conversationId, String contents, final PostNewMessageCallback callback);
+        void postNewMessage(long conversationId, String contents, String clientId, final PostNewMessageCallback callback);
 
         void getMessages(final OnLoadMessagesListener listener, long conversationId, int offset, int limit);
 
@@ -69,6 +70,8 @@ public class MessageListContainerContract {
         void onPageStateChange(ListPageState state);
 
         void onScrollList(boolean isScrolling, OnScrollListListener.ScrollDirection direction);
+
+        void onListItemClick(int messageType, Long id, Map<String, Object> messageData);
     }
 
 

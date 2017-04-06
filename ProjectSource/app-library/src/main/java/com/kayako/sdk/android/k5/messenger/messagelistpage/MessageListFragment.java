@@ -8,6 +8,7 @@ import android.view.View;
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.activities.KayakoSelectConversationActivity;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerAdapter;
 import com.kayako.sdk.android.k5.common.fragments.ListPageState;
 import com.kayako.sdk.android.k5.common.fragments.MessengerListFragment;
 import com.kayako.sdk.android.k5.common.fragments.OnListPageStateChangeListener;
@@ -15,10 +16,12 @@ import com.kayako.sdk.android.k5.common.fragments.OnScrollListListener;
 import com.kayako.sdk.android.k5.core.Kayako;
 
 import java.util.List;
+import java.util.Map;
 
 public class MessageListFragment extends MessengerListFragment implements MessageListContract.View, MessageListContract.ConfigureView {
 
     private MessageListContract.Presenter mPresenter;
+    private MessengerAdapter.OnItemClickListener mOnItemClickListener;
     private OnListPageStateChangeListener mOnListPageStateChangeListener;
     private MessageListContract.OnErrorListener mErrorListener;
     private OnScrollListListener mOnScrollListener;
@@ -41,6 +44,7 @@ public class MessageListFragment extends MessengerListFragment implements Messag
                 }
             }
         });
+
     }
 
     @Override
@@ -70,6 +74,7 @@ public class MessageListFragment extends MessengerListFragment implements Messag
             replaceMessengerList(messageList);
         } else {
             initMessengerList(messageList);
+            super.setOnItemClickListener(mOnItemClickListener);
             super.addScrollListListener(mOnScrollListener);
             isListAlreadyInitialized = true;
         }
@@ -110,6 +115,11 @@ public class MessageListFragment extends MessengerListFragment implements Messag
     @Override
     public void setOnListScrollListener(OnScrollListListener listener) {
         mOnScrollListener = listener;
+    }
+
+    @Override
+    public void setOnListItemClickListener(MessengerAdapter.OnItemClickListener listener) {
+        mOnItemClickListener = listener;
     }
 
     @Override

@@ -25,7 +25,7 @@ public class DeliveryIndicatorHelper {
                 return new DeliveryIndicator(0, R.string.ko__messenger_delivery_indicators_sending, null);
 
             case FAILED_TO_SEND:
-                return new DeliveryIndicator(R.drawable.ko__delivery_indicator_failed, R.string.ko__messenger_delivery_indicators_failed, null);
+                return new DeliveryIndicator(R.drawable.ko__delivery_indicator_failed, R.string.ko__messenger_delivery_indicators_failed_to_send, null);
         }
 
         return null;
@@ -41,7 +41,7 @@ public class DeliveryIndicatorHelper {
                 return new DeliveryIndicator(R.drawable.ko__delivery_indicator_delivered, R.string.ko__messenger_delivery_indicators_delivered, message.getMessageStatusUpdatedAt());
 
             case REJECTED:
-                return new DeliveryIndicator(R.drawable.ko__delivery_indicator_failed, R.string.ko__messenger_delivery_indicators_failed, null);
+                return new DeliveryIndicator(R.drawable.ko__delivery_indicator_failed, R.string.ko__messenger_delivery_indicators_rejected, null);
 
             case SEEN:
                 return new DeliveryIndicator(R.drawable.ko__delivery_indicator_seen, R.string.ko__messenger_delivery_indicators_seen, message.getMessageStatusUpdatedAt());

@@ -32,9 +32,9 @@ public class MessageListContainerRepository implements MessageListContainerContr
     }
 
     @Override
-    public void postNewMessage(long conversationId, String contents, final MessageListContainerContract.PostNewMessageCallback callback) {
+    public void postNewMessage(long conversationId, String contents, String clientId, final MessageListContainerContract.PostNewMessageCallback callback) {
         final Handler handler = new Handler();
-        mMessenger.postMessage(conversationId, new PostMessageBodyParams(contents, MessageSourceType.MESSENGER), new ItemCallback<Message>() {
+        mMessenger.postMessage(conversationId, new PostMessageBodyParams(contents, MessageSourceType.MESSENGER, clientId), new ItemCallback<Message>() {
             @Override
             public void onSuccess(final Message item) {
                 handler.post(new Runnable() {

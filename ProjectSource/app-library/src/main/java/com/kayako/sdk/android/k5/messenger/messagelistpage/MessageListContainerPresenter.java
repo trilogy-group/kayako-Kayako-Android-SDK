@@ -6,6 +6,7 @@ import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.DataItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.DataItemHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.DeliveryIndicatorHelper;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.OptimisticSendingHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.UserDecorationHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.BotMessageListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputEmailListItem;
@@ -20,7 +21,10 @@ import com.kayako.sdk.messenger.message.Message;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -35,13 +39,15 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private MessageListContainerContract.View mView;
     private MessageListContainerContract.Data mData;
 
+    private MessengerPrefHelper mMessengerPrefHelper = new MessengerPrefHelper();
     private MarkReadHelper mMarkReadHelper = new MarkReadHelper();
     private OnboardingHelper mOnboardingHelper = new OnboardingHelper();
-    private MessengerPrefHelper mMessengerPrefHelper = new MessengerPrefHelper();
     private NewConversationHelper mNewConversationHelper = new NewConversationHelper();
     private ExistingConversationHelper mExistingConversationHelper = new ExistingConversationHelper();
     private ReplyBoxHelper mReplyBoxHelper = new ReplyBoxHelper();
     private ListHelper mListHelper = new ListHelper();
+    private OptimisticMessageHelper mOptimisticMessageHelper = new OptimisticMessageHelper();
+    private ClientIdHelper mClientIdHelper = new ClientIdHelper();
 
     // private ResourceList<Message> mMessageList = new ResourceList<>();
     // TODO: Group onboarding messages logic in a private class? - confusing otherwise as more and more methods are used
@@ -81,6 +87,13 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     }
 
     @Override
+    public void onListItemClick(int messageType, Long id, Map<String, Object> messageData) {
+        if (mOptimisticMessageHelper.isOptimisticMessage(messageData)) {
+            mOptimisticMessageHelper.resendOptimisticMessage(messageData);
+        }
+    }
+
+    @Override
     public void setView(MessageListContainerContract.View view) {
         mView = view;
     }
@@ -111,10 +124,18 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             throw new AssertionError("If it is NOT a new conversation, conversation id should NOT be null");
         }
 
+        onSendReply(message);
+    }
+
+    private void onSendReply(String message) {
+        String clientId = mClientIdHelper.generateClientId(); // GENERATE Client Id
+
+        (mOptimisticMessageHelper).onClickSendInReplyView(message, clientId);
+
         if (mNewConversationHelper.isNewConversation()) {
-            mNewConversationHelper.onClickSendInReplyView(message);
+            (mNewConversationHelper).onClickSendInReplyView(message, clientId);
         } else {
-            mExistingConversationHelper.onClickSendInReplyView(message);
+            (mExistingConversationHelper).onClickSendInReplyView(message, clientId);
         }
     }
 
@@ -151,7 +172,9 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             mMessengerPrefHelper
                     .setUserInfo(
                             conversation.getCreator().getId(), // Assuming the current user is always the creator of conversation,
-                            conversation.getCreator().getFullName());
+                            conversation.getCreator().getFullName(),
+                            conversation.getCreator().getAvatarUrl()
+                    );
 
 
             // If originally new conversation, set as existing conversation
@@ -179,7 +202,10 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             // Set the new messages - includes incremental messages from pagination
             mExistingConversationHelper.addOrReplaceMessages(messageList); // TODO: mMessageList.addOrReplaceIfExisting(messageList);
 
-            //
+            // Remove optimisitc sending items
+            mOptimisticMessageHelper.removeOptimisticMessagesThatSuccessfullyGotSent(messageList);
+
+            // Display list once necessary changes to list data are made above
             mListHelper.displayList();
 
             // Once messages have been loaded AND displayed in view, mark the last message as read
@@ -210,22 +236,24 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             this.mListPageState = mListPageState;
         }
 
-        // TODO: Created a problem - The onboarding messages disappear
-
         public void displayList() {
             List<BaseListItem> allListItems = new ArrayList<>();
             List<BaseListItem> onboardingItems = mOnboardingHelper.getOnboardingListItemViews(); // Helper automatically checks if for new conversation, for originally new conversation or originally existing conversation
+            List<BaseListItem> optimisticSendingItems = mOptimisticMessageHelper.getOptimisticSendingListItems();
 
             if (mNewConversationHelper.isNewConversation()) {
                 allListItems.addAll(onboardingItems);
+                allListItems.addAll(optimisticSendingItems);
+
                 mView.setupListInMessageListingView(allListItems); // No empty state view for Conversation Helper
 
             } else {
                 allListItems.addAll(onboardingItems);
                 allListItems.addAll(getMessageAsListItemViews(mExistingConversationHelper.getMessages()));
+                allListItems.addAll(optimisticSendingItems);
 
                 if (allListItems.size() == 0) {
-                    mView.showEmptyViewInMessageListingView();
+                    // There should never be an empty state view shown! Leave it blank inviting customer to add stuff.
                 } else {
                     mView.setupListInMessageListingView(allListItems);
                 }
@@ -256,7 +284,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                                 null,
                                 UserDecorationHelper.getUserDecoration(message, mMessengerPrefHelper.getUserId()),
                                 null, // no channelDecoration
-                                DeliveryIndicatorHelper.getDeliveryIndicator(message, mMessengerPrefHelper.getUserId()), // TODO:
+                                DeliveryIndicatorHelper.getDeliveryIndicator(message), // TODO:
                                 message.getContentText(),
                                 message.getCreatedAt(),
                                 Collections.EMPTY_LIST, // TODO: Attachments
@@ -275,6 +303,69 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         }
     }
 
+    /**
+     * All logic involving optimistic sending
+     */
+    private class OptimisticMessageHelper implements OnClickSendReplyListener {
+        // TODO: Handle failure states and offer user to RESEND message
+
+        private OptimisticSendingHelper optimisticSendingHelper;
+
+        public OptimisticMessageHelper() {
+            optimisticSendingHelper = new OptimisticSendingHelper(mMessengerPrefHelper.getAvatar());
+        }
+
+        public List<BaseListItem> getOptimisticSendingListItems() {
+            return optimisticSendingHelper.getOptimisticMessages();
+        }
+
+        public void removeOptimisticMessagesThatSuccessfullyGotSent(List<Message> newMessages) {
+            for (Message message : newMessages) {
+                optimisticSendingHelper.removeOptimisticMessage(message.getClientId());
+            }
+        }
+
+        @Override
+        public void onClickSendInReplyView(String message, String clientId) {
+            optimisticSendingHelper.addOptimisticMessage(
+                    DeliveryIndicatorHelper.ClientDeliveryStatus.SENDING,
+                    message,
+                    clientId);
+
+            mListHelper.displayList(); // Display list with optimistic sending views
+        }
+
+        public boolean isOptimisticMessage(Map<String, Object> messageData) {
+            return optimisticSendingHelper.isOptimisticMessage(messageData);
+        }
+
+        public void resendOptimisticMessage(Map<String, Object> messageData) {
+            String clientId = optimisticSendingHelper.extractClientId(messageData);
+            OptimisticSendingHelper.OptimisticMessage optimisticMessage = optimisticSendingHelper.getOptimisticMessage(clientId);
+
+            if (optimisticMessage.getDeliveryStatus() == DeliveryIndicatorHelper.ClientDeliveryStatus.FAILED_TO_SEND) {
+                optimisticSendingHelper.removeOptimisticMessage(clientId);
+                if (optimisticMessage.getMessage() != null) {
+                    MessageListContainerPresenter.this.onSendReply(optimisticMessage.getMessage());
+                }
+
+                mListHelper.displayList();
+
+            } else {
+                // Do nothing if not FAILED_TO_SEND state
+            }
+        }
+
+        public void markAsFailed(String clientId) {
+            optimisticSendingHelper.markOptimisticMessageAsFailed(clientId);
+
+            mListHelper.displayList(); // Now that optimisitic values are changed, refresh view
+        }
+    }
+
+    /**
+     * All logic involved in marking a message as read
+     */
     private class MarkReadHelper {
 
         private AtomicBoolean useOriginalLastMessage = new AtomicBoolean(true);
@@ -372,7 +463,10 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
     }
 
-    private class ExistingConversationHelper {
+    /**
+     * All logic for loading existing conversation and messages of existing conversation and posting new message
+     */
+    private class ExistingConversationHelper implements OnClickSendReplyListener {
 
         private Long mConversationId;
         private AtomicReference<Conversation> mConversation = new AtomicReference<>();
@@ -418,9 +512,9 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             mData.getMessages(onLoadMessagesListener, mConversationId, 0, 10);
         }
 
-
-        public void onClickSendInReplyView(String message) {
-            mData.postNewMessage(mConversationId, message, new MessageListContainerContract.PostNewMessageCallback() {
+        @Override
+        public void onClickSendInReplyView(final String message, final String clientId) {
+            mData.postNewMessage(mConversationId, message, clientId, new MessageListContainerContract.PostNewMessageCallback() {
                 @Override
                 public void onSuccess(Message message) {
                     mMarkReadHelper.disableOriginalLastMessageMarked(); // Should be called before any list rendering is done
@@ -429,14 +523,16 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
                 @Override
                 public void onFailure(final String errorMessage) {
-                    mView.showToastMessage(errorMessage);
+                    mOptimisticMessageHelper.markAsFailed(clientId);
                 }
             });
         }
-
     }
 
-    private class NewConversationHelper {
+    /**
+     * All logic for handling a new conversation
+     */
+    private class NewConversationHelper implements OnClickSendReplyListener {
 
         private boolean mIsNewConversation;
 
@@ -448,7 +544,16 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             this.mIsNewConversation = mIsNewConversation;
         }
 
-        public void onClickSendInReplyView(String message) {
+        private String extractName(String email) {
+            return email.substring(0, email.indexOf("@"));
+        }
+
+        private String extractSubject(String message) {
+            return message; // Subject = first message sent in new conversation
+        }
+
+        @Override
+        public void onClickSendInReplyView(String message, String clientId) {
             String email = mMessengerPrefHelper.getEmail();
             if (email == null) {
                 throw new AssertionError("If it's a new conversation and email is null, the user should not have had the chance to send a reply!");
@@ -458,23 +563,19 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             String subject = extractSubject(message);
 
             // This method should only be called (during onboarding) when a new conversation needs to be made
-            mData.startNewConversation(new PostConversationBodyParams(name, email, subject, message), onLoadConversationListener);
+            mData.startNewConversation(new PostConversationBodyParams(name, email, subject, message, clientId), onLoadConversationListener);
             mListHelper.displayList();
-        }
-
-        private String extractName(String email) {
-            return email.substring(0, email.indexOf("@"));
-        }
-
-        private String extractSubject(String message) {
-            return message; // Subject = first message sent in new conversation
         }
     }
 
+    /**
+     * All logic involving saving user email and other information
+     */
     private class MessengerPrefHelper {
 
         private String mEmail;
         private Long mCurrentUserId;
+        private String mAvatar;
 
         public String getEmail() {
             if (mEmail == null) {
@@ -486,6 +587,18 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         public void setEmail(String email) {
             this.mEmail = email;
             MessengerPref.getInstance().setEmailId(email);
+        }
+
+        public String getAvatar() {
+            if (mAvatar == null) {
+                mAvatar = MessengerUserPref.getInstance().getAvatar(); // can be null too
+            }
+            return mAvatar;
+        }
+
+        public void setAvatar(String avatarUrl) {
+            this.mAvatar = avatarUrl;
+            MessengerUserPref.getInstance().setAvatar(avatarUrl);
         }
 
         public Long getUserId() {
@@ -500,17 +613,21 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             MessengerUserPref.getInstance().setUserId(currentUserId);
         }
 
-        private void setUserInfo(Long currentUserId, String fullName) {
-            if (currentUserId == null || currentUserId == 0 || fullName == null) {
+        private void setUserInfo(Long currentUserId, String fullName, String avatarUrl) {
+            if (currentUserId == null || currentUserId == 0 || fullName == null || avatarUrl == null) {
                 throw new IllegalArgumentException("Values can not be null!");
             }
 
             setUserId(currentUserId);
+            setAvatar(avatarUrl);
             MessengerUserPref.getInstance().setFullName(fullName);
         }
 
     }
 
+    /**
+     * All logic involving onboarding items that ask for email
+     */
     private class OnboardingHelper {
 
         // TODO: Varun wants email to be asked after the first message is sent?
@@ -611,5 +728,21 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         private void focusOnReplyBox() {
             mView.focusOnReplyBox(); // refocus on reply box for easy typing
         }
+    }
+
+
+    private class ClientIdHelper {
+
+        private final String PREFIX = "android-%s-%s";
+        private final String UUID_FOR_THIS_SESSION = UUID.randomUUID().toString();
+        private AtomicInteger counter = new AtomicInteger(0);
+
+        public String generateClientId() {
+            return String.format(PREFIX, UUID_FOR_THIS_SESSION, counter.incrementAndGet());
+        }
+    }
+
+    private interface OnClickSendReplyListener {
+        void onClickSendInReplyView(String message, String clientId);
     }
 }

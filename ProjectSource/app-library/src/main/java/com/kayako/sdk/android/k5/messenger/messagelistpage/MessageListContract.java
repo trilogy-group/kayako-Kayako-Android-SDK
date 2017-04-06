@@ -1,6 +1,7 @@
 package com.kayako.sdk.android.k5.messenger.messagelistpage;
 
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerAdapter;
 import com.kayako.sdk.android.k5.common.fragments.OnListPageStateChangeListener;
 import com.kayako.sdk.android.k5.common.fragments.OnScrollListListener;
 import com.kayako.sdk.android.k5.common.mvp.BasePresenter;
@@ -37,6 +38,8 @@ public class MessageListContract {
         void setOnListPageStateChangeListener(OnListPageStateChangeListener listener);
 
         void setOnListScrollListener(OnScrollListListener listener);
+
+        void setOnListItemClickListener(MessengerAdapter.OnItemClickListener listener);
     }
 
     public interface OnErrorListener {

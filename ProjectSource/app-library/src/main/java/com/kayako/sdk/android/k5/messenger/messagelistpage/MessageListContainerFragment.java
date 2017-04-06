@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.activities.KayakoSelectConversationActivity;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerAdapter;
 import com.kayako.sdk.android.k5.common.fragments.ListPageState;
 import com.kayako.sdk.android.k5.common.fragments.OnListPageStateChangeListener;
 import com.kayako.sdk.android.k5.common.fragments.OnScrollListListener;
@@ -19,6 +20,7 @@ import com.kayako.sdk.android.k5.messenger.replyboxview.ReplyBoxContract;
 import com.kayako.sdk.android.k5.messenger.toolbarview.MessengerToolbarContract;
 
 import java.util.List;
+import java.util.Map;
 
 public class MessageListContainerFragment extends Fragment implements MessageListContainerContract.View {
 
@@ -70,6 +72,13 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
             @Override
             public void onScrollList(boolean isScrolling, ScrollDirection direction) {
                 mPresenter.onScrollList(isScrolling, direction);
+            }
+        });
+
+        mMessageListView.setOnListItemClickListener(new MessengerAdapter.OnItemClickListener() {
+            @Override
+            public void onClickItem(int messageType, Long id, Map<String, Object> messageData) {
+                mPresenter.onListItemClick(messageType, id, messageData);
             }
         });
 

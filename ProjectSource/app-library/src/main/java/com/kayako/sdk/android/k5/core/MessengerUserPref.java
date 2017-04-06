@@ -7,8 +7,9 @@ public class MessengerUserPref {
 
     final private static String PREF_NAME = "kayako_messenger_user_info";
 
-    final private static String KEY_FULL_NAME = "full_name";
     final private static String KEY_CURRENT_USER_ID = "current_user_id";
+    final private static String KEY_FULL_NAME = "full_name";
+    final private static String KEY_AVATAR = "avatar";
 
     private static MessengerUserPref sInstance;
     private static SharedPreferences sPrefs;
@@ -39,6 +40,14 @@ public class MessengerUserPref {
         sPrefs.edit().putString(KEY_FULL_NAME, fullName).commit();
     }
 
+    public String getAvatar() {
+        return sPrefs.getString(KEY_AVATAR, null);
+    }
+
+    public void setAvatar(String avatarUrl) {
+        sPrefs.edit().putString(KEY_AVATAR, avatarUrl).commit();
+    }
+
     public Long getUserId() {
         long userId = sPrefs.getLong(KEY_CURRENT_USER_ID, 0);
         if (userId == 0) {
@@ -51,6 +60,7 @@ public class MessengerUserPref {
     public void setUserId(long userId) {
         sPrefs.edit().putLong(KEY_CURRENT_USER_ID, userId).commit();
     }
+
 
     public void clearAll() {
         sPrefs.edit().clear().apply();
