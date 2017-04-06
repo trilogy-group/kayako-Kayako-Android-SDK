@@ -372,5 +372,3 @@ public class DataItemHelper {
         return attachmentMessages;
     }
 }
-
-

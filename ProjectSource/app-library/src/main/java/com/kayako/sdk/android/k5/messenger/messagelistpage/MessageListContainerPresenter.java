@@ -1,5 +1,7 @@
 package com.kayako.sdk.android.k5.messenger.messagelistpage;
 
+import android.support.annotation.Nullable;
+
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.DataItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.DataItemHelper;
@@ -20,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Terms used:
@@ -31,10 +34,6 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
     private MessageListContainerContract.View mView;
     private MessageListContainerContract.Data mData;
-
-    private Long mConversationId;
-    private Conversation mConversation;
-    private ListPageState mListPageState;
 
     private MarkReadHelper mMarkReadHelper = new MarkReadHelper();
     private OnboardingHelper mOnboardingHelper = new OnboardingHelper();
@@ -65,8 +64,8 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
     @Override
     public void onPageStateChange(ListPageState state) {
-        mListPageState = state;
-        mReplyBoxHelper.configureReplyBoxVisibility();
+        mListHelper.setListPageState(state);
+        mReplyBoxHelper.configureReplyBoxVisibility(state);
     }
 
     @Override
@@ -92,11 +91,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
         mOnboardingHelper.setWasNewConversation(isNewConversation);
         mNewConversationHelper.setIsNewConversation(isNewConversation);
-        if (conversationId != null) {
-            mConversationId = conversationId;
-        }
-
-        // TODO: Ensure that the above two values are assigned early on
+        mExistingConversationHelper.setConversationId(conversationId);
 
         reloadPage(true);
     }
@@ -109,14 +104,16 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         // Collapse toolbar once a message has been sent!
         mView.collapseToolbar();
 
+        // Assertion: If it's existing conversation, then conversationId can not be null or invalid
+        if (!mNewConversationHelper.isNewConversation() &&
+                (mExistingConversationHelper.getConversationId() == null
+                        || mExistingConversationHelper.getConversationId() == 0)) {
+            throw new AssertionError("If it is NOT a new conversation, conversation id should NOT be null");
+        }
+
         if (mNewConversationHelper.isNewConversation()) {
             mNewConversationHelper.onClickSendInReplyView(message);
         } else {
-
-            // Assertion
-            if (mConversationId == null) {
-                throw new AssertionError("If it is NOT a new conversation, conversation id should NOT be null");
-            }
             mExistingConversationHelper.onClickSendInReplyView(message);
         }
     }
@@ -135,24 +132,20 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             mView.expandToolbar();
 
             // Load view
-            mListHelper.reloadMessages();
+            mListHelper.displayList();
         } else {
-            mExistingConversationHelper.reloadMessagesOfConversation(mConversationId);
-            mExistingConversationHelper.reloadConversation(mConversationId);
+            mExistingConversationHelper.reloadMessagesOfConversation();
+            mExistingConversationHelper.reloadConversation();
         }
 
-        mReplyBoxHelper.configureReplyBoxVisibility();
+        mReplyBoxHelper.configureReplyBoxVisibility(mListHelper.getListPageState());
     }
 
 
     MessageListContainerContract.OnLoadConversationListener onLoadConversationListener = new MessageListContainerContract.OnLoadConversationListener() {
         @Override
         public void onSuccess(Conversation conversation) {
-            // Update global variables
-            mConversation = conversation;
-            mConversationId = conversation.getId();
-
-            mMarkReadHelper.setOriginalLastMessageMarkedReadIfNotSetBefore(mConversation.getReadMarker() == null ? 0 : mConversation.getReadMarker().getLastReadPostId());
+            mMarkReadHelper.setOriginalLastMessageMarkedReadIfNotSetBefore(conversation.getReadMarker() == null ? 0 : conversation.getReadMarker().getLastReadPostId());
 
             // Update user details (creator of new conversation) - This has been done EVERY TIME to ensure that even if the current userid is lost due to any reason, a new conversation will get it back! - eg: using the same fingerprint for multiple users
             mMessengerPrefHelper
@@ -166,8 +159,12 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                 mNewConversationHelper.setIsNewConversation(false);
             }
 
+            // Update existing Conversation
+            mExistingConversationHelper.setConversationId(conversation.getId());
+            mExistingConversationHelper.setConversation(conversation);
+
             // Reload the messages of existing conversation
-            mExistingConversationHelper.reloadMessagesOfConversation(mConversationId);
+            mExistingConversationHelper.reloadMessagesOfConversation();
         }
 
         @Override
@@ -176,20 +173,105 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         }
     };
 
+    MessageListContainerContract.OnLoadMessagesListener onLoadMessagesListener = new MessageListContainerContract.OnLoadMessagesListener() {
+        @Override
+        public void onSuccess(List<Message> messageList) {
+            // Set the new messages - includes incremental messages from pagination
+            mExistingConversationHelper.addOrReplaceMessages(messageList); // TODO: mMessageList.addOrReplaceIfExisting(messageList);
+
+            //
+            mListHelper.displayList();
+
+            // Once messages have been loaded AND displayed in view, mark the last message as read
+            mMarkReadHelper.markLastMessageAsRead(
+                    mMarkReadHelper.extractLastMessageId(messageList),
+                    mExistingConversationHelper.getConversationId());
+        }
+
+        @Override
+        public void onFailure(String message) {
+            // TODO: Add conditions to show toast if load-more and show error view if offset=0
+            mView.showErrorViewInMessageListingView();
+        }
+    };
+
     /**
      * Logic to show onboarding messages, actual api messages, optimistic sending messages and KRE indicator messages
      */
     private class ListHelper {
 
+        private ListPageState mListPageState;
+
+        public ListPageState getListPageState() {
+            return mListPageState;
+        }
+
+        public void setListPageState(ListPageState mListPageState) {
+            this.mListPageState = mListPageState;
+        }
+
         // TODO: Created a problem - The onboarding messages disappear
 
-        public void reloadMessages() {
-            List<BaseListItem> onboardingItems = mOnboardingHelper.getOnboardingItems();
-            // TODO: Move the messsages listing too
-
+        public void displayList() {
             List<BaseListItem> allListItems = new ArrayList<>();
-            allListItems.addAll(0, onboardingItems);
-            mView.setupListInMessageListingView(allListItems);
+            List<BaseListItem> onboardingItems = mOnboardingHelper.getOnboardingListItemViews(); // Helper automatically checks if for new conversation, for originally new conversation or originally existing conversation
+
+            if (mNewConversationHelper.isNewConversation()) {
+                allListItems.addAll(onboardingItems);
+                mView.setupListInMessageListingView(allListItems); // No empty state view for Conversation Helper
+
+            } else {
+                allListItems.addAll(onboardingItems);
+                allListItems.addAll(getMessageAsListItemViews(mExistingConversationHelper.getMessages()));
+
+                if (allListItems.size() == 0) {
+                    mView.showEmptyViewInMessageListingView();
+                } else {
+                    mView.setupListInMessageListingView(allListItems);
+                }
+            }
+        }
+
+        private List<DataItem> convertMessagesToDataItems(List<Message> messageList) {
+            List<DataItem> dataItems = new ArrayList<>();
+
+            final long lastOriginalMessageMarkedRead = mMarkReadHelper.getOriginalLastMessageMarkedRead();
+            for (Message message : messageList) {
+
+                boolean isRead = false;
+                /* Note: Using MarkReadHelper and not Conversation variable directly because the unread status should be preserved
+                   That is, even though a conversation is marked read, the unread marker should not disappear until the user reopens the page!
+                 */
+                if (lastOriginalMessageMarkedRead != 0
+                        && lastOriginalMessageMarkedRead >= message.getId()) {
+                    isRead = true;
+                } else {
+                    isRead = false;
+                }
+
+                // TODO: Leverage client_ids for optimistic sending
+                dataItems.add(
+                        new DataItem(
+                                message.getId(),
+                                null,
+                                UserDecorationHelper.getUserDecoration(message, mMessengerPrefHelper.getUserId()),
+                                null, // no channelDecoration
+                                DeliveryIndicatorHelper.getDeliveryIndicator(message, mMessengerPrefHelper.getUserId()), // TODO:
+                                message.getContentText(),
+                                message.getCreatedAt(),
+                                Collections.EMPTY_LIST, // TODO: Attachments
+                                isRead
+                        )
+                );
+            }
+
+            return dataItems;
+        }
+
+        private List<BaseListItem> getMessageAsListItemViews(List<Message> messages) {
+            List<DataItem> dataItems = convertMessagesToDataItems(messages);
+            Collections.reverse(dataItems);
+            return DataItemHelper.getInstance().convertDataItemToListItems(dataItems);
         }
     }
 
@@ -292,98 +374,66 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
     private class ExistingConversationHelper {
 
-        private List<Message> messageList = new ArrayList<>();
-        // TODO: A list that automatically replaces old with new, sorts by id, etc
+        private Long mConversationId;
+        private AtomicReference<Conversation> mConversation = new AtomicReference<>();
+        private List<Message> messages = new ArrayList<>();
 
-        public void reloadConversation(final long conversationId) {
-            mData.getConversation(conversationId, onLoadConversationListener);
+        public Long getConversationId() {
+            return mConversationId;
         }
 
-        public void reloadMessagesOfConversation(final long conversationId) {
-            mData.getMessages(new MessageListContainerContract.OnLoadMessagesListener() {
-                @Override
-                public void onSuccess(List<Message> messageList) {
-                    ExistingConversationHelper.this.messageList = messageList;
-                    List<DataItem> dataItems = convertMessagesToDataItems(messageList);
-
-                    if (dataItems.size() == 0) {
-                        mView.showEmptyViewInMessageListingView();
-                    } else {
-                        // TODO: mMessageList.addOrReplaceIfExisting(messageList);
-
-                        Collections.reverse(dataItems);
-                        List<BaseListItem> baseListItems = DataItemHelper.getInstance().convertDataItemToListItems(dataItems);
-
-                        baseListItems.addAll(0, mOnboardingHelper.getOnboardingItems());
-
-                        mView.setupListInMessageListingView(baseListItems);
-
-                        // Once messages have been loaded AND displayed in view, mark the last message as read
-                        mMarkReadHelper.markLastMessageAsRead(
-                                mMarkReadHelper.extractLastMessageId(messageList),
-                                conversationId);
-                    }
-                }
-
-                @Override
-                public void onFailure(String message) {
-                    // TODO: Add conditions to show toast if load-more and show error view if offset=0
-                    mView.showErrorViewInMessageListingView();
-                }
-            }, conversationId, 0, 10);
+        public void setConversationId(Long conversationId) {
+            this.mConversationId = conversationId;
         }
 
-        private List<DataItem> convertMessagesToDataItems(List<Message> messageList) {
-            List<DataItem> dataItems = new ArrayList<>();
+        public void setConversation(Conversation conversation) {
+            this.mConversation.set(conversation);
+        }
 
-            final long lastOriginalMessageMarkedRead = mMarkReadHelper.getOriginalLastMessageMarkedRead();
-            for (Message message : messageList) {
+        public Conversation getConversation() {
+            return mConversation.get();
+        }
 
-                boolean isRead = false;
-                /* Note: Using MarkReadHelper and not Conversation variable directly because the unread status should be preserved
-                   That is, even though a conversation is marked read, the unread marker should not disappear until the user reopens the page!
-                 */
-                if (lastOriginalMessageMarkedRead != 0
-                        && lastOriginalMessageMarkedRead >= message.getId()) {
-                    isRead = true;
-                } else {
-                    isRead = false;
-                }
+        public void addOrReplaceMessages(List<Message> messageList) {
+            this.messages = messageList; // TODO: Your own resource list! Although a list with order, no 2 ids can conflict!
+        }
 
-                // TODO: Leverage client_ids for optimistic sending
-                dataItems.add(
-                        new DataItem(
-                                message.getId(),
-                                null,
-                                UserDecorationHelper.getUserDecoration(message, mMessengerPrefHelper.getUserId()),
-                                null, // no channelDecoration
-                                DeliveryIndicatorHelper.getDeliveryIndicator(message, mMessengerPrefHelper.getUserId()), // TODO:
-                                message.getContentText(),
-                                message.getCreatedAt(),
-                                Collections.EMPTY_LIST, // TODO: Attachments
-                                isRead
-                        )
-                );
+        public List<Message> getMessages() {
+            return messages;
+        }
+
+        public void reloadConversation() {
+            if (mConversationId == null || mConversationId == 0) {
+                throw new AssertionError("ConversationId must be valid to call this method!");
             }
 
-            return dataItems;
+            mData.getConversation(mConversationId, onLoadConversationListener);
         }
+
+        public void reloadMessagesOfConversation() {
+            if (mConversationId == null || mConversationId == 0) {
+                throw new AssertionError("ConversationId must be valid to call this method!");
+            }
+
+            mData.getMessages(onLoadMessagesListener, mConversationId, 0, 10);
+        }
+
 
         public void onClickSendInReplyView(String message) {
             mData.postNewMessage(mConversationId, message, new MessageListContainerContract.PostNewMessageCallback() {
                 @Override
                 public void onSuccess(Message message) {
                     mMarkReadHelper.disableOriginalLastMessageMarked(); // Should be called before any list rendering is done
-                    mExistingConversationHelper.reloadMessagesOfConversation(mConversationId);
+                    mExistingConversationHelper.reloadMessagesOfConversation();
                 }
 
                 @Override
                 public void onFailure(final String errorMessage) {
-                    // TODO: show error message
                     mView.showToastMessage(errorMessage);
                 }
             });
         }
+
     }
 
     private class NewConversationHelper {
@@ -409,7 +459,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
             // This method should only be called (during onboarding) when a new conversation needs to be made
             mData.startNewConversation(new PostConversationBodyParams(name, email, subject, message), onLoadConversationListener);
-            mListHelper.reloadMessages();
+            mListHelper.displayList();
         }
 
         private String extractName(String email) {
@@ -472,7 +522,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             mWasNewConversation = isNewConversation; //  Since a new conversation can become a new conversation, we need to remember original state
         }
 
-        public List<BaseListItem> getOnboardingItems() {
+        public List<BaseListItem> getOnboardingListItemViews() {
             if (mWasNewConversation && mMessengerPrefHelper.getEmail() == null) { // New conversation (first time) where email is unknown
                 mOnboardingItems = generateOnboardingMessagesAskingForEmail();
                 mWasEmailAskedInThisConversation = true;
@@ -480,6 +530,10 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                 mOnboardingItems = generateOnboardingMessagesWithPrefilledEmail();
             } else { // New conversation (not the first time)
                 mOnboardingItems = generateOnboardingMessagesWithoutEmail();
+            }
+
+            if (mOnboardingItems == null) {
+                throw new AssertionError("Onboarding items should be a proper list, size = 0 is acceptable, null is not!");
             }
 
             return mOnboardingItems;
@@ -493,10 +547,10 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                 public void onClickSubmit(String email) {
                     mMessengerPrefHelper.setEmail(email);
 
-                    mReplyBoxHelper.configureReplyBoxVisibility();
+                    mReplyBoxHelper.configureReplyBoxVisibility(mListHelper.getListPageState());
                     mReplyBoxHelper.focusOnReplyBox(); // Immediately after the Email is entered, the reply box should be focused upon for more information
 
-                    mListHelper.reloadMessages();
+                    mListHelper.displayList();
                 }
             }));
             return baseListItems;
@@ -523,9 +577,9 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         /**
          * Anywhere on this class, by calling one method, configureReplyBoxVisibility(), the reply box will make the necessary checks to alter it's visibility
          */
-        public void configureReplyBoxVisibility() {
-            if (mListPageState != null) {
-                switch (mListPageState) {
+        public void configureReplyBoxVisibility(@Nullable ListPageState listPageState) {
+            if (listPageState != null) {
+                switch (listPageState) {
                     case LIST:
                         if (mNewConversationHelper.isNewConversation()) { // Starting a new Conversation
                             if (mMessengerPrefHelper.getEmail() == null) { // Email step is yet to be entered (Reply box shouldn't be shown until the email is known

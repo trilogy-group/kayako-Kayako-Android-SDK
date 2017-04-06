@@ -103,20 +103,21 @@ public class DeliveryIndicatorHelper {
     }
 
     private static void setDeliveryIndicatorStatus(DeliveryIndicator deliveryIndicator, BaseDeliveryIndicatorViewHolder deliveryIndicatorViewHolder) {
-        if (deliveryIndicator.getDeliveryStatusTextResId() != null) {
+        if (deliveryIndicator.getDeliveryStatusTextResId() == null) {
+            deliveryIndicatorViewHolder.deliveryIndicatorText.setVisibility(View.GONE);
+        } else {
             deliveryIndicatorViewHolder.deliveryIndicatorText.setText(deliveryIndicator.getDeliveryStatusTextResId());
             deliveryIndicatorViewHolder.deliveryIndicatorText.setVisibility(View.VISIBLE);
-        } else {
-            deliveryIndicatorViewHolder.deliveryIndicatorText.setVisibility(View.GONE);
         }
     }
 
     private static void setDeliveryIndicatorIcon(DeliveryIndicator deliveryIndicator, BaseDeliveryIndicatorViewHolder deliveryIndicatorViewHolder) {
-        if (deliveryIndicator.getDeliveryStatusIconResId() != null) {
+        if (deliveryIndicator.getDeliveryStatusIconResId() == null) {
+            deliveryIndicatorViewHolder.deliveryIndicatorIcon.setVisibility(View.GONE);
+        } else {
             deliveryIndicatorViewHolder.deliveryIndicatorIcon.setImageResource(deliveryIndicator.getDeliveryStatusIconResId());
             deliveryIndicatorViewHolder.deliveryIndicatorIcon.setVisibility(View.VISIBLE);
-        } else {
-            deliveryIndicatorViewHolder.deliveryIndicatorIcon.setVisibility(View.GONE);
+
         }
     }
 

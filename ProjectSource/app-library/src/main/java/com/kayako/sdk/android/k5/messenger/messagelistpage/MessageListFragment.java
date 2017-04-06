@@ -22,6 +22,7 @@ public class MessageListFragment extends MessengerListFragment implements Messag
     private OnListPageStateChangeListener mOnListPageStateChangeListener;
     private MessageListContract.OnErrorListener mErrorListener;
     private OnScrollListListener mOnScrollListener;
+    private boolean isListAlreadyInitialized;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,25 +62,19 @@ public class MessageListFragment extends MessengerListFragment implements Messag
 
     @Override
     public void setupList(List<BaseListItem> messageList) {
-        // TODO: Test pre-submitted value
-        // messageList.add(new InputEmailListItem("prefilled@yeah.com"));
+        if (messageList == null) {
+            throw new IllegalStateException("Null argument unacceptable!");
+        }
 
-        // TODO: Testing Submit button
-        /*messageList.add(new InputEmailListItem(new InputEmailListItem.OnClickSubmitListener() {
-            @Override
-            public void onClickSubmit(String email) {
-                Toast.makeText(getContext(), "SUBMIT WORKS", Toast.LENGTH_SHORT).show();
-            }
-        }));*/
+        if (isListAlreadyInitialized) {
+            replaceMessengerList(messageList);
+        } else {
+            initMessengerList(messageList);
+            super.addScrollListListener(mOnScrollListener);
+            isListAlreadyInitialized = true;
+        }
 
-        // TODO: Testing BOT Message
-        /*messageList.add(new BotMessageListItem("What would you like to talk about?", 0, null));*/
-
-        initMessengerList(messageList);
         showListViewAndHideOthers();
-
-        super.addScrollListListener(mOnScrollListener);
-        // TODO: Pagination
     }
 
     @Override
