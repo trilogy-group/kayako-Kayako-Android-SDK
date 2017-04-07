@@ -381,23 +381,24 @@ public class MessageListContainerPresenter implements MessageListContainerContra
      */
     private class MarkReadHelper {
 
-        private AtomicBoolean useOriginalLastMessage = new AtomicBoolean(true);
-        private AtomicLong originalLastMessageMarkedRead = new AtomicLong(0); // the getOriginalLastMessageMarkedReadlatest message that was read (only when this page is opened, should not update later!)
-        private AtomicLong lastMessageMarkedRead = new AtomicLong(0); // the latest message that has been read (constantly updates are the latest messages gets read)
+        private AtomicBoolean mUseOriginalLastMessage = new AtomicBoolean(true);
+        private AtomicLong mOriginalLastMessageMarkedRead = new AtomicLong(0); // the getOriginalLastMessageMarkedReadlatest message that was read (only when this page is opened, should not update later!)
+        private AtomicLong mLastMessageMarkedReadSuccessfully = new AtomicLong(0); // the latest message that has been read (constantly updates as the latest messages gets loaded and read)
+        private AtomicLong mLastMessageBeingMarkedRead = new AtomicLong(0); // the latest message that is being marked read (created to prevent multiple network requests being made for same id)
 
         // TODO: When KRE is implemented, ensure the messages and conversartion is not reloaded unless there is a change made!
         // This should be done because the app is already making requests on its own
 
         /**
-         * Call this to set the lastMessageMarkedRead.
+         * Call this to set the mLastMessageMarkedReadSuccessfully.
          * This method only sets the value if it hasn't been set before, thus ensuring only the original is saved
          *
          * @param lastMessageMarkedRead
          */
         public void setOriginalLastMessageMarkedReadIfNotSetBefore(Long lastMessageMarkedRead) {
             // Set the original last message read (This will be the first non-zero value set)
-            if (originalLastMessageMarkedRead.get() == 0) {
-                originalLastMessageMarkedRead.set(lastMessageMarkedRead);
+            if (mOriginalLastMessageMarkedRead.get() == 0) {
+                mOriginalLastMessageMarkedRead.set(lastMessageMarkedRead);
             }
         }
 
@@ -405,8 +406,8 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             // Save the unread marker so that it doesn't go away when conversation is reloaded.
             // Instead, it should only be reset when the user leaves the conversation.
             // Code should rely on this presaved value, and not the conversation variable to check read marker status
-            if (useOriginalLastMessage.get()) {
-                return originalLastMessageMarkedRead.get();
+            if (mUseOriginalLastMessage.get()) {
+                return mOriginalLastMessageMarkedRead.get();
             } else {
                 return 0; // If original last message is not used, then no read marker should be shown!
             }
@@ -419,7 +420,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
          * @return
          */
         public void disableOriginalLastMessageMarked() {
-            useOriginalLastMessage.set(false);
+            mUseOriginalLastMessage.set(false);
         }
 
         /**
@@ -435,19 +436,27 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                 return false;
             }
 
-            // If there is nothing new to update, skip to prevent multiple API calls to mark same message as read
-            if (this.lastMessageMarkedRead.get() == lastMessageMarkedRead) {
+            // If an earlier message (say id=120) needs to be marked as read, when the latest message is already marked read (id=150), then skip.
+            if (lastMessageMarkedRead < mLastMessageMarkedReadSuccessfully.get() // Prevents redundant calls as we load more messages
+                    || lastMessageMarkedRead < mOriginalLastMessageMarkedRead.get()) { // Prevents marking read an earlier message than the message in conversation resource read marker node
                 return false;
             }
 
+            if (this.mLastMessageMarkedReadSuccessfully.get() == lastMessageMarkedRead // Prevents redundant calls as we mark the same message as read again and again (while
+                    || lastMessageMarkedRead == mLastMessageBeingMarkedRead.get()) { // Prevents redundant calls as we mark the same message as read again and again (while it is being marked)
+                return false;
+            }
+
+
             // Call API to mark message read
+            mLastMessageBeingMarkedRead.set(lastMessageMarkedRead);
             mData.markMessageAsRead(conversationId,
                     lastMessageMarkedRead,
                     new MessageListContainerContract.OnMarkMessageAsReadListener() {
                         @Override
                         public void onSuccess() {
                             // Set last read message
-                            MarkReadHelper.this.lastMessageMarkedRead.set(lastMessageMarkedRead);
+                            MarkReadHelper.this.mLastMessageMarkedReadSuccessfully.set(lastMessageMarkedRead);
                         }
 
                         @Override
@@ -512,6 +521,8 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             if (newMessages.size() == 0) {
                 hasMoreMessages.set(false);
             } else if (newMessages.size() < LIMIT) {
+                hasMoreMessages.set(false);
+            } else if (newMessages.size() == LIMIT) {
                 hasMoreMessages.set(true);
             } else {
                 // new messages should never be more than the limit. API BUG!
