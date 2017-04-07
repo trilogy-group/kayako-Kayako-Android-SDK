@@ -64,7 +64,7 @@ public class DataItemHelper {
             }
 
             // Assertions on time
-            if (previousDataItem != null && previousDataItem.getTimeInMilliseconds() > currentDataItem.getTimeInMilliseconds()) {
+            if (previousDataItem != null && !areItemsInDescendingOrderOfTimeCreated(previousDataItem.getTimeInMilliseconds(), currentDataItem.getTimeInMilliseconds())) {
                 throw new AssertionError("The list is not sorted by time! Should be in descending order of creation time with newest item on top of list");
             }
 
@@ -370,5 +370,24 @@ public class DataItemHelper {
         }
 
         return attachmentMessages;
+    }
+
+    private boolean areItemsInDescendingOrderOfTimeCreated(long previousTimeInMilliseconds, long currentTimeInMilliseconds) {
+        /*
+           ## PROBLEM:
+            NOTICED that sometimes, the previous message has a lastCreatedAt time a few seconds AFTER the current message's lastCreatedAt
+            - Previous Time in Milliseconds: 1491558789000
+            - Next Time in Milliseconds: 1491558788000
+            = Which means the previous message was created AFTER the next message?
+
+          ## SOLUTION:
+            Compare in terms of minutes.
+         */
+
+        long previousTimeInMinutes = previousTimeInMilliseconds / (60 * 1000);
+        long currentTimeInMinutes = currentTimeInMilliseconds / (60 * 1000);
+
+
+        return currentTimeInMinutes >= previousTimeInMinutes; // current item more recently created than previous item
     }
 }
