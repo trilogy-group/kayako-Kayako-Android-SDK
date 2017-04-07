@@ -207,6 +207,11 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     MessageListContainerContract.OnLoadMessagesListener onLoadMessagesListener = new MessageListContainerContract.OnLoadMessagesListener() {
         @Override
         public void onSuccess(List<Message> messageList, int offset) {
+            // if first time the page was loaded, scroll to bottom of list
+            if (mExistingMessagesHelper.getLastSuccessfulOffset() == 0) { // don't only rely on offset (which can mean reloading recent messages)
+                mView.scrollToBottomOfList();
+            }
+
             mExistingMessagesHelper.onLoadNextMessages(messageList, offset);
 
             // Remove optimisitc sending items
@@ -214,11 +219,6 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
             // Display list once necessary changes to list data are made above
             mListHelper.displayList();
-
-            // if first time the page was loaded
-            if (mExistingMessagesHelper.getLastSuccessfulOffset() == 0) { // don't use offset (which can mean reloading recent messages)
-                mView.scrollToBottomOfList();
-            }
 
             // Once messages have been loaded AND displayed in view, mark the last message as read
             mMarkReadHelper.markLastMessageAsRead(
