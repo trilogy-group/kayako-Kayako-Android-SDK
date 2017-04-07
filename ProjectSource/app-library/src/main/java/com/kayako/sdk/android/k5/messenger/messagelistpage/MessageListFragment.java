@@ -8,6 +8,7 @@ import android.view.View;
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.activities.KayakoSelectConversationActivity;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.adapter.loadmorelist.EndlessRecyclerViewScrollAdapter;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerAdapter;
 import com.kayako.sdk.android.k5.common.fragments.ListPageState;
 import com.kayako.sdk.android.k5.common.fragments.MessengerListFragment;
@@ -16,7 +17,6 @@ import com.kayako.sdk.android.k5.common.fragments.OnScrollListListener;
 import com.kayako.sdk.android.k5.core.Kayako;
 
 import java.util.List;
-import java.util.Map;
 
 public class MessageListFragment extends MessengerListFragment implements MessageListContract.View, MessageListContract.ConfigureView {
 
@@ -24,6 +24,7 @@ public class MessageListFragment extends MessengerListFragment implements Messag
     private MessengerAdapter.OnItemClickListener mOnItemClickListener;
     private OnListPageStateChangeListener mOnListPageStateChangeListener;
     private MessageListContract.OnErrorListener mErrorListener;
+    private EndlessRecyclerViewScrollAdapter.OnLoadMoreListener mLoadMoreListener;
     private OnScrollListListener mOnScrollListener;
     private boolean isListAlreadyInitialized;
 
@@ -64,8 +65,16 @@ public class MessageListFragment extends MessengerListFragment implements Messag
         mPresenter.closePage();
     }
 
+    private boolean hasPageLoaded(){
+        return isAdded();
+    }
+
     @Override
     public void setupList(List<BaseListItem> messageList) {
+        if(!hasPageLoaded()){
+            return;
+        }
+
         if (messageList == null) {
             throw new IllegalStateException("Null argument unacceptable!");
         }
@@ -74,8 +83,15 @@ public class MessageListFragment extends MessengerListFragment implements Messag
             replaceMessengerList(messageList);
         } else {
             initMessengerList(messageList);
-            super.setOnItemClickListener(mOnItemClickListener);
-            super.addScrollListListener(mOnScrollListener);
+            if (mOnItemClickListener != null) {
+                super.setOnItemClickListener(mOnItemClickListener);
+            }
+            if (mOnScrollListener != null) {
+                super.addScrollListListener(mOnScrollListener);
+            }
+            if (mLoadMoreListener != null) {
+                super.setLoadMoreListener(mLoadMoreListener);
+            }
             isListAlreadyInitialized = true;
         }
 
@@ -83,12 +99,58 @@ public class MessageListFragment extends MessengerListFragment implements Messag
     }
 
     @Override
+    public void setHasMoreItemsToLoad(boolean hasMoreItems) {
+        if(!hasPageLoaded()){
+            return;
+        }
+
+        super.setHasMoreItems(hasMoreItems);
+    }
+
+    @Override
+    public void showLoadMoreView() {
+        if(!hasPageLoaded()){
+            return;
+        }
+
+        super.showLoadMoreProgress();
+
+    }
+
+    @Override
+    public void hideLoadMoreView() {
+        if(!hasPageLoaded()){
+            return;
+        }
+
+        super.hideLoadMoreProgress();
+    }
+
+    @Override
+    public void scrollToBottomOfList() {
+        if(!hasPageLoaded()){
+            return;
+        }
+
+        super.scrollToEndOfList();
+    }
+
+
+    @Override
     public void showEmptyView() {
+        if(!hasPageLoaded()){
+            return;
+        }
+
         showEmptyViewAndHideOthers();
     }
 
     @Override
     public void showErrorView() {
+        if(!hasPageLoaded()){
+            return;
+        }
+
         Context context = Kayako.getApplicationContext();
 
         if (mErrorListener != null) {
@@ -104,6 +166,10 @@ public class MessageListFragment extends MessengerListFragment implements Messag
 
     @Override
     public void showLoadingView() {
+        if(!hasPageLoaded()){
+            return;
+        }
+
         showLoadingViewAndHideOthers();
     }
 
@@ -120,6 +186,11 @@ public class MessageListFragment extends MessengerListFragment implements Messag
     @Override
     public void setOnListItemClickListener(MessengerAdapter.OnItemClickListener listener) {
         mOnItemClickListener = listener;
+    }
+
+    @Override
+    public void setOnLoadMoreListener(EndlessRecyclerViewScrollAdapter.OnLoadMoreListener listener) {
+        mLoadMoreListener = listener;
     }
 
     @Override

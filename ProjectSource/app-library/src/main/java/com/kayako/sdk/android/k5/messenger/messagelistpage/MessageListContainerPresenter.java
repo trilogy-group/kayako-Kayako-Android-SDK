@@ -7,6 +7,7 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.DataItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.DataItemHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.DeliveryIndicatorHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.OptimisticSendingHelper;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.UniqueResourceList;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.UserDecorationHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.BotMessageListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputEmailListItem;
@@ -48,8 +49,9 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private ListHelper mListHelper = new ListHelper();
     private OptimisticMessageHelper mOptimisticMessageHelper = new OptimisticMessageHelper();
     private ClientIdHelper mClientIdHelper = new ClientIdHelper();
+    private ExistingMessagesHelper mExistingMessagesHelper = new ExistingMessagesHelper();
 
-    // private ResourceList<Message> mMessageList = new ResourceList<>();
+    // private UniqueResourceList<Message> mMessageList = new UniqueResourceList<>();
     // TODO: Group onboarding messages logic in a private class? - confusing otherwise as more and more methods are used
     // TODO: Mark conversation as READ - add API Endpoint to Java SDK too.
 
@@ -90,6 +92,13 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     public void onListItemClick(int messageType, Long id, Map<String, Object> messageData) {
         if (mOptimisticMessageHelper.isOptimisticMessage(messageData)) {
             mOptimisticMessageHelper.resendOptimisticMessage(messageData);
+        }
+    }
+
+    @Override
+    public void onLoadMoreItems() {
+        if (!mNewConversationHelper.isNewConversation()) {
+            mExistingMessagesHelper.loadNextMessages(mExistingConversationHelper.getConversationId());
         }
     }
 
@@ -155,13 +164,12 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             // Load view
             mListHelper.displayList();
         } else {
-            mExistingConversationHelper.reloadMessagesOfConversation();
             mExistingConversationHelper.reloadConversation();
+            mExistingMessagesHelper.reloadLatestMessages(mExistingConversationHelper.getConversationId());
         }
 
         mReplyBoxHelper.configureReplyBoxVisibility(mListHelper.getListPageState());
     }
-
 
     MessageListContainerContract.OnLoadConversationListener onLoadConversationListener = new MessageListContainerContract.OnLoadConversationListener() {
         @Override
@@ -187,7 +195,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             mExistingConversationHelper.setConversation(conversation);
 
             // Reload the messages of existing conversation
-            mExistingConversationHelper.reloadMessagesOfConversation();
+            mExistingMessagesHelper.reloadLatestMessages(conversation.getId());
         }
 
         @Override
@@ -198,15 +206,19 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
     MessageListContainerContract.OnLoadMessagesListener onLoadMessagesListener = new MessageListContainerContract.OnLoadMessagesListener() {
         @Override
-        public void onSuccess(List<Message> messageList) {
-            // Set the new messages - includes incremental messages from pagination
-            mExistingConversationHelper.addOrReplaceMessages(messageList); // TODO: mMessageList.addOrReplaceIfExisting(messageList);
+        public void onSuccess(List<Message> messageList, int offset) {
+            mExistingMessagesHelper.onLoadNextMessages(messageList, offset);
 
             // Remove optimisitc sending items
             mOptimisticMessageHelper.removeOptimisticMessagesThatSuccessfullyGotSent(messageList);
 
             // Display list once necessary changes to list data are made above
             mListHelper.displayList();
+
+            // if first time the page was loaded
+            if (mExistingMessagesHelper.getLastSuccessfulOffset() == 0) { // don't use offset (which can mean reloading recent messages)
+                mView.scrollToBottomOfList();
+            }
 
             // Once messages have been loaded AND displayed in view, mark the last message as read
             mMarkReadHelper.markLastMessageAsRead(
@@ -216,10 +228,11 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
         @Override
         public void onFailure(String message) {
-            // TODO: Add conditions to show toast if load-more and show error view if offset=0
+            // TODO: Add conditions to show toast if load-more and show error view if lastSuccessfulOffset=0
             mView.showErrorViewInMessageListingView();
         }
     };
+
 
     /**
      * Logic to show onboarding messages, actual api messages, optimistic sending messages and KRE indicator messages
@@ -246,16 +259,17 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                 allListItems.addAll(optimisticSendingItems);
 
                 mView.setupListInMessageListingView(allListItems); // No empty state view for Conversation Helper
-
+                mView.setHasMoreItems(false);
             } else {
                 allListItems.addAll(onboardingItems);
-                allListItems.addAll(getMessageAsListItemViews(mExistingConversationHelper.getMessages()));
+                allListItems.addAll(getMessageAsListItemViews(mExistingMessagesHelper.getMessages()));
                 allListItems.addAll(optimisticSendingItems);
 
                 if (allListItems.size() == 0) {
                     // There should never be an empty state view shown! Leave it blank inviting customer to add stuff.
                 } else {
                     mView.setupListInMessageListingView(allListItems);
+                    mView.setHasMoreItems(mExistingMessagesHelper.hasMoreMessages());
                 }
             }
         }
@@ -298,7 +312,6 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
         private List<BaseListItem> getMessageAsListItemViews(List<Message> messages) {
             List<DataItem> dataItems = convertMessagesToDataItems(messages);
-            Collections.reverse(dataItems);
             return DataItemHelper.getInstance().convertDataItemToListItems(dataItems);
         }
     }
@@ -464,13 +477,69 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     }
 
     /**
+     * All logic involving retrieving messages of an existing conversation which includes pagination.
+     */
+    private class ExistingMessagesHelper {
+
+        private UniqueResourceList<Message> messages = new UniqueResourceList<>();
+        private final int LIMIT = 30;
+        private AtomicInteger lastSuccessfulOffset = new AtomicInteger(0);
+        private AtomicBoolean hasMoreMessages = new AtomicBoolean(true);
+
+        public int getLastSuccessfulOffset() {
+            return lastSuccessfulOffset.get();
+        }
+
+        public List<Message> getMessages() {
+            return messages.getList();
+        }
+
+        public void reloadLatestMessages(long conversationId) {
+            mData.getMessages(onLoadMessagesListener, conversationId, 0, LIMIT);
+        }
+
+        public void loadNextMessages(long conversationId) {
+            mView.showLoadMoreView();
+            mData.getMessages(onLoadMessagesListener, conversationId, lastSuccessfulOffset.get() + LIMIT, LIMIT);
+        }
+
+        public void onLoadNextMessages(List<Message> newMessages, int offset) {
+            if (offset != 0) {
+                mView.hideLoadMoreView();
+            }
+
+            // Check if hasMore
+            if (newMessages.size() == 0) {
+                hasMoreMessages.set(false);
+            } else if (newMessages.size() < LIMIT) {
+                hasMoreMessages.set(true);
+            } else {
+                // new messages should never be more than the limit. API BUG!
+            }
+
+            // Set last successful offset if it's greater than the current one
+            if (offset > lastSuccessfulOffset.get()) {
+                lastSuccessfulOffset.set(offset);
+            }
+
+            // Add new messages to messageList
+            for (Message newMessage : newMessages) {
+                messages.addElement(newMessage.getId(), newMessage);
+            }
+        }
+
+        public boolean hasMoreMessages() {
+            return hasMoreMessages.get();
+        }
+    }
+
+    /**
      * All logic for loading existing conversation and messages of existing conversation and posting new message
      */
     private class ExistingConversationHelper implements OnClickSendReplyListener {
 
         private Long mConversationId;
         private AtomicReference<Conversation> mConversation = new AtomicReference<>();
-        private List<Message> messages = new ArrayList<>();
 
         public Long getConversationId() {
             return mConversationId;
@@ -488,14 +557,6 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             return mConversation.get();
         }
 
-        public void addOrReplaceMessages(List<Message> messageList) {
-            this.messages = messageList; // TODO: Your own resource list! Although a list with order, no 2 ids can conflict!
-        }
-
-        public List<Message> getMessages() {
-            return messages;
-        }
-
         public void reloadConversation() {
             if (mConversationId == null || mConversationId == 0) {
                 throw new AssertionError("ConversationId must be valid to call this method!");
@@ -504,21 +565,13 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             mData.getConversation(mConversationId, onLoadConversationListener);
         }
 
-        public void reloadMessagesOfConversation() {
-            if (mConversationId == null || mConversationId == 0) {
-                throw new AssertionError("ConversationId must be valid to call this method!");
-            }
-
-            mData.getMessages(onLoadMessagesListener, mConversationId, 0, 10);
-        }
-
         @Override
         public void onClickSendInReplyView(final String message, final String clientId) {
             mData.postNewMessage(mConversationId, message, clientId, new MessageListContainerContract.PostNewMessageCallback() {
                 @Override
                 public void onSuccess(Message message) {
                     mMarkReadHelper.disableOriginalLastMessageMarked(); // Should be called before any list rendering is done
-                    mExistingConversationHelper.reloadMessagesOfConversation();
+                    mExistingMessagesHelper.reloadLatestMessages(mConversationId);
                 }
 
                 @Override

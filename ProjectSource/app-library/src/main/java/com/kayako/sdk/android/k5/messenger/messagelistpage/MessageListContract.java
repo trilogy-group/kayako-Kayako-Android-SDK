@@ -1,6 +1,7 @@
 package com.kayako.sdk.android.k5.messenger.messagelistpage;
 
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.adapter.loadmorelist.EndlessRecyclerViewScrollAdapter;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerAdapter;
 import com.kayako.sdk.android.k5.common.fragments.OnListPageStateChangeListener;
 import com.kayako.sdk.android.k5.common.fragments.OnScrollListListener;
@@ -40,6 +41,16 @@ public class MessageListContract {
         void setOnListScrollListener(OnScrollListListener listener);
 
         void setOnListItemClickListener(MessengerAdapter.OnItemClickListener listener);
+
+        void setOnLoadMoreListener(EndlessRecyclerViewScrollAdapter.OnLoadMoreListener listener);
+
+        void setHasMoreItemsToLoad(boolean hasMoreItems);
+
+        void showLoadMoreView();
+
+        void hideLoadMoreView();
+
+        void scrollToBottomOfList();
     }
 
     public interface OnErrorListener {

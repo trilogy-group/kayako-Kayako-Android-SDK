@@ -59,7 +59,7 @@ public class MessageListContainerRepository implements MessageListContainerContr
     }
 
     @Override
-    public void getMessages(final MessageListContainerContract.OnLoadMessagesListener listener, long conversationId, int offset, int limit) {
+    public void getMessages(final MessageListContainerContract.OnLoadMessagesListener listener, long conversationId, final int offset, int limit) {
         final Handler handler = new Handler(); // Needed to ensure that the callbacks run on the UI Thread
         mMessenger.getMessages(conversationId, offset, limit, new ListCallback<Message>() {
             @Override
@@ -68,7 +68,7 @@ public class MessageListContainerRepository implements MessageListContainerContr
                     @Override
                     public void run() {
                         if (listener != null) {
-                            listener.onSuccess(items);
+                            listener.onSuccess(items, offset);
                         }
                     }
                 });

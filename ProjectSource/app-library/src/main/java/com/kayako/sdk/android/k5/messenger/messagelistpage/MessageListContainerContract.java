@@ -55,6 +55,14 @@ public class MessageListContainerContract {
         void collapseToolbar();
 
         void expandToolbar();
+
+        void setHasMoreItems(boolean hasMoreItems);
+
+        void showLoadMoreView();
+
+        void hideLoadMoreView();
+
+        void scrollToBottomOfList();
     }
 
     public interface Presenter extends BasePresenter<MessageListContainerContract.View> {
@@ -72,6 +80,8 @@ public class MessageListContainerContract {
         void onScrollList(boolean isScrolling, OnScrollListListener.ScrollDirection direction);
 
         void onListItemClick(int messageType, Long id, Map<String, Object> messageData);
+
+        void onLoadMoreItems();
     }
 
 
@@ -82,7 +92,7 @@ public class MessageListContainerContract {
     }
 
     public interface OnLoadMessagesListener {
-        void onSuccess(List<Message> messageList);
+        void onSuccess(List<Message> messageList, int offset);
 
         void onFailure(String message);
     }

@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.activities.KayakoSelectConversationActivity;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.adapter.loadmorelist.EndlessRecyclerViewScrollAdapter;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerAdapter;
 import com.kayako.sdk.android.k5.common.fragments.ListPageState;
 import com.kayako.sdk.android.k5.common.fragments.OnListPageStateChangeListener;
@@ -79,6 +80,13 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
             @Override
             public void onClickItem(int messageType, Long id, Map<String, Object> messageData) {
                 mPresenter.onListItemClick(messageType, id, messageData);
+            }
+        });
+
+        mMessageListView.setOnLoadMoreListener(new EndlessRecyclerViewScrollAdapter.OnLoadMoreListener() {
+            @Override
+            public void loadMoreItems() {
+                mPresenter.onLoadMoreItems();
             }
         });
 
@@ -193,5 +201,42 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
         }
 
         mToolbarView.expandToolbarView();
+    }
+
+    @Override
+    public void setHasMoreItems(boolean hasMoreItems) {
+        if (!hasPageLoaded()) {
+            return;
+        }
+
+        mMessageListView.setHasMoreItemsToLoad(hasMoreItems);
+    }
+
+    @Override
+    public void showLoadMoreView() {
+        if (!hasPageLoaded()) {
+            return;
+        }
+
+        mMessageListView.showLoadMoreView();
+    }
+
+    @Override
+    public void hideLoadMoreView() {
+        if (!hasPageLoaded()) {
+            return;
+        }
+
+        mMessageListView.hideLoadMoreView();
+    }
+
+    @Override
+    public void scrollToBottomOfList() {
+        if (!hasPageLoaded()) {
+            return;
+        }
+
+
+        mMessageListView.scrollToBottomOfList();
     }
 }

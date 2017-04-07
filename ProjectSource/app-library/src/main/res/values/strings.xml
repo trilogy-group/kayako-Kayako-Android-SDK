@@ -42,10 +42,9 @@
     <string name="ko__messenger_delivery_indicators_delivered">Delivered. Not seen yet</string>
     <string name="ko__messenger_delivery_indicators_seen">Seen</string>
     <string name="ko__messenger_delivery_indicators_sending">Sending…</string>
-    <string name="ko__messenger_delivery_indicators_rejected">Bounced</string>
+    <string name="ko__messenger_delivery_indicators_rejected">Rejected</string>
     <string name="ko__messenger_delivery_indicators_failed_to_send">This message failed to send. Tap to resend.</string>
 
     <string name="ko__label_email_input_field_hint">john@doe.com</string>
-
 
 </resources>
