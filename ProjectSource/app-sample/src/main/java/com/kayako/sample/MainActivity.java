@@ -1,10 +1,12 @@
 package com.kayako.sample;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.URLUtil;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,8 +17,7 @@ import android.widget.Toast;
 
 import com.kayako.sample.store.Store;
 import com.kayako.sdk.android.k5.core.Kayako;
-import com.kayako.sdk.android.k5.core.MessengerPref;
-import com.kayako.sdk.android.k5.core.MessengerStylePref;
+import com.kayako.sdk.android.k5.core.MessengerBuilder;
 import com.kayako.sdk.android.k5.messenger.style.BackgroundFactory;
 import com.kayako.sdk.android.k5.messenger.style.ForegroundFactory;
 
@@ -34,10 +35,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final EditText editText = (EditText) findViewById(R.id.edittext_url);
+        final EditText editText = (EditText) findViewById(R.id.edittext_helpcenter_url);
         editText.setText(Store.getInstance().getHelpCenterUrl());
 
-        Spinner spinnerLocale = (Spinner) findViewById(R.id.spinner_locale);
+        final Spinner spinnerLocale = (Spinner) findViewById(R.id.spinner_locale);
         spinnerLocale.setAdapter(
                 new ArrayAdapter<Locale>(
                         this,
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button button = (Button) findViewById(R.id.button_helpcenter);
+        final Button button = (Button) findViewById(R.id.button_helpcenter);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,44 +84,48 @@ public class MainActivity extends AppCompatActivity {
                 getForegroundOptionsAsList()
         ));
 
-        final EditText editTextMessengerPrimaryColor = (EditText) findViewById(R.id.edittext_primary_color);
+
+        final EditText editTextMessengerUrl = (EditText) findViewById(R.id.edittext_messenger_url);
+        if (Store.getInstance().getMessengerUrl() != null) {
+            editTextMessengerUrl.setText(Store.getInstance().getMessengerUrl());
+        }
 
         Button buttonMessenger = (Button) findViewById(R.id.button_messenger);
         buttonMessenger.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = editText.getText().toString();
+                final EditText editTextBrandName = (EditText) findViewById(R.id.edittext_brand_name);
+                String brandName = editTextBrandName.getText().toString();
+                if (!validateBrandName(brandName)) {
+                    return;
+                }
 
+                String url = editTextMessengerUrl.getText().toString();
                 if (!validateUrl(url)) {
                     return;
                 }
 
-                // TODO: TESTING - should not be hardcoded!
-                Store.getInstance().setHelpCenterUrl("https://kayako-mobile-testing.kayako.com");
-                MessengerPref.getInstance().setFingerprintId("d0bc691c-62c5-468c-a4a5-3b096684dc96");
-
-                // TODO: Add support for ColorRes id as selection primary color. call getString(R.color.--) to convert to hex string
+                final EditText editTextMessengerPrimaryColor = (EditText) findViewById(R.id.edittext_primary_color);
                 String primaryColor = editTextMessengerPrimaryColor.getText().toString();
                 if (!validateColor(primaryColor)) {
                     return;
                 }
-                MessengerStylePref.getInstance().setPrimaryColor(primaryColor);
 
-                // TODO: Separate Messenger from HelpCenter Prefs - both are independent of each other!
-                // TODO: TESTING - Don't use MessengerStylePref - instead, use a builder pattern
-                MessengerStylePref.getInstance().setBackground(
-                        BackgroundFactory.getBackground(
+                MessengerBuilder builder = Kayako.getInstance()
+                        .getMessenger()
+                        .setUrl(url)
+                        .setBrandName(brandName)
+                        .setPrimaryColor(primaryColor)
+                        .setBackground(BackgroundFactory.getBackground(
                                 Arrays.asList(BackgroundFactory.BackgroundOption.values()).get(spinnerMessengerBackground.getSelectedItemPosition())
-                        )
-                );
-
-                MessengerStylePref.getInstance().setForeground(
-                        ForegroundFactory.getForeground(
+                        ))
+                        .setForeground(ForegroundFactory.getForeground(
                                 Arrays.asList(ForegroundFactory.ForegroundOption.values()).get(spinnerMessengerForeground.getSelectedItemPosition())
-                        )
-                );
+                        ));
 
-                Kayako.getInstance().openMessenger(MainActivity.this, url, Locale.US); // Command to open Messenger
+                builder.open(MainActivity.this);
+
+                Store.getInstance().setMessengerUrl(url);
             }
         });
 
@@ -133,6 +138,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        hideKeyboard();
+    }
+
+    private void hideKeyboard() {
+        try {
+            // Check if no view has focus:
+            AppCompatActivity activity = (AppCompatActivity) MainActivity.this;
+            View view = activity.getCurrentFocus();
+            if (view != null) {
+                InputMethodManager inputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private boolean validateBrandName(String brandName) {
+        if (TextUtils.isEmpty(brandName)) {
+            Toast.makeText(MainActivity.this, "Brand Name can not be blank", Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            return true;
+        }
     }
 
     private boolean validateColor(String hexColor) {
@@ -140,17 +169,17 @@ public class MainActivity extends AppCompatActivity {
             Color.parseColor(hexColor);
             return true;
         } catch (Exception e) {
-            Toast.makeText(MainActivity.this, "Invalid Hex Color! Valid example: #F1703F", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, "Invalid Hex Color! Valid example: #F1703F", Toast.LENGTH_SHORT).show();
             return false;
         }
     }
 
     private boolean validateUrl(String url) {
         if (TextUtils.isEmpty(url)) {
-            Toast.makeText(MainActivity.this, "URL can not be blank", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, "URL can not be blank", Toast.LENGTH_SHORT).show();
             return false;
         } else if (!URLUtil.isValidUrl(url)) {
-            Toast.makeText(MainActivity.this, "Please enter a valid URL", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, "Please enter a valid URL", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;

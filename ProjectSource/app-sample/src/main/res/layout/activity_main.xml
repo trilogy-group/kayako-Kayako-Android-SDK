@@ -21,7 +21,7 @@
             android:paddingRight="@dimen/ko__activity_horizontal_margin">
 
             <EditText
-                android:id="@+id/edittext_url"
+                android:id="@+id/edittext_helpcenter_url"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
@@ -61,6 +61,26 @@
             android:orientation="vertical"
             android:paddingLeft="@dimen/ko__activity_horizontal_margin"
             android:paddingRight="@dimen/ko__activity_horizontal_margin">
+
+            <EditText
+                android:id="@+id/edittext_brand_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:padding="8dp"
+                android:text="Kayako Team" />
+
+            <include layout="@layout/separator" />
+
+            <EditText
+                android:id="@+id/edittext_messenger_url"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:padding="8dp"
+                android:text="https://kayako-mobile-testing.kayako.com" />
+
+            <include layout="@layout/separator" />
 
             <Spinner
                 android:id="@+id/spinner_messenger_background"
