@@ -88,7 +88,7 @@ public class MessageListContainerContract {
     public interface PostNewMessageCallback {
         void onSuccess(Message message);
 
-        void onFailure(String errorMessage);
+        void onFailure(String clientId);
     }
 
     public interface OnLoadMessagesListener {

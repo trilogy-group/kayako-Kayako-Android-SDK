@@ -11,10 +11,6 @@ import com.kayako.sdk.messenger.message.Message;
 
 public class DeliveryIndicatorHelper {
 
-    public enum ClientDeliveryStatus {
-        SENDING, FAILED_TO_SEND
-    }
-
     public static DeliveryIndicator getDeliveryIndicator(ClientDeliveryStatus clientDeliveryStatus) {
         if (clientDeliveryStatus == null) {
             return null;
@@ -22,7 +18,7 @@ public class DeliveryIndicatorHelper {
 
         switch (clientDeliveryStatus) {
             case SENDING:
-                return new DeliveryIndicator(0, R.string.ko__messenger_delivery_indicators_sending, null);
+                return new DeliveryIndicator(R.drawable.ko__delivery_indicator_not_sent, R.string.ko__messenger_delivery_indicators_sending, null);
 
             case FAILED_TO_SEND:
                 return new DeliveryIndicator(R.drawable.ko__delivery_indicator_failed, R.string.ko__messenger_delivery_indicators_failed_to_send, null);

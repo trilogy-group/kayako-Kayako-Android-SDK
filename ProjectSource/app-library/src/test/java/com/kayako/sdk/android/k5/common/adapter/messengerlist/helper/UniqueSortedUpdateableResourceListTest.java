@@ -8,11 +8,11 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UniqueResourceListTest {
+public class UniqueSortedUpdateableResourceListTest {
 
     @Test
     public void test1() throws Exception {
-        UniqueResourceList<Message> originalResources = new UniqueResourceList<Message>();
+        UniqueSortedUpdatableResourceList<Message> originalResources = new UniqueSortedUpdatableResourceList<Message>();
         originalResources.addElement(55L, new Message(55L, null, null, null, null, null, null, null, null, null, null, null));
         originalResources.addElement(2L, new Message(2L, null, null, "First One", null, null, null, null, null, null, null, null));
         originalResources.addElement(100L, new Message(100L, null, null, null, null, null, null, null, null, null, null, null));

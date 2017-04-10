@@ -22,7 +22,15 @@ public class OptimisticSendingHelper {
         }
     }
 
-    public synchronized List<BaseListItem> getOptimisticMessages() {
+    public List<UnsentMessage> getUnsentMessages() {
+        List<UnsentMessage> unsentMessages = new ArrayList<>();
+        for (OptimisticMessage optimisticMessage : optimisticMessages) {
+            unsentMessages.add(optimisticMessage.getUnsentMessage());
+        }
+        return unsentMessages;
+    }
+
+    public synchronized List<BaseListItem> getMessageViews() {
         List<BaseListItem> baseListItems = new ArrayList<>();
         for (OptimisticMessage optimisticMessage : optimisticMessages) {
             baseListItems.add(optimisticMessage.getMessageListItem());
@@ -30,14 +38,14 @@ public class OptimisticSendingHelper {
         return baseListItems;
     }
 
-    public synchronized void removeOptimisticMessage(String clientId) {
+    public synchronized void removeMessage(String clientId) {
         int position = findOptimisticMessage(clientId);
         if (position != -1) {
             optimisticMessages.remove(position);
         }
     }
 
-    public synchronized void markOptimisticMessageAsFailed(String clientId) {
+    public synchronized void markAsFailed(String clientId) {
         int position = findOptimisticMessage(clientId);
 
         OptimisticMessage messageToReplace = optimisticMessages.get(position);
@@ -45,14 +53,20 @@ public class OptimisticSendingHelper {
         optimisticMessages.add(
                 position,
                 generateOptimisticSendingMessage(
-                        DeliveryIndicatorHelper.ClientDeliveryStatus.FAILED_TO_SEND,
-                        messageToReplace.getMessage(),
-                        messageToReplace.getClientId()
+                        ClientDeliveryStatus.FAILED_TO_SEND,
+                        messageToReplace.getUnsentMessage().getMessage(),
+                        messageToReplace.getUnsentMessage().getClientId()
                 )
         );
     }
 
-    public synchronized void addOptimisticMessage(DeliveryIndicatorHelper.ClientDeliveryStatus deliveryStatus, String message, String clientId) {
+    public void markAllAsFailed() {
+        for (int i = 0; i < optimisticMessages.size(); i++) {
+            markAsFailed(optimisticMessages.get(i).getUnsentMessage().getClientId());
+        }
+    }
+
+    public synchronized void addMessage(ClientDeliveryStatus deliveryStatus, String message, String clientId) {
         optimisticMessages.add(generateOptimisticSendingMessage(deliveryStatus, message, clientId));
     }
 
@@ -64,24 +78,7 @@ public class OptimisticSendingHelper {
         }
     }
 
-    public String extractClientId(Map<String, Object> messageDataOfBaseListItem) {
-        if (messageDataOfBaseListItem == null || !messageDataOfBaseListItem.containsKey(MAP_KEY_CLIENT_ID)) {
-            throw new AssertionError("Call isOptimisticMessage() first, and if true, only then call this method");
-        }
-
-        return (String) messageDataOfBaseListItem.get(MAP_KEY_CLIENT_ID);
-    }
-
-    public OptimisticMessage getOptimisticMessage(String clientId) {
-        int position = findOptimisticMessage(clientId);
-        if (position != -1) {
-            return optimisticMessages.get(position);
-        } else {
-            return null;
-        }
-    }
-
-    private OptimisticMessage generateOptimisticSendingMessage(DeliveryIndicatorHelper.ClientDeliveryStatus deliveryStatus, String message, String clientId) {
+    private OptimisticMessage generateOptimisticSendingMessage(ClientDeliveryStatus deliveryStatus, String message, String clientId) {
         if (clientId == null || message == null) {
             throw new IllegalArgumentException("Invalid arguments!");
         }
@@ -133,40 +130,28 @@ public class OptimisticSendingHelper {
 
         int position = -1;
         for (int i = 0; i < optimisticMessages.size(); i++) {
-            if (optimisticMessages.get(i).getClientId().equals(clientId)) {
+            if (optimisticMessages.get(i).getUnsentMessage().getClientId().equals(clientId)) {
                 position = i;
             }
         }
         return position;
     }
 
-    public class OptimisticMessage {
+    private class OptimisticMessage {
         private BaseListItem messageListItem;
-        private DeliveryIndicatorHelper.ClientDeliveryStatus deliveryStatus;
-        private String message;
-        private String clientId;
+        private UnsentMessage unsentMessage;
 
-        public OptimisticMessage(BaseListItem messageListItem, DeliveryIndicatorHelper.ClientDeliveryStatus deliveryStatus, String message, String clientId) {
+        public OptimisticMessage(BaseListItem messageListItem, ClientDeliveryStatus deliveryStatus, String message, String clientId) {
             this.messageListItem = messageListItem;
-            this.deliveryStatus = deliveryStatus;
-            this.message = message;
-            this.clientId = clientId;
+            this.unsentMessage = new UnsentMessage(deliveryStatus, message, clientId);
         }
 
         public BaseListItem getMessageListItem() {
             return messageListItem;
         }
 
-        public String getClientId() {
-            return clientId;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public DeliveryIndicatorHelper.ClientDeliveryStatus getDeliveryStatus() {
-            return deliveryStatus;
+        public UnsentMessage getUnsentMessage() {
+            return unsentMessage;
         }
     }
 }

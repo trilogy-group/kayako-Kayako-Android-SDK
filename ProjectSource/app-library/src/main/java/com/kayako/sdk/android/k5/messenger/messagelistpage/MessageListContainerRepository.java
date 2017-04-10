@@ -32,7 +32,7 @@ public class MessageListContainerRepository implements MessageListContainerContr
     }
 
     @Override
-    public void postNewMessage(long conversationId, String contents, String clientId, final MessageListContainerContract.PostNewMessageCallback callback) {
+    public void postNewMessage(long conversationId, String contents, final String clientId, final MessageListContainerContract.PostNewMessageCallback callback) {
         final Handler handler = new Handler();
         mMessenger.postMessage(conversationId, new PostMessageBodyParams(contents, MessageSourceType.MESSENGER, clientId), new ItemCallback<Message>() {
             @Override
@@ -51,7 +51,7 @@ public class MessageListContainerRepository implements MessageListContainerContr
                     @Override
                     public void run() {
                         // TODO: Parse and see if there's a notification in KayakoException
-                        callback.onFailure(exception.getMessage());
+                        callback.onFailure(clientId);
                     }
                 });
             }

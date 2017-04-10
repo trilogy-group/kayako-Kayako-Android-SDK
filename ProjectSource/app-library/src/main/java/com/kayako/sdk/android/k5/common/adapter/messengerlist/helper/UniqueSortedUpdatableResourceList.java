@@ -15,7 +15,7 @@ import java.util.Map;
  * 2. No Duplicates (of same identifer)
  * 3. Elements with new values should replace elements with old values (Elements of same identifier)
  */
-public class UniqueResourceList<T> implements IUniqueResourceList<T> {
+public class UniqueSortedUpdatableResourceList<T> implements IUniqueResourceList<T> {
 
     Map<Long, T> mapResources = new HashMap<>();
 
