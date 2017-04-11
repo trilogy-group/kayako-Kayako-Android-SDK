@@ -15,6 +15,8 @@ public class Store {
 
     private static SharedPreferences sharedPreferences;
     private static final String ARG_HELP_CENTER_URL = "helpcenterurl";
+    private static final String ARG_MESSENGER_URL = "messengerurl";
+    private static final String ARG_MESSENGER_FINGERPRINT_ID = "messengerfingerprint";
 
     private Store() {
         sharedPreferences = Kayako.getApplicationContext().getSharedPreferences("sample-app-store", Context.MODE_PRIVATE);
@@ -28,4 +30,11 @@ public class Store {
         return sharedPreferences.getString(ARG_HELP_CENTER_URL, "https://support.kayako.com");
     }
 
+    public void setMessengerUrl(String url) {
+        sharedPreferences.edit().putString(ARG_MESSENGER_URL, url).apply();
+    }
+
+    public String getMessengerUrl() {
+        return sharedPreferences.getString(ARG_MESSENGER_URL, "https://kayako-mobile-testing.kayako.com");
+    }
 }
