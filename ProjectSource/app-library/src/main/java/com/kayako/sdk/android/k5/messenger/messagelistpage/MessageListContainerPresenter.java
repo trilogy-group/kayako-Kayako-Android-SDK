@@ -7,12 +7,11 @@ import com.kayako.sdk.android.k5.common.fragments.ListPageState;
 import com.kayako.sdk.android.k5.common.fragments.OnScrollListListener;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.AddMessageHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ClientIdHelper;
-import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ExistingConversationHelper;
-import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ExistingMessagesHelper;
+import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ConversationHelper;
+import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ConversationMessagesHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ListHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.MarkReadHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.MessengerPrefHelper;
-import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.NewConversationHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.OnboardingHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.OptimisticSendingViewHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ReplyBoxHelper;
@@ -39,13 +38,12 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private MessengerPrefHelper mMessengerPrefHelper = new MessengerPrefHelper();
     private MarkReadHelper mMarkReadHelper = new MarkReadHelper();
     private OnboardingHelper mOnboardingHelper = new OnboardingHelper();
-    private NewConversationHelper mNewConversationHelper = new NewConversationHelper();
-    private ExistingConversationHelper mExistingConversationHelper = new ExistingConversationHelper();
+    private ConversationHelper mConversationHelper = new ConversationHelper();
     private ReplyBoxHelper mReplyBoxHelper = new ReplyBoxHelper();
     private ListHelper mListHelper = new ListHelper();
     private OptimisticSendingViewHelper mOptimisticMessageHelper = new OptimisticSendingViewHelper();
     private ClientIdHelper mClientIdHelper = new ClientIdHelper();
-    private ExistingMessagesHelper mExistingMessagesHelper = new ExistingMessagesHelper();
+    private ConversationMessagesHelper mConversationMessagesHelper = new ConversationMessagesHelper();
     private AddMessageHelper mAddMessageHelper = new AddMessageHelper();
 
     public MessageListContainerPresenter(MessageListContainerContract.View view, MessageListContainerContract.Data data) {
@@ -92,7 +90,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
     @Override
     public void onLoadMoreItems() {
-        if (mNewConversationHelper.isConversationCreated()) {
+        if (mConversationHelper.isConversationCreated()) {
             loadNextMessages();
         }
     }
@@ -108,8 +106,10 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
         this.mIsNewConversation = isNewConversation;
 
-        mNewConversationHelper.setIsConversationCreated(!isNewConversation);
-        mExistingConversationHelper.setConversationId(conversationId);
+        mConversationHelper.setIsConversationCreated(!isNewConversation);
+        if (!isNewConversation) {
+            mConversationHelper.setConversationId(conversationId);
+        }
 
         reloadPage(true);
     }
@@ -120,9 +120,9 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         mView.collapseToolbar();
 
         // Assertion: If it's existing conversation, then mConversationId can not be null or invalid
-        if (mNewConversationHelper.isConversationCreated() &&
-                (mExistingConversationHelper.getConversationId() == null
-                        || mExistingConversationHelper.getConversationId() == 0)) {
+        if (mConversationHelper.isConversationCreated() &&
+                (mConversationHelper.getConversationId() == null
+                        || mConversationHelper.getConversationId() == 0)) {
             throw new AssertionError("If it is NOT a new conversation, conversation id should NOT be null");
         }
 
@@ -141,7 +141,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             mView.showLoadingViewInMessageListingView();
         }
 
-        if (!mNewConversationHelper.isConversationCreated()) {
+        if (!mConversationHelper.isConversationCreated()) {
             // Show expanded toolbar when it's a new conversation
             mView.expandToolbar();
 
@@ -159,7 +159,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         String clientId = mClientIdHelper.generateClientId(); // GENERATE Client Id
 
         mOptimisticMessageHelper.addOptimisitcMessageView(message, clientId, optimisticSendingViewCallback);
-        if (!mNewConversationHelper.isConversationCreated()) {
+        if (!mConversationHelper.isConversationCreated()) {
             createNewConversation(message, clientId);
             displayList();
         } else {
@@ -169,7 +169,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                     new AddMessageHelper.OnAddNextMessageCallback() {
                         @Override
                         public void onNextMessage(UnsentMessage unsentMessage) {
-                            addNewMessage(mExistingConversationHelper.getConversationId(), unsentMessage.getMessage(), unsentMessage.getClientId());
+                            addNewMessage(mConversationHelper.getConversationId(), unsentMessage.getMessage(), unsentMessage.getClientId());
                         }
                     });
         }
@@ -194,7 +194,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         List<BaseListItem> onboardingItems = getOnboardingListItemViews();
         List<BaseListItem> optimisticSendingItems = mOptimisticMessageHelper.getOptimisticSendingListItems();
 
-        if (!mNewConversationHelper.isConversationCreated()) {
+        if (!mConversationHelper.isConversationCreated()) {
             allListItems.addAll(onboardingItems);
             allListItems.addAll(optimisticSendingItems);
         } else {
@@ -206,7 +206,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             allListItems.addAll(onboardingItems);
             allListItems.addAll(
                     mListHelper.getMessageAsListItemViews(
-                            mExistingMessagesHelper.getMessages(),
+                            mConversationMessagesHelper.getMessages(),
                             mMarkReadHelper.getOriginalLastMessageMarkedRead(),
                             userId
                     )
@@ -223,10 +223,10 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         if (allListItems.size() != 0) {
             mView.setupListInMessageListingView(allListItems); // No empty state view for Conversation Helper
 
-            if (!mNewConversationHelper.isConversationCreated()) {
+            if (!mConversationHelper.isConversationCreated()) {
                 mView.setHasMoreItems(false);
             } else {
-                mView.setHasMoreItems(mExistingMessagesHelper.hasMoreMessages());
+                mView.setHasMoreItems(mConversationMessagesHelper.hasMoreMessages());
             }
 
         } else {
@@ -237,7 +237,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private void configureReplyBoxViewState() {
         ReplyBoxHelper.ReplyBoxViewState replyBoxViewState =
                 mReplyBoxHelper.getReplyBoxVisibility(
-                        !mNewConversationHelper.isConversationCreated(),
+                        !mConversationHelper.isConversationCreated(),
                         mMessengerPrefHelper.getEmail() != null,
                         mListHelper.getListPageState());
         switch (replyBoxViewState) {
@@ -306,13 +306,13 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
 
             // If originally new conversation, set as existing conversation
-            if (mIsNewConversation && !mNewConversationHelper.isConversationCreated()) {
-                mNewConversationHelper.setIsConversationCreated(true);
+            if (mIsNewConversation && !mConversationHelper.isConversationCreated()) {
+                mConversationHelper.setIsConversationCreated(true);
             }
 
             // Update existing Conversation
-            mExistingConversationHelper.setConversationId(conversation.getId());
-            mExistingConversationHelper.setConversation(conversation);
+            mConversationHelper.setConversationId(conversation.getId());
+            mConversationHelper.setConversation(conversation);
 
             // Reload the messages of existing conversation
             reloadLatestMessages();
@@ -328,7 +328,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         @Override
         public void onSuccess(List<Message> messageList, int offset) {
             // if first time the page was loaded, scroll to bottom of list
-            if (mExistingMessagesHelper.getLastSuccessfulOffset() == 0) { // don't only rely on function argument, offset, being == 0 (which can mean reloading recent messages)
+            if (mConversationMessagesHelper.getLastSuccessfulOffset() == 0) { // don't only rely on function argument, offset, being == 0 (which can mean reloading recent messages)
                 mView.scrollToBottomOfList();
             }
 
@@ -336,7 +336,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                 mView.hideLoadMoreView();
             }
 
-            mExistingMessagesHelper.onLoadNextMessages(messageList, offset);
+            mConversationMessagesHelper.onLoadNextMessages(messageList, offset);
 
             // Remove optimisitc sending items
             mOptimisticMessageHelper.removeOptimisticMessagesThatSuccessfullyGotSent(messageList);
@@ -347,7 +347,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             // Once messages have been loaded AND displayed in view, mark the last message as read
             markLastMessageAsRead(
                     messageList,
-                    mExistingConversationHelper.getConversationId());
+                    mConversationHelper.getConversationId());
         }
 
         @Override
@@ -363,7 +363,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             mAddMessageHelper.onSuccessfulSendingOfMessage(new AddMessageHelper.OnAddNextMessageCallback() {
                 @Override
                 public void onNextMessage(UnsentMessage unsentMessage) {
-                    addNewMessage(mExistingConversationHelper.getConversationId(), unsentMessage.getMessage(), unsentMessage.getClientId());
+                    addNewMessage(mConversationHelper.getConversationId(), unsentMessage.getMessage(), unsentMessage.getClientId());
                 }
             });
             mMarkReadHelper.disableOriginalLastMessageMarked(); // Should be called before any list rendering is done
@@ -393,23 +393,23 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     ////// API CALLING METHODS //////
 
     private void reloadLatestMessages() {
-        Long conversationId = mExistingConversationHelper.getConversationId();
+        Long conversationId = mConversationHelper.getConversationId();
 
-        mData.getMessages(onLoadMessagesListener, conversationId, 0, mExistingMessagesHelper.getLimit());
+        mData.getMessages(onLoadMessagesListener, conversationId, 0, mConversationMessagesHelper.getLimit());
     }
 
     public void loadNextMessages() {
-        Long conversationId = mExistingConversationHelper.getConversationId();
+        Long conversationId = mConversationHelper.getConversationId();
 
         mView.showLoadMoreView();
         mData.getMessages(onLoadMessagesListener,
                 conversationId,
-                mExistingMessagesHelper.getLastSuccessfulOffset() + mExistingMessagesHelper.getLimit(),
-                mExistingMessagesHelper.getLimit());
+                mConversationMessagesHelper.getLastSuccessfulOffset() + mConversationMessagesHelper.getLimit(),
+                mConversationMessagesHelper.getLimit());
     }
 
     public void reloadConversation() {
-        Long conversationId = mExistingConversationHelper.getConversationId();
+        Long conversationId = mConversationHelper.getConversationId();
 
         if (conversationId == null || conversationId == 0) {
             throw new AssertionError("ConversationId must be valid to call this method!");
@@ -421,7 +421,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private void createNewConversation(String message, String clientId) {
         // This method should only be called (during onboarding) when a new conversation needs to be made
         mData.startNewConversation(
-                mNewConversationHelper.getNewConversationBodyParams(mMessengerPrefHelper.getEmail(), message, clientId),
+                mConversationHelper.getNewConversationBodyParams(mMessengerPrefHelper.getEmail(), message, clientId),
                 onLoadConversationListener
         );
     }

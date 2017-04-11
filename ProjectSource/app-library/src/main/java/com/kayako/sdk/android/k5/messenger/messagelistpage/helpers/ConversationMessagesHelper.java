@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * All logic involving retrieving messages of an existing conversation which includes pagination.
  */
-public class ExistingMessagesHelper {
+public class ConversationMessagesHelper {
 
     private UniqueSortedUpdatableResourceList<Message> messages = new UniqueSortedUpdatableResourceList<>();
     private final int LIMIT = 30;
