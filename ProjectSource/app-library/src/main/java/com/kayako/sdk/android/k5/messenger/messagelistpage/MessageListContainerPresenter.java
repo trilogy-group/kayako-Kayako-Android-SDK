@@ -83,8 +83,11 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     public void onListItemClick(int messageType, Long id, Map<String, Object> messageData) {
         if (mOptimisticMessageHelper.isOptimisticMessage(messageData)
                 && mOptimisticMessageHelper.isFailedToSendMessage(messageData)) {
+            // TODO: Multiple clicks and using different client ids causing issues - MULTIPLE ITEMS BEING SENT
             // Retry all optimistic messages
-            mOptimisticMessageHelper.resendAllOptimisticMessages(optimisticSendingViewCallback);
+
+            mOptimisticMessageHelper.markAllAsSending(optimisticSendingViewCallback);
+            mAddReplyHelper.resendReplies(mOnAddReplyCallback);
         }
     }
 
@@ -352,7 +355,11 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
         @Override
         public void onFailure(String clientId, String message) {
-            // TODO: Show error mesasage?
+            // Indicate the request failed
+            mAddReplyHelper.onFailedSendingOfConversation(clientId);
+
+            // Mark all optimistic views as failed
+            mOptimisticMessageHelper.markAllAsFailed(optimisticSendingViewCallback);
         }
     };
 
@@ -400,6 +407,10 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
         @Override
         public void onFailure(final String clientId) {
+            // Indicate the request failed
+            mAddReplyHelper.onFailedSendingOfMessage(clientId);
+
+            // Mark all optimistic views as failed
             // Now that AddReplyHelper ensures only one message is sent at a time, all pending items should be marked as failed too
             // TODO: Mark only the client id as failed? ANd others as not-sent?
             mOptimisticMessageHelper.markAllAsFailed(optimisticSendingViewCallback);
