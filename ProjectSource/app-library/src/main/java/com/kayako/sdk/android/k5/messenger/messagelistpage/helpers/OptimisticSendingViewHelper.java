@@ -20,13 +20,20 @@ public class OptimisticSendingViewHelper {
     // TODO: Show a dialog on tap - Delete unsent messages or resent unsent messages?
 
     private OptimisticSendingHelper optimisticSendingHelper;
+    private String avatarUrl;
 
     public OptimisticSendingViewHelper() {
     }
 
     public void setUserAvatar(@Nullable String avatarUrl) {
-        validateHelper();
+        // NOTE: Do not validate helper here - helper is created here!
 
+        if (this.avatarUrl != null
+                && this.avatarUrl.equals(avatarUrl)) { // Prevent recreating instance if no changes to avatarUrl
+            return;
+        }
+
+        this.avatarUrl = avatarUrl;
         optimisticSendingHelper = new OptimisticSendingHelper(avatarUrl);
     }
 

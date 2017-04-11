@@ -1,5 +1,7 @@
 package com.kayako.sdk.android.k5.common.adapter.messengerlist.helper;
 
+import android.support.annotation.Nullable;
+
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageContinuedSelfListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageSelfListItem;
@@ -16,7 +18,7 @@ public class OptimisticSendingHelper {
     private List<OptimisticMessage> optimisticMessages = new ArrayList<>();
     private String userAvatarUrl;
 
-    public OptimisticSendingHelper(String userAvatarUrl) {
+    public OptimisticSendingHelper(@Nullable String userAvatarUrl) {
         this.userAvatarUrl = userAvatarUrl;
         if (this.userAvatarUrl == null) {
             // TODO: If null, show default avatar for customer

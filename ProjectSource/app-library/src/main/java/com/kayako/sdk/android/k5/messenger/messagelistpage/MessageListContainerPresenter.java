@@ -106,6 +106,8 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
         this.mIsNewConversation = isNewConversation;
 
+        mOptimisticMessageHelper.setUserAvatar(mMessengerPrefHelper.getAvatar());
+
         mConversationHelper.setIsConversationCreated(!isNewConversation);
         if (!isNewConversation) {
             mConversationHelper.setConversationId(conversationId);
@@ -191,19 +193,19 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
     private List<BaseListItem> generateListItems() {
         List<BaseListItem> allListItems = new ArrayList<>();
+
         List<BaseListItem> onboardingItems = getOnboardingListItemViews();
         List<BaseListItem> optimisticSendingItems = mOptimisticMessageHelper.getOptimisticSendingListItems();
 
-        if (!mConversationHelper.isConversationCreated()) {
-            allListItems.addAll(onboardingItems);
-            allListItems.addAll(optimisticSendingItems);
-        } else {
+        allListItems.addAll(onboardingItems);
+
+        // If existing conversation, load messages too - inbetween the onboarding items and the optimistic sending items
+        if (mConversationHelper.isConversationCreated()) {
             Long userId = mMessengerPrefHelper.getUserId();
             if (userId == null || userId == 0) {
                 throw new IllegalStateException("User Id should be known if conversation is created!");
             }
 
-            allListItems.addAll(onboardingItems);
             allListItems.addAll(
                     mListHelper.getMessageAsListItemViews(
                             mConversationMessagesHelper.getMessages(),
@@ -211,8 +213,9 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                             userId
                     )
             );
-            allListItems.addAll(optimisticSendingItems);
         }
+
+        allListItems.addAll(optimisticSendingItems);
 
         return allListItems;
     }
@@ -221,16 +224,16 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         List<BaseListItem> allListItems = generateListItems();
 
         if (allListItems.size() != 0) {
-            mView.setupListInMessageListingView(allListItems); // No empty state view for Conversation Helper
+            mView.setupListInMessageListingView(allListItems);
 
             if (!mConversationHelper.isConversationCreated()) {
                 mView.setHasMoreItems(false);
             } else {
                 mView.setHasMoreItems(mConversationMessagesHelper.hasMoreMessages());
             }
-
         } else {
             // There should never be an empty state view shown! Leave it blank inviting customer to add stuff.
+            mView.setupListInMessageListingView(allListItems); // Set empty list to show as blank
         }
     }
 
@@ -308,6 +311,9 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             // If originally new conversation, set as existing conversation
             if (mIsNewConversation && !mConversationHelper.isConversationCreated()) {
                 mConversationHelper.setIsConversationCreated(true);
+
+                // Update the user avatar (which may have been null before)
+                mOptimisticMessageHelper.setUserAvatar(mMessengerPrefHelper.getAvatar());
             }
 
             // Update existing Conversation
