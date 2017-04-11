@@ -5,7 +5,7 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.UnsentMessa
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputEmailListItem;
 import com.kayako.sdk.android.k5.common.fragments.ListPageState;
 import com.kayako.sdk.android.k5.common.fragments.OnScrollListListener;
-import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.AddMessageHelper;
+import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.AddReplyHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ClientIdHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ConversationHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ConversationMessagesHelper;
@@ -14,7 +14,7 @@ import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.MarkReadHelpe
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.MessengerPrefHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.OnboardingHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.OptimisticSendingViewHelper;
-import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ReplyBoxHelper;
+import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ReplyBoxViewHelper;
 import com.kayako.sdk.messenger.conversation.Conversation;
 import com.kayako.sdk.messenger.message.Message;
 
@@ -39,12 +39,12 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private MarkReadHelper mMarkReadHelper = new MarkReadHelper();
     private OnboardingHelper mOnboardingHelper = new OnboardingHelper();
     private ConversationHelper mConversationHelper = new ConversationHelper();
-    private ReplyBoxHelper mReplyBoxHelper = new ReplyBoxHelper();
+    private ReplyBoxViewHelper mReplyBoxHelper = new ReplyBoxViewHelper();
     private ListHelper mListHelper = new ListHelper();
     private OptimisticSendingViewHelper mOptimisticMessageHelper = new OptimisticSendingViewHelper();
     private ClientIdHelper mClientIdHelper = new ClientIdHelper();
     private ConversationMessagesHelper mConversationMessagesHelper = new ConversationMessagesHelper();
-    private AddMessageHelper mAddMessageHelper = new AddMessageHelper();
+    private AddReplyHelper mAddReplyHelper = new AddReplyHelper();
 
     public MessageListContainerPresenter(MessageListContainerContract.View view, MessageListContainerContract.Data data) {
         mView = view;
@@ -113,6 +113,8 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             mConversationHelper.setConversationId(conversationId);
         }
 
+        mAddReplyHelper.setIsConversationCreated(mConversationHelper.isConversationCreated());
+
         reloadPage(true);
     }
 
@@ -161,20 +163,12 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         String clientId = mClientIdHelper.generateClientId(); // GENERATE Client Id
 
         mOptimisticMessageHelper.addOptimisitcMessageView(message, clientId, optimisticSendingViewCallback);
-        if (!mConversationHelper.isConversationCreated()) {
-            createNewConversation(message, clientId);
-            displayList();
-        } else {
-            mAddMessageHelper.addMessageToSend(
-                    message,
-                    clientId,
-                    new AddMessageHelper.OnAddNextMessageCallback() {
-                        @Override
-                        public void onNextMessage(UnsentMessage unsentMessage) {
-                            addNewMessage(mConversationHelper.getConversationId(), unsentMessage.getMessage(), unsentMessage.getClientId());
-                        }
-                    });
-        }
+
+        // Covers both adding of new messages and new conversation
+        mAddReplyHelper.addNewReply(
+                message,
+                clientId,
+                mOnAddReplyCallback);
     }
 
     private OptimisticSendingViewHelper.OptimisticSendingViewCallback optimisticSendingViewCallback = new OptimisticSendingViewHelper.OptimisticSendingViewCallback() {
@@ -186,6 +180,19 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         @Override
         public void onResendReply(UnsentMessage unsentMessage) {
             onSendReply(unsentMessage.getMessage());
+        }
+    };
+
+    private AddReplyHelper.OnAddReplyCallback mOnAddReplyCallback = new AddReplyHelper.OnAddReplyCallback() {
+        @Override
+        public void onCreateConversation(UnsentMessage unsentMessage) {
+            createNewConversation(unsentMessage.getMessage(), unsentMessage.getClientId());
+        }
+
+        @Override
+        public void onAddMessage(UnsentMessage unsentMessage) {
+            addNewMessage(mConversationHelper.getConversationId(), unsentMessage.getMessage(), unsentMessage.getClientId());
+
         }
     };
 
@@ -238,7 +245,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     }
 
     private void configureReplyBoxViewState() {
-        ReplyBoxHelper.ReplyBoxViewState replyBoxViewState =
+        ReplyBoxViewHelper.ReplyBoxViewState replyBoxViewState =
                 mReplyBoxHelper.getReplyBoxVisibility(
                         !mConversationHelper.isConversationCreated(),
                         mMessengerPrefHelper.getEmail() != null,
@@ -293,35 +300,30 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     }
 
     ////// API CALLBACKS //////
+    private void onLoadConversation(Conversation conversation) {
+        // Update existing Conversation
+        mConversationHelper.setIsConversationCreated(true);
+        mConversationHelper.setConversationId(conversation.getId());
+        mConversationHelper.setConversation(conversation);
+
+        mMarkReadHelper.setOriginalLastMessageMarkedReadIfNotSetBefore(conversation.getReadMarker() == null ? 0 : conversation.getReadMarker().getLastReadPostId());
+
+        // Update user details (creator of new conversation) - This has been done EVERY TIME to ensure that even if the current userid is lost due to any reason, a new conversation will get it back! - eg: using the same fingerprint for multiple users
+        mMessengerPrefHelper
+                .setUserInfo(
+                        conversation.getCreator().getId(), // Assuming the current user is always the creator of conversation,
+                        conversation.getCreator().getFullName(),
+                        conversation.getCreator().getAvatarUrl()
+                );
+
+        // Reload the messages of existing conversation
+        reloadLatestMessages();
+    }
 
     private MessageListContainerContract.OnLoadConversationListener onLoadConversationListener = new MessageListContainerContract.OnLoadConversationListener() {
         @Override
         public void onSuccess(Conversation conversation) {
-            mMarkReadHelper.setOriginalLastMessageMarkedReadIfNotSetBefore(conversation.getReadMarker() == null ? 0 : conversation.getReadMarker().getLastReadPostId());
-
-            // Update user details (creator of new conversation) - This has been done EVERY TIME to ensure that even if the current userid is lost due to any reason, a new conversation will get it back! - eg: using the same fingerprint for multiple users
-            mMessengerPrefHelper
-                    .setUserInfo(
-                            conversation.getCreator().getId(), // Assuming the current user is always the creator of conversation,
-                            conversation.getCreator().getFullName(),
-                            conversation.getCreator().getAvatarUrl()
-                    );
-
-
-            // If originally new conversation, set as existing conversation
-            if (mIsNewConversation && !mConversationHelper.isConversationCreated()) {
-                mConversationHelper.setIsConversationCreated(true);
-
-                // Update the user avatar (which may have been null before)
-                mOptimisticMessageHelper.setUserAvatar(mMessengerPrefHelper.getAvatar());
-            }
-
-            // Update existing Conversation
-            mConversationHelper.setConversationId(conversation.getId());
-            mConversationHelper.setConversation(conversation);
-
-            // Reload the messages of existing conversation
-            reloadLatestMessages();
+            onLoadConversation(conversation);
         }
 
         @Override
@@ -330,25 +332,50 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         }
     };
 
+    private MessageListContainerContract.PostConversationCallback postConversationCallback = new MessageListContainerContract.PostConversationCallback() {
+        @Override
+        public void onSuccess(String clientId, Conversation conversation) {
+            if (!(mIsNewConversation && !mConversationHelper.isConversationCreated())) {
+                throw new IllegalStateException("The conditions should be true at this point!");
+            }
+
+            // IMPORTANT: onLoadConversation() should be called FIRST, then new conversation properties should be set
+            // This is required for all dependencies of mConversationHelper and mMessengerPrefHelper
+            onLoadConversation(conversation);
+
+            // Update the user avatar (which may have been null before)
+            mOptimisticMessageHelper.setUserAvatar(mMessengerPrefHelper.getAvatar());
+
+            // Ensure task removed from queue and other messages get added
+            mAddReplyHelper.onSuccessfulCreationOfConversation(clientId, mOnAddReplyCallback);
+        }
+
+        @Override
+        public void onFailure(String clientId, String message) {
+            // TODO: Show error mesasage?
+        }
+    };
+
     private MessageListContainerContract.OnLoadMessagesListener onLoadMessagesListener = new MessageListContainerContract.OnLoadMessagesListener() {
         @Override
         public void onSuccess(List<Message> messageList, int offset) {
-            // if first time the page was loaded, scroll to bottom of list
-            if (mConversationMessagesHelper.getLastSuccessfulOffset() == 0) { // don't only rely on function argument, offset, being == 0 (which can mean reloading recent messages)
-                mView.scrollToBottomOfList();
-            }
-
             if (offset != 0) {
                 mView.hideLoadMoreView();
             }
 
+            boolean scrollToBottom = !mConversationMessagesHelper.hasLoadedMessagesBefore(); // scroll to bottom if messages are being loaded for the first time
             mConversationMessagesHelper.onLoadNextMessages(messageList, offset);
 
-            // Remove optimisitc sending items
-            mOptimisticMessageHelper.removeOptimisticMessagesThatSuccessfullyGotSent(messageList);
+            // Remove optimisitc sending items - to be done before display list
+            mOptimisticMessageHelper.removeOptimisticMessagesThatIsSuccessfullySentAndDisplayed(messageList);
 
             // Display list once necessary changes to list data are made above
             displayList();
+
+            // Scroll to bottom after list is displayed
+            if (scrollToBottom) {
+                mView.scrollToBottomOfList();
+            }
 
             // Once messages have been loaded AND displayed in view, mark the last message as read
             markLastMessageAsRead(
@@ -366,19 +393,15 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private MessageListContainerContract.PostNewMessageCallback onPostMessageListener = new MessageListContainerContract.PostNewMessageCallback() {
         @Override
         public void onSuccess(Message message) {
-            mAddMessageHelper.onSuccessfulSendingOfMessage(new AddMessageHelper.OnAddNextMessageCallback() {
-                @Override
-                public void onNextMessage(UnsentMessage unsentMessage) {
-                    addNewMessage(mConversationHelper.getConversationId(), unsentMessage.getMessage(), unsentMessage.getClientId());
-                }
-            });
+            mAddReplyHelper.onSuccessfulSendingOfMessage(message.getClientId(), mOnAddReplyCallback);
             mMarkReadHelper.disableOriginalLastMessageMarked(); // Should be called before any list rendering is done
             reloadLatestMessages();
         }
 
         @Override
         public void onFailure(final String clientId) {
-            // Now that AddMessageHelper ensures only one message is sent at a time, all pending items should be marked as failed too
+            // Now that AddReplyHelper ensures only one message is sent at a time, all pending items should be marked as failed too
+            // TODO: Mark only the client id as failed? ANd others as not-sent?
             mOptimisticMessageHelper.markAllAsFailed(optimisticSendingViewCallback);
         }
     };
@@ -392,7 +415,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
         @Override
         public void onFailure(String message) {
-            mMarkReadHelper.setLastMessageBeingMarkedRead(0L);
+            mMarkReadHelper.setLastMessageBeingMarkedRead(0L); // TODO: Confirm logic here?
         }
     };
 
@@ -428,7 +451,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         // This method should only be called (during onboarding) when a new conversation needs to be made
         mData.startNewConversation(
                 mConversationHelper.getNewConversationBodyParams(mMessengerPrefHelper.getEmail(), message, clientId),
-                onLoadConversationListener
+                postConversationCallback
         );
     }
 
@@ -445,7 +468,6 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         }
 
         final Long messageIdToBeMarkedRead = mMarkReadHelper.extractLastMessageId(messages);
-
         if (mMarkReadHelper.shouldMarkMessageAsRead(messageIdToBeMarkedRead)) {
             mMarkReadHelper.setLastMessageBeingMarkedRead(messageIdToBeMarkedRead);
 

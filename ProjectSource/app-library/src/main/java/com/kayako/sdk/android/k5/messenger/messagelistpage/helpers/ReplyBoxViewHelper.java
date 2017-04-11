@@ -7,9 +7,9 @@ import com.kayako.sdk.android.k5.common.fragments.ListPageState;
 /**
  * All logic for showing and hiding reply box should be in this class
  */
-public class ReplyBoxHelper {
+public class ReplyBoxViewHelper {
 
-    public ReplyBoxHelper() {
+    public ReplyBoxViewHelper() {
     }
 
     public enum ReplyBoxViewState {

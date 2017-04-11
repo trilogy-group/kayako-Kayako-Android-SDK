@@ -100,7 +100,7 @@ public class MessageListContainerRepository implements MessageListContainerContr
     }
 
     @Override
-    public void startNewConversation(PostConversationBodyParams bodyParams, final MessageListContainerContract.OnLoadConversationListener onLoadConversationListener) {
+    public void startNewConversation(final PostConversationBodyParams bodyParams, final MessageListContainerContract.PostConversationCallback postConversationCallback) {
         final Handler handler = new Handler(); // Needed to ensure that the callbacks run on the UI Thread
         mMessenger.postConversation(bodyParams, new ItemCallback<Conversation>() {
             @Override
@@ -108,11 +108,11 @@ public class MessageListContainerRepository implements MessageListContainerContr
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        if (onLoadConversationListener == null) {
+                        if (postConversationCallback == null) {
                             return;
                         }
 
-                        onLoadConversationListener.onSuccess(item);
+                        postConversationCallback.onSuccess(bodyParams.getClientId(), item);
                     }
                 });
             }
@@ -122,11 +122,11 @@ public class MessageListContainerRepository implements MessageListContainerContr
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        if (onLoadConversationListener == null) {
+                        if (postConversationCallback == null) {
                             return;
                         }
 
-                        onLoadConversationListener.onFailure(exception.getMessage()); // TODO: Add a method to extract the latest NOTIFICATION
+                        postConversationCallback.onFailure(bodyParams.getClientId(), exception.getMessage()); // TODO: Add a method to extract the latest NOTIFICATION
                     }
                 });
             }

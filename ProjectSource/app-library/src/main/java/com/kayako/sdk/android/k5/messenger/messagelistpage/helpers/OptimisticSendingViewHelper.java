@@ -13,8 +13,10 @@ import java.util.Map;
 
 /**
  * All logic involving the views of optimistic sending.
- * <p>
- * This is common for messages of a New Conversation and Existing Conversation.
+ * Note: <p>
+ * 1. This is common for messages of a New Conversation and Existing Conversation.
+ * 2. This helper class is focusing mainly on views and user actions on such views
+ * 3. This is where the unsent messages are saved - removed only if successfully sent!
  */
 public class OptimisticSendingViewHelper {
     // TODO: Show a dialog on tap - Delete unsent messages or resent unsent messages?
@@ -49,7 +51,7 @@ public class OptimisticSendingViewHelper {
         return optimisticSendingHelper.getUnsentMessages();
     }
 
-    public void removeOptimisticMessagesThatSuccessfullyGotSent(List<Message> newMessages) {
+    public void removeOptimisticMessagesThatIsSuccessfullySentAndDisplayed(List<Message> newMessages) {
         validateHelper();
 
         for (Message message : newMessages) {

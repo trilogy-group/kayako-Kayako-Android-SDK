@@ -23,7 +23,7 @@ public class MessageListContainerContract {
 
         void getMessages(final OnLoadMessagesListener listener, long conversationId, int offset, int limit);
 
-        void startNewConversation(PostConversationBodyParams bodyParams, MessageListContainerContract.OnLoadConversationListener onLoadConversationListener);
+        void startNewConversation(PostConversationBodyParams bodyParams, MessageListContainerContract.PostConversationCallback postConversationCallback);
 
         void getConversation(long conversationId, final OnLoadConversationListener onLoadConversationListener);
 
@@ -86,7 +86,7 @@ public class MessageListContainerContract {
 
 
     public interface PostNewMessageCallback {
-        void onSuccess(Message message);
+        void onSuccess(Message message); // message contains clientId
 
         void onFailure(String clientId);
     }
@@ -94,8 +94,15 @@ public class MessageListContainerContract {
     public interface OnLoadMessagesListener {
         void onSuccess(List<Message> messageList, int offset);
 
-        void onFailure(String message);
+        void onFailure(String errorMessage);
     }
+
+    public interface PostConversationCallback {
+        void onSuccess(String clientId, Conversation conversation);
+
+        void onFailure(String clientId, String message);
+    }
+
 
     public interface OnLoadConversationListener {
         void onSuccess(Conversation conversation);

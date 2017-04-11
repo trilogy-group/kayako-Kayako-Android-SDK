@@ -15,11 +15,12 @@ public class ConversationMessagesHelper {
 
     private UniqueSortedUpdatableResourceList<Message> messages = new UniqueSortedUpdatableResourceList<>();
     private final int LIMIT = 30;
-    private AtomicInteger lastSuccessfulOffset = new AtomicInteger(0);
+    private AtomicInteger lastSuccessfulOffset = new AtomicInteger(-1);
     private AtomicBoolean hasMoreMessages = new AtomicBoolean(true);
+    private AtomicBoolean hasLoadedMessagesBefore = new AtomicBoolean(false);
 
-    public AtomicBoolean getHasMoreMessages() {
-        return hasMoreMessages;
+    public boolean hasLoadedMessagesBefore() {
+        return hasLoadedMessagesBefore.get();
     }
 
     public int getLimit() {
@@ -59,6 +60,8 @@ public class ConversationMessagesHelper {
         for (Message newMessage : newMessages) {
             messages.addElement(newMessage.getId(), newMessage);
         }
+
+        hasLoadedMessagesBefore.set(true);
     }
 
 }
