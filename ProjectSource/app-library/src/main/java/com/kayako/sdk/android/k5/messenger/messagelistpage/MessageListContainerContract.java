@@ -113,7 +113,7 @@ public class MessageListContainerContract {
 
     public interface OnMarkMessageAsReadListener {
 
-        void onSuccess();
+        void onSuccess(long messageId);
 
         void onFailure(String message);
     }

@@ -170,7 +170,7 @@ public class MessageListContainerRepository implements MessageListContainerContr
     }
 
     @Override
-    public void markMessageAsRead(long conversationId, long messageId, final MessageListContainerContract.OnMarkMessageAsReadListener onLoadConversationListener) {
+    public void markMessageAsRead(long conversationId, final long messageId, final MessageListContainerContract.OnMarkMessageAsReadListener onLoadConversationListener) {
         final Handler handler = new Handler(); // Needed to ensure that the callbacks run on the UI Thread
         mMessenger.putMessage(
                 conversationId,
@@ -186,7 +186,7 @@ public class MessageListContainerRepository implements MessageListContainerContr
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                onLoadConversationListener.onSuccess();
+                                onLoadConversationListener.onSuccess(messageId);
                             }
                         });
                     }

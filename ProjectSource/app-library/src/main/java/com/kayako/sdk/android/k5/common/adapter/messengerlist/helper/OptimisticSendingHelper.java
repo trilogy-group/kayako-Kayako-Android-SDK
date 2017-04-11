@@ -12,6 +12,7 @@ import java.util.Map;
 public class OptimisticSendingHelper {
 
     private static final String MAP_KEY_CLIENT_ID = "optimistic_sending_client_id";
+    private static final String MAP_KEY_CLIENT_DELIVERY_INDICATOR_TYPE = "client_delivery_indicator_type";
     private List<OptimisticMessage> optimisticMessages = new ArrayList<>();
     private String userAvatarUrl;
 
@@ -53,9 +54,11 @@ public class OptimisticSendingHelper {
         optimisticMessages.add(
                 position,
                 generateOptimisticSendingMessage(
-                        ClientDeliveryStatus.FAILED_TO_SEND,
-                        messageToReplace.getUnsentMessage().getMessage(),
-                        messageToReplace.getUnsentMessage().getClientId()
+                        new UnsentMessage(
+                                ClientDeliveryStatus.FAILED_TO_SEND,
+                                messageToReplace.getUnsentMessage().getMessage(),
+                                messageToReplace.getUnsentMessage().getClientId()
+                        )
                 )
         );
     }
@@ -66,8 +69,8 @@ public class OptimisticSendingHelper {
         }
     }
 
-    public synchronized void addMessage(ClientDeliveryStatus deliveryStatus, String message, String clientId) {
-        optimisticMessages.add(generateOptimisticSendingMessage(deliveryStatus, message, clientId));
+    public synchronized void addMessage(UnsentMessage unsentMessage) {
+        optimisticMessages.add(generateOptimisticSendingMessage(unsentMessage));
     }
 
     public boolean isOptimisticMessage(Map<String, Object> messageDataOfBaseListItem) {
@@ -78,13 +81,18 @@ public class OptimisticSendingHelper {
         }
     }
 
-    private OptimisticMessage generateOptimisticSendingMessage(ClientDeliveryStatus deliveryStatus, String message, String clientId) {
-        if (clientId == null || message == null) {
+    public ClientDeliveryStatus getDeliveryStatus(Map<String, Object> messageDataOfBaseListItem) {
+        return (ClientDeliveryStatus) messageDataOfBaseListItem.get(MAP_KEY_CLIENT_DELIVERY_INDICATOR_TYPE);
+    }
+
+    private OptimisticMessage generateOptimisticSendingMessage(UnsentMessage unsentMessage) {
+        if (unsentMessage == null) {
             throw new IllegalArgumentException("Invalid arguments!");
         }
 
         Map<String, Object> map = new HashMap<>();
-        map.put(MAP_KEY_CLIENT_ID, clientId);
+        map.put(MAP_KEY_CLIENT_ID, unsentMessage.getClientId());
+        map.put(MAP_KEY_CLIENT_DELIVERY_INDICATOR_TYPE, unsentMessage.getDeliveryStatus());
 
         // TODO: Attachment Types!
 
@@ -92,28 +100,28 @@ public class OptimisticSendingHelper {
             return new OptimisticMessage(
                     new SimpleMessageSelfListItem(
                             null,
-                            message,
+                            unsentMessage.getMessage(),
                             userAvatarUrl,
                             null,
                             System.currentTimeMillis(),
-                            DeliveryIndicatorHelper.getDeliveryIndicator(deliveryStatus),
+                            DeliveryIndicatorHelper.getDeliveryIndicator(unsentMessage.getDeliveryStatus()),
                             map
                     ),
-                    deliveryStatus,
-                    message,
-                    clientId);
+                    unsentMessage.getDeliveryStatus(),
+                    unsentMessage.getMessage(),
+                    unsentMessage.getClientId());
         } else {
             return new OptimisticMessage(
                     new SimpleMessageContinuedSelfListItem(
                             null,
-                            message,
+                            unsentMessage.getMessage(),
                             System.currentTimeMillis(),
-                            DeliveryIndicatorHelper.getDeliveryIndicator(deliveryStatus),
+                            DeliveryIndicatorHelper.getDeliveryIndicator(unsentMessage.getDeliveryStatus()),
                             map
                     ),
-                    deliveryStatus,
-                    message,
-                    clientId);
+                    unsentMessage.getDeliveryStatus(),
+                    unsentMessage.getMessage(),
+                    unsentMessage.getClientId());
         }
 
     }

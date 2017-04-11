@@ -7,25 +7,26 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * All logic involving adding messages - ensuring that the messages are sent one after the other.
+ * All logic involving adding messages in order - ensuring that the messages are sent one after the other.
  */
 public class AddMessageHelper {
 
     private Queue<UnsentMessage> queue = new ConcurrentLinkedQueue<UnsentMessage>();
-    private OnAddNextMessageCallback callback;
 
     public void addMessageToSend(String message, String clientId, OnAddNextMessageCallback callback) {
-        this.callback = callback;
-
         queue.add(new UnsentMessage(ClientDeliveryStatus.SENDING, message, clientId));
-        sendNextPendingMessage();
+        sendNextPendingMessage(callback);
     }
 
-    public void onSuccessfulSendingOfMessage() {
-        sendNextPendingMessage();
+    public void onSuccessfulSendingOfMessage(OnAddNextMessageCallback callback) {
+        sendNextPendingMessage(callback);
     }
 
-    private void sendNextPendingMessage() {
+    private void sendNextPendingMessage(OnAddNextMessageCallback callback) {
+        if (callback == null) {
+            throw new IllegalArgumentException("Callback can not be null!");
+        }
+
         if (queue.size() > 0) {
             UnsentMessage unsentMessage = queue.poll();
             callback.onNextMessage(unsentMessage);

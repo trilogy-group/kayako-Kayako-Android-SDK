@@ -71,7 +71,6 @@ public class MarkReadHelper {
         mLastMessageMarkedReadSuccessfully.set(lastMessageMarkedReadSuccessfully);
     }
 
-
     public Long extractLastMessageId(List<Message> messageList) {
         if (messageList == null || messageList.size() == 0) {
             return null;

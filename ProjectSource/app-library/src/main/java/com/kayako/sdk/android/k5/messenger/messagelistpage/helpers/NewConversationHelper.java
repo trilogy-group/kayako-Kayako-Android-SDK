@@ -4,6 +4,7 @@ import com.kayako.sdk.messenger.conversation.PostConversationBodyParams;
 
 /**
  * All logic for handling a new conversation
+ * // TODO: Combine with ExistingConversationHelper?
  */
 public class NewConversationHelper {
 
