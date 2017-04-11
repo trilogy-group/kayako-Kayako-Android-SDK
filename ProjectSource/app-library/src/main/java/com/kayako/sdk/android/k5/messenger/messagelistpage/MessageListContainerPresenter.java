@@ -83,9 +83,6 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     public void onListItemClick(int messageType, Long id, Map<String, Object> messageData) {
         if (mOptimisticMessageHelper.isOptimisticMessage(messageData)
                 && mOptimisticMessageHelper.isFailedToSendMessage(messageData)) {
-            // TODO: Multiple clicks and using different client ids causing issues - MULTIPLE ITEMS BEING SENT
-            // Retry all optimistic messages
-
             mOptimisticMessageHelper.markAllAsSending(optimisticSendingViewCallback);
             mAddReplyHelper.resendReplies(mOnAddReplyCallback);
         }
