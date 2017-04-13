@@ -9,4 +9,8 @@ public interface IUniqueResourceList<T> {
     List<T> getList();
 
     int getSize();
+
+    boolean exists(long id);
+
+    void removeElement(long id);
 }

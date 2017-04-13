@@ -15,6 +15,9 @@ import java.util.Map;
  * 2. No Duplicates (of same identifer)
  * 3. Elements with new values should replace elements with old values (Elements of same identifier)
  * 4. Allows random access
+ * <p>
+ * Note:
+ * - Realized one issue of relying on this list is that if an item is no longer being returned via API (say a deleted conversation), it will continue to show until this object is recreated - page reopened)
  */
 public class UniqueSortedUpdatableResourceList<T> implements IUniqueResourceList<T> {
 
@@ -36,12 +39,18 @@ public class UniqueSortedUpdatableResourceList<T> implements IUniqueResourceList
         }
     }
 
+    @Override
     public synchronized boolean exists(long id) {
         return mapResources.containsKey(id);
     }
 
     @Override
-    public int getSize() {
+    public synchronized void removeElement(long id) {
+        mapResources.remove(id);
+    }
+
+    @Override
+    public synchronized int getSize() {
         return mapResources.keySet().size();
     }
 

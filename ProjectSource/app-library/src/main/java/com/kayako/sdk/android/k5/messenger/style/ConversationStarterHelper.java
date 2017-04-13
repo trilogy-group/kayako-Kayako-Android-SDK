@@ -16,6 +16,7 @@ import com.kayako.sdk.helpcenter.user.UserMinimal;
 import com.kayako.sdk.messenger.conversation.Conversation;
 import com.kayako.sdk.messenger.conversationstarter.ConversationStarter;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -75,6 +76,10 @@ public class ConversationStarterHelper {
 
         for (Conversation conversation : conversationList) {
             mConversationViewModelHelper.addOrUpdateElement(conversation, null);
+        }
+
+        if (mConversationViewModelHelper.getSize() > 3) {
+            removeOldConversations(conversationList);
         }
 
         return mConversationViewModelHelper.getConversationList();
@@ -161,6 +166,19 @@ public class ConversationStarterHelper {
         } else {
             textView.setVisibility(View.VISIBLE);
             textView.setText(captionText);
+        }
+    }
+
+    private static void removeOldConversations(List<Conversation> newConversations) {
+        List<Long> ids = new ArrayList<>();
+        for (Conversation newConversation : newConversations) {
+            ids.add(newConversation.getId());
+        }
+
+        for (ConversationViewModel conversationViewModel : mConversationViewModelHelper.getConversationList()) {
+            if (!ids.contains(conversationViewModel.getConversationId())) {
+                mConversationViewModelHelper.removeElement(conversationViewModel.getConversationId());
+            }
         }
     }
 

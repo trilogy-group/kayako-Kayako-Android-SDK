@@ -19,12 +19,6 @@ public class ConversationViewModelHelper {
 
     private UniqueSortedUpdatableResourceList<ConversationViewModel> conversations = new UniqueSortedUpdatableResourceList<>();
 
-    // TODO: Set views as well in:
-    // 1. RecentConversationAdapter
-    // 2. ConversationListAdapter
-
-    // TODO: Remove those conversations not mentioned?
-
     public ConversationViewModelHelper() {
     }
 
@@ -72,6 +66,10 @@ public class ConversationViewModelHelper {
         }
     }
 
+    public void removeElement(long conversationId) {
+        conversations.removeElement(conversationId);
+    }
+
     /**
      * Returns list of conversations in descending order
      *
@@ -83,22 +81,8 @@ public class ConversationViewModelHelper {
         return list;
     }
 
-    /**
-     * Select only the conversations relevant
-     *
-     * @param conversationIds
-     * @return
-     */
-    public List<ConversationViewModel> getConversationList(List<Long> conversationIds) {
-        List<ConversationViewModel> list = new ArrayList<>();
-        for (Long conversationId : conversationIds) {
-            if (conversations.exists(conversationId)) {
-                list.add(conversations.getElement(conversationId));
-            }
-        }
-
-        Collections.reverse(list);
-        return list;
+    public int getSize() {
+        return conversations.getSize();
     }
 
     private static ConversationViewModel convert(@NonNull ConversationViewModel conversationViewModel, @Nullable ClientTypingActivity clientTypingActivity) {
@@ -145,4 +129,5 @@ public class ConversationViewModelHelper {
             realtimeConversation.getConversation().getReadMarker() == null ? 0 : realtimeConversation.getConversation().getReadMarker().getUnreadCount() == null ? 0 : realtimeConversation.getConversation().getReadMarker().getUnreadCount(),
              */
     }
+
 }
