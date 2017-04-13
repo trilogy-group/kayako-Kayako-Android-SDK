@@ -8,20 +8,19 @@ import android.view.ViewGroup;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.conversationlist.ConversationListItemHelper;
-import com.kayako.sdk.android.k5.common.utils.DateTimeUtils;
 import com.kayako.sdk.android.k5.common.utils.ImageUtils;
 import com.kayako.sdk.android.k5.core.Kayako;
-import com.kayako.sdk.android.k5.messenger.data.conversationstarter.RecentConversation;
+import com.kayako.sdk.android.k5.messenger.data.conversation.ConversationViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RecentConversationAdapter extends RecyclerView.Adapter {
 
-    List<RecentConversation> recentConversationList = new ArrayList<>();
+    List<ConversationViewModel> recentConversationList = new ArrayList<>();
     OnClickRecentConversationListener onClickRecentConversationListener;
 
-    public RecentConversationAdapter(List<RecentConversation> conversations, OnClickRecentConversationListener onClickRecentConversationListener) {
+    public RecentConversationAdapter(List<ConversationViewModel> conversations, OnClickRecentConversationListener onClickRecentConversationListener) {
         this.recentConversationList = conversations;
         this.onClickRecentConversationListener = onClickRecentConversationListener;
 
@@ -40,7 +39,7 @@ public class RecentConversationAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         RecentConversationViewHolder viewHolder = (RecentConversationViewHolder) holder;
-        final RecentConversation recentConversation = recentConversationList.get(position);
+        final ConversationViewModel recentConversation = recentConversationList.get(position);
 
         Context context = Kayako.getApplicationContext();
         ImageUtils.setAvatarImage(context, viewHolder.avatar, recentConversation.getAvatarUrl());
@@ -57,6 +56,8 @@ public class RecentConversationAdapter extends RecyclerView.Adapter {
 
         ConversationListItemHelper.setUnreadCounter(viewHolder.unreadCounter, recentConversation.getUnreadCount());
         ConversationListItemHelper.setFormattedTime(viewHolder.time, recentConversation.getTimeInMilleseconds());
+
+        // TODO: Show typing indicators
     }
 
     @Override

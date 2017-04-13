@@ -20,8 +20,6 @@ public class ConversationListContract {
 
         void setupList(List<BaseListItem> conversations);
 
-        void appendToEndOfListAndStopLoadMoreProgress(List<BaseListItem> conversations);
-
         void showEmptyView();
 
         void showErrorView();
@@ -49,7 +47,7 @@ public class ConversationListContract {
 
         void onLoadMoreItems();
 
-        void onClickConversation(Conversation conversation);
+        void onClickConversation(long conversationId);
 
         void onClickRetryOnError();
 

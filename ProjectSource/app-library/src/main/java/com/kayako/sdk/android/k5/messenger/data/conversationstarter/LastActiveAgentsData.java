@@ -3,13 +3,15 @@ package com.kayako.sdk.android.k5.messenger.data.conversationstarter;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.kayako.sdk.android.k5.messenger.data.conversation.UserViewModel;
+
 public class LastActiveAgentsData {
     private String brandName;
     private Long averageReplyTime;
 
-    private ActiveUser user1;
-    private ActiveUser user2;
-    private ActiveUser user3;
+    private UserViewModel user1;
+    private UserViewModel user2;
+    private UserViewModel user3;
 
     public LastActiveAgentsData(@NonNull String brandName, @NonNull Long averageReplyTime) {
         this.brandName = brandName;
@@ -21,7 +23,7 @@ public class LastActiveAgentsData {
     }
 
 
-    public LastActiveAgentsData(@NonNull String brandName, @NonNull Long averageReplyTime, @Nullable ActiveUser user1, @Nullable ActiveUser user2, @Nullable ActiveUser user3) {
+    public LastActiveAgentsData(@NonNull String brandName, @NonNull Long averageReplyTime, @Nullable UserViewModel user1, @Nullable UserViewModel user2, @Nullable UserViewModel user3) {
         this.brandName = brandName;
         this.averageReplyTime = averageReplyTime;
         this.user1 = user1;
@@ -41,15 +43,15 @@ public class LastActiveAgentsData {
         return averageReplyTime;
     }
 
-    public ActiveUser getUser1() {
+    public UserViewModel getUser1() {
         return user1;
     }
 
-    public ActiveUser getUser2() {
+    public UserViewModel getUser2() {
         return user2;
     }
 
-    public ActiveUser getUser3() {
+    public UserViewModel getUser3() {
         return user3;
     }
 }

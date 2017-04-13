@@ -28,6 +28,9 @@ public class ConversationListFragment extends BaseListFragment implements Conver
     private ConversationListContract.OnScrollListener mScrollListener;
     private OnListPageStateChangeListener mOnListPageStateChangeListener;
 
+    private ConversationListAdapter mConversationListAdapter;
+    private boolean mIsListInitialized;
+
     // TODO: Receive fingerprintId
     // TODO: Redesign the Views - placeholders for loading
 
@@ -72,62 +75,59 @@ public class ConversationListFragment extends BaseListFragment implements Conver
             return;
         }
 
-        ConversationListAdapter conversationListAdapter = new ConversationListAdapter(conversations, new ConversationListAdapter.OnClickConversationListener() {
-            @Override
-            public void onClickConversation(Conversation conversation) {
-                mPresenter.onClickConversation(conversation);
-            }
-        });
-
-        initList(conversationListAdapter);
-        setLoadMoreListener(new EndlessRecyclerViewScrollAdapter.OnLoadMoreListener() {
-            @Override
-            public void loadMoreItems() {
-                mPresenter.onLoadMoreItems();
-            }
-        });
-
-        super.setScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                if (mScrollListener == null) {
-                    return;
+        if (!mIsListInitialized) {
+            mConversationListAdapter = new ConversationListAdapter(conversations, new ConversationListAdapter.OnClickConversationListener() {
+                @Override
+                public void onClickConversation(long conversationId) {
+                    mPresenter.onClickConversation(conversationId);
                 }
-                if (dy != 0) {
-                    mScrollListener.onScroll(true);
-                } else {
-                    mScrollListener.onScroll(false);
+            });
+
+            initList(mConversationListAdapter);
+            setLoadMoreListener(new EndlessRecyclerViewScrollAdapter.OnLoadMoreListener() {
+                @Override
+                public void loadMoreItems() {
+                    mPresenter.onLoadMoreItems();
                 }
-            }
+            });
 
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
+            super.setScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
 
-                if (mScrollListener == null) {
-                    return;
-                }
-
-                switch (newState) {
-                    case SCROLL_STATE_IDLE:
+                    if (mScrollListener == null) {
+                        return;
+                    }
+                    if (dy != 0) {
+                        mScrollListener.onScroll(true);
+                    } else {
                         mScrollListener.onScroll(false);
-                        break;
+                    }
                 }
-            }
-        });
 
-        showListViewAndHideOthers();
-    }
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
 
-    @Override
-    public void appendToEndOfListAndStopLoadMoreProgress(List<BaseListItem> conversations) {
-        if (!hasPageLoaded()) {
-            return;
+                    if (mScrollListener == null) {
+                        return;
+                    }
+
+                    switch (newState) {
+                        case SCROLL_STATE_IDLE:
+                            mScrollListener.onScroll(false);
+                            break;
+                    }
+                }
+            });
+
+            mIsListInitialized = true;
+        } else {
+            mConversationListAdapter.replaceAllData(conversations);
         }
 
-        addItemsToEndOfList(conversations);
+        showListViewAndHideOthers();
     }
 
     @Override

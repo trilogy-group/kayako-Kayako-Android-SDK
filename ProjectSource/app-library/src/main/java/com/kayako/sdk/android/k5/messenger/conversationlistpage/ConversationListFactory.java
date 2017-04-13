@@ -1,6 +1,5 @@
 package com.kayako.sdk.android.k5.messenger.conversationlistpage;
 
-import com.kayako.sdk.android.k5.core.HelpCenterPref;
 import com.kayako.sdk.android.k5.core.MessengerPref;
 import com.kayako.sdk.auth.FingerprintAuth;
 

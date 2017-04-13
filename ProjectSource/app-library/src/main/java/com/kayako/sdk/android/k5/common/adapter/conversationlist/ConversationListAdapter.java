@@ -51,30 +51,30 @@ public class ConversationListAdapter extends EndlessRecyclerViewScrollAdapter {
         switch (viewHolder.getItemViewType()) {
             case ConversationListType.CONVERSATION_LIST_ITEM:
                 ConversationItemViewHolder conversationViewHolder = (ConversationItemViewHolder) viewHolder;
-                ConversationListItem conversationListItem = (ConversationListItem) getData().get(position);
+                final ConversationListItem conversationListItem = (ConversationListItem) getData().get(position);
 
                 Context context = Kayako.getApplicationContext();
-                ImageUtils.setAvatarImage(context, conversationViewHolder.avatar, conversationListItem.avatarUrl);
+                ImageUtils.setAvatarImage(context, conversationViewHolder.avatar, conversationListItem.conversationViewModel.getAvatarUrl());
 
-                conversationViewHolder.name.setText(conversationListItem.name);
-                conversationViewHolder.subject.setText(conversationListItem.subject);
+                conversationViewHolder.name.setText(conversationListItem.conversationViewModel.getName());
+                conversationViewHolder.subject.setText(conversationListItem.conversationViewModel.getSubject());
                 conversationViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         ConversationListItem item = (ConversationListItem) getData().get(viewHolder.getAdapterPosition());
-                        mListener.onClickConversation(item.conversation);
+                        mListener.onClickConversation(conversationListItem.conversationViewModel.getConversationId());
                     }
                 });
 
-                ConversationListItemHelper.setFormattedTime(conversationViewHolder.time, conversationListItem.timeInMilleseconds.longValue());
-                ConversationListItemHelper.setUnreadCounter(conversationViewHolder.unreadCounter, conversationListItem.unreadCount);
+                ConversationListItemHelper.setFormattedTime(conversationViewHolder.time, conversationListItem.conversationViewModel.getTimeInMilleseconds());
+                ConversationListItemHelper.setUnreadCounter(conversationViewHolder.unreadCounter, conversationListItem.conversationViewModel.getUnreadCount());
             default:
                 super.onBindViewHolder(viewHolder, position);
         }
     }
 
     public interface OnClickConversationListener {
-        void onClickConversation(Conversation conversation);
+        void onClickConversation(long conversationId);
     }
 
 }

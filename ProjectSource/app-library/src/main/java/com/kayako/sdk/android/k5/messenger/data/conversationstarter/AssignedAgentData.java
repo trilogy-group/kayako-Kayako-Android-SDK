@@ -1,12 +1,14 @@
 package com.kayako.sdk.android.k5.messenger.data.conversationstarter;
 
+import com.kayako.sdk.android.k5.messenger.data.conversation.UserViewModel;
+
 public class AssignedAgentData {
 
-    private ActiveUser user;
+    private UserViewModel user;
 
     private boolean isActive;
 
-    public AssignedAgentData(ActiveUser user, boolean isActive) {
+    public AssignedAgentData(UserViewModel user, boolean isActive) {
         this.user = user;
         this.isActive = isActive;
 
@@ -15,7 +17,7 @@ public class AssignedAgentData {
         }
     }
 
-    public ActiveUser getUser() {
+    public UserViewModel getUser() {
         return user;
     }
 

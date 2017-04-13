@@ -2,7 +2,7 @@ package com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.widget.recent
 
 import android.support.annotation.NonNull;
 
-import com.kayako.sdk.android.k5.messenger.data.conversationstarter.RecentConversation;
+import com.kayako.sdk.android.k5.messenger.data.conversation.ConversationViewModel;
 import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.HomeScreenListType;
 import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.widget.BaseWidgetListItem;
 
@@ -10,13 +10,13 @@ import java.util.List;
 
 public class RecentConversationsWidgetListItem extends BaseWidgetListItem {
 
-    private List<RecentConversation> conversations;
+    private List<ConversationViewModel> conversations;
     private OnClickRecentConversationListener onClickRecentConversationListener;
 
     public RecentConversationsWidgetListItem(@NonNull String title,
                                              @NonNull String actionButtonLabel,
                                              @NonNull OnClickActionListener onClickActionListener,
-                                             @NonNull List<RecentConversation> conversations,
+                                             @NonNull List<ConversationViewModel> conversations,
                                              @NonNull OnClickRecentConversationListener onClickRecentConversationListener) {
 
         super(HomeScreenListType.WIDGET_RECENT_CONVERSATIONS, title, actionButtonLabel, onClickActionListener);
@@ -31,7 +31,7 @@ public class RecentConversationsWidgetListItem extends BaseWidgetListItem {
         }
     }
 
-    public List<RecentConversation> getConversations() {
+    public List<ConversationViewModel> getConversations() {
         return conversations;
     }
 

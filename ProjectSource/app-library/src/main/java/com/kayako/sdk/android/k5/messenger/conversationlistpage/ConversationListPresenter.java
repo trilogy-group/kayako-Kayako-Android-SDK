@@ -3,6 +3,8 @@ package com.kayako.sdk.android.k5.messenger.conversationlistpage;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.conversationlist.ConversationListItem;
 import com.kayako.sdk.android.k5.core.MessengerPref;
+import com.kayako.sdk.android.k5.messenger.data.conversation.ConversationViewModel;
+import com.kayako.sdk.android.k5.messenger.data.conversation.ConversationViewModelHelper;
 import com.kayako.sdk.messenger.conversation.Conversation;
 import com.kayako.sdk.utils.FingerprintUtils;
 
@@ -17,6 +19,9 @@ public class ConversationListPresenter implements ConversationListContract.Prese
     private static final int LIMIT = 20;
     private int mOffset = 0;
 
+    private ConversationViewModelHelper mConversationViewModelHelper = new ConversationViewModelHelper();
+
+    // TODO: Refactor conversation list to retain list of realtimeconversation and re-render whole list everytime
 
     public ConversationListPresenter(ConversationListContract.View mView, ConversationListContract.Data mData) {
         this.mData = mData;
@@ -68,12 +73,19 @@ public class ConversationListPresenter implements ConversationListContract.Prese
                         return;
                     }
 
-                    // Configuring list - load more or setWasNewConversation list
-                    if (offset == 0) {
-                        mView.setupList(convertConversationToListItems(conversations));
-                    } else {
-                        mView.appendToEndOfListAndStopLoadMoreProgress(convertConversationToListItems(conversations));
+                    // Save list items
+                    for (Conversation conversation : conversations) {
+                        mConversationViewModelHelper.addOrUpdateElement(conversation, null);
                     }
+
+                    // Configuring list - load more or setWasNewConversation list
+                    if (offset != 0) {
+                        mView.configureLoadMoreView(false);
+                    }
+
+                    mView.setupList(
+                            convertConversationToListItems(
+                                    mConversationViewModelHelper.getConversationList()));
 
                     configureIfMoreItemsAvailable(conversations.size());
                     mOffset = offset + conversations.size();
@@ -91,8 +103,7 @@ public class ConversationListPresenter implements ConversationListContract.Prese
                     }
                 }
             }
-        }, offset, LIMIT); // TODO: Offset, Limit
-
+        }, offset, LIMIT);
     }
 
 
@@ -109,8 +120,8 @@ public class ConversationListPresenter implements ConversationListContract.Prese
     }
 
     @Override
-    public void onClickConversation(Conversation conversation) {
-        mView.openMessageListPage(conversation.getId(), RequestCodes.REQUEST_CODE_OPEN_EXISTING_CONVERSATION);
+    public void onClickConversation(long conversationId) {
+        mView.openMessageListPage(conversationId, RequestCodes.REQUEST_CODE_OPEN_EXISTING_CONVERSATION);
     }
 
     @Override
@@ -130,18 +141,10 @@ public class ConversationListPresenter implements ConversationListContract.Prese
         loadConversations(0);
     }
 
-    private List<BaseListItem> convertConversationToListItems(List<Conversation> conversations) {
+    private List<BaseListItem> convertConversationToListItems(List<ConversationViewModel> conversations) {
         List<BaseListItem> baseListItems = new ArrayList<>();
-        for (Conversation conversation : conversations) {
-            baseListItems.add(new ConversationListItem(
-                    conversation.getCreator().getAvatarUrl(), // TODO: Which photo to show? The agent?
-                    conversation.getCreator().getFullName(),// TODO: Whose name? The agent?
-                    conversation.getUpdatedAt(),
-                    conversation.getLastMessagePreview(),
-                    conversation.getReadMarker() == null ? 0 : conversation.getReadMarker().getUnreadCount() == null ? 0 : conversation.getReadMarker().getUnreadCount(),
-                    conversation
-            ));
-
+        for (ConversationViewModel conversation : conversations) {
+            baseListItems.add(new ConversationListItem(conversation));
         }
         return baseListItems;
     }

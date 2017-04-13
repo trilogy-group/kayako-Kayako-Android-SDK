@@ -1,6 +1,6 @@
-package com.kayako.sdk.android.k5.messenger.data.conversationstarter;
+package com.kayako.sdk.android.k5.messenger.data.conversation;
 
-public class ActiveUser {
+public class UserViewModel {
 
     private String avatar;
 
@@ -8,7 +8,7 @@ public class ActiveUser {
 
     private Long lastActiveAt;
 
-    public ActiveUser(String avatar, String fullName, Long lastActiveAt) {
+    public UserViewModel(String avatar, String fullName, Long lastActiveAt) {
         this.avatar = avatar;
         this.fullName = fullName;
         this.lastActiveAt = lastActiveAt;

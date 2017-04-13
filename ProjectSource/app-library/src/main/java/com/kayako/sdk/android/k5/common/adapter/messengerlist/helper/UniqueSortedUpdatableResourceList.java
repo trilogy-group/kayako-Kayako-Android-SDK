@@ -14,6 +14,7 @@ import java.util.Map;
  * 1. Sorted (by indentifier)
  * 2. No Duplicates (of same identifer)
  * 3. Elements with new values should replace elements with old values (Elements of same identifier)
+ * 4. Allows random access
  */
 public class UniqueSortedUpdatableResourceList<T> implements IUniqueResourceList<T> {
 
@@ -24,6 +25,24 @@ public class UniqueSortedUpdatableResourceList<T> implements IUniqueResourceList
         // (3) Map replaces old value with new value based on identifier
         mapResources.put(id, t);
         return true;
+    }
+
+    public synchronized T getElement(long id) {
+        // (4) Map replaces old value with new value based on identifier
+        if (mapResources.containsKey(id)) {
+            return mapResources.get(id);
+        } else {
+            return null;
+        }
+    }
+
+    public synchronized boolean exists(long id) {
+        return mapResources.containsKey(id);
+    }
+
+    @Override
+    public int getSize() {
+        return mapResources.keySet().size();
     }
 
     @Override
@@ -42,10 +61,5 @@ public class UniqueSortedUpdatableResourceList<T> implements IUniqueResourceList
             values.add(mapResources.get(key));
         }
         return values;
-    }
-
-    @Override
-    public int getSize() {
-        return mapResources.keySet().size();
     }
 }

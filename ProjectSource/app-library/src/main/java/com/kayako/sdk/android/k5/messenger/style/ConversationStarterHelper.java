@@ -8,19 +8,20 @@ import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.utils.ImageUtils;
 import com.kayako.sdk.android.k5.core.Kayako;
 import com.kayako.sdk.android.k5.core.MessengerPref;
-import com.kayako.sdk.android.k5.messenger.data.conversationstarter.ActiveUser;
+import com.kayako.sdk.android.k5.messenger.data.conversation.ConversationViewModel;
+import com.kayako.sdk.android.k5.messenger.data.conversation.ConversationViewModelHelper;
+import com.kayako.sdk.android.k5.messenger.data.conversation.UserViewModel;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.LastActiveAgentsData;
-import com.kayako.sdk.android.k5.messenger.data.conversationstarter.RecentConversation;
 import com.kayako.sdk.helpcenter.user.UserMinimal;
 import com.kayako.sdk.messenger.conversation.Conversation;
 import com.kayako.sdk.messenger.conversationstarter.ConversationStarter;
-import com.kayako.sdk.utils.LogUtils;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class ConversationStarterHelper {
+
+    private static ConversationViewModelHelper mConversationViewModelHelper = new ConversationViewModelHelper();
 
     private ConversationStarterHelper() {
     }
@@ -28,9 +29,9 @@ public class ConversationStarterHelper {
     public static LastActiveAgentsData convertToLastActiveAgentsData(ConversationStarter conversationStarter) {
         String brand = MessengerPref.getInstance().getBrandName();
         long averageReplyTimeInMilliseconds;
-        ActiveUser user1 = null;
-        ActiveUser user2 = null;
-        ActiveUser user3 = null;
+        UserViewModel user1 = null;
+        UserViewModel user2 = null;
+        UserViewModel user3 = null;
 
         if (conversationStarter == null) {
             throw new IllegalArgumentException("Null unacceptable!");
@@ -65,20 +66,18 @@ public class ConversationStarterHelper {
 
     }
 
-    public static List<RecentConversation> convertToRecentConversation(ConversationStarter conversationStarter) {
+    public static List<ConversationViewModel> convertToRecentConversation(ConversationStarter conversationStarter) {
         List<Conversation> conversationList = conversationStarter.getActiveConversations();
-        List<RecentConversation> recentConversationList = new ArrayList<>();
 
         if (conversationList == null || conversationList.size() == 0) {
             return Collections.emptyList();
         }
 
         for (Conversation conversation : conversationList) {
-            RecentConversation recentConversation = convert(conversation);
-            recentConversationList.add(recentConversation);
+            mConversationViewModelHelper.addOrUpdateElement(conversation, null);
         }
 
-        return recentConversationList;
+        return mConversationViewModelHelper.getConversationList();
     }
 
     public static String getAverageResponseTimeCaption(Long averageReplyTimeInMilliseconds) {
@@ -101,9 +100,9 @@ public class ConversationStarterHelper {
     }
 
     public static String getLastActiveAgentsCaption(LastActiveAgentsData lastActiveAgentsData) {
-        ActiveUser user1 = lastActiveAgentsData.getUser1();
-        ActiveUser user2 = lastActiveAgentsData.getUser2();
-        ActiveUser user3 = lastActiveAgentsData.getUser3();
+        UserViewModel user1 = lastActiveAgentsData.getUser1();
+        UserViewModel user2 = lastActiveAgentsData.getUser2();
+        UserViewModel user3 = lastActiveAgentsData.getUser3();
 
         // TODO: Check the lastActiveAt and label it as "Jamie Edwards was online about 1 hour ago"
         // TODO: According to Harminder - Find the shortest LastActiveAt time of the 3 agents and set as online that much time ago.
@@ -131,14 +130,14 @@ public class ConversationStarterHelper {
         return captionText;
     }
 
-    public static String getAvatarUrl(ActiveUser user) {
+    public static String getAvatarUrl(UserViewModel user) {
         if (user == null) {
             return null;
         }
         return user.getAvatar();
     }
 
-    public static void setAgentAvatar(ImageView imageView, ActiveUser user) {
+    public static void setAgentAvatar(ImageView imageView, UserViewModel user) {
         if (user == null) {
             imageView.setVisibility(View.GONE);
         } else {
@@ -187,27 +186,11 @@ public class ConversationStarterHelper {
         return seconds;
     }
 
-    private static ActiveUser convert(UserMinimal userMinimal) {
-        return new ActiveUser(
+    private static UserViewModel convert(UserMinimal userMinimal) {
+        return new UserViewModel(
                 userMinimal.getAvatarUrl(),
                 userMinimal.getFullName(),
                 userMinimal.getLastActiveAt()
-        );
-    }
-
-    private static RecentConversation convert(Conversation conversation) {
-        if (conversation == null) {
-            return null;
-        }
-
-        return new RecentConversation(
-                conversation.getId(),
-                conversation.getLastReplier().getAvatarUrl(),
-                conversation.getLastReplier().getFullName(),
-                conversation.getUpdatedAt(),
-                conversation.getLastMessagePreview(),
-                conversation.getReadMarker() == null ? 0 :
-                        conversation.getReadMarker().getUnreadCount() == null ? 0 : conversation.getReadMarker().getUnreadCount()
         );
     }
 }
