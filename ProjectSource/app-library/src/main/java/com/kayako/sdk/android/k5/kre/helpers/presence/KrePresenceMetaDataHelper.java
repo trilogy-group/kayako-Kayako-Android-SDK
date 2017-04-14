@@ -3,6 +3,7 @@ package com.kayako.sdk.android.k5.kre.helpers.presence;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.kayako.sdk.android.k5.kre.helpers.MinimalClientTypingListener;
 import com.kayako.sdk.android.k5.kre.helpers.RawClientActivityListener;
 import com.kayako.sdk.android.k5.kre.helpers.RawClientTypingListener;
 import com.kayako.sdk.android.k5.kre.helpers.RawUserOnCasePresenceListener;
@@ -53,6 +54,7 @@ class KrePresenceMetaDataHelper {
                                                             @Nullable RawUserSubscribedPresenceListener rawUserSubscribedPresenceListener,
                                                             @Nullable RawUserOnCasePresenceListener rawUserPresenceListener,
                                                             @Nullable RawClientTypingListener rawClientTypingListener,
+                                                            @Nullable MinimalClientTypingListener minimalClientTypingListener,
                                                             @Nullable RawClientActivityListener rawClientActivityListener) {
         // Assertions
         if (onlineUsers == null || newUsers == null || oldUsers == null) {
@@ -113,6 +115,7 @@ class KrePresenceMetaDataHelper {
 
             if (hasTypingStatusChanged(userToCompareChangeWith, newUser)) {
                 triggerTypingStatus(newUser, rawClientTypingListener);
+                triggerTypingStatus(newUser, minimalClientTypingListener);
             }
         }
 
@@ -168,6 +171,18 @@ class KrePresenceMetaDataHelper {
         if (rawClientTypingListener != null) {
             rawClientTypingListener.onUserTyping(
                     newUserData.getUserData().getId(),
+                    newUserData.getActivityData().isTyping());
+        }
+    }
+
+    private static void triggerTypingStatus(@NonNull PresenceUser newUserData, MinimalClientTypingListener minimalClientTypingListener) {
+        if (minimalClientTypingListener != null
+                && newUserData.getUserData().getFullName() != null // Ensure callback triggered only if the name and avatar is avaialble!
+                && newUserData.getUserData().getAvatar() != null) {
+            minimalClientTypingListener.onUserTyping(
+                    newUserData.getUserData().getId(),
+                    newUserData.getUserData().getFullName(),
+                    newUserData.getUserData().getAvatar(),
                     newUserData.getActivityData().isTyping());
         }
     }

@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.kayako.sdk.android.k5.kre.base.KreSubscription;
 import com.kayako.sdk.android.k5.kre.helpers.KreLogHelper;
+import com.kayako.sdk.android.k5.kre.helpers.MinimalClientTypingListener;
 import com.kayako.sdk.android.k5.kre.helpers.RawClientActivityListener;
 import com.kayako.sdk.android.k5.kre.helpers.RawClientTypingListener;
 import com.kayako.sdk.android.k5.kre.helpers.RawUserOnCasePresenceListener;
@@ -34,6 +35,7 @@ public class KrePresenceHelper {
     private RawClientTypingListener mRawTypingPresenceListener;
     private RawClientActivityListener mRawClientActivityListener;
     private RawUserSubscribedPresenceListener mRawUserSubscribedPresenceListener;
+    private MinimalClientTypingListener mMinimalClientTypingListener;
 
     protected Set<PresenceUser> mOnlineUsers = new HashSet<>();
     protected boolean mShowLogs = true; // used in test cases
@@ -100,6 +102,19 @@ public class KrePresenceHelper {
     public void removeRawClientTypingListener() {
         synchronized (eventKey) {
             mRawTypingPresenceListener = null;
+        }
+    }
+
+    public void setMinimalClientTypingListener(@NonNull final MinimalClientTypingListener listener) {
+        synchronized (eventKey) {
+            mMinimalClientTypingListener = listener;
+            subscribeForChangesIfNotAlreadyDone();
+        }
+    }
+
+    public void removeMinimalClientTypingListener() {
+        synchronized (eventKey) {
+            mMinimalClientTypingListener = null;
         }
     }
 
@@ -191,6 +206,7 @@ public class KrePresenceHelper {
                     mRawUserSubscribedPresenceListener,
                     mRawUserOnCasePresenceListener,
                     mRawTypingPresenceListener,
+                    mMinimalClientTypingListener,
                     mRawClientActivityListener);
 
         }

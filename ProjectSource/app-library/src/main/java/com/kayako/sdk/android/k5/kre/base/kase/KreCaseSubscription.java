@@ -6,6 +6,7 @@ import com.kayako.sdk.android.k5.kre.base.KreSubscription;
 import com.kayako.sdk.android.k5.kre.base.credentials.KreCredentials;
 import com.kayako.sdk.android.k5.kre.data.Change;
 import com.kayako.sdk.android.k5.kre.helpers.KreCaseChangeHelper;
+import com.kayako.sdk.android.k5.kre.helpers.MinimalClientTypingListener;
 import com.kayako.sdk.android.k5.kre.helpers.RawCaseChangeListener;
 import com.kayako.sdk.android.k5.kre.helpers.RawClientActivityListener;
 import com.kayako.sdk.android.k5.kre.helpers.RawClientTypingListener;
@@ -32,6 +33,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class KreCaseSubscription {
 
+    // TODO: Add NEW_POST callback too!
+
     private KreSubscription mKreSubscription;
     private KrePresenceHelper mKrePresenceHelper;
     private KreSubscription.OnSubscriptionListener mMainListener;
@@ -39,6 +42,7 @@ public class KreCaseSubscription {
 
     private AtomicBoolean hasSubscribeBeenCalledOnce = new AtomicBoolean(false);
     private List<RawClientTypingListener> mClientTypingListeners = new ArrayList<>();
+    private List<MinimalClientTypingListener> mMinimalClientTypingListeners = new ArrayList<>();
     private List<RawClientActivityListener> mClientActivityListeners = new ArrayList<>();
     private List<RawCaseChangeListener> mCaseChangeListeners = new ArrayList<>();
     private List<RawUserOnCasePresenceListener> mUserPresenceListeners = new ArrayList<>();
@@ -52,6 +56,11 @@ public class KreCaseSubscription {
         mClientTypingListeners.add(listener);
     }
 
+    public void addMinimalClientTypingListener(MinimalClientTypingListener listener) {
+        mMinimalClientTypingListeners.add(listener);
+    }
+
+
     public void addClientActivityListener(RawClientActivityListener listener) {
         mClientActivityListeners.add(listener);
     }
@@ -64,8 +73,8 @@ public class KreCaseSubscription {
         mUserPresenceListeners.add(listener);
     }
 
-    public void removeClientTypingListener(RawClientTypingListener listener) {
-        mClientTypingListeners.remove(listener);
+    public void removeClientTypingListener(MinimalClientTypingListener listener) {
+        mMinimalClientTypingListeners.remove(listener);
     }
 
     public void removeClientActivityListener(RawClientActivityListener listener) {
@@ -196,6 +205,26 @@ public class KreCaseSubscription {
                         }
                     });
 
+                    mKrePresenceHelper.setMinimalClientTypingListener(new MinimalClientTypingListener() {
+                        @Override
+                        public void onUserTyping(long userId, String userName, String userAvatar, boolean isTyping) {
+                            if (mMinimalClientTypingListeners != null) {
+                                for (MinimalClientTypingListener listener : mMinimalClientTypingListeners) {
+                                    listener.onUserTyping(userId, userName, userAvatar, isTyping);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onConnectionError() {
+                            if (mMinimalClientTypingListeners != null) {
+                                for (MinimalClientTypingListener listener : mMinimalClientTypingListeners) {
+                                    listener.onConnectionError();
+                                }
+                            }
+                        }
+                    });
+
                     KreCaseChangeHelper.addRawCaseChangeListener(mKreSubscription, new RawCaseChangeListener() {
                         @Override
                         public void onCaseChange(final Change change) {
@@ -260,10 +289,11 @@ public class KreCaseSubscription {
         hasSubscribeBeenCalledOnce.set(false);
         mMainListener = null;
 
-        mClientTypingListeners = new CopyOnWriteArrayList<>();
-        mClientActivityListeners = new CopyOnWriteArrayList<>();
-        mCaseChangeListeners = new CopyOnWriteArrayList<>();
-        mUserPresenceListeners = new CopyOnWriteArrayList<>();
-        mChildListeners = new CopyOnWriteArrayList<>();
+        mMinimalClientTypingListeners = new ArrayList<>();
+        mClientTypingListeners = new ArrayList<>();
+        mClientActivityListeners = new ArrayList<>();
+        mCaseChangeListeners = new ArrayList<>();
+        mUserPresenceListeners = new ArrayList<>();
+        mChildListeners = new ArrayList<>();
     }
 }
