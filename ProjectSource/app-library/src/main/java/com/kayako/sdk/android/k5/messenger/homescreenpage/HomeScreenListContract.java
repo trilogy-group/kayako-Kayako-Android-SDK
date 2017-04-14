@@ -13,6 +13,8 @@ public class HomeScreenListContract {
         void openConversationListingPage();
 
         void openSelectConversationPage(long conversationId);
+
+        String getResourceString(int stringResId);
     }
 
     public interface Presenter {

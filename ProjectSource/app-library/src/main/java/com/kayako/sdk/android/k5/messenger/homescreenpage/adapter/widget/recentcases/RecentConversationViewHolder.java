@@ -14,6 +14,10 @@ public class RecentConversationViewHolder extends RecyclerView.ViewHolder {
     public TextView time;
     public TextView subject;
     public TextView unreadCounter;
+
+    public ImageView typingLoader;
+    public View subjectLine;
+
     public View itemView;
 
     public RecentConversationViewHolder(View v) {
@@ -24,5 +28,7 @@ public class RecentConversationViewHolder extends RecyclerView.ViewHolder {
         time = (TextView) v.findViewById(R.id.ko__time);
         subject = (TextView) v.findViewById(R.id.ko__subject);
         unreadCounter = (TextView) v.findViewById(R.id.ko__unread_counter);
+        typingLoader = (ImageView) v.findViewById(R.id.ko__typing_progress_loader);
+        subjectLine = v.findViewById(R.id.ko__subject_line);
     }
 }

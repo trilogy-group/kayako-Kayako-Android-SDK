@@ -13,6 +13,7 @@ import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.activities.KayakoConversationListActivity;
 import com.kayako.sdk.android.k5.activities.KayakoSelectConversationActivity;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.core.Kayako;
 import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.HomeScreenListAdapter;
 
 import java.util.List;
@@ -104,6 +105,11 @@ public class HomeScreenListFragment extends Fragment implements HomeScreenListCo
         }
 
         startActivity(KayakoSelectConversationActivity.getIntent(getActivity(), conversationId));
+    }
+
+    @Override
+    public String getResourceString(int stringResId) {
+        return Kayako.getApplicationContext().getResources().getString(stringResId);
     }
 
     @Override

@@ -6,19 +6,19 @@ import android.support.annotation.Nullable;
 public class ConversationViewModel {
 
     @NonNull
-    private String avatarUrl;
+    private long conversationId;
 
     @NonNull
     private String name;
+
+    @NonNull
+    private String avatarUrl;
 
     @NonNull
     private long timeInMilleseconds;
 
     @NonNull
     private String subject;
-
-    @NonNull
-    private long conversationId;
 
     @NonNull
     private int unreadCount;
@@ -74,7 +74,6 @@ public class ConversationViewModel {
         return unreadCount;
     }
 
-    @Nullable
     public ClientTypingActivity getLastAgentReplierTyping() {
         return lastAgentReplierTyping;
     }

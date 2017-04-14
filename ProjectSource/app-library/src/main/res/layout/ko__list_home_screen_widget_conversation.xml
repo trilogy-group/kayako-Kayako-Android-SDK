@@ -68,30 +68,43 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ko__subject_line_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <com.kayako.sdk.android.k5.common.view.RegularTextView
-                android:id="@+id/ko__subject"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ellipsize="end"
-                android:gravity="center_vertical|left"
-                android:maxLines="1"
-                android:textColor="@color/ko__conversation_item_subject_text_color"
-                android:textSize="@dimen/ko__messenger_home_screen_widget_recent_cases__conversation_list_item_subject_text_size"
-                tools:text="@string/lorem_ipsum" />
-
             <include
-                layout="@layout/ko__include_unread_message_counter"
-                android:layout_width="18sp"
-                android:layout_height="18sp"
-                android:layout_marginLeft="4dp"
-                android:gravity="center_vertical|left"
-                android:textSize="8sp" />
+                layout="@layout/ko__include_typing_loader"
+                android:layout_width="20dp"
+                android:layout_height="20dp" />
 
+
+            <LinearLayout
+                android:id="@+id/ko__subject_line"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.kayako.sdk.android.k5.common.view.RegularTextView
+                    android:id="@+id/ko__subject"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical|left"
+                    android:maxLines="1"
+                    android:textColor="@color/ko__conversation_item_subject_text_color"
+                    android:textSize="@dimen/ko__messenger_home_screen_widget_recent_cases__conversation_list_item_subject_text_size"
+                    tools:text="@string/lorem_ipsum" />
+
+                <include
+                    layout="@layout/ko__include_unread_message_counter"
+                    android:layout_width="18sp"
+                    android:layout_height="18sp"
+                    android:layout_marginLeft="4dp"
+                    android:gravity="center_vertical|left"
+                    android:textSize="8sp" />
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>

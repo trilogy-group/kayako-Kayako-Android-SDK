@@ -57,7 +57,10 @@ public class RecentConversationAdapter extends RecyclerView.Adapter {
         ConversationListItemHelper.setUnreadCounter(viewHolder.unreadCounter, recentConversation.getUnreadCount());
         ConversationListItemHelper.setFormattedTime(viewHolder.time, recentConversation.getTimeInMilleseconds());
 
-        // TODO: Show typing indicators
+        ConversationListItemHelper.setTypingIndicator(
+                viewHolder.typingLoader,
+                viewHolder.subjectLine,
+                recentConversation.getLastAgentReplierTyping().isTyping());
     }
 
     @Override

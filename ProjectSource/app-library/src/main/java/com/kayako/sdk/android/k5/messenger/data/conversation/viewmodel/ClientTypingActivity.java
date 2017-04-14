@@ -28,4 +28,21 @@ public class ClientTypingActivity {
     public boolean isTyping() {
         return isTyping;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ClientTypingActivity that = (ClientTypingActivity) o;
+
+        return isTyping == that.isTyping;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = user != null ? user.hashCode() : 0;
+        result = 31 * result + (isTyping ? 1 : 0);
+        return result;
+    }
 }

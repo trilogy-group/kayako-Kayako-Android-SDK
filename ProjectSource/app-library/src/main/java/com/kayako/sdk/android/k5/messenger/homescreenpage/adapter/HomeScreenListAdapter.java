@@ -17,7 +17,7 @@ import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.widget.recentc
 import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.widget.recentcases.RecentConversationAdapter;
 import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.widget.recentcases.RecentConversationsWidgetListItem;
 import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.widget.recentcases.RecentConversationsWidgetViewHolder;
-import com.kayako.sdk.android.k5.messenger.style.ConversationStarterHelper;
+import com.kayako.sdk.android.k5.messenger.data.conversationstarter.ConversationStarterHelper;
 import com.kayako.sdk.android.k5.messenger.style.MessengerTemplateHelper;
 
 import java.util.ArrayList;

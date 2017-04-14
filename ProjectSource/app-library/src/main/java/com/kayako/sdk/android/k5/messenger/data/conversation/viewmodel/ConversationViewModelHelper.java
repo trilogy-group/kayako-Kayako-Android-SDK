@@ -51,6 +51,11 @@ public class ConversationViewModelHelper {
         }
     }
 
+    /**
+     * @param conversationId
+     * @param clientTypingActivity
+     * @return whether or not the value was updated - calls to this method with no new changes return false
+     */
     public boolean updateRealtimeProperty(long conversationId, @NonNull ClientTypingActivity clientTypingActivity) {
         if (clientTypingActivity == null) {
             throw new IllegalArgumentException("Invalid values");
@@ -59,6 +64,8 @@ public class ConversationViewModelHelper {
         ConversationViewModel originalConversation = conversations.getElement(conversationId);
         if (originalConversation == null) {
             return false; // Skip if not found - can't update something that doesn't exist
+        } else if (originalConversation.getLastAgentReplierTyping().equals(clientTypingActivity)) {
+            return false;
         } else {
             conversations.addElement(conversationId, convert(originalConversation, clientTypingActivity));
             return true;
@@ -70,7 +77,7 @@ public class ConversationViewModelHelper {
     }
 
     /**
-     * Returns list of conversations in descending order
+     * Returns list of conversations in descending order of conversation ids
      *
      * @return
      */
