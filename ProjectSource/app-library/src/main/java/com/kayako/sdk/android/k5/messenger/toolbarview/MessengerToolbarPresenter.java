@@ -3,7 +3,7 @@ package com.kayako.sdk.android.k5.messenger.toolbarview;
 import com.kayako.sdk.android.k5.core.MessengerPref;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.IConversationStarterRepository;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.LastActiveAgentsData;
-import com.kayako.sdk.android.k5.messenger.style.ConversationStarterHelper;
+import com.kayako.sdk.android.k5.messenger.data.conversationstarter.ConversationStarterHelper;
 import com.kayako.sdk.error.KayakoException;
 import com.kayako.sdk.messenger.conversationstarter.ConversationStarter;
 import com.kayako.sdk.utils.LogUtils;

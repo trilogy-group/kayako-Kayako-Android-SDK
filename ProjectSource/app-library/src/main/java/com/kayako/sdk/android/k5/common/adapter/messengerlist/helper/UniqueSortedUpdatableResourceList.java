@@ -10,18 +10,29 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A list that has 3 conditions:
- * 1. Sorted (by indentifier)
+ * A data structure that has 3 conditions:
+ * 1. Sorted (by identifier)
  * 2. No Duplicates (of same identifer)
  * 3. Elements with new values should replace elements with old values (Elements of same identifier)
- * 4. Allows random access
+ *
+ * Plus Points:
+ * 1. Allows random access
+ * 2. Allows custom sorting of the resources via Comparator (default sorting by Long-type ids)
  * <p>
  * Note:
  * - Realized one issue of relying on this list is that if an item is no longer being returned via API (say a deleted conversation), it will continue to show until this object is recreated - page reopened)
  */
 public class UniqueSortedUpdatableResourceList<T> implements IUniqueResourceList<T> {
 
-    Map<Long, T> mapResources = new HashMap<>();
+    private static final Comparator DEFAULT_COMPARATOR = new Comparator<Long>() {
+        @Override
+        public int compare(Long lhs, Long rhs) {
+            return lhs.compareTo(rhs);
+        }
+    };
+
+    private Map<Long, T> mapResources = new HashMap<>();
+    private Comparator comparator = DEFAULT_COMPARATOR;
 
     public synchronized boolean addElement(long id, T t) {
         // (2) No duplicates since map ensures a single value for a single identifier
@@ -50,6 +61,15 @@ public class UniqueSortedUpdatableResourceList<T> implements IUniqueResourceList
     }
 
     @Override
+    public void setSortComparator(Comparator comparator) {
+        if (comparator == null) {
+            this.comparator = DEFAULT_COMPARATOR;
+        } else {
+            this.comparator = comparator;
+        }
+    }
+
+    @Override
     public synchronized int getSize() {
         return mapResources.keySet().size();
     }
@@ -58,12 +78,7 @@ public class UniqueSortedUpdatableResourceList<T> implements IUniqueResourceList
     public synchronized List<T> getList() {
         // (1) sort list by identifiers
         List<Long> keys = new ArrayList<Long>(mapResources.keySet());
-        Collections.sort(keys, new Comparator<Long>() {
-            @Override
-            public int compare(Long lhs, Long rhs) {
-                return lhs.compareTo(rhs);
-            }
-        });
+        Collections.sort(keys, comparator);
 
         List<T> values = new ArrayList<>();
         for (Long key : keys) {

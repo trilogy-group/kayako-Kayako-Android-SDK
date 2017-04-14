@@ -1,6 +1,6 @@
 package com.kayako.sdk.android.k5.messenger.data.conversationstarter;
 
-import com.kayako.sdk.android.k5.messenger.data.conversation.UserViewModel;
+import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.UserViewModel;
 
 public class AssignedAgentData {
 

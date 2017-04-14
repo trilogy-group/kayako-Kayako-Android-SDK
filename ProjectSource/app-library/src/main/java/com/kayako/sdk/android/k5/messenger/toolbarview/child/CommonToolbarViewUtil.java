@@ -6,9 +6,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kayako.sdk.android.k5.R;
-import com.kayako.sdk.android.k5.core.Kayako;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.LastActiveAgentsData;
-import com.kayako.sdk.android.k5.messenger.style.ConversationStarterHelper;
+import com.kayako.sdk.android.k5.messenger.data.conversationstarter.ConversationStarterHelper;
 import com.kayako.sdk.android.k5.messenger.style.MessengerTemplateHelper;
 
 public class CommonToolbarViewUtil {

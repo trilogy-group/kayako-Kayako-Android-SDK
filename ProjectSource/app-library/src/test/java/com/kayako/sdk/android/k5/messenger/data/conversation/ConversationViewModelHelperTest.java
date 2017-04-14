@@ -1,6 +1,9 @@
 package com.kayako.sdk.android.k5.messenger.data.conversation;
 
 import com.kayako.sdk.ParserFactory;
+import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.ClientTypingActivity;
+import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.ConversationViewModelHelper;
+import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.UserViewModel;
 import com.kayako.sdk.messenger.conversation.Conversation;
 
 import org.junit.Assert;

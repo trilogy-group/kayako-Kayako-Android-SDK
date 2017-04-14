@@ -1,4 +1,4 @@
-package com.kayako.sdk.android.k5.messenger.style;
+package com.kayako.sdk.android.k5.messenger.data.conversationstarter;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -8,21 +8,12 @@ import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.utils.ImageUtils;
 import com.kayako.sdk.android.k5.core.Kayako;
 import com.kayako.sdk.android.k5.core.MessengerPref;
-import com.kayako.sdk.android.k5.messenger.data.conversation.ConversationViewModel;
-import com.kayako.sdk.android.k5.messenger.data.conversation.ConversationViewModelHelper;
-import com.kayako.sdk.android.k5.messenger.data.conversation.UserViewModel;
+import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.UserViewModel;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.LastActiveAgentsData;
 import com.kayako.sdk.helpcenter.user.UserMinimal;
-import com.kayako.sdk.messenger.conversation.Conversation;
 import com.kayako.sdk.messenger.conversationstarter.ConversationStarter;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 public class ConversationStarterHelper {
-
-    private static ConversationViewModelHelper mConversationViewModelHelper = new ConversationViewModelHelper();
 
     private ConversationStarterHelper() {
     }
@@ -65,24 +56,6 @@ public class ConversationStarterHelper {
                 user3
         );
 
-    }
-
-    public static List<ConversationViewModel> convertToRecentConversation(ConversationStarter conversationStarter) {
-        List<Conversation> conversationList = conversationStarter.getActiveConversations();
-
-        if (conversationList == null || conversationList.size() == 0) {
-            return Collections.emptyList();
-        }
-
-        for (Conversation conversation : conversationList) {
-            mConversationViewModelHelper.addOrUpdateElement(conversation, null);
-        }
-
-        if (mConversationViewModelHelper.getSize() > 3) {
-            removeOldConversations(conversationList);
-        }
-
-        return mConversationViewModelHelper.getConversationList();
     }
 
     public static String getAverageResponseTimeCaption(Long averageReplyTimeInMilliseconds) {
@@ -166,19 +139,6 @@ public class ConversationStarterHelper {
         } else {
             textView.setVisibility(View.VISIBLE);
             textView.setText(captionText);
-        }
-    }
-
-    private static void removeOldConversations(List<Conversation> newConversations) {
-        List<Long> ids = new ArrayList<>();
-        for (Conversation newConversation : newConversations) {
-            ids.add(newConversation.getId());
-        }
-
-        for (ConversationViewModel conversationViewModel : mConversationViewModelHelper.getConversationList()) {
-            if (!ids.contains(conversationViewModel.getConversationId())) {
-                mConversationViewModelHelper.removeElement(conversationViewModel.getConversationId());
-            }
         }
     }
 

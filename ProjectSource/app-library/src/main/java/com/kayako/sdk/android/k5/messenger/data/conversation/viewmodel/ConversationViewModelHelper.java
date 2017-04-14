@@ -1,4 +1,4 @@
-package com.kayako.sdk.android.k5.messenger.data.conversation;
+package com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.UniqueSortedUpdatableResourceList;
 import com.kayako.sdk.messenger.conversation.Conversation;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -83,6 +82,10 @@ public class ConversationViewModelHelper {
 
     public int getSize() {
         return conversations.getSize();
+    }
+
+    public boolean exists(long id) {
+        return conversations.exists(id);
     }
 
     private static ConversationViewModel convert(@NonNull ConversationViewModel conversationViewModel, @Nullable ClientTypingActivity clientTypingActivity) {

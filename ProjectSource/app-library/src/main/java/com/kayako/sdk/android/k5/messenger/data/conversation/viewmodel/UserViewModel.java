@@ -1,4 +1,4 @@
-package com.kayako.sdk.android.k5.messenger.data.conversation;
+package com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel;
 
 public class UserViewModel {
 

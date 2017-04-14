@@ -2,7 +2,7 @@ package com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.widget.recent
 
 import android.support.annotation.NonNull;
 
-import com.kayako.sdk.android.k5.messenger.data.conversation.ConversationViewModel;
+import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.ConversationViewModel;
 import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.HomeScreenListType;
 import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.widget.BaseWidgetListItem;
 

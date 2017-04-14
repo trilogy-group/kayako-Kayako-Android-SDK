@@ -1,4 +1,4 @@
-package com.kayako.sdk.android.k5.messenger.data.conversation;
+package com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;

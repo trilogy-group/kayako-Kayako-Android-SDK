@@ -3,7 +3,7 @@ package com.kayako.sdk.android.k5.messenger.data.conversationstarter;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.kayako.sdk.android.k5.messenger.data.conversation.UserViewModel;
+import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.UserViewModel;
 
 public class LastActiveAgentsData {
     private String brandName;

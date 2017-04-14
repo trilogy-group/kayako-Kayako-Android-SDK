@@ -3,8 +3,8 @@ package com.kayako.sdk.android.k5.messenger.conversationlistpage;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.conversationlist.ConversationListItem;
 import com.kayako.sdk.android.k5.core.MessengerPref;
-import com.kayako.sdk.android.k5.messenger.data.conversation.ConversationViewModel;
-import com.kayako.sdk.android.k5.messenger.data.conversation.ConversationViewModelHelper;
+import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.ConversationViewModel;
+import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.ConversationViewModelHelper;
 import com.kayako.sdk.messenger.conversation.Conversation;
 import com.kayako.sdk.utils.FingerprintUtils;
 
