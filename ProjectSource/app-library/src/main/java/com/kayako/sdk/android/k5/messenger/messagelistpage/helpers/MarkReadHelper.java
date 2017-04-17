@@ -11,10 +11,12 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class MarkReadHelper {
 
+    private static final long UNASSIGNED_VALUE = -100; // This is used so that originalLastMessageMarkedRead is not set during a conversation (when agents make reply before marked as read)
+
     private AtomicBoolean mUseOriginalLastMessage = new AtomicBoolean(true);
-    private AtomicLong mOriginalLastMessageMarkedRead = new AtomicLong(0); // the getOriginalLastMessageMarkedReadlatest message that was read (only when this page is opened, should not update later!)
-    private AtomicLong mLastMessageMarkedReadSuccessfully = new AtomicLong(0); // the latest message that has been read (constantly updates as the latest messages gets loaded and read)
-    private AtomicLong mLastMessageBeingMarkedRead = new AtomicLong(0); // the latest message that is being marked read (created to prevent multiple network requests being made for same id)
+    private AtomicLong mOriginalLastMessageMarkedRead = new AtomicLong(UNASSIGNED_VALUE); // the getOriginalLastMessageMarkedReadlatest message that was read (only when this page is opened, should not update later!)
+    private AtomicLong mLastMessageMarkedReadSuccessfully = new AtomicLong(UNASSIGNED_VALUE); // the latest message that has been read (constantly updates as the latest messages gets loaded and read)
+    private AtomicLong mLastMessageBeingMarkedRead = new AtomicLong(UNASSIGNED_VALUE); // the latest message that is being marked read (created to prevent multiple network requests being made for same id)
 
     // TODO: When KRE is implemented, ensure the messages and conversartion is not reloaded unless there is a change made!
     // This should be done because the app is already making requests on its own
@@ -25,9 +27,9 @@ public class MarkReadHelper {
      *
      * @param lastMessageMarkedRead
      */
-    public void setOriginalLastMessageMarkedReadIfNotSetBefore(Long lastMessageMarkedRead) {
+    public void setOriginalLastMessageMarkedReadIfNotSetBefore(long lastMessageMarkedRead) {
         // Set the original last message read (This will be the first non-zero value set)
-        if (mOriginalLastMessageMarkedRead.get() == 0) {
+        if (mOriginalLastMessageMarkedRead.get() == UNASSIGNED_VALUE) {
             mOriginalLastMessageMarkedRead.set(lastMessageMarkedRead);
         }
     }
