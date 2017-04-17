@@ -39,7 +39,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/ko__subject_line"
+        android:id="@+id/ko__subject_line_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/ko__avatar"
@@ -50,24 +50,37 @@
         android:layout_toRightOf="@+id/ko__avatar"
         android:orientation="horizontal">
 
-        <com.kayako.sdk.android.k5.common.view.RegularTextView
-            android:id="@+id/ko__subject"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:ellipsize="end"
-            android:gravity="center_vertical|left"
-            android:maxLines="1"
-            android:textColor="@color/ko__conversation_item_subject_text_color"
-            android:textSize="@dimen/ko__conversation_list_item_subject_text_size"
-            tools:text="@string/lorem_ipsum" />
-
         <include
-            layout="@layout/ko__include_unread_message_counter"
-            android:layout_width="wrap_content"
-            android:layout_marginLeft="4dp"
+            layout="@layout/ko__include_typing_loader"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="bottom|left" />
+
+        <LinearLayout
+            android:id="@+id/ko__subject_line"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical|left" />
+            android:orientation="horizontal">
+
+            <com.kayako.sdk.android.k5.common.view.RegularTextView
+                android:id="@+id/ko__subject"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:gravity="center_vertical|left"
+                android:maxLines="1"
+                android:textColor="@color/ko__conversation_item_subject_text_color"
+                android:textSize="@dimen/ko__conversation_list_item_subject_text_size"
+                tools:text="@string/lorem_ipsum" />
+
+            <include
+                layout="@layout/ko__include_unread_message_counter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:gravity="center_vertical|left" />
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -93,7 +106,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@id/ko__subject_line"
+        android:layout_below="@id/ko__subject_line_container"
         android:layout_marginTop="16dp">
 
         <include

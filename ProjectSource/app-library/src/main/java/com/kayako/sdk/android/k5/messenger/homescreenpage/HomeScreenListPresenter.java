@@ -141,10 +141,16 @@ public class HomeScreenListPresenter implements HomeScreenListContract.Presenter
 
     private OnConversationViewChangeListener mOnConversationViewChangeListener = new OnConversationViewChangeListener() {
         @Override
-        public void onChange(long conversationId) {
+        public void onChange(Conversation conversation) {
             // Check to see if the changes are for conversations relevant to this view
-            if (mConversationViewModelHelper.exists(conversationId)) {
-                loadConversationStarter(); // Reload the API
+            if (!mConversationViewModelHelper.exists(conversation.getId())) {
+                return;
+            }
+
+            boolean isUpdated = mConversationViewModelHelper.updateConversationProperty(conversation.getId(), conversation);
+            if (isUpdated) {
+                refreshRecentConversationsWidget();
+                setupList();
             }
         }
 

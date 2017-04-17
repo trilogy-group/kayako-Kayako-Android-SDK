@@ -77,4 +77,33 @@ public class ConversationViewModel {
     public ClientTypingActivity getLastAgentReplierTyping() {
         return lastAgentReplierTyping;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ConversationViewModel that = (ConversationViewModel) o;
+
+        if (conversationId != that.conversationId) return false;
+        if (timeInMilleseconds != that.timeInMilleseconds) return false;
+        if (unreadCount != that.unreadCount) return false;
+        if (!name.equals(that.name)) return false;
+        if (!avatarUrl.equals(that.avatarUrl)) return false;
+        if (!subject.equals(that.subject)) return false;
+        return lastAgentReplierTyping.equals(that.lastAgentReplierTyping);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (conversationId ^ (conversationId >>> 32));
+        result = 31 * result + name.hashCode();
+        result = 31 * result + avatarUrl.hashCode();
+        result = 31 * result + (int) (timeInMilleseconds ^ (timeInMilleseconds >>> 32));
+        result = 31 * result + subject.hashCode();
+        result = 31 * result + unreadCount;
+        result = 31 * result + lastAgentReplierTyping.hashCode();
+        return result;
+    }
 }

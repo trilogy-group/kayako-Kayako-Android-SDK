@@ -68,6 +68,7 @@ public class ConversationListAdapter extends EndlessRecyclerViewScrollAdapter {
 
                 ConversationListItemHelper.setFormattedTime(conversationViewHolder.time, conversationListItem.conversationViewModel.getTimeInMilleseconds());
                 ConversationListItemHelper.setUnreadCounter(conversationViewHolder.unreadCounter, conversationListItem.conversationViewModel.getUnreadCount());
+                ConversationListItemHelper.setTypingIndicator(conversationViewHolder.typingLoader, conversationViewHolder.subjectLine, conversationListItem.conversationViewModel.getLastAgentReplierTyping().isTyping());
             default:
                 super.onBindViewHolder(viewHolder, position);
         }

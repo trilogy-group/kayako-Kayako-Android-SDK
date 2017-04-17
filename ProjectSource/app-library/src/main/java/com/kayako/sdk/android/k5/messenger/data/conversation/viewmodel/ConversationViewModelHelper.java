@@ -10,7 +10,13 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Need a way to ensure that:
+ * Responsibilities of this class:
+ * 1. It should associate conversations with their realtime client activity (isTyping)
+ * 2. It should maintain a list of conversation viewmodels that are relevant to a page/instance
+ * 3. It should allow updating of both conversation data and realtime behaviour at any time - without affecting existing items
+ * 4. It should allow classes using an instance of this class to check if a conversation is relevant
+ * <p>
+ * Other responsibilities:
  * 1. newly added conversations are set to isTyping = false by default
  * 2. updated conversations should replace existing isTyping value IF a valid value is available, or, retain original value
  */
@@ -36,6 +42,11 @@ public class ConversationViewModelHelper {
         }
     }
 
+    /**
+     * @param conversationId
+     * @param conversation
+     * @return whether or not the value was updated - calls to this method with no new changes return false
+     */
     public boolean updateConversationProperty(long conversationId, @NonNull Conversation conversation) {
         if (conversation == null) {
             throw new IllegalArgumentException("Invalid values");
@@ -46,8 +57,13 @@ public class ConversationViewModelHelper {
         if (conversationViewModel == null) {
             return false; // Skip if not found - can't update something that doesn't exist
         } else {
-            conversations.addElement(conversationId, convert(conversation, conversationViewModel.getLastAgentReplierTyping()));
-            return true;
+            ConversationViewModel updatedConversationViewModel = convert(conversation, conversationViewModel.getLastAgentReplierTyping());
+            if (updatedConversationViewModel.equals(conversationViewModel)) {
+                return false;
+            } else {
+                conversations.addElement(conversationId, updatedConversationViewModel);
+                return true;
+            }
         }
     }
 
@@ -72,6 +88,11 @@ public class ConversationViewModelHelper {
         }
     }
 
+    /**
+     * Remove an item from the list
+     *
+     * @param conversationId
+     */
     public void removeElement(long conversationId) {
         conversations.removeElement(conversationId);
     }
@@ -87,10 +108,18 @@ public class ConversationViewModelHelper {
         return list;
     }
 
+    /**
+     * @return size of the list
+     */
     public int getSize() {
         return conversations.getSize();
     }
 
+    /**
+     * @param id
+     *
+     * @return true if the item exists
+     */
     public boolean exists(long id) {
         return conversations.exists(id);
     }

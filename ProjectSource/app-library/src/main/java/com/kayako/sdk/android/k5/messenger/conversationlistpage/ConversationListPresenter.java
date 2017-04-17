@@ -3,8 +3,12 @@ package com.kayako.sdk.android.k5.messenger.conversationlistpage;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.conversationlist.ConversationListItem;
 import com.kayako.sdk.android.k5.core.MessengerPref;
+import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.ClientTypingActivity;
 import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.ConversationViewModel;
 import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.ConversationViewModelHelper;
+import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.UserViewModel;
+import com.kayako.sdk.android.k5.messenger.data.realtime.OnConversationViewChangeListener;
+import com.kayako.sdk.android.k5.messenger.data.realtime.RealtimeConversationHelper;
 import com.kayako.sdk.messenger.conversation.Conversation;
 import com.kayako.sdk.utils.FingerprintUtils;
 
@@ -76,6 +80,11 @@ public class ConversationListPresenter implements ConversationListContract.Prese
                     // Save list items
                     for (Conversation conversation : conversations) {
                         mConversationViewModelHelper.addOrUpdateElement(conversation, null);
+                        RealtimeConversationHelper.trackConversationRealtimeChanges(
+                                conversation.getRealtimeChannel(),
+                                conversation.getId(),
+                                mOnConversationViewChangeListener
+                        );
                     }
 
                     // Configuring list - load more or setWasNewConversation list
@@ -83,9 +92,7 @@ public class ConversationListPresenter implements ConversationListContract.Prese
                         mView.configureLoadMoreView(false);
                     }
 
-                    mView.setupList(
-                            convertConversationToListItems(
-                                    mConversationViewModelHelper.getConversationList()));
+                    refreshListView();
 
                     configureIfMoreItemsAvailable(conversations.size());
                     mOffset = offset + conversations.size();
@@ -106,6 +113,12 @@ public class ConversationListPresenter implements ConversationListContract.Prese
         }, offset, LIMIT);
     }
 
+    private void refreshListView() {
+        mView.setupList(
+                convertConversationToListItems(
+                        mConversationViewModelHelper.getConversationList()));
+
+    }
 
     public void closePage() {
         // TODO: Stop all tasks in Data
@@ -160,5 +173,32 @@ public class ConversationListPresenter implements ConversationListContract.Prese
             mView.setListHasMoreItems(true);
         }
     }
+
+    private OnConversationViewChangeListener mOnConversationViewChangeListener = new OnConversationViewChangeListener() {
+        @Override
+        public void onChange(Conversation conversation) {
+            if (!mConversationViewModelHelper.exists(conversation.getId())) {
+                return;
+            }
+
+            // Load and replace only that one conversation
+            boolean isUpdated = mConversationViewModelHelper.updateConversationProperty(conversation.getId(), conversation);
+            if (isUpdated) {
+                refreshListView();
+            }
+        }
+
+        @Override
+        public void onTyping(long conversationId, UserViewModel userTyping, boolean isTyping) {
+            if (!mConversationViewModelHelper.exists(conversationId)) {
+                return;
+            }
+
+            boolean isUpdated = mConversationViewModelHelper.updateRealtimeProperty(conversationId, new ClientTypingActivity(isTyping, userTyping));
+            if (isUpdated) {
+                refreshListView();
+            }
+        }
+    };
 
 }

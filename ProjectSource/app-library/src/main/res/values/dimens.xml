@@ -82,7 +82,7 @@
     <dimen name="ko__messenger_unread_counter_max_width">24dp</dimen>
     <dimen name="ko__messenger_unread_counter_max_height">24dp</dimen>
     <dimen name="ko__messenger_home_screen_widget_recent_cases__conversation_list_item_padding_vertical">
-        4dp
+        8dp
     </dimen>
     <dimen name="ko__messenger_home_screen_widget_recent_cases__conversation_list_item_padding_horizontal">
         8dp

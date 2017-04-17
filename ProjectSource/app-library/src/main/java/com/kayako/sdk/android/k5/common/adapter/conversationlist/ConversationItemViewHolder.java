@@ -14,8 +14,12 @@ public class ConversationItemViewHolder extends RecyclerView.ViewHolder {
     public TextView name;
     public TextView time;
     public TextView subject;
-    public RelativeLayout layout;
     public TextView unreadCounter;
+
+    public ImageView typingLoader;
+    public View subjectLine;
+
+    public RelativeLayout layout;
     public View itemView;
 
     public ConversationItemViewHolder(View v) {
@@ -27,5 +31,7 @@ public class ConversationItemViewHolder extends RecyclerView.ViewHolder {
         subject = (TextView) v.findViewById(R.id.ko__subject);
         layout = (RelativeLayout) v.findViewById(R.id.layout);
         unreadCounter = (TextView) v.findViewById(R.id.ko__unread_counter);
+        typingLoader = (ImageView) v.findViewById(R.id.ko__typing_progress_loader);
+        subjectLine = v.findViewById(R.id.ko__subject_line);
     }
 }
