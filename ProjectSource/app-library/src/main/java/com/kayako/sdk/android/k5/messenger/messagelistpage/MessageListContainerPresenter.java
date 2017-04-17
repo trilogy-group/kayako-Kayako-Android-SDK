@@ -3,6 +3,7 @@ package com.kayako.sdk.android.k5.messenger.messagelistpage;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.TypingViewHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.UnsentMessage;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.EmptyListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputEmailListItem;
 import com.kayako.sdk.android.k5.common.fragments.ListPageState;
 import com.kayako.sdk.android.k5.common.fragments.OnScrollListListener;
@@ -254,6 +255,8 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         // footer items
         allListItems.addAll(mTypingViewHelper.getTypingViews());
 
+        // Add space at end
+        allListItems.add(new EmptyListItem());
         return allListItems;
     }
 
