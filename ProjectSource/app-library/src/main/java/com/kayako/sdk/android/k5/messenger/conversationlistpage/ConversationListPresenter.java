@@ -7,7 +7,8 @@ import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.ClientTyp
 import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.ConversationViewModel;
 import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.ConversationViewModelHelper;
 import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.UserViewModel;
-import com.kayako.sdk.android.k5.messenger.data.realtime.OnConversationViewChangeListener;
+import com.kayako.sdk.android.k5.messenger.data.realtime.OnConversationChangeListener;
+import com.kayako.sdk.android.k5.messenger.data.realtime.OnConversationClientActivityListener;
 import com.kayako.sdk.android.k5.messenger.data.realtime.RealtimeConversationHelper;
 import com.kayako.sdk.messenger.conversation.Conversation;
 import com.kayako.sdk.utils.FingerprintUtils;
@@ -15,7 +16,7 @@ import com.kayako.sdk.utils.FingerprintUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConversationListPresenter implements ConversationListContract.Presenter {
+public class ConversationListPresenter implements ConversationListContract.Presenter, OnConversationChangeListener, OnConversationClientActivityListener {
 
     private ConversationListContract.Data mData;
     private ConversationListContract.View mView;
@@ -79,11 +80,19 @@ public class ConversationListPresenter implements ConversationListContract.Prese
 
                     // Save list items
                     for (Conversation conversation : conversations) {
+
                         mConversationViewModelHelper.addOrUpdateElement(conversation, null);
-                        RealtimeConversationHelper.trackConversationRealtimeChanges(
+
+                        RealtimeConversationHelper.trackChange(
                                 conversation.getRealtimeChannel(),
                                 conversation.getId(),
-                                mOnConversationViewChangeListener
+                                ConversationListPresenter.this
+                        );
+
+                        RealtimeConversationHelper.trackClientActivity(
+                                conversation.getRealtimeChannel(),
+                                conversation.getId(),
+                                ConversationListPresenter.this
                         );
                     }
 
@@ -122,6 +131,10 @@ public class ConversationListPresenter implements ConversationListContract.Prese
 
     public void closePage() {
         // TODO: Stop all tasks in Data
+
+        // Stop tracking the following
+        RealtimeConversationHelper.untrack((OnConversationChangeListener) this);
+        RealtimeConversationHelper.untrack((OnConversationClientActivityListener) this);
     }
 
     @Override
@@ -174,31 +187,29 @@ public class ConversationListPresenter implements ConversationListContract.Prese
         }
     }
 
-    private OnConversationViewChangeListener mOnConversationViewChangeListener = new OnConversationViewChangeListener() {
-        @Override
-        public void onChange(Conversation conversation) {
-            if (!mConversationViewModelHelper.exists(conversation.getId())) {
-                return;
-            }
-
-            // Load and replace only that one conversation
-            boolean isUpdated = mConversationViewModelHelper.updateConversationProperty(conversation.getId(), conversation);
-            if (isUpdated) {
-                refreshListView();
-            }
+    @Override
+    public void onChange(Conversation conversation) {
+        if (!mConversationViewModelHelper.exists(conversation.getId())) {
+            return;
         }
 
-        @Override
-        public void onTyping(long conversationId, UserViewModel userTyping, boolean isTyping) {
-            if (!mConversationViewModelHelper.exists(conversationId)) {
-                return;
-            }
-
-            boolean isUpdated = mConversationViewModelHelper.updateRealtimeProperty(conversationId, new ClientTypingActivity(isTyping, userTyping));
-            if (isUpdated) {
-                refreshListView();
-            }
+        // Load and replace only that one conversation
+        boolean isUpdated = mConversationViewModelHelper.updateConversationProperty(conversation.getId(), conversation);
+        if (isUpdated) {
+            refreshListView();
         }
-    };
 
+    }
+
+    @Override
+    public void onTyping(long conversationId, UserViewModel userTyping, boolean isTyping) {
+        if (!mConversationViewModelHelper.exists(conversationId)) {
+            return;
+        }
+
+        boolean isUpdated = mConversationViewModelHelper.updateRealtimeProperty(conversationId, new ClientTypingActivity(isTyping, userTyping));
+        if (isUpdated) {
+            refreshListView();
+        }
+    }
 }

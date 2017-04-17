@@ -20,6 +20,8 @@ public class HomeScreenListContract {
     public interface Presenter {
 
         void initPage();
+
+        void closePage();
     }
 
     public interface ConfigureView {

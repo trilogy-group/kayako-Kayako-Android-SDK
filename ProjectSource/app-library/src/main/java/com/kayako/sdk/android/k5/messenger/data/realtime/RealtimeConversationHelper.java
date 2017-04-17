@@ -23,9 +23,10 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Ensures only one instance of a KreCaseSubscription is created for a single conversation presence channel.
- * <p>
- * Also, abstracts the KreCaseSubscription logic so that users of this class only needs to call one method to subscribe to changes.
+ * Responsibilities of this class:
+ * 1. Ensures only one instance of a KreCaseSubscription is created for a single conversation presence channel.
+ * 2. Abstracts the KreCaseSubscription logic so that users of this class only needs to call one method to subscribe to changes.
+ * 3. Ensure only a unique listener is added for the same instance - not multiple redundant listeners
  */
 public class RealtimeConversationHelper {
 
@@ -33,7 +34,9 @@ public class RealtimeConversationHelper {
     private static Map<String, KreCaseSubscription> sMapSubscriptions = new HashMap<>();
     private static Map<String, KreSubscription.OnSubscriptionListener> sMapListeners = new HashMap<>();
 
-    private static Set<OnConversationViewChangeListener> sOnConversationViewChangeListenerSet = new HashSet<>();
+    private static Set<OnConversationChangeListener> sOnConversationChangeListeners = new HashSet<>();
+    private static Set<OnConversationClientActivityListener> sOnConversationClientActivityListeners = new HashSet<>();
+    private static Set<OnConversationMessagesChangeListener> sOnConversationMessagesChangeListeners = new HashSet<>();
 
     static {
         if (BuildConfig.DEBUG) {
@@ -112,7 +115,8 @@ public class RealtimeConversationHelper {
                                 handler.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        for (OnConversationViewChangeListener onConversationChangeListener : sOnConversationViewChangeListenerSet) {
+
+                                        for (OnConversationChangeListener onConversationChangeListener : sOnConversationChangeListeners) {
                                             onConversationChangeListener.onChange(conversation);
                                         }
                                     }
@@ -139,7 +143,7 @@ public class RealtimeConversationHelper {
                             @Override
                             public void run() {
                                 KreLogHelper.d(TAG, "onClientTyping()");
-                                for (OnConversationViewChangeListener onConversationChangeListener : sOnConversationViewChangeListenerSet) {
+                                for (OnConversationClientActivityListener onConversationChangeListener : sOnConversationClientActivityListeners) {
                                     onConversationChangeListener.onTyping(conversationId, new UserViewModel(userAvatar, userName, System.currentTimeMillis()), isTyping);
                                 }
                             }
@@ -151,6 +155,8 @@ public class RealtimeConversationHelper {
                         KreLogHelper.e(TAG, "onConnectionError()");
                     }
                 });
+
+                // TODO: Add NEW_POST in KreHelper
             }
 
             @Override
@@ -194,12 +200,49 @@ public class RealtimeConversationHelper {
 
     // TODO: Later, build another layer that ensures the code that calls the following method only receives events relating to the cases relevant to that code
 
-    public static void trackConversationRealtimeChanges(String conversationPresenceChannelName, long conversationId, final OnConversationViewChangeListener listener) {
+    public static void trackChange(String conversationPresenceChannelName, long conversationId, final OnConversationChangeListener listener) {
         if (listener == null) {
             throw new IllegalArgumentException("Invalid Listener argument");
         }
 
-        sOnConversationViewChangeListenerSet.add(listener);
+        sOnConversationChangeListeners.add(listener);
         addKreCaseSubscriptionIfNotExisting(conversationPresenceChannelName, conversationId);
+
+        KreLogHelper.d(TAG, "trackChange, set = " + sOnConversationChangeListeners.size());
     }
+
+    public static void trackClientActivity(String conversationPresenceChannelName, long conversationId, final OnConversationClientActivityListener listener) {
+        if (listener == null) {
+            throw new IllegalArgumentException("Invalid Listener argument");
+        }
+
+        sOnConversationClientActivityListeners.add(listener);
+        addKreCaseSubscriptionIfNotExisting(conversationPresenceChannelName, conversationId);
+
+        KreLogHelper.d(TAG, "trackClientActivity, set = " + sOnConversationClientActivityListeners.size());
+    }
+
+    public static void trackMessageChange(String conversationPresenceChannelName, long conversationId, final OnConversationMessagesChangeListener listener) {
+        if (listener == null) {
+            throw new IllegalArgumentException("Invalid Listener argument");
+        }
+
+        sOnConversationMessagesChangeListeners.add(listener);
+        addKreCaseSubscriptionIfNotExisting(conversationPresenceChannelName, conversationId);
+
+        KreLogHelper.d(TAG, "trackMessageChange, set = " + sOnConversationMessagesChangeListeners.size());
+    }
+
+    public static void untrack(OnConversationChangeListener listener) {
+        sOnConversationChangeListeners.remove(listener);
+    }
+
+    public static void untrack(OnConversationClientActivityListener listener) {
+        sOnConversationClientActivityListeners.remove(listener);
+    }
+
+    public static void untrack(OnConversationMessagesChangeListener listener) {
+        sOnConversationMessagesChangeListeners.remove(listener);
+    }
+
 }

@@ -42,13 +42,13 @@ public class HomeScreenListFragment extends Fragment implements HomeScreenListCo
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mPresenter.initPage();
     }
 
-
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mPresenter.initPage();
+    public void onDestroyView() {
+        super.onDestroyView();
+        mPresenter.closePage();
     }
 
     private boolean hasPageLoaded() {
