@@ -5,12 +5,15 @@ import android.support.v7.app.AppCompatActivity;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class MessengerActivityTracker {
 
     // TODO: Create a condition - "Tap again outside to close Messenger" so that accidental clicks won't trigger a close
     private final static List<WeakReference<BaseMessengerActivity>> openMessengerActivities = new ArrayList<>();
+    private static Set<OnCloseMessengerListener> onCloseMessengerListenerSet = new HashSet<>();
 
     public static void addActivity(final BaseMessengerActivity activity) {
         addToMessageQueue(new Runnable() {
@@ -40,6 +43,8 @@ public class MessengerActivityTracker {
                             openMessengerActivities.remove(weakReference);
                         }
                     }
+
+                    callOnCloseMessengerListenerIfClosed();
                 }
             }
         });
@@ -58,10 +63,26 @@ public class MessengerActivityTracker {
                             }
                         }
                     }
+
                     openMessengerActivities.clear();
+
+                    callOnCloseMessengerListenerIfClosed();
                 }
             }
         });
+    }
+
+    /**
+     * Use this to release resources on Messenger close
+     *
+     * @param listener
+     */
+    public static void addOnCloseMessengerListener(OnCloseMessengerListener listener) {
+        onCloseMessengerListenerSet.add(listener);
+    }
+
+    public static void removeOnCloseMessengerListener(OnCloseMessengerListener listener) {
+        onCloseMessengerListenerSet.remove(listener);
     }
 
     /**
@@ -76,5 +97,18 @@ public class MessengerActivityTracker {
                 runnable.run();
             }
         });
+    }
+
+    private static void callOnCloseMessengerListenerIfClosed() {
+        if (openMessengerActivities.size() == 0) {
+            Set<OnCloseMessengerListener> newSet = new HashSet<OnCloseMessengerListener>(onCloseMessengerListenerSet); // copy to prevent concurrentModificationException
+            for (OnCloseMessengerListener onCloseMessengerListener : newSet) {
+                onCloseMessengerListener.onCloseMessenger();
+            }
+        }
+    }
+
+    public interface OnCloseMessengerListener {
+        void onCloseMessenger();
     }
 }

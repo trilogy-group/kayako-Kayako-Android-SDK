@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.kayako.sdk.android.k5.BuildConfig;
+import com.kayako.sdk.android.k5.common.activities.MessengerActivityTracker;
 import com.kayako.sdk.android.k5.kre.base.KreSubscription;
 import com.kayako.sdk.android.k5.kre.base.credentials.KreFingerprintCredentials;
 import com.kayako.sdk.android.k5.kre.base.kase.KreCaseSubscription;
@@ -40,6 +41,22 @@ public class RealtimeConversationHelper {
     private static Set<OnConversationChangeListener> sOnConversationChangeListeners = new HashSet<>();
     private static Set<OnConversationClientActivityListener> sOnConversationClientActivityListeners = new HashSet<>();
     private static Set<OnConversationMessagesChangeListener> sOnConversationMessagesChangeListeners = new HashSet<>();
+
+    private RealtimeConversationHelper() {
+    }
+
+    // Close Realtime subscriptions on Messenger close
+    private static MessengerActivityTracker.OnCloseMessengerListener sOnCloseMessengerListener = new MessengerActivityTracker.OnCloseMessengerListener() {
+        @Override
+        public void onCloseMessenger() {
+            closeAll();
+            MessengerActivityTracker.removeOnCloseMessengerListener(sOnCloseMessengerListener);
+        }
+    };
+
+    static {
+        MessengerActivityTracker.addOnCloseMessengerListener(sOnCloseMessengerListener);
+    }
 
     private static void addKreCaseSubscriptionIfNotExisting(String conversationPresenceChannelName, long conversationId) {
         if (!sMapSubscriptions.containsKey(conversationPresenceChannelName)) {
@@ -196,6 +213,10 @@ public class RealtimeConversationHelper {
 
         sMapSubscriptions.clear();
         sMapListeners.clear();
+
+        sOnConversationChangeListeners.clear();
+        sOnConversationClientActivityListeners.clear();
+        sOnConversationMessagesChangeListeners.clear();
     }
 
     public static void triggerTyping(String conversationPresenceChannelName, long conversationId, boolean isTyping) {
