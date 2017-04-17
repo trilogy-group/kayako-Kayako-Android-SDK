@@ -214,7 +214,7 @@ public class MessageListContainerRepository implements MessageListContainerContr
         /*
         mKreCaseSubscription = KreCaseSubscriptionFactory.getKreCaseSubscription(currentUserId);
 
-        KreLogHelper.setAddLogListener(new KreLogHelper.PrintLogListener() {
+        KreLogHelper.addLogListener(new KreLogHelper.PrintLogListener() {
             @Override
             public void printDebugLogs(String tag, String message) {
                 Log.e(tag, message);

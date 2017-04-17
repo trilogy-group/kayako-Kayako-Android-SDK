@@ -11,11 +11,11 @@ import com.kayako.sdk.android.k5.kre.data.Change;
 import com.kayako.sdk.android.k5.kre.helpers.KreLogHelper;
 import com.kayako.sdk.android.k5.kre.helpers.MinimalClientTypingListener;
 import com.kayako.sdk.android.k5.kre.helpers.RawCaseChangeListener;
+import com.kayako.sdk.android.k5.kre.helpers.RawCasePostChangeListener;
 import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.UserViewModel;
 import com.kayako.sdk.base.callback.ItemCallback;
 import com.kayako.sdk.error.KayakoException;
 import com.kayako.sdk.messenger.conversation.Conversation;
-import com.kayako.sdk.utils.LogUtils;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -37,39 +37,6 @@ public class RealtimeConversationHelper {
     private static Set<OnConversationChangeListener> sOnConversationChangeListeners = new HashSet<>();
     private static Set<OnConversationClientActivityListener> sOnConversationClientActivityListeners = new HashSet<>();
     private static Set<OnConversationMessagesChangeListener> sOnConversationMessagesChangeListeners = new HashSet<>();
-
-    static {
-        if (BuildConfig.DEBUG) {
-            KreLogHelper.setAddLogListener(new KreLogHelper.PrintLogListener() {
-                @Override
-                public void printDebugLogs(String tag, String message) {
-                    Log.d(tag, message);
-                }
-
-                @Override
-                public void printVerboseLogs(String tag, String message) {
-                    Log.v(tag, message);
-                }
-
-                @Override
-                public void printErrorLogs(String tag, String message) {
-                    Log.e(tag, message);
-                }
-
-                @Override
-                public void printStackTrace(String tag, Throwable e) {
-                    Log.e(tag, "printStackTrace:");
-                    e.printStackTrace();
-                }
-
-                @Override
-                public void logPotentialCrash(String tag, Throwable e) {
-                    Log.e(tag, "logPotentialCrash:");
-                    e.printStackTrace();
-                }
-            });
-        }
-    }
 
     private static void addKreCaseSubscriptionIfNotExisting(String conversationPresenceChannelName, long conversationId) {
         if (!sMapSubscriptions.containsKey(conversationPresenceChannelName)) {
@@ -156,7 +123,37 @@ public class RealtimeConversationHelper {
                     }
                 });
 
-                // TODO: Add NEW_POST in KreHelper
+
+                kreCaseSubscription.addCasePostChangeListener(new RawCasePostChangeListener() {
+                    @Override
+                    public void onNewPost(final long messageId) {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                for (OnConversationMessagesChangeListener onConversationMessagesChangeListener : sOnConversationMessagesChangeListeners) {
+                                    onConversationMessagesChangeListener.onNewMessage(conversationId, messageId);
+                                }
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onChangePost(final long messageId) {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                for (OnConversationMessagesChangeListener onConversationMessagesChangeListener : sOnConversationMessagesChangeListeners) {
+                                    onConversationMessagesChangeListener.onUpdateMessage(conversationId, messageId);
+                                }
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onConnectionError() {
+                        KreLogHelper.e(TAG, "onConnectionError()");
+                    }
+                });
             }
 
             @Override

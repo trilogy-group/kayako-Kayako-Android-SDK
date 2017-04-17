@@ -6,8 +6,10 @@ import com.kayako.sdk.android.k5.kre.base.KreSubscription;
 import com.kayako.sdk.android.k5.kre.base.credentials.KreCredentials;
 import com.kayako.sdk.android.k5.kre.data.Change;
 import com.kayako.sdk.android.k5.kre.helpers.KreCaseChangeHelper;
+import com.kayako.sdk.android.k5.kre.helpers.KreCasePostChangeHelper;
 import com.kayako.sdk.android.k5.kre.helpers.MinimalClientTypingListener;
 import com.kayako.sdk.android.k5.kre.helpers.RawCaseChangeListener;
+import com.kayako.sdk.android.k5.kre.helpers.RawCasePostChangeListener;
 import com.kayako.sdk.android.k5.kre.helpers.RawClientActivityListener;
 import com.kayako.sdk.android.k5.kre.helpers.RawClientTypingListener;
 import com.kayako.sdk.android.k5.kre.helpers.RawUserOnCasePresenceListener;
@@ -46,6 +48,7 @@ public class KreCaseSubscription {
     private List<RawClientActivityListener> mClientActivityListeners = new ArrayList<>();
     private List<RawCaseChangeListener> mCaseChangeListeners = new ArrayList<>();
     private List<RawUserOnCasePresenceListener> mUserPresenceListeners = new ArrayList<>();
+    private List<RawCasePostChangeListener> mRawCasePostChangeListeners = new ArrayList<>();
 
     public KreCaseSubscription(@NonNull String name, long currentUserId) {
         mKreSubscription = new KreSubscription(name);
@@ -69,6 +72,10 @@ public class KreCaseSubscription {
         mCaseChangeListeners.add(listener);
     }
 
+    public void addCasePostChangeListener(RawCasePostChangeListener listener) {
+        mRawCasePostChangeListeners.add(listener);
+    }
+
     public void addUserPresenceListener(RawUserOnCasePresenceListener listener) {
         mUserPresenceListeners.add(listener);
     }
@@ -83,6 +90,10 @@ public class KreCaseSubscription {
 
     public void removeCaseChangeListener(RawCaseChangeListener listener) {
         mCaseChangeListeners.remove(listener);
+    }
+
+    public void removeCasePostChangeListener(RawCasePostChangeListener listener) {
+        mRawCasePostChangeListeners.remove(listener);
     }
 
     public void removeUserPresenceListener(RawUserOnCasePresenceListener listener) {
@@ -240,6 +251,35 @@ public class KreCaseSubscription {
                         public void onConnectionError() {
                             if (mCaseChangeListeners != null) {
                                 for (RawCaseChangeListener listener : mCaseChangeListeners) {
+                                    listener.onConnectionError();
+                                }
+                            }
+                        }
+                    });
+
+                    KreCasePostChangeHelper.addRawCasePostChangeListener(mKreSubscription, new RawCasePostChangeListener() {
+                        @Override
+                        public void onNewPost(long messageId) {
+                            if (mRawCasePostChangeListeners != null) {
+                                for (RawCasePostChangeListener listener : mRawCasePostChangeListeners) {
+                                    listener.onNewPost(messageId);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onChangePost(long messageId) {
+                            if (mRawCasePostChangeListeners != null) {
+                                for (RawCasePostChangeListener listener : mRawCasePostChangeListeners) {
+                                    listener.onChangePost(messageId);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onConnectionError() {
+                            if (mRawCasePostChangeListeners != null) {
+                                for (RawCasePostChangeListener listener : mRawCasePostChangeListeners) {
                                     listener.onConnectionError();
                                 }
                             }

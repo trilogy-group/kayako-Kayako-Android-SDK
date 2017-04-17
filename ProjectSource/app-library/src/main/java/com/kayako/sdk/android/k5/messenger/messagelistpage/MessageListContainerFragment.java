@@ -110,6 +110,12 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mPresenter.closePage();
+    }
+
     private boolean hasPageLoaded() {
         return isAdded() && getActivity() != null;
     }

@@ -1,53 +1,67 @@
 package com.kayako.sdk.android.k5.kre.helpers;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class KreLogHelper {
 
-    private static PrintLogListener sPrintLogListener;
+    private static Set<PrintLogListener> sPrintLogListeners = new HashSet<>();
 
     private KreLogHelper() {
     }
 
-    public static void setAddLogListener(PrintLogListener listener) {
-        sPrintLogListener = listener;
+    public static void addLogListener(PrintLogListener listener) {
+        sPrintLogListeners.add(listener);
     }
 
     public static void d(String tag, String message) {
-        if (sPrintLogListener == null) {
+        if (sPrintLogListeners == null || sPrintLogListeners.size() == 0) {
             return;
         }
-        sPrintLogListener.printDebugLogs(tag, message);
+
+        for (PrintLogListener logListener : sPrintLogListeners) {
+            logListener.printDebugLogs(tag, message);
+        }
     }
 
     public static void v(String tag, String message) {
-        if (sPrintLogListener == null) {
+        if (sPrintLogListeners == null || sPrintLogListeners.size() == 0) {
             return;
         }
 
-        sPrintLogListener.printVerboseLogs(tag, message);
+        for (PrintLogListener logListener : sPrintLogListeners) {
+            logListener.printVerboseLogs(tag, message);
+        }
     }
 
     public static void e(String tag, String message) {
-        if (sPrintLogListener == null) {
+        if (sPrintLogListeners == null || sPrintLogListeners.size() == 0) {
             return;
         }
 
-        sPrintLogListener.printErrorLogs(tag, message);
+        for (PrintLogListener logListener : sPrintLogListeners) {
+            logListener.printErrorLogs(tag, message);
+        }
     }
 
     public static void printStackTrace(String tag, Throwable e) {
-        if (sPrintLogListener == null) {
+        if (sPrintLogListeners == null || sPrintLogListeners.size() == 0) {
             return;
         }
 
-        sPrintLogListener.printStackTrace(tag, e);
+        for (PrintLogListener logListener : sPrintLogListeners) {
+            logListener.printStackTrace(tag, e);
+        }
     }
 
     public static void logException(String tag, Throwable e) {
-        if (sPrintLogListener == null) {
+        if (sPrintLogListeners == null || sPrintLogListeners.size() == 0) {
             return;
         }
 
-        sPrintLogListener.logPotentialCrash(tag, e);
+        for (PrintLogListener logListener : sPrintLogListeners) {
+            logListener.logPotentialCrash(tag, e);
+        }
     }
 
     public interface PrintLogListener {

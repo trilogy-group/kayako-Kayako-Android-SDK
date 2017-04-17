@@ -69,6 +69,8 @@ public class MessageListContainerContract {
 
         void initPage(boolean isNewConversation, @Nullable Long conversationId);
 
+        void closePage();
+
         void onClickSendInReplyView(String message);
 
         void setData(Data data);

@@ -5,6 +5,10 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.UnsentMessa
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputEmailListItem;
 import com.kayako.sdk.android.k5.common.fragments.ListPageState;
 import com.kayako.sdk.android.k5.common.fragments.OnScrollListListener;
+import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.UserViewModel;
+import com.kayako.sdk.android.k5.messenger.data.realtime.OnConversationChangeListener;
+import com.kayako.sdk.android.k5.messenger.data.realtime.OnConversationClientActivityListener;
+import com.kayako.sdk.android.k5.messenger.data.realtime.OnConversationMessagesChangeListener;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.AddReplyHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ClientIdHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ConversationHelper;
@@ -14,6 +18,7 @@ import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.MarkReadHelpe
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.MessengerPrefHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.OnboardingHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.OptimisticSendingViewHelper;
+import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.RealtimeHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ReplyBoxViewHelper;
 import com.kayako.sdk.messenger.conversation.Conversation;
 import com.kayako.sdk.messenger.message.Message;
@@ -45,6 +50,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private ClientIdHelper mClientIdHelper = new ClientIdHelper();
     private ConversationMessagesHelper mConversationMessagesHelper = new ConversationMessagesHelper();
     private AddReplyHelper mAddReplyHelper = new AddReplyHelper();
+    private RealtimeHelper mRealtimeHelper = new RealtimeHelper();
 
     public MessageListContainerPresenter(MessageListContainerContract.View view, MessageListContainerContract.Data data) {
         mView = view;
@@ -115,7 +121,14 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
         mAddReplyHelper.setIsConversationCreated(mConversationHelper.isConversationCreated());
 
+        mRealtimeHelper.addRealtimeListeners(onConversationChangeListener, onConversationClientActivityListener, onConversationMessagesChangeListener);
+
         reloadPage(true);
+    }
+
+    @Override
+    public void closePage() {
+        mRealtimeHelper.unsubscribeFromRealtimeChanges();
     }
 
     @Override
@@ -137,7 +150,17 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
     private void resetVariables() {
         mMarkReadHelper = new MarkReadHelper();
-        // TODO: Others?
+        mMessengerPrefHelper = new MessengerPrefHelper();
+        mMarkReadHelper = new MarkReadHelper();
+        mOnboardingHelper = new OnboardingHelper();
+        mConversationHelper = new ConversationHelper();
+        mReplyBoxHelper = new ReplyBoxViewHelper();
+        mListHelper = new ListHelper();
+        mOptimisticMessageHelper = new OptimisticSendingViewHelper();
+        mClientIdHelper = new ClientIdHelper();
+        mConversationMessagesHelper = new ConversationMessagesHelper();
+        mAddReplyHelper = new AddReplyHelper();
+        mRealtimeHelper = new RealtimeHelper();
     }
 
     private void reloadPage(boolean resetView) {
@@ -299,8 +322,16 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         }
     }
 
-    ////// API CALLBACKS //////
+    ////// API / REALTIME / DATA CHANGE CALLBACKS //////
+
+    /**
+     * Method called in any callback that loads the latest conversation data - create new converastion, load existing conversation
+     *
+     * @param conversation
+     */
     private void onLoadConversation(Conversation conversation) {
+        Conversation lastConversationValue = mConversationHelper.getConversation();
+
         // Update existing Conversation
         mConversationHelper.setIsConversationCreated(true);
         mConversationHelper.setConversationId(conversation.getId());
@@ -316,8 +347,14 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                         conversation.getCreator().getAvatarUrl()
                 );
 
-        // Reload the messages of existing conversation
-        reloadLatestMessages();
+
+        mRealtimeHelper.subscribeForRealtimeChanges(conversation);
+
+        // Reload the messages of existing conversation if a new message is added
+        if (lastConversationValue == null // first time load
+                || !lastConversationValue.getLastRepliedAt().equals(conversation.getLastRepliedAt())) {
+            reloadLatestMessages();
+        }
     }
 
     private MessageListContainerContract.OnLoadConversationListener onLoadConversationListener = new MessageListContainerContract.OnLoadConversationListener() {
@@ -368,6 +405,8 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             }
 
             boolean scrollToBottom = !mConversationMessagesHelper.hasLoadedMessagesBefore(); // scroll to bottom if messages are being loaded for the first time
+            // TODO: Scroll to bottom if near to bottom
+
             mConversationMessagesHelper.onLoadNextMessages(messageList, offset);
 
             // Remove optimisitc sending items - to be done before display list
@@ -399,7 +438,10 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         public void onSuccess(Message message) {
             mAddReplyHelper.onSuccessfulSendingOfMessage(message.getClientId(), mOnAddReplyCallback);
             mMarkReadHelper.disableOriginalLastMessageMarked(); // Should be called before any list rendering is done
-            reloadLatestMessages();
+
+            if (!mConversationMessagesHelper.exists(message.getId())) { // Because of realtime updates, only reload latest messages if not existing
+                reloadLatestMessages();
+            }
         }
 
         @Override
@@ -424,6 +466,39 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         @Override
         public void onFailure(String message) {
             mMarkReadHelper.setLastMessageBeingMarkedRead(0L); // TODO: Confirm logic here?
+        }
+    };
+
+    private OnConversationChangeListener onConversationChangeListener = new OnConversationChangeListener() {
+        @Override
+        public void onChange(Conversation conversation) {
+            onLoadConversation(conversation);
+        }
+    };
+
+    private OnConversationClientActivityListener onConversationClientActivityListener = new OnConversationClientActivityListener() {
+        @Override
+        public void onTyping(long conversationId, UserViewModel userTyping, boolean isTyping) {
+            // TODO: Add isTyping UI View
+        }
+    };
+
+    private OnConversationMessagesChangeListener onConversationMessagesChangeListener = new OnConversationMessagesChangeListener() {
+        @Override
+        public void onNewMessage(long conversationId, long messageId) {
+            if (!mConversationMessagesHelper.exists(messageId)) { // Load latest messages only if not loaded before
+                reloadLatestMessages();
+            }
+        }
+
+        @Override
+        public void onUpdateMessage(long conversationId, long messageId) {
+            if (mConversationMessagesHelper.exists(messageId)) { // Update existing message
+                reloadLatestMessages(); // TODO: Ensure that the Latest Messages load include the updated message?
+            } else {
+                // CHANGE_POST is sometimes called for new posts instead of NEW_POST. If ever the case, ensure onNewMessage is called!
+                onNewMessage(conversationId, messageId);
+            }
         }
     };
 

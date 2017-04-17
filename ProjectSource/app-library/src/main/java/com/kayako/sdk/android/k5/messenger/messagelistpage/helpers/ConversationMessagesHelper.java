@@ -31,6 +31,10 @@ public class ConversationMessagesHelper {
         return lastSuccessfulOffset.get();
     }
 
+    public boolean exists(long messageId) {
+        return messages.exists(messageId);
+    }
+
     public List<Message> getMessages() {
         return messages.getList();
     }
@@ -63,5 +67,4 @@ public class ConversationMessagesHelper {
 
         hasLoadedMessagesBefore.set(true);
     }
-
 }
