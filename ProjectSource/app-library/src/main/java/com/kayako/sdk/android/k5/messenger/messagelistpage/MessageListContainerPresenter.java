@@ -15,7 +15,7 @@ import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.AddReplyHelpe
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ClientIdHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ConversationHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ConversationMessagesHelper;
-import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.FailsafePollingHelper;
+import com.kayako.sdk.android.k5.common.utils.FailsafePollingHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ListHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.MarkReadHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.MessengerPrefHelper;

@@ -2,6 +2,7 @@ package com.kayako.sdk.android.k5.messenger.homescreenpage;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.utils.FailsafePollingHelper;
 import com.kayako.sdk.android.k5.messenger.data.RepoFactory;
 import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.ClientTypingActivity;
 import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.ConversationViewModel;
@@ -33,6 +34,7 @@ public class HomeScreenListPresenter implements HomeScreenListContract.Presenter
     private PresenceWidgetListItem mPresenceWidgetListItem;
     private RecentConversationsWidgetListItem mRecentCasesWidgetListItem;
     private ConversationViewModelHelper mConversationViewModelHelper = new ConversationViewModelHelper();
+    private FailsafePollingHelper mFailsafePollingHelper = new FailsafePollingHelper();
 
     public HomeScreenListPresenter(HomeScreenListContract.View view) {
         mView = view;
@@ -42,6 +44,13 @@ public class HomeScreenListPresenter implements HomeScreenListContract.Presenter
     public void initPage() {
         setupList();
         loadConversationStarter();
+
+        mFailsafePollingHelper.startPolling(new FailsafePollingHelper.PollingListener() {
+            @Override
+            public void onPoll() {
+                loadConversationStarter();
+            }
+        });
     }
 
     @Override
@@ -49,6 +58,8 @@ public class HomeScreenListPresenter implements HomeScreenListContract.Presenter
         // unsubscribe from realtime events
         RealtimeConversationHelper.untrack((OnConversationChangeListener) this);
         RealtimeConversationHelper.untrack((OnConversationClientActivityListener) this);
+
+        mFailsafePollingHelper.stopPolling();
     }
 
     private void loadConversationStarter() {

@@ -2,6 +2,7 @@ package com.kayako.sdk.android.k5.messenger.conversationlistpage;
 
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.conversationlist.ConversationListItem;
+import com.kayako.sdk.android.k5.common.utils.FailsafePollingHelper;
 import com.kayako.sdk.android.k5.core.MessengerPref;
 import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.ClientTypingActivity;
 import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.ConversationViewModel;
@@ -25,6 +26,7 @@ public class ConversationListPresenter implements ConversationListContract.Prese
     private int mOffset = 0;
 
     private ConversationViewModelHelper mConversationViewModelHelper = new ConversationViewModelHelper();
+    private FailsafePollingHelper mFailsafePollingHelper = new FailsafePollingHelper();
 
     // TODO: Refactor conversation list to retain list of realtimeconversation and re-render whole list everytime
 
@@ -55,7 +57,24 @@ public class ConversationListPresenter implements ConversationListContract.Prese
 
         reloadPage();
 
+        mFailsafePollingHelper.startPolling(new FailsafePollingHelper.PollingListener() {
+            @Override
+            public void onPoll() {
+                loadConversations(0);
+            }
+        });
     }
+
+    public void closePage() {
+        // TODO: Stop all tasks in Data
+
+        // Stop tracking the following
+        RealtimeConversationHelper.untrack((OnConversationChangeListener) this);
+        RealtimeConversationHelper.untrack((OnConversationClientActivityListener) this);
+
+        mFailsafePollingHelper.stopPolling();
+    }
+
 
     private void reloadPage() {
         mView.showLoadingView();
@@ -127,14 +146,6 @@ public class ConversationListPresenter implements ConversationListContract.Prese
                 convertConversationToListItems(
                         mConversationViewModelHelper.getConversationList()));
 
-    }
-
-    public void closePage() {
-        // TODO: Stop all tasks in Data
-
-        // Stop tracking the following
-        RealtimeConversationHelper.untrack((OnConversationChangeListener) this);
-        RealtimeConversationHelper.untrack((OnConversationClientActivityListener) this);
     }
 
     @Override

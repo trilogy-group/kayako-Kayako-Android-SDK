@@ -61,6 +61,7 @@ public class KrePresencePushDataTypingHelper {
             }
         };
 
+        // TODO: Check if this involves heavy resource usage?
         Timer timer = new Timer(true);
         timer.schedule(mTimerTask, FIVE_SECONDS);
     }

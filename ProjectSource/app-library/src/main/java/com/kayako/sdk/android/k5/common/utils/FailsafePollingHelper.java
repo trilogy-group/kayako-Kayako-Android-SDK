@@ -1,4 +1,4 @@
-package com.kayako.sdk.android.k5.messenger.messagelistpage.helpers;
+package com.kayako.sdk.android.k5.common.utils;
 
 import android.os.Handler;
 
@@ -15,14 +15,14 @@ public class FailsafePollingHelper {
     }
 
     public void startPolling(final PollingListener listener) {
-        stopPolling();
+        stopPolling(); // if already polling, it cancels and retries
+
         mTimer = new Timer();
         mHandler = new Handler();
 
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
-
                 // Runs on UI Thread
                 mHandler.post(new Runnable() {
                     @Override
