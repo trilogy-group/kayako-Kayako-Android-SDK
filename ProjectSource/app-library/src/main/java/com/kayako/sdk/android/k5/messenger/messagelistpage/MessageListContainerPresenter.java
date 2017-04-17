@@ -15,6 +15,7 @@ import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.AddReplyHelpe
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ClientIdHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ConversationHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ConversationMessagesHelper;
+import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.FailsafePollingHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ListHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.MarkReadHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.MessengerPrefHelper;
@@ -54,6 +55,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private AddReplyHelper mAddReplyHelper = new AddReplyHelper();
     private RealtimeHelper mRealtimeHelper = new RealtimeHelper();
     private TypingViewHelper mTypingViewHelper = new TypingViewHelper();
+    private FailsafePollingHelper mFailsafePollingHelper = new FailsafePollingHelper();
 
     public MessageListContainerPresenter(MessageListContainerContract.View view, MessageListContainerContract.Data data) {
         mView = view;
@@ -132,6 +134,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     @Override
     public void closePage() {
         mRealtimeHelper.unsubscribeFromRealtimeChanges();
+        mFailsafePollingHelper.stopPolling();
     }
 
     @Override
@@ -172,6 +175,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         mAddReplyHelper = new AddReplyHelper();
         mRealtimeHelper = new RealtimeHelper();
         mTypingViewHelper = new TypingViewHelper();
+        mFailsafePollingHelper = new FailsafePollingHelper();
     }
 
     private void reloadPage(boolean resetView) {
@@ -366,6 +370,12 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
 
         mRealtimeHelper.subscribeForRealtimeChanges(conversation);
+        mFailsafePollingHelper.startPolling(new FailsafePollingHelper.PollingListener() {
+            @Override
+            public void onPoll() {
+                reloadLatestMessages();
+            }
+        });
 
         // Reload the messages of existing conversation if a new message is added
         if (lastConversationValue == null // first time load
@@ -524,12 +534,20 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     ////// API CALLING METHODS //////
 
     private void reloadLatestMessages() {
+        if (!mConversationHelper.isConversationCreated()) {
+            throw new IllegalStateException("Method should only be called once conversation is created");
+        }
+
         Long conversationId = mConversationHelper.getConversationId();
 
         mData.getMessages(onLoadMessagesListener, conversationId, 0, mConversationMessagesHelper.getLimit());
     }
 
     public void loadNextMessages() {
+        if (!mConversationHelper.isConversationCreated()) {
+            throw new IllegalStateException("Method should only be called once conversation is created");
+        }
+
         Long conversationId = mConversationHelper.getConversationId();
 
         mView.showLoadMoreView();
