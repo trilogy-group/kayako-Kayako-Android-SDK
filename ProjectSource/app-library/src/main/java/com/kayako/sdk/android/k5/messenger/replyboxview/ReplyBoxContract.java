@@ -37,9 +37,12 @@ public class ReplyBoxContract {
         void showReplyBox();
 
         void focusOnReplyBox();
+
     }
 
     public interface ReplyBoxListener {
         void onClickSend(String message);
+
+        void onTypeReply(String typedMessage);
     }
 }

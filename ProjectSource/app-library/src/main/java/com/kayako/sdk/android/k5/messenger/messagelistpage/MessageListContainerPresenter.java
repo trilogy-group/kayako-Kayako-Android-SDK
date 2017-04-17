@@ -149,6 +149,13 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         onSendReply(message);
     }
 
+    @Override
+    public void onTypeReply(String messageInProcess) {
+        if (mConversationHelper.isConversationCreated()) {
+            mRealtimeHelper.triggerTyping(mConversationHelper.getConversation(), messageInProcess);
+        }
+    }
+
     ////// USER ACTION METHODS //////
 
     private void resetVariables() {

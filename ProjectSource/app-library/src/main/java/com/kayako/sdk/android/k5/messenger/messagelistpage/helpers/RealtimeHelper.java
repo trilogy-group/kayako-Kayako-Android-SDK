@@ -18,6 +18,8 @@ public class RealtimeHelper {
     private OnConversationClientActivityListener mOnConversationClientActivityListener;
     private OnConversationMessagesChangeListener mOnConversationMessagesChangeListener;
 
+    private String mLastMessageTyped;
+
     public void addRealtimeListeners(OnConversationChangeListener onConversationChangeListener,
                                      OnConversationClientActivityListener onConversationClientActivityListener,
                                      OnConversationMessagesChangeListener onConversationMessagesChangeListener) {
@@ -31,6 +33,23 @@ public class RealtimeHelper {
         mOnConversationChangeListener = onConversationChangeListener;
         mOnConversationClientActivityListener = onConversationClientActivityListener;
         mOnConversationMessagesChangeListener = onConversationMessagesChangeListener;
+    }
+
+    public void triggerTyping(Conversation conversation, String messageBeingTyped) {
+        // Don't send typing event if nothing changed
+        if (mLastMessageTyped == null && messageBeingTyped == null) { // both same
+            return;
+        } else if (mLastMessageTyped != null && mLastMessageTyped.equals(messageBeingTyped)) { // both same
+            return;
+        } else {
+            mLastMessageTyped = messageBeingTyped; // new
+
+            if (messageBeingTyped == null || messageBeingTyped.length() == 0) {
+                RealtimeConversationHelper.triggerTyping(conversation.getRealtimeChannel(), conversation.getId(), false);
+            } else {
+                RealtimeConversationHelper.triggerTyping(conversation.getRealtimeChannel(), conversation.getId(), true);
+            }
+        }
     }
 
     public void subscribeForRealtimeChanges(Conversation conversation) {

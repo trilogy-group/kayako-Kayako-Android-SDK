@@ -198,6 +198,13 @@ public class RealtimeConversationHelper {
         sMapListeners.clear();
     }
 
+    public static void triggerTyping(String conversationPresenceChannelName, long conversationId, boolean isTyping) {
+        addKreCaseSubscriptionIfNotExisting(conversationPresenceChannelName, conversationId);
+
+        KreCaseSubscription kreCaseSubscription = sMapSubscriptions.get(conversationPresenceChannelName);
+        kreCaseSubscription.triggerTypingEvent(isTyping, true);
+    }
+
     // TODO: Later, build another layer that ensures the code that calls the following method only receives events relating to the cases relevant to that code
 
     public static void trackChange(String conversationPresenceChannelName, long conversationId, final OnConversationChangeListener listener) {

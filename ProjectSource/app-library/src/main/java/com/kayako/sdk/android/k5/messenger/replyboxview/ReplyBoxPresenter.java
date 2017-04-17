@@ -25,6 +25,10 @@ public class ReplyBoxPresenter implements ReplyBoxContract.Presenter {
         } else {
             mView.enableSendButton();
         }
+
+        if (mListener != null) {
+            mListener.onTypeReply(message);
+        }
     }
 
     @Override
@@ -34,7 +38,9 @@ public class ReplyBoxPresenter implements ReplyBoxContract.Presenter {
         if (messageContent == null || messageContent.length() == 0) {
             // TODO: Disable the button when no item typed?
         } else {
-            mListener.onClickSend(messageContent);
+            if (mListener != null) {
+                mListener.onClickSend(messageContent);
+            }
             mView.setReplyBoxText(null); // Clear reply box after clicking send
         }
     }

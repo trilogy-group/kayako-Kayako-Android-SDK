@@ -73,6 +73,8 @@ public class MessageListContainerContract {
 
         void onClickSendInReplyView(String message);
 
+        void onTypeReply(String messageInProcess);
+
         void setData(Data data);
 
         void onClickRetryInErrorView();

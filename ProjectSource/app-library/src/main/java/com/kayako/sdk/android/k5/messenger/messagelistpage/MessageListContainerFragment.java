@@ -53,6 +53,11 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
             public void onClickSend(String message) {
                 mPresenter.onClickSendInReplyView(message);
             }
+
+            @Override
+            public void onTypeReply(String typedMessage) {
+                mPresenter.onTypeReply(typedMessage);
+            }
         });
 
         mMessageListView.setOnErrorListener(new MessageListContract.OnErrorListener() {
