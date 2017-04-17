@@ -40,7 +40,7 @@ public class ListHelper {
                 /* Note: Using MarkReadHelper and not Conversation variable directly because the unread status should be preserved
                    That is, even though a conversation is marked read, the unread marker should not disappear until the user reopens the page!
                  */
-            if (lastOriginalMessageMarkedRead != 0
+            if (lastOriginalMessageMarkedRead > 0 // VALID value for lastOriginalMessageMarkedRead
                     && lastOriginalMessageMarkedRead >= message.getId()) {
                 isRead = true;
             } else {

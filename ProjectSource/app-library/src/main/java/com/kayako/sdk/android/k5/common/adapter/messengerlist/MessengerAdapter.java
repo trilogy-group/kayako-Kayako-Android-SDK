@@ -36,6 +36,8 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessage
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageOtherViewHolder;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageSelfListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageSelfViewHolder;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.TypingListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.TypingViewHolder;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.UnreadSeparatorListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.UnreadSeparatorViewHolder;
 import com.kayako.sdk.android.k5.common.utils.DateTimeUtils;
@@ -330,6 +332,14 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 InputFieldEmailHelper.configureInputEmailField(inputEmailViewHolder, inputEmailListItem);
                 break;
 
+            case MessengerListType.TYPING_FOOTER:
+                final TypingViewHolder typingViewHolder = (TypingViewHolder) viewHolder;
+                final TypingListItem typingListItem = (TypingListItem) getData().get(position);
+
+                ImageUtils.setAvatarImage(Kayako.getApplicationContext(), typingViewHolder.avatar, typingListItem.getAvatarUrl());
+                ImageUtils.setImage(Kayako.getApplicationContext(), typingViewHolder.animatedTypingImage, null, R.drawable.ko__img_loading_dots);
+                break;
+
             default:
                 super.onBindViewHolder(viewHolder, position);
                 break;
@@ -394,6 +404,10 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
             case MessengerListType.INPUT_FIELD_EMAIL:
                 View inputEmailView = LayoutInflater.from(parent.getContext()).inflate(R.layout.ko__list_messenger_input_field, parent, false);
                 return new InputEmailViewHolder(inputEmailView);
+
+            case MessengerListType.TYPING_FOOTER:
+                View typingView = LayoutInflater.from(parent.getContext()).inflate(R.layout.ko__list_messenger_typing, parent, false);
+                return new TypingViewHolder(typingView);
 
             default:
                 return super.onCreateViewHolder(parent, viewType);

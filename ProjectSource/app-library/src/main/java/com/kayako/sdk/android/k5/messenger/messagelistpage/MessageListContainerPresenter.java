@@ -1,6 +1,7 @@
 package com.kayako.sdk.android.k5.messenger.messagelistpage;
 
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.TypingViewHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.UnsentMessage;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputEmailListItem;
 import com.kayako.sdk.android.k5.common.fragments.ListPageState;
@@ -51,6 +52,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private ConversationMessagesHelper mConversationMessagesHelper = new ConversationMessagesHelper();
     private AddReplyHelper mAddReplyHelper = new AddReplyHelper();
     private RealtimeHelper mRealtimeHelper = new RealtimeHelper();
+    private TypingViewHelper mTypingViewHelper = new TypingViewHelper();
 
     public MessageListContainerPresenter(MessageListContainerContract.View view, MessageListContainerContract.Data data) {
         mView = view;
@@ -161,6 +163,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         mConversationMessagesHelper = new ConversationMessagesHelper();
         mAddReplyHelper = new AddReplyHelper();
         mRealtimeHelper = new RealtimeHelper();
+        mTypingViewHelper = new TypingViewHelper();
     }
 
     private void reloadPage(boolean resetView) {
@@ -246,6 +249,10 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         }
 
         allListItems.addAll(optimisticSendingItems);
+
+
+        // footer items
+        allListItems.addAll(mTypingViewHelper.getTypingViews());
 
         return allListItems;
     }
@@ -460,7 +467,6 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         @Override
         public void onSuccess(long messageId) {
             mMarkReadHelper.setLastMessageMarkedReadSuccessfully(messageId);
-
         }
 
         @Override
@@ -479,7 +485,10 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private OnConversationClientActivityListener onConversationClientActivityListener = new OnConversationClientActivityListener() {
         @Override
         public void onTyping(long conversationId, UserViewModel userTyping, boolean isTyping) {
-            // TODO: Add isTyping UI View
+            boolean isUpdated = mTypingViewHelper.setTypingStatus(userTyping, isTyping);
+            if (isUpdated) { // Refresh UI only if there are new changes - prevent mulitple ui revisions
+                displayList();
+            }
         }
     };
 

@@ -12,9 +12,9 @@ import com.kayako.sdk.android.k5.common.utils.ImageUtils;
 import com.kayako.sdk.android.k5.core.Kayako;
 import com.kayako.sdk.android.k5.helpcenter.articlelistpage.ArticleListContainerContract;
 
-public class ConversationListItemHelper {
+public class ConversationViewItemViewHelper {
 
-    private ConversationListItemHelper() {
+    private ConversationViewItemViewHelper() {
     }
 
     public static void setUnreadCounter(TextView unreadCounterView, int unreadCount) {

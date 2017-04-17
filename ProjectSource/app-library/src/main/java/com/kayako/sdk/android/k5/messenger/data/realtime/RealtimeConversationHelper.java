@@ -27,6 +27,9 @@ import java.util.Set;
  * 1. Ensures only one instance of a KreCaseSubscription is created for a single conversation presence channel.
  * 2. Abstracts the KreCaseSubscription logic so that users of this class only needs to call one method to subscribe to changes.
  * 3. Ensure only a unique listener is added for the same instance - not multiple redundant listeners
+ * <p>
+ * Also:
+ * - By subscribing to a conversation, the current customer presence is automatically tracked as well
  */
 public class RealtimeConversationHelper {
 

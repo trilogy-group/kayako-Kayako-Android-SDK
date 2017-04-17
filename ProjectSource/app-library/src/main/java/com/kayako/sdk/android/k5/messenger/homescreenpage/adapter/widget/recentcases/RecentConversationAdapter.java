@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kayako.sdk.android.k5.R;
-import com.kayako.sdk.android.k5.common.adapter.conversationlist.ConversationListItemHelper;
+import com.kayako.sdk.android.k5.common.adapter.conversationlist.ConversationViewItemViewHelper;
 import com.kayako.sdk.android.k5.common.utils.ImageUtils;
 import com.kayako.sdk.android.k5.core.Kayako;
 import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.ConversationViewModel;
@@ -54,10 +54,10 @@ public class RecentConversationAdapter extends RecyclerView.Adapter {
             }
         });
 
-        ConversationListItemHelper.setUnreadCounter(viewHolder.unreadCounter, recentConversation.getUnreadCount());
-        ConversationListItemHelper.setFormattedTime(viewHolder.time, recentConversation.getTimeInMilleseconds());
+        ConversationViewItemViewHelper.setUnreadCounter(viewHolder.unreadCounter, recentConversation.getUnreadCount());
+        ConversationViewItemViewHelper.setFormattedTime(viewHolder.time, recentConversation.getTimeInMilleseconds());
 
-        ConversationListItemHelper.setTypingIndicator(
+        ConversationViewItemViewHelper.setTypingIndicator(
                 viewHolder.typingLoader,
                 viewHolder.subjectLine,
                 recentConversation.getLastAgentReplierTyping().isTyping());
