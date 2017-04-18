@@ -48,7 +48,7 @@ public class ConversationHelper {
         String name = extractName(email);
         String subject = extractSubject(message);
 
-        return new PostConversationBodyParams(name, email, subject, message, clientId);
+        return new PostConversationBodyParams(name, email, subject, message, PostConversationBodyParams.SourceType.MESSENGER, clientId);
     }
 
     private String extractName(String email) {
