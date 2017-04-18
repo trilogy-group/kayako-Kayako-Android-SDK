@@ -29,9 +29,6 @@ public class MessageListContainerContract {
 
         void markMessageAsRead(long conversationId, long messageId, final OnMarkMessageAsReadListener onLoadConversationListener);
 
-        void registerCaseChangeListener(long currentUserId, String conversationPresenceChannel, OnConversationChangeListener listener);
-
-        void unregisterCaseChangeListener();
     }
 
     public interface View extends BaseView {

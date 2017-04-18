@@ -24,8 +24,6 @@ import java.util.List;
 public class MessageListContainerRepository implements MessageListContainerContract.Data {
 
     private Messenger mMessenger;
-    private KreCaseSubscription mKreCaseSubscription;
-    private KreSubscription.OnSubscriptionListener mOnSubscriptionListener;
 
     public MessageListContainerRepository(String helpCenterUrl, FingerprintAuth fingerpritnAuth) {
         mMessenger = new Messenger(helpCenterUrl, fingerpritnAuth);
@@ -206,72 +204,5 @@ public class MessageListContainerRepository implements MessageListContainerContr
 
                     }
                 });
-    }
-
-    @Override
-    public void registerCaseChangeListener(long currentUserId, String conversationPresenceChannel, MessageListContainerContract.OnConversationChangeListener listener) {
-        // TODO: For debugging:
-        /*
-        mKreCaseSubscription = KreCaseSubscriptionFactory.getKreCaseSubscription(currentUserId);
-
-        KreLogHelper.addLogListener(new KreLogHelper.PrintLogListener() {
-            @Override
-            public void printDebugLogs(String tag, String message) {
-                Log.e(tag, message);
-            }
-
-            @Override
-            public void printVerboseLogs(String tag, String message) {
-                Log.e(tag, message);
-            }
-
-            @Override
-            public void printErrorLogs(String tag, String message) {
-                Log.e(tag, message);
-            }
-
-            @Override
-            public void printStackTrace(String tag, Throwable e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void logPotentialCrash(String tag, Throwable e) {
-                e.printStackTrace();
-            }
-        });
-
-        mKreCaseSubscription.subscribe(
-                new KreFingerprintCredentials(
-                        HelpCenterPref.getInstance().getHelpCenterUrl(),
-                        MessengerPref.getInstance().getFingerprintId()
-                ),
-                conversationPresenceChannel,
-                mOnSubscriptionListener = new KreSubscription.OnSubscriptionListener() {
-                    @Override
-                    public void onSubscription() {
-
-                    }
-
-                    @Override
-                    public void onUnsubscription() {
-
-                    }
-
-                    @Override
-                    public void onError(String message) {
-
-                    }
-                });
-*/
-
-
-    }
-
-    @Override
-    public void unregisterCaseChangeListener() {
-        if (mKreCaseSubscription != null) {
-            mKreCaseSubscription.unSubscribe(mOnSubscriptionListener);
-        }
     }
 }
