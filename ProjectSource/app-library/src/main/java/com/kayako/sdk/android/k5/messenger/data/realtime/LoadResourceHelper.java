@@ -5,17 +5,25 @@ import com.kayako.sdk.auth.FingerprintAuth;
 import com.kayako.sdk.base.callback.ItemCallback;
 import com.kayako.sdk.messenger.Messenger;
 import com.kayako.sdk.messenger.conversation.Conversation;
+import com.kayako.sdk.messenger.message.Message;
 
 public class LoadResourceHelper {
 
     private LoadResourceHelper() {
     }
 
-    public static void loadConversation(long conversationId, ItemCallback<Conversation> conversationItemCallback) {
+    private static Messenger getMessenger() {
         String url = MessengerPref.getInstance().getUrl();
         String fingerprintId = MessengerPref.getInstance().getFingerprintId();
 
-        new Messenger(url, new FingerprintAuth(fingerprintId))
-                .getConversation(conversationId, conversationItemCallback);
+        return new Messenger(url, new FingerprintAuth(fingerprintId));
+    }
+
+    public static void loadConversation(long conversationId, ItemCallback<Conversation> conversationItemCallback) {
+        getMessenger().getConversation(conversationId, conversationItemCallback);
+    }
+
+    public static void loadMessage(long conversationId, long messageId, ItemCallback<Message> messageCallback) {
+        getMessenger().getMessage(conversationId, messageId, messageCallback);
     }
 }

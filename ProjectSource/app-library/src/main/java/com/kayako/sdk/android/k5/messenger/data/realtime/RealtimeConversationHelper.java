@@ -17,6 +17,7 @@ import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.UserViewM
 import com.kayako.sdk.base.callback.ItemCallback;
 import com.kayako.sdk.error.KayakoException;
 import com.kayako.sdk.messenger.conversation.Conversation;
+import com.kayako.sdk.messenger.message.Message;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -159,12 +160,23 @@ public class RealtimeConversationHelper {
 
                     @Override
                     public void onChangePost(final long messageId) {
-                        handler.post(new Runnable() {
+                        LoadResourceHelper.loadMessage(conversationId, messageId, new ItemCallback<Message>() {
                             @Override
-                            public void run() {
-                                for (OnConversationMessagesChangeListener onConversationMessagesChangeListener : sOnConversationMessagesChangeListeners) {
-                                    onConversationMessagesChangeListener.onUpdateMessage(conversationId, messageId);
-                                }
+                            public void onSuccess(final Message item) {
+
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        for (OnConversationMessagesChangeListener onConversationMessagesChangeListener : sOnConversationMessagesChangeListeners) {
+                                            onConversationMessagesChangeListener.onUpdateMessage(conversationId, item);
+                                        }
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onFailure(KayakoException exception) {
+                                KreLogHelper.printStackTrace(TAG, exception);
                             }
                         });
                     }

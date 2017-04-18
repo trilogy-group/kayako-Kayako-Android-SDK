@@ -35,12 +35,24 @@ public class ConversationMessagesHelper {
         return messages.exists(messageId);
     }
 
+    public int getSize() {
+        return messages.getSize();
+    }
+
     public List<Message> getMessages() {
         return messages.getList();
     }
 
     public boolean hasMoreMessages() {
         return hasMoreMessages.get();
+    }
+
+    public void updateMessage(Message message) {
+        if (message == null) {
+            throw new IllegalArgumentException("Invalid argument. Can not be null!");
+        }
+
+        messages.addElement(message.getId(), message);
     }
 
     public void onLoadNextMessages(List<Message> newMessages, int offset) {

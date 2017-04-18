@@ -207,6 +207,9 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                 message,
                 clientId,
                 mOnAddReplyCallback);
+
+        // On sending reply, scroll to bottom of list
+        mView.scrollToBottomOfList();
     }
 
     private OptimisticSendingViewHelper.OptimisticSendingViewCallback optimisticSendingViewCallback = new OptimisticSendingViewHelper.OptimisticSendingViewCallback() {
@@ -456,7 +459,11 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         @Override
         public void onFailure(String message) {
             // TODO: Add conditions to show toast if load-more and show error view if lastSuccessfulOffset=0
-            mView.showErrorViewInMessageListingView();
+
+            // Show error view only if there are no messages to show
+            if(mConversationMessagesHelper.getSize() == 0) {
+                mView.showErrorViewInMessageListingView();
+            }
         }
     };
 
@@ -505,6 +512,10 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private OnConversationClientActivityListener onConversationClientActivityListener = new OnConversationClientActivityListener() {
         @Override
         public void onTyping(long conversationId, UserViewModel userTyping, boolean isTyping) {
+            if (conversationId != mConversationHelper.getConversationId()) {
+                return;
+            }
+
             boolean isUpdated = mTypingViewHelper.setTypingStatus(userTyping, isTyping);
             if (isUpdated) { // Refresh UI only if there are new changes - prevent mulitple ui revisions
                 displayList();
@@ -515,18 +526,26 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private OnConversationMessagesChangeListener onConversationMessagesChangeListener = new OnConversationMessagesChangeListener() {
         @Override
         public void onNewMessage(long conversationId, long messageId) {
+            if (conversationId != mConversationHelper.getConversationId()) {
+                return;
+            }
+
             if (!mConversationMessagesHelper.exists(messageId)) { // Load latest messages only if not loaded before
                 reloadLatestMessages();
             }
         }
 
         @Override
-        public void onUpdateMessage(long conversationId, long messageId) {
-            if (mConversationMessagesHelper.exists(messageId)) { // Update existing message
-                reloadLatestMessages(); // TODO: Ensure that the Latest Messages load include the updated message?
-            } else {
-                // CHANGE_POST is sometimes called for new posts instead of NEW_POST. If ever the case, ensure onNewMessage is called!
-                onNewMessage(conversationId, messageId);
+        public void onUpdateMessage(long conversationId, Message message) {
+            if (conversationId != mConversationHelper.getConversationId()) {
+                return;
+            }
+
+            if (mConversationMessagesHelper.exists(message.getId())) { // Update existing message
+                mConversationMessagesHelper.updateMessage(message);
+                displayList(); // update view with new message data
+            } else { // CHANGE_POST is sometimes called for new posts instead of NEW_POST. If ever the case, ensure onNewMessage is also called!
+                onNewMessage(conversationId, message.getId());
             }
         }
     };
