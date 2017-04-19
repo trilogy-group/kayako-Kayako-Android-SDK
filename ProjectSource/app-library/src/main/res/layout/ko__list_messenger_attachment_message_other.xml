@@ -22,13 +22,7 @@
         android:minHeight="@dimen/ko__messenger_attachment_min_height"
         android:minWidth="@dimen/ko__messenger_attachment_min_width">
 
-        <ImageView
-            android:id="@+id/ko__attachment_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/ko__messenger_attachment_margin_inside_chat_bubble"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop" />
+        <include layout="@layout/ko__include_attachment_image" />
 
         <ImageView
             android:id="@+id/ko__attachment_placeholder"

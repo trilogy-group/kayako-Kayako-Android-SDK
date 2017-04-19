@@ -1,6 +1,7 @@
 package com.kayako.sdk.android.k5.common.adapter.messengerlist;
 
 public class Attachment {
+
     private Long id;
     private String thumbnailUrl;
     private String caption;

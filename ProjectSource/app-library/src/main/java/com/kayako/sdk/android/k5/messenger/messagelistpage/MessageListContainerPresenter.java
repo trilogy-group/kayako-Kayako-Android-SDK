@@ -620,5 +620,4 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             return false;
         }
     }
-
 }

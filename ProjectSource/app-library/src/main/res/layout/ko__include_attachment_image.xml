@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ImageView android:id="@+id/ko__attachment_image"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:maxHeight="@dimen/ko__messenger_attachment_max_height"
+    android:layout_margin="@dimen/ko__messenger_attachment_margin_inside_chat_bubble"
+    android:adjustViewBounds="true"
+    android:scaleType="centerInside"
+    android:layout_gravity="center"
+    tools:src="@drawable/ko__cat_in_box"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" />
