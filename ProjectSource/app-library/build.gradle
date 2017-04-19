@@ -159,7 +159,7 @@ dependencies {
     // TODO: Uncomment when production ready
     // compile 'com.kayako:kayako:0.0.3'
     // compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile('com.github.metalwihen:Kayako-Java-SDK:v0.0.25') { // uses okhttp 3.4.1
+    compile('com.github.metalwihen:Kayako-Java-SDK:v0.0.26') { // uses okhttp 3.4.1
         exclude group: 'com.squareup.okhttp3', module: 'okhttp'
     }
 
