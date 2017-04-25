@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.URLUtil;
@@ -16,8 +17,10 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.kayako.sample.store.Store;
+import com.kayako.sdk.android.k5.BuildConfig;
 import com.kayako.sdk.android.k5.core.Kayako;
 import com.kayako.sdk.android.k5.core.MessengerBuilder;
+import com.kayako.sdk.android.k5.kre.helpers.KreLogHelper;
 import com.kayako.sdk.android.k5.messenger.style.BackgroundFactory;
 import com.kayako.sdk.android.k5.messenger.style.ForegroundFactory;
 
@@ -34,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        showDebugLogs();
 
         final EditText editText = (EditText) findViewById(R.id.edittext_helpcenter_url);
         editText.setText(Store.getInstance().getHelpCenterUrl());
@@ -213,4 +218,35 @@ public class MainActivity extends AppCompatActivity {
         return enums;
     }
 
+    private void showDebugLogs() {
+        // For debugging:
+        KreLogHelper.addLogListener(new KreLogHelper.PrintLogListener() {
+            @Override
+            public void printDebugLogs(String tag, String message) {
+                Log.d(tag, message);
+            }
+
+            @Override
+            public void printVerboseLogs(String tag, String message) {
+                Log.v(tag, message);
+            }
+
+            @Override
+            public void printErrorLogs(String tag, String message) {
+                Log.e(tag, message);
+            }
+
+            @Override
+            public void printStackTrace(String tag, Throwable e) {
+                Log.e(tag, "printStackTrace:");
+                e.printStackTrace();
+            }
+
+            @Override
+            public void logPotentialCrash(String tag, Throwable e) {
+                Log.e(tag, "logPotentialCrash:");
+                e.printStackTrace();
+            }
+        });
+    }
 }
