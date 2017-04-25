@@ -80,7 +80,11 @@ public class KreCaseSubscription {
         mUserPresenceListeners.add(listener);
     }
 
-    public void removeClientTypingListener(MinimalClientTypingListener listener) {
+    public void removeClientTypingListener(RawClientTypingListener listener) {
+        mClientTypingListeners.remove(listener);
+    }
+
+    public void removeMinimalClientTypingListener(MinimalClientTypingListener listener) {
         mMinimalClientTypingListeners.remove(listener);
     }
 
