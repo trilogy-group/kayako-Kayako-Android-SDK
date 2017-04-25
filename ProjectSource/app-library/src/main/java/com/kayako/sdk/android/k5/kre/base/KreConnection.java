@@ -18,6 +18,7 @@ import org.phoenixframework.channels.ISocketOpenCallback;
 import org.phoenixframework.channels.Socket;
 
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 class KreConnection {
 
@@ -32,7 +33,7 @@ class KreConnection {
     private static final String VERSION_NO = "1.0.0";
 
     private Socket mSocket;
-    private boolean mIsConnected;
+    private AtomicBoolean mIsConnected = new AtomicBoolean();
 
     /**
      * Used to connect and get a kre channel. The kre channel can be subscribed to and listened to for events.
@@ -51,7 +52,7 @@ class KreConnection {
         String url = generateUrlFromKreCredentials(kreCredentials);
 
         try {
-            mIsConnected = false;
+            mIsConnected.set(false);
 
             mSocket = new Socket(url);
 
@@ -70,14 +71,14 @@ class KreConnection {
                         public void onOpen() {
                             Channel channel = mSocket.chan(channelName, null);
                             listener.onOpen(channel);
-                            mIsConnected = true;
+                            mIsConnected.set(true);
                         }
                     })
                     .onError(new IErrorCallback() {
                         @Override
                         public void onError(String s) {
                             listener.onError(s);
-                            mIsConnected = false;
+                            mIsConnected.set(false);
                         }
                     })
                     .connect();
@@ -102,7 +103,7 @@ class KreConnection {
                                 if (listener != null) {
                                     listener.onClose();
                                 }
-                                mIsConnected = false;
+                                mIsConnected.set(false);
                             }
                         })
                         .onError(new IErrorCallback() {
@@ -115,7 +116,7 @@ class KreConnection {
                         })
                         .disconnect();
 
-                mIsConnected = false;
+                mIsConnected.set(false);
             } catch (IOException e) {
                 KreLogHelper.printStackTrace(TAG, e); // Don't track IOExceptions on Crashlytics
             } catch (Throwable e) {
@@ -129,8 +130,8 @@ class KreConnection {
      *
      * @return
      */
-    public synchronized boolean isConnected() {
-        return mIsConnected;
+    public boolean isConnected() {
+        return mIsConnected.get();
     }
 
     /**

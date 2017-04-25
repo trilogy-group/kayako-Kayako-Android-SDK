@@ -207,7 +207,7 @@ public class KreSubscription extends KreConnection {
      *
      * @return
      */
-    public synchronized boolean hasSubscribed() {
+    public boolean hasSubscribed() {
         return mHasSubscribedSuccessfully.get();
     }
 
