@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Should be used for a single event in a channel - no more. Any following subscriptions will replace the previous one.
@@ -37,9 +38,11 @@ public class KreSubscription extends KreConnection {
     private static final String TAG = "KreSubscription";
     private static final String EVENT_OK = "ok";
 
-    private Channel mChannel;
     private String mCurrentChannel;
 
+    private final Object mTriggerKey = new Object();
+    private final Object mListenerKey = new Object();
+    private AtomicReference<Channel> mChannel = new AtomicReference<Channel>();
     private AtomicBoolean mHasSubscribedSuccessfully = new AtomicBoolean(false);
     private List<OnSubscriptionListener> mOnSubscriptionListeners = new ArrayList<>();
 
@@ -61,73 +64,75 @@ public class KreSubscription extends KreConnection {
      *
      * @param kreCredentials
      */
-    public synchronized void subscribe(@NonNull final KreCredentials kreCredentials, @NonNull final String channelName, @NonNull final OnSubscriptionListener onSubscriptionListener) {
+    public void subscribe(@NonNull final KreCredentials kreCredentials, @NonNull final String channelName, @NonNull final OnSubscriptionListener onSubscriptionListener) {
         // KreLogHelper.d(TAG, "subscribe");
+        synchronized (mListenerKey) { // ensure mOnSubscriptionListeners is handled synchronously
+            try {
+                // If the new subscription is for another channel, unsubscribe from the old - expecting resetVariables to be called on unsubscription of previous channel
+                if (mOnSubscriptionListeners.size() != 0 && mCurrentChannel != null && !channelName.equals(mCurrentChannel)) {
+                    KreLogHelper.e(mTagWithName, mCurrentChannel + " == " + channelName + " ?");
+                    KreLogHelper.logException(mTagWithName, new AssertionError("One KreSubscription should be used for only channel. Else, unsubscribe from old to support new subscription. While issue is handled, this is not recommended behaviour - Expected unsubscribe"));
+                    unSubscribe(null); // unsubscribe older one while new subscription is being made
+                    resetVariables(); // reset variables
 
-        try {
-            // If the new subscription is for another channel, unsubscribe from the old - expecting resetVariables to be called on unsubscription of previous channel
-            if (mOnSubscriptionListeners.size() != 0 && mCurrentChannel != null && !channelName.equals(mCurrentChannel)) {
-                KreLogHelper.e(mTagWithName, mCurrentChannel + " == " + channelName + " ?");
-                KreLogHelper.logException(mTagWithName, new AssertionError("One KreSubscription should be used for only channel. Else, unsubscribe from old to support new subscription. While issue is handled, this is not recommended behaviour - Expected unsubscribe"));
-                unSubscribe(null); // unsubscribe older one while new subscription is being made
-                resetVariables(); // reset variables
+                    onSubscriptionListener.onError("Failed to start new subscription since previous subscription wasn't closed. Open page again to make it work!");
+                    return; // TODO: Stop subscription? If allowed to continue, then unsubscribe task running in background may accidently close the new socket
+                }
 
-                onSubscriptionListener.onError("Failed to start new subscription since previous subscription wasn't closed. Open page again to make it work!");
-                return; // TODO: Stop subscription? If allowed to continue, then unsubscribe task running in background may accidently close the new socket
-            }
+                mCurrentChannel = channelName;
+                mOnSubscriptionListeners.add(onSubscriptionListener);
+                KreLogHelper.d(mTagWithName, "Add to Subscriptions, Total:" + mOnSubscriptionListeners.size());
 
-            mCurrentChannel = channelName;
-            mOnSubscriptionListeners.add(onSubscriptionListener);
-            KreLogHelper.d(mTagWithName, "Add to Subscriptions, Total:" + mOnSubscriptionListeners.size());
+                if (mOnSubscriptionListeners.size() == 1) { // First Subscription
+                    super.connect(kreCredentials, channelName, new OnOpenConnectionListener() {
+                        @Override
+                        public void onOpen(Channel channel) {
+                            // KreLogHelper.d(TAG, "onOpenConnection");
+                            try {
+                                // Connect and get channel
+                                mChannel.set(channel);
 
-            if (mOnSubscriptionListeners.size() == 1) { // First Subscription
-                super.connect(kreCredentials, channelName, new OnOpenConnectionListener() {
-                    @Override
-                    public synchronized void onOpen(Channel channel) {
-                        // KreLogHelper.d(TAG, "onOpenConnection");
-                        try {
-                            // Connect and get channel
-                            mChannel = channel;
-
-                            // Null check to ensure successful connection
-                            if (mChannel == null) {
-                                callOnErrors("Failed to connect with Phoenix Client Library");
-                            } else {
-                                mChannel
-                                        .join()
-                                        .receive(EVENT_OK, new IMessageCallback() {
-                                            public synchronized void onMessage(Envelope envelope) {
-                                                if (!mHasSubscribedSuccessfully.get()) { // Prevent this method from being called repeatedly - "ok" can be received multiple times, especially after a push event
-                                                    KreLogHelper.d(mTagWithName, "Subscribe-START");
-                                                    mHasSubscribedSuccessfully.set(true); // ensure the state is set before any other operations
-                                                    callOnSubscriptions();
+                                // Null check to ensure successful connection
+                                if (mChannel.get() == null) {
+                                    callOnErrors("Failed to connect with Phoenix Client Library");
+                                } else {
+                                    mChannel
+                                            .get()
+                                            .join()
+                                            .receive(EVENT_OK, new IMessageCallback() {
+                                                public void onMessage(Envelope envelope) {
+                                                    if (!mHasSubscribedSuccessfully.get()) { // Prevent this method from being called repeatedly - "ok" can be received multiple times, especially after a push event
+                                                        KreLogHelper.d(mTagWithName, "Subscribe-START");
+                                                        mHasSubscribedSuccessfully.set(true); // ensure the state is set before any other operations
+                                                        callOnSubscriptions();
+                                                    }
                                                 }
-                                            }
-                                        });
-                            }
+                                            });
+                                }
 
-                        } catch (IOException e) {
-                            KreLogHelper.printStackTrace(mTagWithName, e);
-                            if (e.getMessage() != null) {
-                                callOnErrors(e.getMessage());
+                            } catch (IOException e) {
+                                KreLogHelper.printStackTrace(mTagWithName, e);
+                                if (e.getMessage() != null) {
+                                    callOnErrors(e.getMessage());
+                                }
                             }
                         }
-                    }
 
-                    @Override
-                    public void onError(String message) {
-                        callOnErrors(message);
-                    }
-                });
-            } else {
-                if (mHasSubscribedSuccessfully.get()) {
-                    callOnSubscription(onSubscriptionListener);
+                        @Override
+                        public void onError(String message) {
+                            callOnErrors(message);
+                        }
+                    });
                 } else {
-                    // allow onSubscribe to be called naturally
+                    if (mHasSubscribedSuccessfully.get()) {
+                        callOnSubscription(onSubscriptionListener);
+                    } else {
+                        // allow onSubscribe to be called naturally
+                    }
                 }
+            } finally {
+                // KreLogHelper.d(TAG, " mOnSubscriptionListeners count " + mOnSubscriptionListeners.size());
             }
-        } finally {
-            // KreLogHelper.d(TAG, " mOnSubscriptionListeners count " + mOnSubscriptionListeners.size());
         }
     }
 
@@ -135,12 +140,13 @@ public class KreSubscription extends KreConnection {
      * @param eventName
      * @param eventListener
      */
-    public synchronized void listenFor(final String eventName, final OnEventListener eventListener) {
+    public void listenFor(final String eventName, final OnEventListener eventListener) {
         // KreLogHelper.d(TAG, "listenFor:" + eventName);
         assertValidSubscription();
 
         // Listen for specific events
         mChannel
+                .get()
                 .on(eventName, new IMessageCallback() {
                     public void onMessage(Envelope envelope) {
                         KreLogHelper.d(mTagWithName, "onMessage:" + eventName + " - " + envelope.getPayload().toString());
@@ -155,9 +161,9 @@ public class KreSubscription extends KreConnection {
      * @param <T>
      * @return whether or not the event was successfully triggered
      */
-    public synchronized <T extends PushData> boolean triggerEvent(@NonNull final String eventName, @Nullable final T t) {
+    public <T extends PushData> boolean triggerEvent(@NonNull final String eventName, @Nullable final T t) {
         // KreLogHelper.d(TAG, "triggerEvent: " + eventName);
-        if (mChannel == null || !mHasSubscribedSuccessfully.get()) {
+        if (mChannel.get() == null || !mHasSubscribedSuccessfully.get()) {
             KreLogHelper.e(mTagWithName, "Call subscribe() before triggering event. Ignoring!");
             return false;
         }
@@ -179,26 +185,28 @@ public class KreSubscription extends KreConnection {
      *
      * @param onSubscriptionListener null to unconditionally clear all subscriptions, else clear only once all listeners = 0
      */
-    public synchronized void unSubscribe(@Nullable final OnSubscriptionListener onSubscriptionListener) {
-        // KreLogHelper.d(TAG, "unSubscribe");
+    public void unSubscribe(@Nullable final OnSubscriptionListener onSubscriptionListener) {
+        synchronized (mListenerKey) { // ensure mOnSubscriptionListeners is handled synchronously
+            // KreLogHelper.d(TAG, "unSubscribe");
 
-        try {
-            if (onSubscriptionListener != null) {
-                mOnSubscriptionListeners.remove(onSubscriptionListener);
-                KreLogHelper.d(mTagWithName, "Remove from Subscriptions, Remaining=" + mOnSubscriptionListeners.size());
+            try {
+                if (onSubscriptionListener != null) {
+                    mOnSubscriptionListeners.remove(onSubscriptionListener);
+                    KreLogHelper.d(mTagWithName, "Remove from Subscriptions, Remaining=" + mOnSubscriptionListeners.size());
 
-                callOnUnSubscription(onSubscriptionListener);
+                    callOnUnSubscription(onSubscriptionListener);
 
-                if (mOnSubscriptionListeners.size() == 0) {
+                    if (mOnSubscriptionListeners.size() == 0) {
+                        resetVariables();
+                        performUnSubscribeInBackground();
+                    }
+                } else {
                     resetVariables();
                     performUnSubscribeInBackground();
                 }
-            } else {
-                resetVariables();
-                performUnSubscribeInBackground();
+            } finally {
+                // KreLogHelper.d(TAG, " mOnSubscriptionListeners count " + mOnSubscriptionListeners.size());
             }
-        } finally {
-            // KreLogHelper.d(TAG, " mOnSubscriptionListeners count " + mOnSubscriptionListeners.size());
         }
     }
 
@@ -213,30 +221,31 @@ public class KreSubscription extends KreConnection {
 
     ////// TASKS TO RUN IN BACKGROUND ////////
 
-    private synchronized <T extends PushData> void performTrigger(@NonNull String eventName, @NonNull T t) {
-        // Ensure this method is synchronized so that there's no Concurrent exception
+    private <T extends PushData> void performTrigger(@NonNull String eventName, @NonNull T t) {
         try {
-            if (isConnected() && mChannel.getSocket().isConnected()) {
+            if (isConnected() && mChannel.get().getSocket().isConnected()) {
                 KreLogHelper.d(mTagWithName, "Trigger Event: " + eventName);
                 KreLogHelper.d(mTagWithName, "Trigger JsonPayload: " + t.toString());
-                mChannel.push(eventName, convertObjectToJsonNode(t));
-            }
 
+                synchronized (mTriggerKey) { // Ensure this method is synchronized so that there's no concurrent modification exception in Phoenix Client library
+                    mChannel.get().push(eventName, convertObjectToJsonNode(t));
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private synchronized void performUnSubscribe() {
+    private void performUnSubscribe() {
         KreLogHelper.d(mTagWithName, "unSubscribe-FINAL");
 
         // Cancel running trigger tasks
         cancelTask(mTriggerTask);
 
         // Leave Channel
-        if (mChannel != null) {
+        if (mChannel.get() != null) {
             try {
-                mChannel.leave();
+                mChannel.get().leave();
             } catch (IOException | IllegalStateException e) {
                 KreLogHelper.printStackTrace(mTagWithName, e);
             }
@@ -246,10 +255,12 @@ public class KreSubscription extends KreConnection {
         disconnect(null);
     }
 
-    private synchronized void resetVariables() {
-        mOnSubscriptionListeners = new CopyOnWriteArrayList<>();
-        mHasSubscribedSuccessfully.set(false);
-        mCurrentChannel = null;
+    private void resetVariables() {
+        synchronized (mListenerKey) { // ensure mOnSubscriptionListeners is handled synchronously
+            mOnSubscriptionListeners = new CopyOnWriteArrayList<>();
+            mHasSubscribedSuccessfully.set(false);
+            mCurrentChannel = null;
+        }
     }
 
 
@@ -306,7 +317,7 @@ public class KreSubscription extends KreConnection {
     }
 
     private void assertValidSubscription() {
-        if (mChannel == null) {
+        if (mChannel.get() == null) {
             throw new AssertionError("call subscribe() before listening for an event");
         } else if (!hasSubscribed()) {
             throw new AssertionError("listenFor method should only be called once the subscription is successful");
@@ -329,14 +340,18 @@ public class KreSubscription extends KreConnection {
     }
 
     private void callOnSubscriptions() {
-        for (OnSubscriptionListener listener : mOnSubscriptionListeners) {
-            callOnSubscription(listener);
+        synchronized (mListenerKey) { // ensure mOnSubscriptionListeners is handled synchronously
+            for (OnSubscriptionListener listener : mOnSubscriptionListeners) {
+                callOnSubscription(listener);
+            }
         }
     }
 
     private void callOnErrors(@Nullable String message) {
-        for (OnSubscriptionListener listener : mOnSubscriptionListeners) {
-            callOnError(listener, message);
+        synchronized (mListenerKey) { // ensure mOnSubscriptionListeners is handled synchronously
+            for (OnSubscriptionListener listener : mOnSubscriptionListeners) {
+                callOnError(listener, message);
+            }
         }
     }
 
