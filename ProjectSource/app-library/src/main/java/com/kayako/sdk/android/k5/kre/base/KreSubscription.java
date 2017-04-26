@@ -257,7 +257,7 @@ public class KreSubscription extends KreConnection {
 
     private void resetVariables() {
         synchronized (mListenerKey) { // ensure mOnSubscriptionListeners is handled synchronously
-            mOnSubscriptionListeners = new CopyOnWriteArrayList<>();
+            mOnSubscriptionListeners = new ArrayList<>();
             mHasSubscribedSuccessfully.set(false);
             mCurrentChannel = null;
         }
