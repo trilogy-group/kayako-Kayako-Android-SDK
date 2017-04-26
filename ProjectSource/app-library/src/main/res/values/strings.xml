@@ -50,4 +50,12 @@
 
     <string name="ko__label_email_input_field_hint">john@doe.com</string>
 
+    <string name="ko__attachment_msg_download_failed">Attachment download failed: </string>
+    <string name="ko__attachment_msg_download_paused">Attachment download is paused: </string>
+    <string name="ko__attachment_msg_download_pending">Attachment download is pending: </string>
+    <string name="ko__attachment_msg_download_running">Attachment is downloading… </string>
+    <string name="ko__attachment_msg_download_successful">Attachment download is successful</string>
+    <string name="ko__attachment_msg_unable_to_open_file">Unable to open file</string>
+    <string name="ko__attachment_msg_no_handler_for_file_type">No handler for this type of file.</string>
+
 </resources>
