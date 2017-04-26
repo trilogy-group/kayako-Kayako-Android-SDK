@@ -2,8 +2,8 @@ package com.kayako.sdk.android.k5.kre.helpers.presence;
 
 import android.support.annotation.NonNull;
 
+import com.kayako.sdk.android.k5.core.KayakoLogHelper;
 import com.kayako.sdk.android.k5.kre.base.KreSubscription;
-import com.kayako.sdk.android.k5.kre.helpers.KreLogHelper;
 import com.kayako.sdk.android.k5.kre.helpers.MinimalClientTypingListener;
 import com.kayako.sdk.android.k5.kre.helpers.RawClientActivityListener;
 import com.kayako.sdk.android.k5.kre.helpers.RawClientTypingListener;
@@ -168,7 +168,7 @@ public class KrePresenceHelper {
     // Made protected for test cases
     protected void callOnPresenceDiffEvent(String jsonBody) {
         if (mShowLogs) {
-            KreLogHelper.d(EVENT_PRESENCE_DIFF, jsonBody);
+            KayakoLogHelper.d(EVENT_PRESENCE_DIFF, jsonBody);
         }
         synchronized (eventKey) {
             Set<PresenceUser> joinedUsers = KrePresenceJsonHelper.parsePresenceDiffJsonAndGetJoins(jsonBody);
@@ -215,7 +215,7 @@ public class KrePresenceHelper {
     // Made protected for test cases
     protected synchronized void callOnPresenceStateEvent(String jsonBody) {
         if (mShowLogs) {
-            KreLogHelper.d(EVENT_PRESENCE_STATE, jsonBody);
+            KayakoLogHelper.d(EVENT_PRESENCE_STATE, jsonBody);
         }
 
         synchronized (eventKey) {
@@ -252,7 +252,7 @@ public class KrePresenceHelper {
     }
 
     private void callOnError(String message) {
-        KreLogHelper.e(TAG, message);
+        KayakoLogHelper.e(TAG, message);
         synchronized (eventKey) {
             if (mRawUserOnCasePresenceListener != null) {
                 mRawUserOnCasePresenceListener.onConnectionError();

@@ -1,13 +1,13 @@
-package com.kayako.sdk.android.k5.kre.helpers;
+package com.kayako.sdk.android.k5.core;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class KreLogHelper {
+public class KayakoLogHelper {
 
     private static Set<PrintLogListener> sPrintLogListeners = new HashSet<>();
 
-    private KreLogHelper() {
+    private KayakoLogHelper() {
     }
 
     public static void addLogListener(PrintLogListener listener) {

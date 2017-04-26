@@ -22,6 +22,8 @@ public class MessengerToolbarContract {
 
         void configureForAssignedAgentView(@NonNull AssignedAgentData data);
 
+        // TODO: Simple view for Conversation page
+
         void expandToolbarView();
 
         void collapseToolbarView();

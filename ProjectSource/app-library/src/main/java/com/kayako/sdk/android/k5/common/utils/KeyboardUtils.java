@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import com.kayako.sdk.utils.LogUtils;
+import com.kayako.sdk.android.k5.core.KayakoLogHelper;
 
 public class KeyboardUtils {
 
@@ -25,7 +25,7 @@ public class KeyboardUtils {
         } catch (Exception e) {
             e.printStackTrace();
             if (e.getMessage() != null) {
-                LogUtils.logError(KeyboardUtils.class, e.getMessage());
+                KayakoLogHelper.printStackTrace(KeyboardUtils.class.getName(), e);
             }
         }
     }
@@ -46,7 +46,7 @@ public class KeyboardUtils {
         } catch (Exception e) {
             e.printStackTrace();
             if (e.getMessage() != null) {
-                LogUtils.logError(KeyboardUtils.class, e.getMessage());
+                KayakoLogHelper.printStackTrace(KeyboardUtils.class.getName(), e);
             }
         }
     }

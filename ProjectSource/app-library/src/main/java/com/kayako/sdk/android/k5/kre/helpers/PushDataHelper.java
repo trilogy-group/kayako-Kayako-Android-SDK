@@ -2,6 +2,7 @@ package com.kayako.sdk.android.k5.kre.helpers;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.kayako.sdk.android.k5.core.KayakoLogHelper;
 import com.kayako.sdk.android.k5.kre.data.PushData;
 
 public class PushDataHelper {
@@ -13,7 +14,7 @@ public class PushDataHelper {
             Gson gson = new Gson();
             return gson.toJson(data);
         } catch (JsonSyntaxException e) {
-            KreLogHelper.printStackTrace(TAG, e);
+            KayakoLogHelper.printStackTrace(TAG, e);
             return null;
         }
     }
@@ -24,7 +25,7 @@ public class PushDataHelper {
             T t = gson.fromJson(jsonData, clazz);
             return t;
         } catch (JsonSyntaxException e) {
-            KreLogHelper.printStackTrace(TAG, e);
+            KayakoLogHelper.printStackTrace(TAG, e);
             return null;
         }
     }

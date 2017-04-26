@@ -18,9 +18,9 @@ public class KreCaseChangeHelper {
         kreSubscription.listenFor(EVENT_CHANGE, new KreSubscription.OnEventListener() {
             @Override
             public void onEvent(String event, String jsonBody) {
-                // KreLogHelper.e("KRE: Before Parse, Json = ", jsonBody);
+                // KayakoLogHelper.e("KRE: Before Parse, Json = ", jsonBody);
                 final Change pushData = PushDataHelper.convertFromJsonString(Change.class, jsonBody);
-                // KreLogHelper.e("KRE: After Parse, Object = ", pushData.toString());
+                // KayakoLogHelper.e("KRE: After Parse, Object = ", pushData.toString());
                 listener.onCaseChange(pushData);
             }
 

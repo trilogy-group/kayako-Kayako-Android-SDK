@@ -1,15 +1,13 @@
 package com.kayako.sdk.android.k5.messenger.data.realtime;
 
 import android.os.Handler;
-import android.util.Log;
 
-import com.kayako.sdk.android.k5.BuildConfig;
 import com.kayako.sdk.android.k5.common.activities.MessengerActivityTracker;
+import com.kayako.sdk.android.k5.core.KayakoLogHelper;
 import com.kayako.sdk.android.k5.kre.base.KreSubscription;
 import com.kayako.sdk.android.k5.kre.base.credentials.KreFingerprintCredentials;
 import com.kayako.sdk.android.k5.kre.base.kase.KreCaseSubscription;
 import com.kayako.sdk.android.k5.kre.data.Change;
-import com.kayako.sdk.android.k5.kre.helpers.KreLogHelper;
 import com.kayako.sdk.android.k5.kre.helpers.MinimalClientTypingListener;
 import com.kayako.sdk.android.k5.kre.helpers.RawCaseChangeListener;
 import com.kayako.sdk.android.k5.kre.helpers.RawCasePostChangeListener;
@@ -90,12 +88,12 @@ public class RealtimeConversationHelper {
         return new KreSubscription.OnSubscriptionListener() {
             @Override
             public void onSubscription() {
-                KreLogHelper.d(TAG, "onSubscription()");
+                KayakoLogHelper.d(TAG, "onSubscription()");
 
                 kreCaseSubscription.addCaseChangeListener(new RawCaseChangeListener() {
                     @Override
                     public void onCaseChange(Change change) {
-                        KreLogHelper.d(TAG, "onCaseChange()");
+                        KayakoLogHelper.d(TAG, "onCaseChange()");
 
                         LoadResourceHelper.loadConversation(conversationId, new ItemCallback<Conversation>() {
                             @Override
@@ -113,14 +111,14 @@ public class RealtimeConversationHelper {
 
                             @Override
                             public void onFailure(KayakoException exception) {
-                                KreLogHelper.printStackTrace(TAG, exception);
+                                KayakoLogHelper.printStackTrace(TAG, exception);
                             }
                         });
                     }
 
                     @Override
                     public void onConnectionError() {
-                        KreLogHelper.e(TAG, "onConnectionError()");
+                        KayakoLogHelper.e(TAG, "onConnectionError()");
                     }
                 });
 
@@ -130,7 +128,7 @@ public class RealtimeConversationHelper {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                KreLogHelper.d(TAG, "onClientTyping()");
+                                KayakoLogHelper.d(TAG, "onClientTyping()");
                                 for (OnConversationClientActivityListener onConversationChangeListener : sOnConversationClientActivityListeners) {
                                     onConversationChangeListener.onTyping(conversationId, new UserViewModel(userAvatar, userName, System.currentTimeMillis()), isTyping);
                                 }
@@ -140,7 +138,7 @@ public class RealtimeConversationHelper {
 
                     @Override
                     public void onConnectionError() {
-                        KreLogHelper.e(TAG, "onConnectionError()");
+                        KayakoLogHelper.e(TAG, "onConnectionError()");
                     }
                 });
 
@@ -176,14 +174,14 @@ public class RealtimeConversationHelper {
 
                             @Override
                             public void onFailure(KayakoException exception) {
-                                KreLogHelper.printStackTrace(TAG, exception);
+                                KayakoLogHelper.printStackTrace(TAG, exception);
                             }
                         });
                     }
 
                     @Override
                     public void onConnectionError() {
-                        KreLogHelper.e(TAG, "onConnectionError()");
+                        KayakoLogHelper.e(TAG, "onConnectionError()");
                     }
                 });
             }
@@ -248,7 +246,7 @@ public class RealtimeConversationHelper {
         sOnConversationChangeListeners.add(listener);
         addKreCaseSubscriptionIfNotExisting(conversationPresenceChannelName, conversationId);
 
-        KreLogHelper.d(TAG, "trackChange, set = " + sOnConversationChangeListeners.size());
+        KayakoLogHelper.d(TAG, "trackChange, set = " + sOnConversationChangeListeners.size());
     }
 
     public static void trackClientActivity(String conversationPresenceChannelName, long conversationId, final OnConversationClientActivityListener listener) {
@@ -259,7 +257,7 @@ public class RealtimeConversationHelper {
         sOnConversationClientActivityListeners.add(listener);
         addKreCaseSubscriptionIfNotExisting(conversationPresenceChannelName, conversationId);
 
-        KreLogHelper.d(TAG, "trackClientActivity, set = " + sOnConversationClientActivityListeners.size());
+        KayakoLogHelper.d(TAG, "trackClientActivity, set = " + sOnConversationClientActivityListeners.size());
     }
 
     public static void trackMessageChange(String conversationPresenceChannelName, long conversationId, final OnConversationMessagesChangeListener listener) {
@@ -270,7 +268,7 @@ public class RealtimeConversationHelper {
         sOnConversationMessagesChangeListeners.add(listener);
         addKreCaseSubscriptionIfNotExisting(conversationPresenceChannelName, conversationId);
 
-        KreLogHelper.d(TAG, "trackMessageChange, set = " + sOnConversationMessagesChangeListeners.size());
+        KayakoLogHelper.d(TAG, "trackMessageChange, set = " + sOnConversationMessagesChangeListeners.size());
     }
 
     public static void untrack(OnConversationChangeListener listener) {

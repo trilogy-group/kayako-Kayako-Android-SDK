@@ -6,9 +6,9 @@ import android.support.annotation.Nullable;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kayako.sdk.android.k5.core.KayakoLogHelper;
 import com.kayako.sdk.android.k5.kre.base.credentials.KreCredentials;
 import com.kayako.sdk.android.k5.kre.data.PushData;
-import com.kayako.sdk.android.k5.kre.helpers.KreLogHelper;
 
 import org.phoenixframework.channels.Channel;
 import org.phoenixframework.channels.Envelope;
@@ -17,7 +17,6 @@ import org.phoenixframework.channels.IMessageCallback;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -65,13 +64,13 @@ public class KreSubscription extends KreConnection {
      * @param kreCredentials
      */
     public void subscribe(@NonNull final KreCredentials kreCredentials, @NonNull final String channelName, @NonNull final OnSubscriptionListener onSubscriptionListener) {
-        // KreLogHelper.d(TAG, "subscribe");
+        // KayakoLogHelper.d(TAG, "subscribe");
         synchronized (mListenerKey) { // ensure mOnSubscriptionListeners is handled synchronously
             try {
                 // If the new subscription is for another channel, unsubscribe from the old - expecting resetVariables to be called on unsubscription of previous channel
                 if (mOnSubscriptionListeners.size() != 0 && mCurrentChannel != null && !channelName.equals(mCurrentChannel)) {
-                    KreLogHelper.e(mTagWithName, mCurrentChannel + " == " + channelName + " ?");
-                    KreLogHelper.logException(mTagWithName, new AssertionError("One KreSubscription should be used for only channel. Else, unsubscribe from old to support new subscription. While issue is handled, this is not recommended behaviour - Expected unsubscribe"));
+                    KayakoLogHelper.e(mTagWithName, mCurrentChannel + " == " + channelName + " ?");
+                    KayakoLogHelper.logException(mTagWithName, new AssertionError("One KreSubscription should be used for only channel. Else, unsubscribe from old to support new subscription. While issue is handled, this is not recommended behaviour - Expected unsubscribe"));
                     unSubscribe(null); // unsubscribe older one while new subscription is being made
                     resetVariables(); // reset variables
 
@@ -81,13 +80,13 @@ public class KreSubscription extends KreConnection {
 
                 mCurrentChannel = channelName;
                 mOnSubscriptionListeners.add(onSubscriptionListener);
-                KreLogHelper.d(mTagWithName, "Add to Subscriptions, Total:" + mOnSubscriptionListeners.size());
+                KayakoLogHelper.d(mTagWithName, "Add to Subscriptions, Total:" + mOnSubscriptionListeners.size());
 
                 if (mOnSubscriptionListeners.size() == 1) { // First Subscription
                     super.connect(kreCredentials, channelName, new OnOpenConnectionListener() {
                         @Override
                         public void onOpen(Channel channel) {
-                            // KreLogHelper.d(TAG, "onOpenConnection");
+                            // KayakoLogHelper.d(TAG, "onOpenConnection");
                             try {
                                 // Connect and get channel
                                 mChannel.set(channel);
@@ -102,7 +101,7 @@ public class KreSubscription extends KreConnection {
                                             .receive(EVENT_OK, new IMessageCallback() {
                                                 public void onMessage(Envelope envelope) {
                                                     if (!mHasSubscribedSuccessfully.get()) { // Prevent this method from being called repeatedly - "ok" can be received multiple times, especially after a push event
-                                                        KreLogHelper.d(mTagWithName, "Subscribe-START");
+                                                        KayakoLogHelper.d(mTagWithName, "Subscribe-START");
                                                         mHasSubscribedSuccessfully.set(true); // ensure the state is set before any other operations
                                                         callOnSubscriptions();
                                                     }
@@ -111,7 +110,7 @@ public class KreSubscription extends KreConnection {
                                 }
 
                             } catch (IOException e) {
-                                KreLogHelper.printStackTrace(mTagWithName, e);
+                                KayakoLogHelper.printStackTrace(mTagWithName, e);
                                 if (e.getMessage() != null) {
                                     callOnErrors(e.getMessage());
                                 }
@@ -131,7 +130,7 @@ public class KreSubscription extends KreConnection {
                     }
                 }
             } finally {
-                // KreLogHelper.d(TAG, " mOnSubscriptionListeners count " + mOnSubscriptionListeners.size());
+                // KayakoLogHelper.d(TAG, " mOnSubscriptionListeners count " + mOnSubscriptionListeners.size());
             }
         }
     }
@@ -141,7 +140,7 @@ public class KreSubscription extends KreConnection {
      * @param eventListener
      */
     public void listenFor(final String eventName, final OnEventListener eventListener) {
-        // KreLogHelper.d(TAG, "listenFor:" + eventName);
+        // KayakoLogHelper.d(TAG, "listenFor:" + eventName);
         assertValidSubscription();
 
         // Listen for specific events
@@ -149,7 +148,7 @@ public class KreSubscription extends KreConnection {
                 .get()
                 .on(eventName, new IMessageCallback() {
                     public void onMessage(Envelope envelope) {
-                        KreLogHelper.d(mTagWithName, "onMessage:" + eventName + " - " + envelope.getPayload().toString());
+                        KayakoLogHelper.d(mTagWithName, "onMessage:" + eventName + " - " + envelope.getPayload().toString());
                         callOnEvent(eventListener, envelope);
                     }
                 });
@@ -162,9 +161,9 @@ public class KreSubscription extends KreConnection {
      * @return whether or not the event was successfully triggered
      */
     public <T extends PushData> boolean triggerEvent(@NonNull final String eventName, @Nullable final T t) {
-        // KreLogHelper.d(TAG, "triggerEvent: " + eventName);
+        // KayakoLogHelper.d(TAG, "triggerEvent: " + eventName);
         if (mChannel.get() == null || !mHasSubscribedSuccessfully.get()) {
-            KreLogHelper.e(mTagWithName, "Call subscribe() before triggering event. Ignoring!");
+            KayakoLogHelper.e(mTagWithName, "Call subscribe() before triggering event. Ignoring!");
             return false;
         }
 
@@ -172,7 +171,7 @@ public class KreSubscription extends KreConnection {
             assertValidSubscription();
         } catch (Throwable e) {
             // Do not throw exceptions when triggering events. Ignore failed cases with error messages
-            KreLogHelper.printStackTrace(mTagWithName, e);
+            KayakoLogHelper.printStackTrace(mTagWithName, e);
             return false;
         }
 
@@ -187,12 +186,12 @@ public class KreSubscription extends KreConnection {
      */
     public void unSubscribe(@Nullable final OnSubscriptionListener onSubscriptionListener) {
         synchronized (mListenerKey) { // ensure mOnSubscriptionListeners is handled synchronously
-            // KreLogHelper.d(TAG, "unSubscribe");
+            // KayakoLogHelper.d(TAG, "unSubscribe");
 
             try {
                 if (onSubscriptionListener != null) {
                     mOnSubscriptionListeners.remove(onSubscriptionListener);
-                    KreLogHelper.d(mTagWithName, "Remove from Subscriptions, Remaining=" + mOnSubscriptionListeners.size());
+                    KayakoLogHelper.d(mTagWithName, "Remove from Subscriptions, Remaining=" + mOnSubscriptionListeners.size());
 
                     callOnUnSubscription(onSubscriptionListener);
 
@@ -205,7 +204,7 @@ public class KreSubscription extends KreConnection {
                     performUnSubscribeInBackground();
                 }
             } finally {
-                // KreLogHelper.d(TAG, " mOnSubscriptionListeners count " + mOnSubscriptionListeners.size());
+                // KayakoLogHelper.d(TAG, " mOnSubscriptionListeners count " + mOnSubscriptionListeners.size());
             }
         }
     }
@@ -224,8 +223,8 @@ public class KreSubscription extends KreConnection {
     private <T extends PushData> void performTrigger(@NonNull String eventName, @NonNull T t) {
         try {
             if (isConnected() && mChannel.get().getSocket().isConnected()) {
-                KreLogHelper.d(mTagWithName, "Trigger Event: " + eventName);
-                KreLogHelper.d(mTagWithName, "Trigger JsonPayload: " + t.toString());
+                KayakoLogHelper.d(mTagWithName, "Trigger Event: " + eventName);
+                KayakoLogHelper.d(mTagWithName, "Trigger JsonPayload: " + t.toString());
 
                 synchronized (mTriggerKey) { // Ensure this method is synchronized so that there's no concurrent modification exception in Phoenix Client library
                     mChannel.get().push(eventName, convertObjectToJsonNode(t));
@@ -237,7 +236,7 @@ public class KreSubscription extends KreConnection {
     }
 
     private void performUnSubscribe() {
-        KreLogHelper.d(mTagWithName, "unSubscribe-FINAL");
+        KayakoLogHelper.d(mTagWithName, "unSubscribe-FINAL");
 
         // Cancel running trigger tasks
         cancelTask(mTriggerTask);
@@ -247,7 +246,7 @@ public class KreSubscription extends KreConnection {
             try {
                 mChannel.get().leave();
             } catch (IOException | IllegalStateException e) {
-                KreLogHelper.printStackTrace(mTagWithName, e);
+                KayakoLogHelper.printStackTrace(mTagWithName, e);
             }
         }
 
@@ -329,7 +328,7 @@ public class KreSubscription extends KreConnection {
     private void callOnError(@Nullable final OnErrorListener listener, @Nullable String message) {
         if (listener != null) {
             listener.onError(message);
-            KreLogHelper.e(mTagWithName, message);
+            KayakoLogHelper.e(mTagWithName, message);
         }
     }
 

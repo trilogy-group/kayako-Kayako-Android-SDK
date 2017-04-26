@@ -17,10 +17,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.kayako.sample.store.Store;
-import com.kayako.sdk.android.k5.BuildConfig;
 import com.kayako.sdk.android.k5.core.Kayako;
+import com.kayako.sdk.android.k5.core.KayakoLogHelper;
 import com.kayako.sdk.android.k5.core.MessengerBuilder;
-import com.kayako.sdk.android.k5.kre.helpers.KreLogHelper;
 import com.kayako.sdk.android.k5.messenger.style.BackgroundFactory;
 import com.kayako.sdk.android.k5.messenger.style.ForegroundFactory;
 
@@ -220,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showDebugLogs() {
         // For debugging:
-        KreLogHelper.addLogListener(new KreLogHelper.PrintLogListener() {
+        KayakoLogHelper.addLogListener(new KayakoLogHelper.PrintLogListener() {
             @Override
             public void printDebugLogs(String tag, String message) {
                 Log.d(tag, message);

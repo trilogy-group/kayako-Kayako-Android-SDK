@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.kayako.sdk.android.k5.kre.helpers.KreLogHelper;
+import com.kayako.sdk.android.k5.core.KayakoLogHelper;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -84,9 +84,9 @@ class KrePresenceJsonHelper {
                 PresenceMetaUserData presenceMetaUserData = extractMetaUserData(userObject);
                 users.add(new PresenceUser(presenceMetaUserData, presenceMetaActivityData));
             } catch (NullPointerException e) {
-                KreLogHelper.e(TAG, "Unable to parse a Presence User");
-                KreLogHelper.e(TAG, "Json Payload:" + node.toString());
-                KreLogHelper.logException(TAG, e);
+                KayakoLogHelper.e(TAG, "Unable to parse a Presence User");
+                KayakoLogHelper.e(TAG, "Json Payload:" + node.toString());
+                KayakoLogHelper.logException(TAG, e);
             }
         }
         return users;

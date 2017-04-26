@@ -6,10 +6,10 @@ import android.support.annotation.Nullable;
 
 import com.kayako.sdk.android.k5.common.utils.NetworkUtils;
 import com.kayako.sdk.android.k5.core.Kayako;
+import com.kayako.sdk.android.k5.core.KayakoLogHelper;
 import com.kayako.sdk.android.k5.kre.base.credentials.KreCredentials;
 import com.kayako.sdk.android.k5.kre.base.credentials.KreFingerprintCredentials;
 import com.kayako.sdk.android.k5.kre.base.credentials.KreSessionCredentials;
-import com.kayako.sdk.android.k5.kre.helpers.KreLogHelper;
 
 import org.phoenixframework.channels.Channel;
 import org.phoenixframework.channels.IErrorCallback;
@@ -44,7 +44,7 @@ class KreConnection {
      */
     protected synchronized void connect(@NonNull KreCredentials kreCredentials, final @NonNull String channelName, @NonNull final OnOpenConnectionListener listener) {
         if (!NetworkUtils.isConnectedToNetwork(Kayako.getApplicationContext())) {
-            KreLogHelper.e(TAG, "No Internet Connection! Not going forward with connect()");
+            KayakoLogHelper.e(TAG, "No Internet Connection! Not going forward with connect()");
             listener.onError("No Network Connection. Please connect to the Internet.");
             return;
         }
@@ -60,8 +60,8 @@ class KreConnection {
             mSocket.setOnSocketThrowExceptionListener(new Socket.OnSocketThrowExceptionListener() {
                 @Override
                 public void onThrowException(String method, Throwable e) {
-                    KreLogHelper.e(TAG, "Non-Fatal: Crash has been prevented but intended behaviour no longer guaranteed.");
-                    KreLogHelper.logException(TAG, e);
+                    KayakoLogHelper.e(TAG, "Non-Fatal: Crash has been prevented but intended behaviour no longer guaranteed.");
+                    KayakoLogHelper.logException(TAG, e);
                 }
             });
 
@@ -84,9 +84,9 @@ class KreConnection {
                     .connect();
 
         } catch (IOException e) {
-            KreLogHelper.printStackTrace(TAG, e); // Don't track IOExceptions on Crashlytics
+            KayakoLogHelper.printStackTrace(TAG, e); // Don't track IOExceptions on Crashlytics
         } catch (Throwable e) {
-            KreLogHelper.logException(TAG, e);
+            KayakoLogHelper.logException(TAG, e);
         }
     }
 
@@ -118,9 +118,9 @@ class KreConnection {
 
                 mIsConnected.set(false);
             } catch (IOException e) {
-                KreLogHelper.printStackTrace(TAG, e); // Don't track IOExceptions on Crashlytics
+                KayakoLogHelper.printStackTrace(TAG, e); // Don't track IOExceptions on Crashlytics
             } catch (Throwable e) {
-                KreLogHelper.logException(TAG, e);
+                KayakoLogHelper.logException(TAG, e);
             }
         }
     }

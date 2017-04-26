@@ -3,6 +3,7 @@ package com.kayako.sdk.android.k5.messenger.homescreenpage;
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.utils.FailsafePollingHelper;
+import com.kayako.sdk.android.k5.core.KayakoLogHelper;
 import com.kayako.sdk.android.k5.messenger.data.RepoFactory;
 import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.ClientTypingActivity;
 import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.ConversationViewModel;
@@ -23,7 +24,6 @@ import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.widget.recentc
 import com.kayako.sdk.error.KayakoException;
 import com.kayako.sdk.messenger.conversation.Conversation;
 import com.kayako.sdk.messenger.conversationstarter.ConversationStarter;
-import com.kayako.sdk.utils.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -137,7 +137,7 @@ public class HomeScreenListPresenter implements HomeScreenListContract.Presenter
                 try {
                     mPresenceWidgetListItem = WidgetFactory.generatePresenceWidgetListItem(conversationStarter);
                 } catch (IllegalArgumentException e) {
-                    LogUtils.logError(HomeScreenListPresenter.class, e.getMessage());
+                    KayakoLogHelper.printStackTrace(HomeScreenListPresenter.class.getName(), e);
                 }
 
                 // If successful, generate the Recent Cases Widget
@@ -145,7 +145,7 @@ public class HomeScreenListPresenter implements HomeScreenListContract.Presenter
                     generateConversationViewModels(conversationStarter);
                     refreshRecentConversationsWidget();
                 } catch (IllegalArgumentException e) {
-                    LogUtils.logError(HomeScreenListPresenter.class, e.getMessage());
+                    KayakoLogHelper.printStackTrace(HomeScreenListPresenter.class.getName(), e);
                 }
 
                 setupList();
