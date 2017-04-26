@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.kayako.sdk.android.k5.kre.helpers.KreLogHelper;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -17,6 +18,8 @@ import java.util.Set;
  * Now, we rely on meta data to understand the user state. joins{} represents updated information while leaves{} represent the obsolete information to be replaced
  */
 class KrePresenceJsonHelper {
+
+    private static final String TAG = "KrePresenceJsonHelper";
 
     private static final String JSON_NODE_LEAVES = "leaves";
     private static final String JSON_NODE_JOINS = "joins";
@@ -65,15 +68,26 @@ class KrePresenceJsonHelper {
     }
 
     private static Set<PresenceUser> extractPresenceUserFromJsonObject(@NonNull JsonObject node) {
+        if (node == null) {
+            throw new IllegalArgumentException("node can not be null!");
+        }
+
         Set<PresenceUser> users = new HashSet<>();
         for (Map.Entry<String, JsonElement> entry : node.entrySet()) {
-            JsonObject bodyObject = entry.getValue().getAsJsonObject();
-            JsonObject metaObject = bodyObject.getAsJsonArray(JSON_NODE_METAS).get(0).getAsJsonObject(); // one element in [{
-            JsonObject userObject = metaObject.get(JSON_NODE_META_USER).getAsJsonObject();
+            // If unable parse to parse a single user, skip that user, log the json that couldn't be parsed, then continue to add those users that can be parsed
+            try {
+                JsonObject bodyObject = entry.getValue().getAsJsonObject();
+                JsonObject metaObject = bodyObject.getAsJsonArray(JSON_NODE_METAS).get(0).getAsJsonObject(); // one element in [{
+                JsonObject userObject = metaObject.get(JSON_NODE_META_USER).getAsJsonObject();
 
-            PresenceMetaActivityData presenceMetaActivityData = extractMetaActivityData(metaObject);
-            PresenceMetaUserData presenceMetaUserData = extractMetaUserData(userObject);
-            users.add(new PresenceUser(presenceMetaUserData, presenceMetaActivityData));
+                PresenceMetaActivityData presenceMetaActivityData = extractMetaActivityData(metaObject);
+                PresenceMetaUserData presenceMetaUserData = extractMetaUserData(userObject);
+                users.add(new PresenceUser(presenceMetaUserData, presenceMetaActivityData));
+            } catch (NullPointerException e) {
+                KreLogHelper.e(TAG, "Unable to parse a Presence User");
+                KreLogHelper.e(TAG, "Json Payload:" + node.toString());
+                KreLogHelper.logException(TAG, e);
+            }
         }
         return users;
     }
