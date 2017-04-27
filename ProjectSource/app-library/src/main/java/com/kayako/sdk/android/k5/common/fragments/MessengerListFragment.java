@@ -1,42 +1,21 @@
 package com.kayako.sdk.android.k5.common.fragments;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 
-import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseDataListItem;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.loadmorelist.EndlessRecyclerViewScrollAdapter;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.Attachment;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.UserDecoration;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageContinuedOtherListItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageContinuedSelfListItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageOtherListItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageSelfListItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.ChannelDecoration;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.DataItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.DataItemHelper;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.DateSeparatorListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerAdapter;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.EmptyListItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageContinuedOtherListItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageContinuedSelfListItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageOtherListItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageSelfListItem;
-import com.kayako.sdk.android.k5.common.utils.ViewUtils;
 import com.kayako.sdk.android.k5.common.viewhelpers.CustomStateViewHelper;
 import com.kayako.sdk.android.k5.common.viewhelpers.DefaultStateViewHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
@@ -44,8 +23,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class MessengerListFragment extends BaseListFragment {
 
     private MessengerAdapter mMessengerAdapter;
-
-    private static final boolean SHOW_SAMPLE_DATA = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,10 +37,12 @@ public class MessengerListFragment extends BaseListFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+/* TESTING:
         if (SHOW_SAMPLE_DATA) {
             testSample1();
             testSample2();
         }
+*/
     }
 
     /**
@@ -293,7 +272,8 @@ public class MessengerListFragment extends BaseListFragment {
     }
 
 ////////////////////////////////////////////// TEST IMPLEMENTATION //////////////////////////////////////////////
-
+    /*
+    private static final boolean SHOW_SAMPLE_DATA = false;
     private AtomicInteger testTaskCounter = new AtomicInteger(0);
     private AtomicInteger testMaxLoadMoreAttempts = new AtomicInteger(3);
 
@@ -534,5 +514,6 @@ public class MessengerListFragment extends BaseListFragment {
     private interface TestCallback {
         void performAfterWait();
     }
+    */
 
 }

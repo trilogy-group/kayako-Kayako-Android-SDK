@@ -16,6 +16,7 @@
     <dimen name="ko__messenger_gap_between_avatar_and_message">8dp</dimen>
     <dimen name="ko__messenger_gap_between_message_and_end">40dp
     </dimen> <!-- value[@dimen/ko__messenger_avatar_size] + value[@dimen/ko__messenger_gap_between_avatar_and_message] -->
+    <dimen name="ko__messenger_gap_between_message_and_end_self">0dp</dimen>
     <dimen name="ko__messenger_gap_between_attachment_image_and_label">2dp</dimen>
     <dimen name="ko__messenger_gap_between_time_and_message">3dp</dimen>
     <dimen name="ko__messenger_gap_between_channel_and_avatar_top_corner">20dp
@@ -74,11 +75,21 @@
     <dimen name="ko__messenger_home_screen_widget_presence_avatar_padding_horizontal">8dp</dimen>
     <dimen name="ko__messenger_home_screen_widget_elevation">8dp</dimen>
 
-    <dimen name="ko__messenger_home_screen_widget_recent_cases__conversation_list_item_avatar_size">30dp</dimen>
-    <dimen name="ko__messenger_home_screen_widget_recent_cases__conversation_list_item_gap_between_avatar_and_messages">8dp</dimen>
-    <dimen name="ko__messenger_home_screen_widget_recent_cases__conversation_list_item_subject_text_size">12sp</dimen>
-    <dimen name="ko__messenger_home_screen_widget_recent_cases__conversation_list_item_name_text_size">12sp</dimen>
-    <dimen name="ko__messenger_home_screen_widget_recent_cases__conversation_list_item_time_text_size">10sp</dimen>
+    <dimen name="ko__messenger_home_screen_widget_recent_cases__conversation_list_item_avatar_size">
+        30dp
+    </dimen>
+    <dimen name="ko__messenger_home_screen_widget_recent_cases__conversation_list_item_gap_between_avatar_and_messages">
+        8dp
+    </dimen>
+    <dimen name="ko__messenger_home_screen_widget_recent_cases__conversation_list_item_subject_text_size">
+        12sp
+    </dimen>
+    <dimen name="ko__messenger_home_screen_widget_recent_cases__conversation_list_item_name_text_size">
+        12sp
+    </dimen>
+    <dimen name="ko__messenger_home_screen_widget_recent_cases__conversation_list_item_time_text_size">
+        10sp
+    </dimen>
     <dimen name="ko__messenger_unread_counter_max_width">24dp</dimen>
     <dimen name="ko__messenger_unread_counter_max_height">24dp</dimen>
     <dimen name="ko__messenger_home_screen_widget_recent_cases__conversation_list_item_padding_vertical">
@@ -90,5 +101,8 @@
     <dimen name="ko__messenger_home_screen_widget_recent_cases__conversation_list_item_minimum_height">
         40dp
     </dimen>
+    <dimen name="ko__messenger_reply_box_footer">14sp</dimen>
+    <dimen name="ko__messenger_attachment_padding">8dp</dimen>
+    <dimen name="ko__messenger_gap_between_end_and_message_self">0dp</dimen>
 
 </resources>

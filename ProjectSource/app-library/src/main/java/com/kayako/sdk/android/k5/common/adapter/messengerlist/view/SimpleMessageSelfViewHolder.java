@@ -10,14 +10,10 @@ public class SimpleMessageSelfViewHolder extends BaseDeliveryIndicatorViewHolder
 
     public TextView message;
     public TextView time;
-    public CircleImageView avatar;
-    public CircleImageView channel;
 
     public SimpleMessageSelfViewHolder(View itemView) {
         super(itemView);
-        avatar = (CircleImageView) itemView.findViewById(R.id.ko__avatar);
         message = (TextView) itemView.findViewById(R.id.ko__message);
-        channel = (CircleImageView) itemView.findViewById(R.id.ko__channel);
         time = (TextView) itemView.findViewById(R.id.ko__time);
     }
 

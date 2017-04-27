@@ -310,7 +310,8 @@ public class DataItemHelper {
         }
 
         if (viewBehaviour.showAvatar && viewBehaviour.showAsSelf) {
-            return new SimpleMessageSelfListItem(currentDataItem.getId(), currentDataItem.getMessage(), currentDataItem.getUserDecoration().getAvatarUrl(), currentDataItem.getChannelDecoration(), time, deliveryIndicator, currentDataItem.getData());
+            // Self is now shown without Avatar - but the padding is different for starting message and continued message
+            return new SimpleMessageSelfListItem(currentDataItem.getId(), currentDataItem.getMessage(), time, deliveryIndicator, currentDataItem.getData());
         } else if (viewBehaviour.showAvatar) {
             return new SimpleMessageOtherListItem(currentDataItem.getId(), currentDataItem.getMessage(), currentDataItem.getUserDecoration().getAvatarUrl(), currentDataItem.getChannelDecoration(), time, currentDataItem.getData());
         } else if (viewBehaviour.showAsSelf) {
@@ -337,7 +338,8 @@ public class DataItemHelper {
         }
 
         if (viewBehaviour.showAvatar && viewBehaviour.showAsSelf) {
-            return new AttachmentMessageSelfListItem(currentDataItem.getId(), currentDataItem.getUserDecoration().getAvatarUrl(), currentDataItem.getChannelDecoration(), deliveryIndicator, attachment, time, currentDataItem.getData());
+            // Self is now shown without Avatar - but the padding is different for starting message and continued message
+            return new AttachmentMessageSelfListItem(currentDataItem.getId(), deliveryIndicator, attachment, time, currentDataItem.getData());
         } else if (viewBehaviour.showAvatar) {
             return new AttachmentMessageOtherListItem(currentDataItem.getId(), currentDataItem.getUserDecoration().getAvatarUrl(), currentDataItem.getChannelDecoration(), attachment, time, currentDataItem.getData());
         } else if (viewBehaviour.showAsSelf) {
@@ -381,12 +383,11 @@ public class DataItemHelper {
             = Which means the previous message was created AFTER the next message?
 
           ## SOLUTION:
-            Compare in terms of minutes.
+            Compare in terms of hours.
          */
 
-        long previousTimeInMinutes = previousTimeInMilliseconds / (60 * 1000);
-        long currentTimeInMinutes = currentTimeInMilliseconds / (60 * 1000);
-
+        long previousTimeInMinutes = previousTimeInMilliseconds / (60 * 60 * 1000);
+        long currentTimeInMinutes = currentTimeInMilliseconds / (60 * 60 * 1000);
 
         return currentTimeInMinutes >= previousTimeInMinutes; // current item more recently created than previous item
     }

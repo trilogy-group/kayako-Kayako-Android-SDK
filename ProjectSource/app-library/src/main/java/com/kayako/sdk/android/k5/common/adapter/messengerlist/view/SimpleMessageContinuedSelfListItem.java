@@ -11,6 +11,8 @@ import java.util.Map;
 
 public class SimpleMessageContinuedSelfListItem extends BaseDataListItem {
 
+    // Same arguments as SimpleMessageSelfListItem but padding is different
+
     private String message;
     private long time;
     private DeliveryIndicator deliveryIndicator;

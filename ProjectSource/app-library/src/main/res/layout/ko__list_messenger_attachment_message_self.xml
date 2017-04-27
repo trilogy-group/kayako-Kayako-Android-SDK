@@ -16,8 +16,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="@dimen/ko__messenger_gap_between_message_and_end"
-        android:layout_marginRight="@dimen/ko__messenger_gap_between_avatar_and_message"
-        android:layout_toLeftOf="@+id/ko__avatar"
+        android:layout_marginRight="@dimen/ko__messenger_gap_between_message_and_end_self"
+        android:layout_alignParentRight="true"
         android:maxHeight="@dimen/ko__messenger_attachment_max_height"
         android:minHeight="@dimen/ko__messenger_attachment_min_height"
         android:minWidth="@dimen/ko__messenger_attachment_min_width">
@@ -44,8 +44,8 @@
         android:layout_alignStart="@+id/ko__image_container"
         android:layout_below="@+id/ko__image_container"
         android:layout_marginTop="@dimen/ko__messenger_gap_between_attachment_image_and_label"
-        android:layout_toLeftOf="@+id/ko__avatar"
-        android:layout_toStartOf="@+id/ko__avatar"
+        android:layout_marginRight="@dimen/ko__messenger_gap_between_message_and_end_self"
+        android:layout_alignParentRight="true"
         android:ellipsize="middle"
         android:gravity="end|center_vertical"
         android:maxLines="1"
@@ -58,26 +58,5 @@
         android:layout_alignRight="@+id/ko__message"
         android:layout_below="@+id/ko__message"
         android:layout_marginTop="@dimen/ko__messenger_gap_between_time_and_message" />
-
-    <com.kayako.sdk.android.k5.common.view.CircleImageView
-        android:id="@+id/ko__avatar"
-        android:layout_width="@dimen/ko__messenger_avatar_size"
-        android:layout_height="@dimen/ko__messenger_avatar_size"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        tools:src="#808080" />
-
-    <com.kayako.sdk.android.k5.common.view.CircleImageView
-        android:id="@+id/ko__channel"
-        android:layout_width="@dimen/ko__messenger_channel_size"
-        android:layout_height="@dimen/ko__messenger_channel_size"
-        android:layout_alignRight="@+id/ko__avatar"
-        android:layout_alignTop="@+id/ko__avatar"
-        android:layout_marginRight="@dimen/ko__messenger_gap_between_channel_and_avatar_top_corner"
-        android:layout_marginTop="@dimen/ko__messenger_gap_between_channel_and_avatar_top_corner"
-        app:civ_border_color="#fff"
-        app:civ_border_width="2dp"
-        tools:src="#000" />
 
 </RelativeLayout>

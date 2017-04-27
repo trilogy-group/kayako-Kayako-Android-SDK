@@ -128,11 +128,10 @@ public class OptimisticSendingHelper {
 
         // Group with first element with avatar, and others continued
         if (position == POSITION.TOP || position == POSITION.ONLY_ELEMENT) {
+            // Same arguments but padding is different as SimpleMessageContinuedSelfListItem
             return new SimpleMessageSelfListItem(
                     null,
                     unsentMessage.getMessage(),
-                    userAvatarUrl,
-                    null,
                     time,
                     DeliveryIndicatorHelper.getDeliveryIndicator(clientDeliveryStatus),
                     map

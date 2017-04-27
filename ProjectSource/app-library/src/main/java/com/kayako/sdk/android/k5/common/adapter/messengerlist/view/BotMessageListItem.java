@@ -3,9 +3,7 @@ package com.kayako.sdk.android.k5.common.adapter.messengerlist.view;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.kayako.sdk.android.k5.common.adapter.BaseDataListItem;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.ChannelDecoration;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerListType;
 
 import java.util.Map;

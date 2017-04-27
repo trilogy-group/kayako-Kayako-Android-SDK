@@ -14,10 +14,10 @@
         style="@style/Ko__ChatBubbleStyleSelf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="@dimen/ko__messenger_gap_between_message_and_end"
-        android:layout_marginRight="@dimen/ko__messenger_gap_between_avatar_and_message"
-        android:layout_toLeftOf="@+id/ko__avatar"
+        android:layout_marginRight="@dimen/ko__messenger_gap_between_message_and_end_self"
         android:gravity="end|center_vertical"
         tools:text="Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah" />
 
@@ -29,25 +29,5 @@
         android:layout_below="@+id/ko__message"
         android:layout_marginTop="@dimen/ko__messenger_gap_between_time_and_message" />
 
-    <com.kayako.sdk.android.k5.common.view.CircleImageView
-        android:id="@+id/ko__avatar"
-        android:layout_width="@dimen/ko__messenger_avatar_size"
-        android:layout_height="@dimen/ko__messenger_avatar_size"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        tools:src="#808080" />
-
-    <com.kayako.sdk.android.k5.common.view.CircleImageView
-        android:id="@+id/ko__channel"
-        android:layout_width="@dimen/ko__messenger_channel_size"
-        android:layout_height="@dimen/ko__messenger_channel_size"
-        android:layout_alignRight="@+id/ko__avatar"
-        android:layout_alignTop="@+id/ko__avatar"
-        android:layout_marginRight="@dimen/ko__messenger_gap_between_channel_and_avatar_top_corner"
-        android:layout_marginTop="@dimen/ko__messenger_gap_between_channel_and_avatar_top_corner"
-        app:civ_border_color="#fff"
-        app:civ_border_width="2dp"
-        tools:src="#000" />
 
 </RelativeLayout>
