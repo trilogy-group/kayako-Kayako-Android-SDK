@@ -36,11 +36,11 @@ public class MessengerActivityTracker {
             @Override
             public void run() {
                 synchronized (openMessengerActivities) {
-                    for (WeakReference weakReference : openMessengerActivities) {
-                        if (weakReference == null  // Null list item
-                                || weakReference.get() == null  // Null activity
-                                || ((AppCompatActivity) weakReference.get()).isFinishing()) { // If the activity is finishing
-                            openMessengerActivities.remove(weakReference);
+                    for (int i = 0; i < openMessengerActivities.size(); i++) {
+                        if (openMessengerActivities.get(i) == null  // Null list item
+                                || openMessengerActivities.get(i).get() == null  // Null activity
+                                || (openMessengerActivities.get(i).get()).isFinishing()) { // If the activity is finishing
+                            openMessengerActivities.remove(openMessengerActivities.get(i));
                         }
                     }
 
