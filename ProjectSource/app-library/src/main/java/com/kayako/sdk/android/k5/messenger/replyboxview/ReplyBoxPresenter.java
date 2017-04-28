@@ -46,6 +46,13 @@ public class ReplyBoxPresenter implements ReplyBoxContract.Presenter {
     }
 
     @Override
+    public void onClickAddAttachment() {
+        if (mListener != null) {
+            mListener.onClickAddAttachment();
+        }
+    }
+
+    @Override
     public void setReplyBoxListener(ReplyBoxContract.ReplyBoxListener listener) {
         mListener = listener;
     }

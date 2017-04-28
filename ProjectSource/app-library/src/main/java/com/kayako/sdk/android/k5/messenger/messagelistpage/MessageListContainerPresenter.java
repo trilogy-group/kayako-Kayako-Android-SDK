@@ -1,12 +1,15 @@
 package com.kayako.sdk.android.k5.messenger.messagelistpage;
 
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.FileAttachmentHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.TypingViewHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.UnsentMessage;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.EmptyListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputEmailListItem;
 import com.kayako.sdk.android.k5.common.fragments.ListPageState;
 import com.kayako.sdk.android.k5.common.fragments.OnScrollListListener;
+import com.kayako.sdk.android.k5.common.utils.FailsafePollingHelper;
+import com.kayako.sdk.android.k5.common.utils.file.FileAttachment;
 import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.UserViewModel;
 import com.kayako.sdk.android.k5.messenger.data.realtime.OnConversationChangeListener;
 import com.kayako.sdk.android.k5.messenger.data.realtime.OnConversationClientActivityListener;
@@ -15,7 +18,6 @@ import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.AddReplyHelpe
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ClientIdHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ConversationHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ConversationMessagesHelper;
-import com.kayako.sdk.android.k5.common.utils.FailsafePollingHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ListHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.MarkReadHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.MessengerPrefHelper;
@@ -23,8 +25,11 @@ import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.OnboardingHel
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.OptimisticSendingViewHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.RealtimeHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ReplyBoxViewHelper;
+import com.kayako.sdk.base.requester.AttachmentFile;
 import com.kayako.sdk.messenger.conversation.Conversation;
 import com.kayako.sdk.messenger.message.Message;
+import com.kayako.sdk.messenger.message.MessageSourceType;
+import com.kayako.sdk.messenger.message.PostMessageBodyParams;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +44,8 @@ import java.util.Map;
 public class MessageListContainerPresenter implements MessageListContainerContract.Presenter {
 
     private boolean mIsNewConversation;  // original value when page is opened
+
+    //TODO: on attachment click - if failed to send, resend. if sent, open to view
 
     private MessageListContainerContract.View mView;
     private MessageListContainerContract.Data mData;
@@ -56,6 +63,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private RealtimeHelper mRealtimeHelper = new RealtimeHelper();
     private TypingViewHelper mTypingViewHelper = new TypingViewHelper();
     private FailsafePollingHelper mFailsafePollingHelper = new FailsafePollingHelper();
+    private FileAttachmentHelper mFileAttachmentHelper = new FileAttachmentHelper();
 
     public MessageListContainerPresenter(MessageListContainerContract.View view, MessageListContainerContract.Data data) {
         mView = view;
@@ -115,6 +123,8 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     public void initPage(boolean isNewConversation, Long conversationId) {
         resetVariables(); // TODO: Figure out how to handle orientations
 
+        mFileAttachmentHelper.onReset();
+
         this.mIsNewConversation = isNewConversation;
 
         mOptimisticMessageHelper.setUserAvatar(mMessengerPrefHelper.getAvatar());
@@ -149,7 +159,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             throw new AssertionError("If it is NOT a new conversation, conversation id should NOT be null");
         }
 
-        onSendReply(message);
+        onSendMessageReply(message);
     }
 
     @Override
@@ -157,6 +167,17 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         if (mConversationHelper.isConversationCreated()) {
             mRealtimeHelper.triggerTyping(mConversationHelper.getConversation(), messageInProcess);
         }
+    }
+
+    @Override
+    public void onClickAddAttachment() {
+        mView.openFilePickerForAttachments();
+    }
+
+    @Override
+    public void onAttachmentAttached(FileAttachment file) {
+        //TODO: Later, create a separate attachment preview screen so the user has the option to cancel-
+        onSendAttachmentReply(file);
     }
 
     ////// USER ACTION METHODS //////
@@ -176,6 +197,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         mRealtimeHelper = new RealtimeHelper();
         mTypingViewHelper = new TypingViewHelper();
         mFailsafePollingHelper = new FailsafePollingHelper();
+        mFileAttachmentHelper = new FileAttachmentHelper();
     }
 
     private void reloadPage(boolean resetView) {
@@ -197,7 +219,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         configureReplyBoxViewState();
     }
 
-    private void onSendReply(String message) {
+    private void onSendMessageReply(String message) {
         String clientId = mClientIdHelper.generateClientId(); // GENERATE Client Id
 
         mOptimisticMessageHelper.addOptimisitcMessageView(message, clientId, optimisticSendingViewCallback);
@@ -205,6 +227,23 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         // Covers both adding of new messages and new conversation
         mAddReplyHelper.addNewReply(
                 message,
+                clientId,
+                mOnAddReplyCallback);
+
+        // On sending reply, scroll to bottom of list
+        mView.scrollToBottomOfList();
+    }
+
+    private void onSendAttachmentReply(FileAttachment fileAttachment) {
+        String clientId = mClientIdHelper.generateClientId(); // GENERATE Client Id
+
+        mOptimisticMessageHelper.addOptimisitcMessageView(fileAttachment, clientId, optimisticSendingViewCallback);
+
+        mFileAttachmentHelper.onSendingUnsentMessage(clientId, fileAttachment.getFile());
+
+        // Covers both adding of new messages and new conversation
+        mAddReplyHelper.addNewReply(
+                fileAttachment,
                 clientId,
                 mOnAddReplyCallback);
 
@@ -220,7 +259,11 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
         @Override
         public void onResendReply(UnsentMessage unsentMessage) {
-            onSendReply(unsentMessage.getMessage());
+            if (unsentMessage.getAttachment() == null) {
+                onSendMessageReply(unsentMessage.getMessage());
+            } else {
+                onSendAttachmentReply(unsentMessage.getAttachment());
+            }
         }
     };
 
@@ -232,8 +275,12 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
         @Override
         public void onAddMessage(UnsentMessage unsentMessage) {
-            addNewMessage(mConversationHelper.getConversationId(), unsentMessage.getMessage(), unsentMessage.getClientId());
-
+            if (unsentMessage.getAttachment() != null) {
+                mFileAttachmentHelper.onSuccessfulSendingOfMessage(unsentMessage.getClientId());
+                addNewMessage(mConversationHelper.getConversationId(), unsentMessage.getAttachment(), unsentMessage.getClientId());
+            } else {
+                addNewMessage(mConversationHelper.getConversationId(), unsentMessage.getMessage(), unsentMessage.getClientId());
+            }
         }
     };
 
@@ -461,7 +508,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             // TODO: Add conditions to show toast if load-more and show error view if lastSuccessfulOffset=0
 
             // Show error view only if there are no messages to show
-            if(mConversationMessagesHelper.getSize() == 0) {
+            if (mConversationMessagesHelper.getSize() == 0) {
                 mView.showErrorViewInMessageListingView();
             }
         }
@@ -595,7 +642,33 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     }
 
     private void addNewMessage(long conversationId, String message, String clientId) {
-        mData.postNewMessage(conversationId, message, clientId, onPostMessageListener);
+        mData.postNewMessage(conversationId,
+                new PostMessageBodyParams(
+                        message,
+                        MessageSourceType.MESSENGER,
+                        clientId
+                ),
+                clientId,
+                onPostMessageListener);
+    }
+
+    private void addNewMessage(long conversationId, FileAttachment fileAttachment, String clientId) {
+        List<AttachmentFile> attachmentFiles = new ArrayList<>();
+        attachmentFiles.add(new AttachmentFile(
+                fileAttachment.getFile(),
+                fileAttachment.getMimeType(),
+                fileAttachment.getName()
+        ));
+
+        mData.postNewMessage(conversationId,
+                new PostMessageBodyParams(
+                        "attachmnt", // TODO: Find a way to send ONLY attachment without title
+                        MessageSourceType.MESSENGER,
+                        clientId,
+                        attachmentFiles
+                ),
+                clientId,
+                onPostMessageListener);
     }
 
     private boolean markLastMessageAsRead(final List<Message> messages, final Long conversationId) {

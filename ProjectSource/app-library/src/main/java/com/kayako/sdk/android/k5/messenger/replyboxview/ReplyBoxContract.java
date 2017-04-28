@@ -2,6 +2,7 @@ package com.kayako.sdk.android.k5.messenger.replyboxview;
 
 import com.kayako.sdk.android.k5.common.mvp.BasePresenter;
 import com.kayako.sdk.android.k5.common.mvp.BaseView;
+import com.kayako.sdk.android.k5.common.utils.file.FileAttachment;
 
 public class ReplyBoxContract {
 
@@ -24,10 +25,13 @@ public class ReplyBoxContract {
 
         void onClickSend();
 
+        void onClickAddAttachment();
+
         void setReplyBoxListener(ReplyBoxListener listener);
     }
 
     public interface ConfigureView {
+
         void setReplyBoxListener(ReplyBoxListener listener);
 
         void setReplyBoxText(String message); // TODO: Attachments later?
@@ -42,6 +46,8 @@ public class ReplyBoxContract {
 
     public interface ReplyBoxListener {
         void onClickSend(String message);
+
+        void onClickAddAttachment();
 
         void onTypeReply(String typedMessage);
     }

@@ -1,6 +1,7 @@
 package com.kayako.sdk.android.k5.messenger.messagelistpage;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,9 +18,12 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerAdapter;
 import com.kayako.sdk.android.k5.common.fragments.ListPageState;
 import com.kayako.sdk.android.k5.common.fragments.OnListPageStateChangeListener;
 import com.kayako.sdk.android.k5.common.fragments.OnScrollListListener;
+import com.kayako.sdk.android.k5.common.utils.file.FileAttachmentUtil;
+import com.kayako.sdk.android.k5.core.KayakoLogHelper;
 import com.kayako.sdk.android.k5.messenger.replyboxview.ReplyBoxContract;
 import com.kayako.sdk.android.k5.messenger.toolbarview.MessengerToolbarContract;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +33,8 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
     private MessageListContract.ConfigureView mMessageListView;
     private ReplyBoxContract.ConfigureView mReplyBoxView;
     private MessengerToolbarContract.ConfigureView mToolbarView;
+
+    private static final int REQUEST_CODE_ATTACHMENT = 100;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,6 +58,11 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
             @Override
             public void onClickSend(String message) {
                 mPresenter.onClickSendInReplyView(message);
+            }
+
+            @Override
+            public void onClickAddAttachment() {
+                mPresenter.onClickAddAttachment();
             }
 
             @Override
@@ -112,6 +123,25 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
             mPresenter.initPage(false, bundle.getLong(KayakoSelectConversationActivity.ARG_CONVERSATION_ID));
         } else {
             mPresenter.initPage(true, null);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        try {
+            if (requestCode == REQUEST_CODE_ATTACHMENT) {
+                File file = FileAttachmentUtil.getFileOnActivityResult(resultCode, data);
+                if (file != null) {
+                    mPresenter.onAttachmentAttached(FileAttachmentUtil.generateFileAttachment("attachment", file));
+                }
+            }
+        } catch (Exception e) {
+            String TAG = getClass().getName();
+            KayakoLogHelper.e(TAG, "Unable to attach file in Messenger");
+            KayakoLogHelper.logException(TAG, e);
+            showToastMessage(getString(R.string.ko__attachment_msg_unable_to_attach_file));
         }
     }
 
@@ -249,5 +279,14 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
 
 
         mMessageListView.scrollToBottomOfList();
+    }
+
+    @Override
+    public void openFilePickerForAttachments() {
+        if (!hasPageLoaded()) {
+            return;
+        }
+
+        FileAttachmentUtil.openFileChooserActivityFromFragment(this, REQUEST_CODE_ATTACHMENT);
     }
 }

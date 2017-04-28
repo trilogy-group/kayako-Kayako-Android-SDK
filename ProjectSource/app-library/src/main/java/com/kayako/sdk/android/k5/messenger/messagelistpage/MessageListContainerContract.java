@@ -8,10 +8,13 @@ import com.kayako.sdk.android.k5.common.fragments.OnScrollListListener;
 import com.kayako.sdk.android.k5.common.mvp.BaseData;
 import com.kayako.sdk.android.k5.common.mvp.BasePresenter;
 import com.kayako.sdk.android.k5.common.mvp.BaseView;
+import com.kayako.sdk.android.k5.common.utils.file.FileAttachment;
 import com.kayako.sdk.messenger.conversation.Conversation;
 import com.kayako.sdk.messenger.conversation.PostConversationBodyParams;
 import com.kayako.sdk.messenger.message.Message;
+import com.kayako.sdk.messenger.message.PostMessageBodyParams;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +22,7 @@ public class MessageListContainerContract {
 
     public interface Data extends BaseData {
 
-        void postNewMessage(long conversationId, String contents, String clientId, final PostNewMessageCallback callback);
+        void postNewMessage(long conversationId, PostMessageBodyParams postMessageBodyParams, final String clientId, final MessageListContainerContract.PostNewMessageCallback callback);
 
         void getMessages(final OnLoadMessagesListener listener, long conversationId, int offset, int limit);
 
@@ -60,6 +63,8 @@ public class MessageListContainerContract {
         void hideLoadMoreView();
 
         void scrollToBottomOfList();
+
+        void openFilePickerForAttachments();
     }
 
     public interface Presenter extends BasePresenter<MessageListContainerContract.View> {
@@ -71,6 +76,10 @@ public class MessageListContainerContract {
         void onClickSendInReplyView(String message);
 
         void onTypeReply(String messageInProcess);
+
+        void onClickAddAttachment();
+
+        void onAttachmentAttached(FileAttachment file);
 
         void setData(Data data);
 

@@ -1,6 +1,7 @@
 package com.kayako.sdk.android.k5.common.utils;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -9,6 +10,8 @@ import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.ChannelDecoration;
 import com.kayako.sdk.android.k5.common.view.CircleImageView;
 import com.kayako.sdk.android.k5.common.view.CropCircleTransformation;
+
+import java.io.File;
 
 public class ImageUtils {
 
@@ -49,7 +52,7 @@ public class ImageUtils {
         if (imageUrl != null) {
             Glide.with(context)
                     .load(imageUrl)
-//                    .placeholder(placeholderDrawable)
+                    .placeholder(placeholderDrawable)
                     .centerCrop()
                     .skipMemoryCache(true)
                     .diskCacheStrategy(DiskCacheStrategy.RESULT)
@@ -114,6 +117,20 @@ public class ImageUtils {
         if (drawableResourceId != 0) {
             imageView.setImageResource(drawableResourceId);
         }
+    }
+
+    /**
+     * Set image from file resource
+     *
+     * @param imageView
+     * @param file
+     */
+    public static void loadFileAsImage(@NonNull Context context, @NonNull ImageView imageView, @NonNull File file, int placeholderDrawable) {
+        Glide.with(context).load(file)
+                .skipMemoryCache(false)
+                .placeholder(placeholderDrawable)
+                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                .into(imageView);
     }
 
 }

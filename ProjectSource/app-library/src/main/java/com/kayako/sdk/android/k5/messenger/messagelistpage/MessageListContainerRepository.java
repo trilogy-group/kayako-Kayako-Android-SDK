@@ -1,13 +1,14 @@
 package com.kayako.sdk.android.k5.messenger.messagelistpage;
 
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
-import com.kayako.sdk.android.k5.kre.base.KreSubscription;
-import com.kayako.sdk.android.k5.kre.base.kase.KreCaseSubscription;
 import com.kayako.sdk.auth.FingerprintAuth;
 import com.kayako.sdk.base.callback.EmptyCallback;
 import com.kayako.sdk.base.callback.ItemCallback;
 import com.kayako.sdk.base.callback.ListCallback;
+import com.kayako.sdk.base.requester.AttachmentFile;
 import com.kayako.sdk.error.KayakoException;
 import com.kayako.sdk.error.ResponseMessages;
 import com.kayako.sdk.error.response.Notification;
@@ -15,7 +16,6 @@ import com.kayako.sdk.messenger.Messenger;
 import com.kayako.sdk.messenger.conversation.Conversation;
 import com.kayako.sdk.messenger.conversation.PostConversationBodyParams;
 import com.kayako.sdk.messenger.message.Message;
-import com.kayako.sdk.messenger.message.MessageSourceType;
 import com.kayako.sdk.messenger.message.PostMessageBodyParams;
 import com.kayako.sdk.messenger.message.PutMessageBodyParams;
 
@@ -30,9 +30,13 @@ public class MessageListContainerRepository implements MessageListContainerContr
     }
 
     @Override
-    public void postNewMessage(long conversationId, String contents, final String clientId, final MessageListContainerContract.PostNewMessageCallback callback) {
+    public void postNewMessage(long conversationId, PostMessageBodyParams postMessageBodyParams, final String clientId, final MessageListContainerContract.PostNewMessageCallback callback) {
+        if (postMessageBodyParams == null) {
+            throw new IllegalArgumentException("Can't be null");
+        }
+
         final Handler handler = new Handler();
-        mMessenger.postMessage(conversationId, new PostMessageBodyParams(contents, MessageSourceType.MESSENGER, clientId), new ItemCallback<Message>() {
+        mMessenger.postMessage(conversationId, postMessageBodyParams, new ItemCallback<Message>() {
             @Override
             public void onSuccess(final Message item) {
                 handler.post(new Runnable() {

@@ -2,6 +2,7 @@ package com.kayako.sdk.android.k5.messenger.messagelistpage.helpers;
 
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.ClientDeliveryStatus;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.UnsentMessage;
+import com.kayako.sdk.android.k5.common.utils.file.FileAttachment;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -43,7 +44,14 @@ public class AddReplyHelper {
     public void addNewReply(String message, String clientId, OnAddReplyCallback callback) {
         validateNewConversationSpecified();
 
-        queue.add(new UnsentMessage(ClientDeliveryStatus.SENDING, message, clientId));
+        queue.add(new UnsentMessage(message, ClientDeliveryStatus.SENDING, clientId));
+        sendNext(callback);
+    }
+
+    public void addNewReply(FileAttachment attachment, String clientId, OnAddReplyCallback callback) {
+        validateNewConversationSpecified();
+
+        queue.add(new UnsentMessage(attachment, ClientDeliveryStatus.SENDING, clientId));
         sendNext(callback);
     }
 
@@ -88,7 +96,8 @@ public class AddReplyHelper {
             throw new IllegalArgumentException("Can't be null");
         }
 
-        if (clientIdOfLastReplySending.equals(clientId)) {
+        if (clientIdOfLastReplySending != null // skip if already null
+                && clientIdOfLastReplySending.equals(clientId)) {
             clientIdOfLastReplySending = null;
         }
     }

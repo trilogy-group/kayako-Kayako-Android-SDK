@@ -3,6 +3,9 @@ package com.kayako.sdk.android.k5.common.adapter.messengerlist.helper;
 import android.support.annotation.Nullable;
 
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentFileType;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageContinuedSelfListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageSelfListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageContinuedSelfListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageSelfListItem;
 
@@ -16,13 +19,8 @@ public class OptimisticSendingHelper {
     private static final String MAP_KEY_CLIENT_ID = "optimistic_sending_client_id";
     private static final String MAP_KEY_CLIENT_DELIVERY_INDICATOR_TYPE = "client_delivery_indicator_type";
     private List<UnsentMessage> unsentMessageList = new ArrayList<>();
-    private String userAvatarUrl;
 
-    public OptimisticSendingHelper(@Nullable String userAvatarUrl) {
-        this.userAvatarUrl = userAvatarUrl;
-        if (this.userAvatarUrl == null) {
-            // TODO: If null, show default avatar for customer
-        }
+    public OptimisticSendingHelper() {
     }
 
     public List<UnsentMessage> getUnsentMessages() {
@@ -48,13 +46,13 @@ public class OptimisticSendingHelper {
 
     public void markAllAsFailed() {
         for (int i = 0; i < unsentMessageList.size(); i++) {
-            markAsFailed(unsentMessageList.get(i).getClientId());
+            markAsFailed(unsentMessageList.get(i));
         }
     }
 
     public void markAllAsSending() {
         for (int i = 0; i < unsentMessageList.size(); i++) {
-            markAsSending(unsentMessageList.get(i).getClientId());
+            markAsSending(unsentMessageList.get(i));
         }
     }
 
@@ -74,34 +72,40 @@ public class OptimisticSendingHelper {
         return (ClientDeliveryStatus) messageDataOfBaseListItem.get(MAP_KEY_CLIENT_DELIVERY_INDICATOR_TYPE);
     }
 
-    private synchronized void markAsFailed(String clientId) {
-        int position = findOptimisticMessage(clientId);
+    private synchronized void markAsFailed(UnsentMessage unsentMessage) {
+        int position = findOptimisticMessage(unsentMessage.getClientId());
 
-        UnsentMessage messageToReplace = unsentMessageList.get(position);
         unsentMessageList.remove(position);
         unsentMessageList.add(
                 position,
-                new UnsentMessage(
-                        ClientDeliveryStatus.FAILED_TO_SEND,
-                        messageToReplace.getMessage(),
-                        messageToReplace.getClientId()
-                )
+                generateUnsentMessageWithChangedDeliveryStatus(ClientDeliveryStatus.FAILED_TO_SEND, unsentMessage)
         );
     }
 
-    public void markAsSending(String clientId) {
-        int position = findOptimisticMessage(clientId);
+    public void markAsSending(UnsentMessage unsentMessage) {
+        int position = findOptimisticMessage(unsentMessage.getClientId());
 
-        UnsentMessage messageToReplace = unsentMessageList.get(position);
         unsentMessageList.remove(position);
         unsentMessageList.add(
                 position,
-                new UnsentMessage(
-                        ClientDeliveryStatus.SENDING,
-                        messageToReplace.getMessage(),
-                        messageToReplace.getClientId()
-                )
+                generateUnsentMessageWithChangedDeliveryStatus(ClientDeliveryStatus.SENDING, unsentMessage)
         );
+    }
+
+    private UnsentMessage generateUnsentMessageWithChangedDeliveryStatus(ClientDeliveryStatus clientDeliveryStatus, UnsentMessage unsentMessage) {
+        if (unsentMessage.getAttachment() == null) {
+            return new UnsentMessage(
+                    unsentMessage.getMessage(),
+                    clientDeliveryStatus,
+                    unsentMessage.getClientId()
+            );
+        } else {
+            return new UnsentMessage(
+                    unsentMessage.getAttachment(),
+                    clientDeliveryStatus,
+                    unsentMessage.getClientId()
+            );
+        }
     }
 
     private BaseListItem generateOptimisticSendingViewMessage(POSITION position, UnsentMessage unsentMessage) {
@@ -112,8 +116,6 @@ public class OptimisticSendingHelper {
         Map<String, Object> map = new HashMap<>();
         map.put(MAP_KEY_CLIENT_ID, unsentMessage.getClientId());
         map.put(MAP_KEY_CLIENT_DELIVERY_INDICATOR_TYPE, unsentMessage.getDeliveryStatus());
-
-        // TODO: Attachment Types!
 
         // Show time & delivery indicator only for last element
         long time;
@@ -126,24 +128,46 @@ public class OptimisticSendingHelper {
             clientDeliveryStatus = null;
         }
 
-        // Group with first element with avatar, and others continued
-        if (position == POSITION.TOP || position == POSITION.ONLY_ELEMENT) {
-            // Same arguments but padding is different as SimpleMessageContinuedSelfListItem
-            return new SimpleMessageSelfListItem(
-                    null,
-                    unsentMessage.getMessage(),
-                    time,
-                    DeliveryIndicatorHelper.getDeliveryIndicator(clientDeliveryStatus),
-                    map
-            );
+        if (unsentMessage.getAttachment() == null) { // no attachment
+            // Group with first element with avatar, and others continued
+            if (position == POSITION.TOP || position == POSITION.ONLY_ELEMENT) {
+                // Same arguments but padding is different as SimpleMessageContinuedSelfListItem
+                return new SimpleMessageSelfListItem(
+                        null,
+                        unsentMessage.getMessage(),
+                        time,
+                        DeliveryIndicatorHelper.getDeliveryIndicator(clientDeliveryStatus),
+                        map
+                );
+            } else {
+                return new SimpleMessageContinuedSelfListItem(
+                        null,
+                        unsentMessage.getMessage(),
+                        time,
+                        DeliveryIndicatorHelper.getDeliveryIndicator(clientDeliveryStatus),
+                        map
+                );
+            }
         } else {
-            return new SimpleMessageContinuedSelfListItem(
-                    null,
-                    unsentMessage.getMessage(),
-                    time,
-                    DeliveryIndicatorHelper.getDeliveryIndicator(clientDeliveryStatus),
-                    map
-            );
+            // Group with first element with avatar, and others continued
+            if (position == POSITION.TOP || position == POSITION.ONLY_ELEMENT) {
+                // Same arguments but padding is different as SimpleMessageContinuedSelfListItem
+                return new AttachmentMessageSelfListItem(
+                        null,
+                        DeliveryIndicatorHelper.getDeliveryIndicator(clientDeliveryStatus),
+                        new AttachmentFileType(null, unsentMessage.getAttachment().getFile(), unsentMessage.getMessage()),
+                        time,
+                        map
+                );
+            } else {
+                return new AttachmentMessageContinuedSelfListItem(
+                        null,
+                        new AttachmentFileType(null, unsentMessage.getAttachment().getFile(), unsentMessage.getMessage()),
+                        time,
+                        DeliveryIndicatorHelper.getDeliveryIndicator(clientDeliveryStatus),
+                        map
+                );
+            }
         }
     }
 
@@ -169,11 +193,11 @@ public class OptimisticSendingHelper {
     private POSITION getPosition(int i, int size) {
         POSITION position;
 
-        if (i == 0 && unsentMessageList.size() == 1) {
+        if (i == 0 && size == 1) {
             position = POSITION.ONLY_ELEMENT;
         } else if (i == 0) {
             position = POSITION.TOP;
-        } else if (i == unsentMessageList.size() - 1) {
+        } else if (i == size - 1) {
             position = POSITION.END;
         } else {
             position = POSITION.MIDDLE;

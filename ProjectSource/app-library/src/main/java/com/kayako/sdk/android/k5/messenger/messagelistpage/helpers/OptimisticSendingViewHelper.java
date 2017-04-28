@@ -6,6 +6,7 @@ import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.ClientDeliveryStatus;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.OptimisticSendingHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.UnsentMessage;
+import com.kayako.sdk.android.k5.common.utils.file.FileAttachment;
 import com.kayako.sdk.messenger.message.Message;
 
 import java.util.List;
@@ -37,7 +38,7 @@ public class OptimisticSendingViewHelper {
         }
 
         this.avatarUrl = avatarUrl;
-        optimisticSendingHelper = new OptimisticSendingHelper(avatarUrl);
+        optimisticSendingHelper = new OptimisticSendingHelper();
     }
 
     public List<BaseListItem> getOptimisticSendingListItems() {
@@ -69,26 +70,15 @@ public class OptimisticSendingViewHelper {
     }
 
     public void addOptimisitcMessageView(String message, String clientId, OptimisticSendingViewCallback callback) {
-        validateCallback(callback);
         validateHelper();
 
+        addOptimisitcMessageView(generateUnsentMessage(message, clientId), callback);
+    }
 
-        ClientDeliveryStatus clientDeliveryStatus;
-        if (messagesFailedToSend.get()) {
-            clientDeliveryStatus = ClientDeliveryStatus.FAILED_TO_SEND;
-        } else {
-            clientDeliveryStatus = ClientDeliveryStatus.SENDING;
-        }
+    public void addOptimisitcMessageView(FileAttachment fileAttachment, String clientId, OptimisticSendingViewCallback callback) {
+        validateHelper();
 
-        optimisticSendingHelper.addMessage(
-                new UnsentMessage(
-                        clientDeliveryStatus,
-                        message,
-                        clientId
-                )
-        );
-
-        callback.onRefreshListView();  // Display list with optimistic sending views
+        addOptimisitcMessageView(generateUnsentMessage(fileAttachment, clientId), callback);
     }
 
     public void markAllAsFailed(OptimisticSendingViewCallback callback) {
@@ -109,6 +99,38 @@ public class OptimisticSendingViewHelper {
 
         optimisticSendingHelper.markAllAsSending();
         callback.onRefreshListView();
+    }
+
+    private void addOptimisitcMessageView(UnsentMessage unsentMessage, OptimisticSendingViewCallback callback) {
+        validateCallback(callback);
+        validateHelper();
+
+        optimisticSendingHelper.addMessage(unsentMessage);
+
+        callback.onRefreshListView();  // Display list with optimistic sending views
+    }
+
+    private UnsentMessage generateUnsentMessage(String message, String clientId) {
+        return new UnsentMessage(
+                message, getClientDeliveryStatus(),
+                clientId
+        );
+    }
+
+    private UnsentMessage generateUnsentMessage(FileAttachment fileAttachment, String clientId) {
+        return new UnsentMessage(
+                fileAttachment,
+                getClientDeliveryStatus(),
+                clientId
+        );
+    }
+
+    private ClientDeliveryStatus getClientDeliveryStatus() {
+        if (messagesFailedToSend.get()) {
+            return ClientDeliveryStatus.FAILED_TO_SEND;
+        } else {
+            return ClientDeliveryStatus.SENDING;
+        }
     }
 
     private void validateHelper() {

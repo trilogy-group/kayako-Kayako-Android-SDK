@@ -57,5 +57,6 @@
     <string name="ko__attachment_msg_download_successful">Attachment download is successful</string>
     <string name="ko__attachment_msg_unable_to_open_file">Unable to open file</string>
     <string name="ko__attachment_msg_no_handler_for_file_type">No handler for this type of file.</string>
+    <string name="ko__attachment_msg_unable_to_attach_file">Unable to attach file!</string>
 
 </resources>

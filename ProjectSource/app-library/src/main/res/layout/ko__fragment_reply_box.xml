@@ -112,6 +112,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
+                    android:textSize="@dimen/ko__messenger_reply_box_footer"
                     android:text="Messenger by " />
 
                 <com.kayako.sdk.android.k5.common.view.BoldTextView
@@ -119,6 +120,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="Kayako"
+                    android:textSize="@dimen/ko__messenger_reply_box_footer"
                     android:textStyle="bold" />
 
             </LinearLayout>

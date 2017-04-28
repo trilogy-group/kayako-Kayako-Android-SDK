@@ -2,18 +2,15 @@ package com.kayako.sdk.android.k5.messenger.messagelistpage.helpers;
 
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.Attachment;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentUrlType;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.DataItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.DataItemHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.UserDecorationHelper;
 import com.kayako.sdk.android.k5.common.fragments.ListPageState;
 import com.kayako.sdk.android.k5.core.MessengerPref;
-import com.kayako.sdk.base.requester.AttachmentFile;
 import com.kayako.sdk.messenger.attachment.Thumbnail;
 import com.kayako.sdk.messenger.message.Message;
 
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -79,7 +76,7 @@ public class ListHelper {
 
         List<Attachment> attachments = new ArrayList<>();
         for (com.kayako.sdk.messenger.attachment.Attachment attachment : attachmentFiles) {
-            attachments.add(new Attachment(
+            attachments.add(new AttachmentUrlType(
                     appendFingerprintIdToUrl(getThumnailUrl(attachment)),
                     attachment.getName(),
                     attachment.getSize() == null ? 0 : attachment.getSize(),
