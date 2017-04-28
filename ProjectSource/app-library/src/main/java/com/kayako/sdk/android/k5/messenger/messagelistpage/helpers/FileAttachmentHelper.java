@@ -1,4 +1,4 @@
-package com.kayako.sdk.android.k5.common.adapter.messengerlist.helper;
+package com.kayako.sdk.android.k5.messenger.messagelistpage.helpers;
 
 import com.kayako.sdk.android.k5.common.utils.file.FileAttachmentUtil;
 
@@ -23,6 +23,10 @@ public class FileAttachmentHelper {
 
     public void onSendingUnsentMessage(String clientId, File file) {
         mCachedAttachments.put(clientId, file);
+    }
+
+    public boolean getAttachmentButtonVisibility(boolean hasConversationBeenCreated) {
+        return hasConversationBeenCreated;
     }
 
     public void onReset() {

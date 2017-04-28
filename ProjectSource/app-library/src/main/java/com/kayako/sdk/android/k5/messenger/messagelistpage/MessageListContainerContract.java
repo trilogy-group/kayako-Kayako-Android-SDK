@@ -65,6 +65,8 @@ public class MessageListContainerContract {
         void scrollToBottomOfList();
 
         void openFilePickerForAttachments();
+
+        void setAttachmentButtonVisibilityInReplyBox(boolean showAttachment);
     }
 
     public interface Presenter extends BasePresenter<MessageListContainerContract.View> {

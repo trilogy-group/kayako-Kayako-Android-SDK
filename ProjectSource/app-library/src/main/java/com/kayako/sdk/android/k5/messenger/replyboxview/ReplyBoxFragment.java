@@ -109,6 +109,20 @@ public class ReplyBoxFragment extends Fragment implements ReplyBoxContract.View,
     }
 
     @Override
+    public void setAttachmentButtonVisibility(boolean showAttachment) {
+        if (!hasPageLoaded()) {
+            return;
+        }
+
+        View attachmentButton = mRoot.findViewById(R.id.ko__reply_box_attach_button);
+        if (showAttachment) {
+            attachmentButton.setVisibility(View.VISIBLE);
+        } else {
+            attachmentButton.setVisibility(View.INVISIBLE); // using invisible instead of gone to retain padding
+        }
+    }
+
+    @Override
     public void enableSendButton() {
         ImageButton button = (ImageButton) mRoot.findViewById(R.id.ko__reply_box_send_button);
         button.setEnabled(true);

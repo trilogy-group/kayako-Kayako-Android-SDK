@@ -42,6 +42,7 @@ public class ReplyBoxContract {
 
         void focusOnReplyBox();
 
+        void setAttachmentButtonVisibility(boolean showAttachment);
     }
 
     public interface ReplyBoxListener {

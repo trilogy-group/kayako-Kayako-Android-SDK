@@ -355,10 +355,12 @@ public class DataItemHelper {
         List<BaseListItem> attachmentMessages = new ArrayList<>();
 
         boolean originalShowTime = viewBehaviour.showTime;
+        boolean originalShowDeliveryIndicator = viewBehaviour.showDeliveryIndicator;
 
         boolean hasMessage = currentDataItem.getMessage() != null && !currentDataItem.getMessage().isEmpty();
         if (hasMessage) {
             viewBehaviour.showTime = false; // the simple message should NOT show time since it's the first element of group
+            viewBehaviour.showDeliveryIndicator = false;
             attachmentMessages.add(generateSimpleMessage(currentDataItem, viewBehaviour));
             viewBehaviour.showAvatar = false; // subsequent messages should NOT show the avatar since they're part of the same group
         }
@@ -366,6 +368,7 @@ public class DataItemHelper {
         Attachment lastAttachment = currentDataItem.getAttachments().get(currentDataItem.getAttachments().size() - 1);
         for (Attachment attachment : currentDataItem.getAttachments()) {
             if (attachment == lastAttachment) {
+                viewBehaviour.showDeliveryIndicator = originalShowDeliveryIndicator;
                 viewBehaviour.showTime = originalShowTime;
             }
             attachmentMessages.add(generateAttachmentMessage(currentDataItem, viewBehaviour, attachment));

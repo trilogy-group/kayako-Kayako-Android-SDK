@@ -85,4 +85,10 @@
         <item name="android:background">@null</item>
     </style>
 
+    <style name="Ko__AttachmentContainerChatBubbleStyle">
+        <item name="android:maxHeight">@dimen/ko__messenger_attachment_max_height</item>
+        <item name="android:minWidth">@dimen/ko__messenger_attachment_min_width</item>
+        <item name="android:layout_marginTop">@dimen/ko__messenger_attachment_margin_vertical</item>
+    </style>
+
 </resources>

@@ -289,4 +289,13 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
 
         FileAttachmentUtil.openFileChooserActivityFromFragment(this, REQUEST_CODE_ATTACHMENT);
     }
+
+    @Override
+    public void setAttachmentButtonVisibilityInReplyBox(boolean showAttachment) {
+        if (!hasPageLoaded()) {
+            return;
+        }
+
+        mReplyBoxView.setAttachmentButtonVisibility(showAttachment);
+    }
 }

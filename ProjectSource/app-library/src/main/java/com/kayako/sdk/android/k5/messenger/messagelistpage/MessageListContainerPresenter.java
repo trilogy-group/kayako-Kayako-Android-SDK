@@ -1,7 +1,7 @@
 package com.kayako.sdk.android.k5.messenger.messagelistpage;
 
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.FileAttachmentHelper;
+import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.FileAttachmentHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.TypingViewHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.UnsentMessage;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.EmptyListItem;
@@ -164,7 +164,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
     @Override
     public void onTypeReply(String messageInProcess) {
-        if (mConversationHelper.isConversationCreated()) {
+        if (mConversationHelper.isConversationCreated() && mConversationHelper.getConversation() != null) {
             mRealtimeHelper.triggerTyping(mConversationHelper.getConversation(), messageInProcess);
         }
     }
@@ -345,17 +345,27 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                         mMessengerPrefHelper.getEmail() != null,
                         mListHelper.getListPageState());
         switch (replyBoxViewState) {
+
             case DISABLED:
                 // TODO: Have not handled for disabled state yet!
                 break;
 
             case VISIBLE:
                 mView.showReplyBox();
+                configureAttachmentButton();
                 break;
 
             case HIDDEN:
                 mView.hideReplyBox();
                 break;
+        }
+    }
+
+    private void configureAttachmentButton() {
+        if (mFileAttachmentHelper.getAttachmentButtonVisibility(mConversationHelper.isConversationCreated())) {
+            mView.setAttachmentButtonVisibilityInReplyBox(true);
+        } else {
+            mView.setAttachmentButtonVisibilityInReplyBox(false);
         }
     }
 
@@ -662,7 +672,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
         mData.postNewMessage(conversationId,
                 new PostMessageBodyParams(
-                        "attachmnt", // TODO: Find a way to send ONLY attachment without title
+                        fileAttachment.getName(), // TODO: Find a way to send ONLY attachment without title
                         MessageSourceType.MESSENGER,
                         clientId,
                         attachmentFiles

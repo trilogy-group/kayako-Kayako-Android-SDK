@@ -57,8 +57,8 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
     private OnAttachmentClickListener mAttachmentClickListener;
 
     // TODO: Replace attachment placeholder with a loadig indicator instead?
-    private static final int DEFAULT_PLACEHOLDER_ATTACHMENT_DARK = R.drawable.ko__img_attachment_placeholder_dark;
-    private static final int DEFAULT_PLACEHOLDER_ATTACHMENT_LIGHT = R.drawable.ko__img_attachment_placeholder_light;
+    // TODO: Redesign so that the attachments are on white background
+    private static final int DEFAULT_PLACEHOLDER_ATTACHMENT = R.drawable.ko__img_attachment_placeholder_light;
 
     public MessengerAdapter(List<BaseListItem> itemList) {
         super(itemList);
@@ -399,7 +399,7 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 } else {
                     attachmentPlaceholder.setVisibility(View.GONE);
                     thumbnailImageView.setVisibility(View.VISIBLE);
-                    ImageUtils.setImage(Kayako.getApplicationContext(), thumbnailImageView, attachmentUrl, DEFAULT_PLACEHOLDER_ATTACHMENT_LIGHT);
+                    ImageUtils.loadUrlAsAttachmentImage(Kayako.getApplicationContext(), thumbnailImageView, attachmentUrl, DEFAULT_PLACEHOLDER_ATTACHMENT);
                 }
 
                 String attachmentCaption = ((AttachmentUrlType) attachment).getCaption();
@@ -414,7 +414,7 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 } else {
                     attachmentPlaceholder.setVisibility(View.GONE);
                     thumbnailImageView.setVisibility(View.VISIBLE);
-                    ImageUtils.loadFileAsImage(Kayako.getApplicationContext(), thumbnailImageView, attachmentFile, DEFAULT_PLACEHOLDER_ATTACHMENT_LIGHT);
+                    ImageUtils.loadFileAsAttachmentImage(Kayako.getApplicationContext(), thumbnailImageView, attachmentFile, DEFAULT_PLACEHOLDER_ATTACHMENT);
                 }
 
                 String attachmentFileCaption = ((AttachmentFileType) attachment).getCaption();

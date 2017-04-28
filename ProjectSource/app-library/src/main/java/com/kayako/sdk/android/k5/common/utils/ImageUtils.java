@@ -125,12 +125,24 @@ public class ImageUtils {
      * @param imageView
      * @param file
      */
-    public static void loadFileAsImage(@NonNull Context context, @NonNull ImageView imageView, @NonNull File file, int placeholderDrawable) {
-        Glide.with(context).load(file)
-                .skipMemoryCache(false)
+    public static void loadFileAsAttachmentImage(@NonNull Context context, @NonNull ImageView imageView, @NonNull File file, int placeholderDrawable) {
+        Glide.with(context)
+                .load(file)
                 .placeholder(placeholderDrawable)
+                .skipMemoryCache(false)
                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
                 .into(imageView);
     }
+
+
+    public static void loadUrlAsAttachmentImage(@NonNull Context context, @NonNull ImageView imageView, @NonNull String imageUrl, int placeholderDrawable) {
+        Glide.with(context)
+                .load(imageUrl)
+                .placeholder(placeholderDrawable)
+                .skipMemoryCache(false)
+                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                .into(imageView);
+    }
+
 
 }
