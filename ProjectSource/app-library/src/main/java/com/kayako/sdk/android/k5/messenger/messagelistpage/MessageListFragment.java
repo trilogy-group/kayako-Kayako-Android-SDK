@@ -20,7 +20,6 @@ import java.util.List;
 
 public class MessageListFragment extends MessengerListFragment implements MessageListContract.View, MessageListContract.ConfigureView {
 
-    private MessageListContract.Presenter mPresenter;
     private MessengerAdapter.OnItemClickListener mOnItemClickListener;
     private OnListPageStateChangeListener mOnListPageStateChangeListener;
     private MessageListContract.OnErrorListener mErrorListener;
@@ -31,7 +30,6 @@ public class MessageListFragment extends MessengerListFragment implements Messag
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPresenter = MessageListFactory.getPresenter(this);
     }
 
     @Override
@@ -55,14 +53,6 @@ public class MessageListFragment extends MessengerListFragment implements Messag
         if (getActivity().getClass() != KayakoSelectConversationActivity.class) {
             throw new AssertionError("This fragment was intended to be used with KayakoSelectConversationActivity!");
         }
-
-        mPresenter.initPage();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mPresenter.closePage();
     }
 
     private boolean hasPageLoaded(){

@@ -3,6 +3,7 @@ package com.kayako.sdk.android.k5.common.adapter.messengerlist.helper;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.text.Editable;
 import android.text.Html;
@@ -26,9 +27,16 @@ public class InputFieldHelper {
     }
 
     public static void configureInputField(InputFieldViewHolder viewHolder, @DrawableRes int avatarDrawableId, @StringRes int instructionMessageStringResId) {
+        configureInputField(viewHolder, avatarDrawableId, Kayako.getApplicationContext().getResources().getString(instructionMessageStringResId));
+    }
+
+    public static void configureInputField(InputFieldViewHolder viewHolder, @DrawableRes int avatarDrawableId, @NonNull String instructionMessageString) {
+        if (instructionMessageString == null) {
+            throw new IllegalArgumentException("instructionMessageString can not be null");
+        }
         Context context = Kayako.getApplicationContext();
         ImageUtils.setAvatarImage(context, viewHolder.avatar, avatarDrawableId);
-        viewHolder.messageInstruction.setText(Html.fromHtml(context.getResources().getString(instructionMessageStringResId)));
+        viewHolder.messageInstruction.setText(Html.fromHtml(instructionMessageString));
     }
 
     public static void enableInputLayout(InputFieldViewHolder viewHolder) {

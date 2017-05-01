@@ -1,7 +1,5 @@
 package com.kayako.sdk.android.k5.common.adapter.messengerlist.helper;
 
-import android.support.annotation.Nullable;
-
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentFileType;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageContinuedSelfListItem;

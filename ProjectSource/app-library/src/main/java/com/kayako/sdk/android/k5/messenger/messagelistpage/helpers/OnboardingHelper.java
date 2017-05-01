@@ -1,8 +1,10 @@
 package com.kayako.sdk.android.k5.messenger.messagelistpage.helpers;
 
+import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.BotMessageListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputEmailListItem;
+import com.kayako.sdk.android.k5.core.Kayako;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,7 +54,7 @@ public class OnboardingHelper {
         }
         List<BaseListItem> baseListItems = new ArrayList<>();
         baseListItems.add(new InputEmailListItem(email));
-        baseListItems.add(new BotMessageListItem("Thanks! You will be notified here or via email", 0, null)); // TODO: Strings.xml
+        baseListItems.add(new BotMessageListItem(Kayako.getApplicationContext().getString(R.string.ko__email_input_field_msg_you_will_be_notified), 0, null));
         return baseListItems;
     }
 

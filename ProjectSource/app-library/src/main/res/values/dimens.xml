@@ -103,5 +103,10 @@
     </dimen>
     <dimen name="ko__messenger_reply_box_footer">14sp</dimen>
     <dimen name="ko__messenger_gap_between_end_and_message_self">0dp</dimen>
+    <dimen name="ko__messenger_input_feedback_rating_image_size">48dp</dimen>
+    <dimen name="ko__messenger_input_feedback_rating_text_size">14sp</dimen>
+    <dimen name="ko__messenger_input_feedback_rating_gap_between_image_and_text">4dp</dimen>
+    <dimen name="ko__messenger_input_feedback_rating_next_button_text_size">16sp</dimen>
+    <dimen name="ko__email_input_field_submit_button_text_size">16sp</dimen>
 
 </resources>

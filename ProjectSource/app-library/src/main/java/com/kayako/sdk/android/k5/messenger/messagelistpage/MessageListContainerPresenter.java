@@ -1,6 +1,7 @@
 package com.kayako.sdk.android.k5.messenger.messagelistpage;
 
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedbackListItem;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.FileAttachmentHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.TypingViewHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.UnsentMessage;
@@ -21,6 +22,7 @@ import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ConversationM
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ListHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.MarkReadHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.MessengerPrefHelper;
+import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.OffboardingHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.OnboardingHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.OptimisticSendingViewHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.RealtimeHelper;
@@ -64,6 +66,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private TypingViewHelper mTypingViewHelper = new TypingViewHelper();
     private FailsafePollingHelper mFailsafePollingHelper = new FailsafePollingHelper();
     private FileAttachmentHelper mFileAttachmentHelper = new FileAttachmentHelper();
+    private OffboardingHelper mOffboardingHelper = new OffboardingHelper();
 
     public MessageListContainerPresenter(MessageListContainerContract.View view, MessageListContainerContract.Data data) {
         mView = view;
@@ -198,6 +201,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         mTypingViewHelper = new TypingViewHelper();
         mFailsafePollingHelper = new FailsafePollingHelper();
         mFileAttachmentHelper = new FileAttachmentHelper();
+        mOffboardingHelper = new OffboardingHelper();
     }
 
     private void reloadPage(boolean resetView) {
@@ -312,9 +316,16 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
         allListItems.addAll(optimisticSendingItems);
 
-
         // footer items
         allListItems.addAll(mTypingViewHelper.getTypingViews());
+
+        // FINAL items
+        allListItems.addAll(mOffboardingHelper.getOffboardingListItems("Neil Mathew", new InputFeedbackListItem.OnSelectRatingListener() {
+            @Override
+            public void onSelectRating(InputFeedbackListItem.RATING rating) {
+                displayList();
+            }
+        })); // TODO: Get existing conversation and then lastAgentReplier - if available
 
         // Add space at end
         allListItems.add(new EmptyListItem());

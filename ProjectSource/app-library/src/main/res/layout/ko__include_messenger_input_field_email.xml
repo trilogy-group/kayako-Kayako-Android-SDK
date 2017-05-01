@@ -8,7 +8,7 @@
         android:id="@+id/email_field_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/ko__speech_bubble_input_field_background_blue"
+        android:background="@drawable/ko__speech_bubble_input_field_background"
         android:orientation="vertical">
 
         <com.kayako.sdk.android.k5.common.view.RegularTextView
@@ -32,7 +32,7 @@
             android:ellipsize="end"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:hint="@string/ko__label_email_input_field_hint"
+            android:hint="@string/ko__email_input_field_hint"
             android:inputType="textEmailAddress"
             android:maxLines="1"
             android:paddingBottom="16dp"
@@ -48,11 +48,14 @@
 
     <com.kayako.sdk.android.k5.common.view.BoldButton
         android:id="@+id/ko__email_input_field_submit_button"
+        android:textAllCaps="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@null"
         android:gravity="center"
         android:padding="@dimen/ko__messenger_input_item_submit_button_padding"
-        tools:text="Submit" />
+        android:textColor="@color/ko__email_input_field_submit_button_text_color"
+        android:textSize="@dimen/ko__email_input_field_submit_button_text_size"
+        android:text="@string/ko__email_input_field_submit_button_text" />
 
 </LinearLayout>

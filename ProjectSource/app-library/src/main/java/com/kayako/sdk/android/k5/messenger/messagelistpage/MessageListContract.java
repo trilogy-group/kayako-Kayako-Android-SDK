@@ -16,14 +16,6 @@ public class MessageListContract {
 
     }
 
-    interface Presenter extends BasePresenter<MessageListContract.View> {
-
-        void initPage();
-
-        void closePage();
-
-    }
-
     interface ConfigureView {
 
         void setupList(List<BaseListItem> conversation);

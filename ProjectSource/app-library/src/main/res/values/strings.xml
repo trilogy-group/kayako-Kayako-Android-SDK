@@ -48,7 +48,9 @@
     <string name="ko__messenger_delivery_indicators_rejected">Rejected</string>
     <string name="ko__messenger_delivery_indicators_failed_to_send">This message failed to send. Tap to resend</string>
 
-    <string name="ko__label_email_input_field_hint">john@doe.com</string>
+    <string name="ko__email_input_field_hint">john@doe.com</string>
+    <string name="ko__email_input_field_msg_you_will_be_notified">Thanks! You will be notified here or via email</string>
+    <string name="ko__email_input_field_submit_button_text">Submit</string>
 
     <string name="ko__attachment_msg_download_failed">Attachment download failed: </string>
     <string name="ko__attachment_msg_download_paused">Attachment download is paused: </string>
@@ -58,5 +60,9 @@
     <string name="ko__attachment_msg_unable_to_open_file">Unable to open file</string>
     <string name="ko__attachment_msg_no_handler_for_file_type">No handler for this type of file.</string>
     <string name="ko__attachment_msg_unable_to_attach_file">Unable to attach file!</string>
+    <string name="ko__messenger_input_feedback_rating_good_text">Good</string>
+    <string name="ko__messenger_input_feedback_rating_bad_text">Bad</string>
+    <string name="ko__messenger_input_feedback_rating_next_button_text">Next</string>
+    <string name="ko__messenger_input_feedback_rating_instruction_message">How does %1$s make you feel?</string>
 
 </resources>

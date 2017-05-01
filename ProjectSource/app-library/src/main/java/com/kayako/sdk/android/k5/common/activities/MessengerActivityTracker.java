@@ -36,13 +36,19 @@ public class MessengerActivityTracker {
             @Override
             public void run() {
                 synchronized (openMessengerActivities) {
+
+                    List<WeakReference<BaseMessengerActivity>> activitiesToRemove = new ArrayList<WeakReference<BaseMessengerActivity>>();
+
                     for (int i = 0; i < openMessengerActivities.size(); i++) {
                         if (openMessengerActivities.get(i) == null  // Null list item
-                                || openMessengerActivities.get(i).get() == null  // Null activity
+                                || openMessengerActivities.
+                                get(i).get() == null  // Null activity
                                 || (openMessengerActivities.get(i).get()).isFinishing()) { // If the activity is finishing
-                            openMessengerActivities.remove(openMessengerActivities.get(i));
+                            activitiesToRemove.add(openMessengerActivities.get(i));
                         }
                     }
+
+                    openMessengerActivities.removeAll(activitiesToRemove);
 
                     callOnCloseMessengerListenerIfClosed();
                 }

@@ -22,7 +22,7 @@ public class InputFieldEmailHelper {
     private static final int HINT_TEXT_COLOR_FILLED = R.color.ko__messenger_input_field_white_hint_text_color;
 
     private static final int INPUT_FIELD_BACKGROUND_COLOR_ERROR = R.drawable.ko__speech_bubble_input_field_background_red;
-    private static final int INPUT_FIELD_BACKGROUND_COLOR_DEFAULT = R.drawable.ko__speech_bubble_input_field_background_blue;
+    private static final int INPUT_FIELD_BACKGROUND_COLOR_DEFAULT = R.drawable.ko__speech_bubble_input_field_background;
     private static final int INPUT_FIELD_BACKGROUND_COLOR_FILLED = R.drawable.ko__speech_bubble_input_field_background_white;
 
     private static void setErrorFieldState(InputEmailViewHolder viewHolder) {
