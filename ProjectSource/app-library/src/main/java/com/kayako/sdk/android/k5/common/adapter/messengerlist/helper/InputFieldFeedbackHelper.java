@@ -10,8 +10,6 @@ public class InputFieldFeedbackHelper {
     private InputFieldFeedbackHelper() {
     }
 
-    // TODO: CHECK: Will the view be reset on scrolling up and down the list? Will the selection be lost?
-
     public static void configureInputFeedbackField(final InputFeedbackViewHolder viewHolder, final InputFeedbackListItem listItem) {
         if (listItem.hasSubmittedValue()) {
             setSelectedRatingState(viewHolder, listItem);

@@ -2,6 +2,7 @@ package com.kayako.sdk.android.k5.messenger.messagelistpage.helpers;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.UnsentMessage;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.BotMessageListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedbackListItem;
 import com.kayako.sdk.android.k5.core.Kayako;
@@ -21,15 +22,26 @@ public class OffboardingHelper {
 
     private InputFeedbackListItem.RATING currentRating;
 
-    // TODO: Retrieve via API if a rating has been assigned beforehand? Set the rating accordingly
+    public void setCurrentRating(InputFeedbackListItem.RATING rating) {
+        currentRating = rating;
+    }
 
-    public List<BaseListItem> getOffboardingListItems(String lastAgentReplierName, final InputFeedbackListItem.OnSelectRatingListener onSelectRatingListener) {
-        if (lastAgentReplierName == null) {
+    // TODO: Retrieve via API if a rating has been assigned beforehand? Set the rating accordingly
+    // TODO: Show only if closed and rating has not already been assigned
+
+    public List<BaseListItem> getOffboardingListItems(String lastAgentReplierName, final OffboardingHelperViewCallback callback) {
+        if (lastAgentReplierName == null || callback == null) {
             throw new IllegalArgumentException("Invalid arguments");
         }
 
         if (currentRating == null) {
-            return getOffboardingItemsToSelectRating(lastAgentReplierName, onSelectRatingListener);
+            return getOffboardingItemsToSelectRating(lastAgentReplierName, new InputFeedbackListItem.OnSelectRatingListener() {
+                @Override
+                public void onSelectRating(InputFeedbackListItem.RATING rating) {
+                    callback.onAddRating(rating);
+                    callback.onRefreshListView();
+                }
+            });
         } else {
             return getOffboardingItemsOnRatingSubmission(lastAgentReplierName, currentRating);
         }
@@ -61,6 +73,14 @@ public class OffboardingHelper {
                 rating.name())
         );
         return listItems;
+    }
+
+    public interface OffboardingHelperViewCallback {
+        void onRefreshListView();
+
+        void onAddRating(InputFeedbackListItem.RATING rating);
+
+        void onAddFeedback(String message);
     }
 
 }

@@ -105,7 +105,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     public void onListItemClick(int messageType, Long id, Map<String, Object> messageData) {
         if (mOptimisticMessageHelper.isOptimisticMessage(messageData)
                 && mOptimisticMessageHelper.isFailedToSendMessage(messageData)) {
-            mOptimisticMessageHelper.markAllAsSending(optimisticSendingViewCallback);
+            mOptimisticMessageHelper.markAllAsSending(mOptimisticSendingViewCallback);
             mAddReplyHelper.resendReplies(mOnAddReplyCallback);
         }
     }
@@ -226,7 +226,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private void onSendMessageReply(String message) {
         String clientId = mClientIdHelper.generateClientId(); // GENERATE Client Id
 
-        mOptimisticMessageHelper.addOptimisitcMessageView(message, clientId, optimisticSendingViewCallback);
+        mOptimisticMessageHelper.addOptimisitcMessageView(message, clientId, mOptimisticSendingViewCallback);
 
         // Covers both adding of new messages and new conversation
         mAddReplyHelper.addNewReply(
@@ -241,7 +241,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private void onSendAttachmentReply(FileAttachment fileAttachment) {
         String clientId = mClientIdHelper.generateClientId(); // GENERATE Client Id
 
-        mOptimisticMessageHelper.addOptimisitcMessageView(fileAttachment, clientId, optimisticSendingViewCallback);
+        mOptimisticMessageHelper.addOptimisitcMessageView(fileAttachment, clientId, mOptimisticSendingViewCallback);
 
         mFileAttachmentHelper.onSendingUnsentMessage(clientId, fileAttachment.getFile());
 
@@ -255,7 +255,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         mView.scrollToBottomOfList();
     }
 
-    private OptimisticSendingViewHelper.OptimisticSendingViewCallback optimisticSendingViewCallback = new OptimisticSendingViewHelper.OptimisticSendingViewCallback() {
+    private OptimisticSendingViewHelper.OptimisticSendingViewCallback mOptimisticSendingViewCallback = new OptimisticSendingViewHelper.OptimisticSendingViewCallback() {
         @Override
         public void onRefreshListView() {
             displayList();
@@ -285,6 +285,23 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             } else {
                 addNewMessage(mConversationHelper.getConversationId(), unsentMessage.getMessage(), unsentMessage.getClientId());
             }
+        }
+    };
+
+    private OffboardingHelper.OffboardingHelperViewCallback mOffboardingHelperViewCallback = new OffboardingHelper.OffboardingHelperViewCallback() {
+        @Override
+        public void onRefreshListView() {
+            displayList();
+        }
+
+        @Override
+        public void onAddRating(InputFeedbackListItem.RATING rating) {
+            //TODO: Call API
+        }
+
+        @Override
+        public void onAddFeedback(String message) {
+            // TODO: Call API
         }
     };
 
@@ -320,12 +337,11 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         allListItems.addAll(mTypingViewHelper.getTypingViews());
 
         // FINAL items
-        allListItems.addAll(mOffboardingHelper.getOffboardingListItems("Neil Mathew", new InputFeedbackListItem.OnSelectRatingListener() {
-            @Override
-            public void onSelectRating(InputFeedbackListItem.RATING rating) {
-                displayList();
-            }
-        })); // TODO: Get existing conversation and then lastAgentReplier - if available
+        allListItems.addAll(
+                mOffboardingHelper.getOffboardingListItems(
+                        "Neil Mathew",// TODO: Get existing conversation and then lastAgentReplier - if available
+                        mOffboardingHelperViewCallback
+                ));
 
         // Add space at end
         allListItems.add(new EmptyListItem());
@@ -491,7 +507,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             mAddReplyHelper.onFailedSendingOfConversation(clientId);
 
             // Mark all optimistic views as failed
-            mOptimisticMessageHelper.markAllAsFailed(optimisticSendingViewCallback);
+            mOptimisticMessageHelper.markAllAsFailed(mOptimisticSendingViewCallback);
         }
     };
 
@@ -554,7 +570,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             // Mark all optimistic views as failed
             // Now that AddReplyHelper ensures only one message is sent at a time, all pending items should be marked as failed too
             // TODO: Mark only the client id as failed? ANd others as not-sent?
-            mOptimisticMessageHelper.markAllAsFailed(optimisticSendingViewCallback);
+            mOptimisticMessageHelper.markAllAsFailed(mOptimisticSendingViewCallback);
         }
     };
 
