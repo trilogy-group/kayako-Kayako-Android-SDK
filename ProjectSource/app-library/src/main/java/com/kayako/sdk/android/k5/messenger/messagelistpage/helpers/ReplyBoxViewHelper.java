@@ -21,8 +21,7 @@ public class ReplyBoxViewHelper {
      */
     public ReplyBoxViewState getReplyBoxVisibility(boolean isNewConversation,
                                                    boolean hasEmail,
-                                                   boolean isConversationCompleted,
-                                                   boolean isConversationClosed,
+                                                   boolean isConversationCompletedOrClosed,
                                                    @Nullable ListPageState listPageState) {
         if (listPageState != null) {
             switch (listPageState) {
@@ -34,7 +33,7 @@ public class ReplyBoxViewHelper {
                             return ReplyBoxViewState.HIDDEN;
                         }
                     } else { // Existing Conversation
-                        if (isConversationCompleted || isConversationClosed) {
+                        if (isConversationCompletedOrClosed) {
                             return ReplyBoxViewState.HIDDEN;
                         } else {
                             return ReplyBoxViewState.VISIBLE;

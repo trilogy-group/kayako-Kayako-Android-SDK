@@ -29,6 +29,7 @@ import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.RealtimeHelpe
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ReplyBoxViewHelper;
 import com.kayako.sdk.base.requester.AttachmentFile;
 import com.kayako.sdk.messenger.conversation.Conversation;
+import com.kayako.sdk.messenger.conversation.fields.status.Status;
 import com.kayako.sdk.messenger.message.Message;
 import com.kayako.sdk.messenger.message.MessageSourceType;
 import com.kayako.sdk.messenger.message.PostMessageBodyParams;
@@ -389,12 +390,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                 mReplyBoxHelper.getReplyBoxVisibility(
                         !mConversationHelper.isConversationCreated(),
                         mMessengerPrefHelper.getEmail() != null,
-                        // TODO: THIS IS TEMPORARY - WAITING FOR API TO USE STATES to check if conversation is closed, complete, etc
-                        mConversationHelper.getConversation() == null || mConversationHelper.getConversation().isCompleted() == null
-                                ? false
-                                : mConversationHelper.getConversation().isCompleted(),
-                        // TODO: THIS IS TEMPORARY - WAITING FOR API TO USE STATES to check if conversation is closed, complete, etc
-                        false,
+                        mConversationHelper.isConversationCompletedOrClosed(),
                         mListHelper.getListPageState());
         switch (replyBoxViewState) {
 
@@ -457,11 +453,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
     private List<BaseListItem> getOffboardingListItemViews() {
         if (mConversationHelper.getConversation() != null) {
-            final boolean isCompleted = true; // TODO: FOR TESTING, forcing = true
-            // TODO: THIS IS TEMPORARY - WAITING FOR API TO USE STATES to check if conversation is closed, complete, etc
-//                    mConversationHelper.getConversation().isCompleted() == null
-//                    ? false
-//                    : mConversationHelper.getConversation().isCompleted();
+            final boolean isCompleted = mConversationHelper.isConversationCompletedOrClosed();
 
             final String nameOfAgent = mConversationHelper.getConversation().getLastAgentReplier() == null
                     ? MessengerPref.getInstance().getBrandName()

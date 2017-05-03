@@ -3,6 +3,7 @@ package com.kayako.sdk.android.k5.messenger.messagelistpage.helpers;
 
 import com.kayako.sdk.messenger.conversation.Conversation;
 import com.kayako.sdk.messenger.conversation.PostConversationBodyParams;
+import com.kayako.sdk.messenger.conversation.fields.status.Status;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -38,6 +39,14 @@ public class ConversationHelper {
 
     public void setIsConversationCreated(boolean mIsConversationCreated) {
         this.mIsConversationCreated.set(mIsConversationCreated);
+    }
+
+    public boolean isConversationCompletedOrClosed() {
+        return getConversation() != null &&
+                getConversation().getStatus() != null &&
+                getConversation().getStatus().getType() != null &&
+                (getConversation().getStatus().getType() == Status.Type.COMPLETED
+                        || getConversation().getStatus().getType() == Status.Type.CLOSED);
     }
 
     public PostConversationBodyParams getNewConversationBodyParams(String email, String message, String clientId) {
