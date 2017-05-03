@@ -389,6 +389,12 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                 mReplyBoxHelper.getReplyBoxVisibility(
                         !mConversationHelper.isConversationCreated(),
                         mMessengerPrefHelper.getEmail() != null,
+                        // TODO: THIS IS TEMPORARY - WAITING FOR API TO USE STATES to check if conversation is closed, complete, etc
+                        mConversationHelper.getConversation() == null || mConversationHelper.getConversation().isCompleted() == null
+                                ? false
+                                : mConversationHelper.getConversation().isCompleted(),
+                        // TODO: THIS IS TEMPORARY - WAITING FOR API TO USE STATES to check if conversation is closed, complete, etc
+                        false,
                         mListHelper.getListPageState());
         switch (replyBoxViewState) {
 
@@ -452,6 +458,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private List<BaseListItem> getOffboardingListItemViews() {
         if (mConversationHelper.getConversation() != null) {
             final boolean isCompleted = true; // TODO: FOR TESTING, forcing = true
+            // TODO: THIS IS TEMPORARY - WAITING FOR API TO USE STATES to check if conversation is closed, complete, etc
 //                    mConversationHelper.getConversation().isCompleted() == null
 //                    ? false
 //                    : mConversationHelper.getConversation().isCompleted();
@@ -808,7 +815,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                 onUpdateRatingListener);
     }
 
-    private void updateConversationRating(long conversationId, long ratingId,Rating.SCORE score, String feedback) {
+    private void updateConversationRating(long conversationId, long ratingId, Rating.SCORE score, String feedback) {
         mData.updateConversationRating(
                 conversationId,
                 ratingId,

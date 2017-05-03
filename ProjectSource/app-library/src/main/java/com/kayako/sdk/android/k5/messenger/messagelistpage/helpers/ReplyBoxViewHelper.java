@@ -19,7 +19,11 @@ public class ReplyBoxViewHelper {
     /**
      * Anywhere on this class, by calling one method, configureReplyBoxVisibility(), the reply box will make the necessary checks to alter it's visibility
      */
-    public ReplyBoxViewState getReplyBoxVisibility(boolean isNewConversation, boolean hasEmail, @Nullable ListPageState listPageState) {
+    public ReplyBoxViewState getReplyBoxVisibility(boolean isNewConversation,
+                                                   boolean hasEmail,
+                                                   boolean isConversationCompleted,
+                                                   boolean isConversationClosed,
+                                                   @Nullable ListPageState listPageState) {
         if (listPageState != null) {
             switch (listPageState) {
                 case LIST:
@@ -30,7 +34,11 @@ public class ReplyBoxViewHelper {
                             return ReplyBoxViewState.HIDDEN;
                         }
                     } else { // Existing Conversation
-                        return ReplyBoxViewState.VISIBLE;
+                        if (isConversationCompleted || isConversationClosed) {
+                            return ReplyBoxViewState.HIDDEN;
+                        } else {
+                            return ReplyBoxViewState.VISIBLE;
+                        }
                     }
 
                 default:
