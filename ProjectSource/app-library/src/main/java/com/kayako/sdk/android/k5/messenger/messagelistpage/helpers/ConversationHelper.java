@@ -41,12 +41,18 @@ public class ConversationHelper {
         this.mIsConversationCreated.set(mIsConversationCreated);
     }
 
-    public boolean isConversationCompletedOrClosed() {
+    public boolean isConversationCompleted() {
         return getConversation() != null &&
                 getConversation().getStatus() != null &&
                 getConversation().getStatus().getType() != null &&
-                (getConversation().getStatus().getType() == Status.Type.COMPLETED
-                        || getConversation().getStatus().getType() == Status.Type.CLOSED);
+                getConversation().getStatus().getType() == Status.Type.COMPLETED;
+    }
+
+    public boolean isConversationClosed() {
+        return getConversation() != null &&
+                getConversation().getStatus() != null &&
+                getConversation().getStatus().getType() != null &&
+                getConversation().getStatus().getType() == Status.Type.CLOSED;
     }
 
     public PostConversationBodyParams getNewConversationBodyParams(String email, String message, String clientId) {

@@ -89,6 +89,9 @@ public class ReplyBoxFragment extends Fragment implements ReplyBoxContract.View,
     public void hideReplyBox() {
         View view = mRoot.findViewById(R.id.reply_box_layout);
         view.setVisibility(View.GONE);
+
+        // Hide keyboard when reply box is hidden
+        KeyboardUtils.hideKeyboard((AppCompatActivity) getActivity());
     }
 
     @Override

@@ -390,7 +390,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                 mReplyBoxHelper.getReplyBoxVisibility(
                         !mConversationHelper.isConversationCreated(),
                         mMessengerPrefHelper.getEmail() != null,
-                        mConversationHelper.isConversationCompletedOrClosed(),
+                        mConversationHelper.isConversationClosed() || mConversationHelper.isConversationCompleted(),
                         mListHelper.getListPageState());
         switch (replyBoxViewState) {
 
@@ -453,7 +453,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
     private List<BaseListItem> getOffboardingListItemViews() {
         if (mConversationHelper.getConversation() != null) {
-            final boolean isCompleted = mConversationHelper.isConversationCompletedOrClosed();
+            final boolean isCompleted = mConversationHelper.isConversationClosed() || mConversationHelper.isConversationCompleted();
 
             final String nameOfAgent = mConversationHelper.getConversation().getLastAgentReplier() == null
                     ? MessengerPref.getInstance().getBrandName()
@@ -510,7 +510,12 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         }
 
         // Load rating when conversation is loaded for first time
-        mOffboardingHelper.onLoadConversation(mOffboardingHelperViewCallback);
+        mOffboardingHelper.onLoadConversation(
+                mConversationHelper.isConversationClosed() || mConversationHelper.isConversationCompleted(),
+                mOffboardingHelperViewCallback);
+
+        // Since reply box visibility depends on conversation status - refresh reply box every time conversation is loaded
+        configureReplyBoxViewState();
     }
 
     private MessageListContainerContract.OnLoadConversationListener onLoadConversationListener = new MessageListContainerContract.OnLoadConversationListener() {

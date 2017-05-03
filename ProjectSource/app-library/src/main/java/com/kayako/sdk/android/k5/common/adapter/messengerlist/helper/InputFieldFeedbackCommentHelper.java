@@ -71,6 +71,8 @@ public class InputFieldFeedbackCommentHelper {
             viewHolder.feedbackFieldLayout.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
+
+
                     setFeedbackFieldState(viewHolder, false);
                 }
             });

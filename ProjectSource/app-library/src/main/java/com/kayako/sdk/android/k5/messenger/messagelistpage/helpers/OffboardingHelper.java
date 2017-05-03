@@ -27,6 +27,9 @@ public class OffboardingHelper {
      * NOTE:
      * - A conversation can have multiple ratings.
      * - Select the latest rating to update the feedback
+     * <p>
+     * Currently:
+     * - This code is made in such a way that only one rating per customer is allowed for a conversation
      */
 
     // State after sending via API are saved here
@@ -37,6 +40,7 @@ public class OffboardingHelper {
     private String currentFeedbackSubmittedViaUI;
 
     private AtomicBoolean hasRatingsBeenLoadedViaApi = new AtomicBoolean(false);
+
 
     public void onLoadRatings(List<Rating> ratings, OffboardingHelperViewCallback callback) {
         if (ratings == null) { // ratings.size = 0 is allowed -> no ratings assigned to case but ratings are loaded
@@ -72,7 +76,7 @@ public class OffboardingHelper {
         callback.onRefreshListView();
     }
 
-    public void onLoadConversation(OffboardingHelperViewCallback callback) {
+    public void onLoadConversation(boolean isConversationCompletedOrClosed, OffboardingHelperViewCallback callback) {
         // Both when a new conversation is created and when loading an existing conversation
         // This is done only once a conversation is loaded because to load ratings of a conversation, we need to make sure the conversation exists
 
@@ -80,6 +84,8 @@ public class OffboardingHelper {
         if (latestRatingOfConversation.get() == null) {
             callback.onLoadRatings();
         }
+
+        // TODO: Handle a situation where a customer may want to rate the conversation multiple times
     }
 
     public List<BaseListItem> getOffboardingListItems(String nameToAddRatingAndFeedbackOf, boolean isConversationClosed, final OffboardingHelperViewCallback callback) {
