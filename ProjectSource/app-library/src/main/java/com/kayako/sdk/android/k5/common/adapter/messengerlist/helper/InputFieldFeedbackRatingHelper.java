@@ -2,15 +2,15 @@ package com.kayako.sdk.android.k5.common.adapter.messengerlist.helper;
 
 import android.view.View;
 
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedbackListItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedbackViewHolder;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedbackRatingListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedbackRatingViewHolder;
 
-public class InputFieldFeedbackHelper {
+public class InputFieldFeedbackRatingHelper {
 
-    private InputFieldFeedbackHelper() {
+    private InputFieldFeedbackRatingHelper() {
     }
 
-    public static void configureInputFeedbackField(final InputFeedbackViewHolder viewHolder, final InputFeedbackListItem listItem) {
+    public static void configureInputFeedbackField(final InputFeedbackRatingViewHolder viewHolder, final InputFeedbackRatingListItem listItem) {
         if (listItem.hasSubmittedValue()) {
             setSelectedRatingState(viewHolder, listItem);
         } else {
@@ -18,12 +18,12 @@ public class InputFieldFeedbackHelper {
         }
     }
 
-    private static void setSelectedRatingState(final InputFeedbackViewHolder viewHolder, final InputFeedbackListItem listItem) {
+    private static void setSelectedRatingState(final InputFeedbackRatingViewHolder viewHolder, final InputFeedbackRatingListItem listItem) {
         InputFieldHelper.configureInputField(viewHolder, BotMessageHelper.getBotDrawable(), listItem.getInstructionMessage());
         InputFieldHelper.enableSubmittedLayout(viewHolder, listItem.getSubmittedValue());
     }
 
-    private static void setSelectRatingState(final InputFeedbackViewHolder viewHolder, final InputFeedbackListItem listItem) {
+    private static void setSelectRatingState(final InputFeedbackRatingViewHolder viewHolder, final InputFeedbackRatingListItem listItem) {
         InputFieldHelper.configureInputField(viewHolder, BotMessageHelper.getBotDrawable(), listItem.getInstructionMessage());
         InputFieldHelper.enableInputLayout(viewHolder);
 
@@ -32,7 +32,7 @@ public class InputFieldFeedbackHelper {
         viewHolder.badRatingViewSwitcher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setRating(InputFeedbackListItem.RATING.BAD, viewHolder);
+                setRating(InputFeedbackRatingListItem.RATING.BAD, viewHolder);
                 configureSubmitButtonVisibility(viewHolder);
             }
         });
@@ -41,7 +41,7 @@ public class InputFieldFeedbackHelper {
         viewHolder.goodRatingViewSwitcher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setRating(InputFeedbackListItem.RATING.GOOD, viewHolder);
+                setRating(InputFeedbackRatingListItem.RATING.GOOD, viewHolder);
                 configureSubmitButtonVisibility(viewHolder);
             }
         });
@@ -50,7 +50,7 @@ public class InputFieldFeedbackHelper {
         viewHolder.submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InputFeedbackListItem.RATING rating = getRating(viewHolder);
+                InputFeedbackRatingListItem.RATING rating = getRating(viewHolder);
                 if (rating == null) {
                     throw new IllegalStateException("Submit button should not be visibile if rating is not first applied");
                 } else {
@@ -62,7 +62,7 @@ public class InputFieldFeedbackHelper {
         });
     }
 
-    private static void configureSubmitButtonVisibility(InputFeedbackViewHolder viewHolder) {
+    private static void configureSubmitButtonVisibility(InputFeedbackRatingViewHolder viewHolder) {
         // Submit button should not be visibile if rating is not first applied. This is done instead of showing an error response when submit button is clicked without selecting a rating.
         if (getRating(viewHolder) == null) {
             viewHolder.submitButtonLayout.setVisibility(View.GONE);
@@ -71,7 +71,7 @@ public class InputFieldFeedbackHelper {
         }
     }
 
-    private static void setRating(InputFeedbackListItem.RATING rating, InputFeedbackViewHolder viewHolder) {
+    private static void setRating(InputFeedbackRatingListItem.RATING rating, InputFeedbackRatingViewHolder viewHolder) {
         switch (rating) {
             case GOOD:
                 // Show default BAD Rating view
@@ -106,16 +106,16 @@ public class InputFieldFeedbackHelper {
      * @param viewHolder
      * @return null if no rating is selected, rating is it is selected by user
      */
-    private static InputFeedbackListItem.RATING getRating(InputFeedbackViewHolder viewHolder) {
+    private static InputFeedbackRatingListItem.RATING getRating(InputFeedbackRatingViewHolder viewHolder) {
         if (viewHolder.badRatingViewSwitcher.getCurrentView() == viewHolder.selectedBadRatingView
                 && viewHolder.goodRatingViewSwitcher.getCurrentView() == viewHolder.selectedGoodRatingView) {
             throw new IllegalStateException("Both Good and Bad ratings can not be selected at the same time");
         }
 
         if (viewHolder.badRatingViewSwitcher.getCurrentView() == viewHolder.selectedBadRatingView) {
-            return InputFeedbackListItem.RATING.BAD;
+            return InputFeedbackRatingListItem.RATING.BAD;
         } else if (viewHolder.goodRatingViewSwitcher.getCurrentView() == viewHolder.selectedGoodRatingView) {
-            return InputFeedbackListItem.RATING.GOOD;
+            return InputFeedbackRatingListItem.RATING.GOOD;
         } else {
             return null; // NO RATING SELECTED
         }

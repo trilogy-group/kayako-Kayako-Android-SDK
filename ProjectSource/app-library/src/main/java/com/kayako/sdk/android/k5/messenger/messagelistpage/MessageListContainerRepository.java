@@ -282,10 +282,11 @@ public class MessageListContainerRepository implements MessageListContainerContr
     }
 
     @Override
-    public void updateConversationRating(long conversationId, PutRatingBodyParams putRatingBodyParams, final MessageListContainerContract.OnUpdateRatingListener onUpdateRatingListener) {
+    public void updateConversationRating(long conversationId, long ratingId, PutRatingBodyParams putRatingBodyParams, final MessageListContainerContract.OnUpdateRatingListener onUpdateRatingListener) {
         final Handler handler = new Handler(); // Needed to ensure that the callbacks run on the UI Thread
         mMessenger.putRating(
                 conversationId,
+                ratingId,
                 putRatingBodyParams,
                 new ItemCallback<Rating>() {
 

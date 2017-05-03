@@ -1,0 +1,69 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ko__feedback_input_field_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ko__speech_bubble_input_field_background"
+        android:orientation="vertical">
+
+        <com.kayako.sdk.android.k5.common.view.RegularTextView
+            android:id="@+id/ko__feedback_input_field_message_hint"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/ko__messenger_input_field_blue_hint_text_color"
+            android:textSize="12sp" />
+
+        <com.kayako.sdk.android.k5.common.view.RegularEditText
+            android:id="@+id/ko__feedback_input_field_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="6dp"
+            android:background="@null"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="top|left"
+            android:minLines="4"
+            android:paddingBottom="16dp"
+            android:paddingTop="8dp"
+            android:singleLine="false"
+            android:textSize="16sp"
+            tools:text="There are 2 kinds of people. Those who dig. And those holding the gun. There are 2 kinds of people. Those who dig. And those holding the gun." />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ko__feedback_input_field_submit_button_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/ko__messenger_speech_bubble_other_background_color" />
+
+        <com.kayako.sdk.android.k5.common.view.BoldButton
+            android:id="@+id/ko__feedback_input_field_submit_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:gravity="center"
+            android:padding="@dimen/ko__messenger_input_item_submit_button_padding"
+            android:text="@string/ko__messenger_input_feedback_rating_next_button_text"
+            android:textAllCaps="false"
+            android:textColor="@color/ko__messenger_input_feedback_rating_next_button_text_color"
+            android:textSize="@dimen/ko__messenger_input_feedback_rating_next_button_text_size" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -6,7 +6,7 @@ import android.widget.ViewSwitcher;
 
 import com.kayako.sdk.android.k5.R;
 
-public class InputFeedbackViewHolder extends InputFieldViewHolder {
+public class InputFeedbackRatingViewHolder extends InputFieldViewHolder {
 
     public ViewSwitcher goodRatingViewSwitcher;
     public ViewSwitcher badRatingViewSwitcher;
@@ -17,7 +17,7 @@ public class InputFeedbackViewHolder extends InputFieldViewHolder {
 
     public Button submitButton;
 
-    public InputFeedbackViewHolder(View itemView) {
+    public InputFeedbackRatingViewHolder(View itemView) {
         super(itemView, R.layout.ko__include_messenger_input_field_feedback_rating);
 
         goodRatingViewSwitcher = (ViewSwitcher) itemView.findViewById(R.id.ko__messenger_input_feedback_rating_field_good_view_switcher);

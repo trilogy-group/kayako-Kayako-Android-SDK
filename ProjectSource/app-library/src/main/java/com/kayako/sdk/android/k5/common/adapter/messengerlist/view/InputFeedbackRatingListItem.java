@@ -4,13 +4,13 @@ import android.support.annotation.NonNull;
 
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerListType;
 
-public class InputFeedbackListItem extends InputFieldlListItem {
+public class InputFeedbackRatingListItem extends InputFieldlListItem {
 
     private String instructionMessage;
     private OnSelectRatingListener onSelectRatingListener;
 
-    public InputFeedbackListItem(@NonNull String instructionMessage, @NonNull OnSelectRatingListener onSelectRatingListener) {
-        super(MessengerListType.INPUT_FIELD_FEEDBACK);
+    public InputFeedbackRatingListItem(@NonNull String instructionMessage, @NonNull OnSelectRatingListener onSelectRatingListener) {
+        super(MessengerListType.INPUT_FIELD_FEEDBACK_RATING);
         this.onSelectRatingListener = onSelectRatingListener;
         this.instructionMessage = instructionMessage;
 
@@ -19,8 +19,8 @@ public class InputFeedbackListItem extends InputFieldlListItem {
         }
     }
 
-    public InputFeedbackListItem(@NonNull String instructionMessage, @NonNull String submittedRating) {
-        super(MessengerListType.INPUT_FIELD_FEEDBACK, submittedRating);
+    public InputFeedbackRatingListItem(@NonNull String instructionMessage, @NonNull String submittedRating) {
+        super(MessengerListType.INPUT_FIELD_FEEDBACK_RATING, submittedRating);
         this.instructionMessage = instructionMessage;
 
         if (submittedRating == null || instructionMessage == null) {

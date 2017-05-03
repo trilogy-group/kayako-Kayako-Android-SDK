@@ -132,7 +132,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="2dp"
+            android:layout_height="1px"
             android:background="@color/ko__messenger_speech_bubble_other_background_color" />
 
         <com.kayako.sdk.android.k5.common.view.BoldButton

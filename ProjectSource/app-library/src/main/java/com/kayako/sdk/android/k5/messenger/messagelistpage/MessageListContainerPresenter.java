@@ -1,7 +1,6 @@
 package com.kayako.sdk.android.k5.messenger.messagelistpage;
 
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedbackListItem;
 import com.kayako.sdk.android.k5.core.MessengerPref;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.FileAttachmentHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.TypingViewHelper;
@@ -300,7 +299,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         }
 
         @Override
-        public void onLoadRating() {
+        public void onLoadRatings() {
             if (mConversationHelper.isConversationCreated()) {
                 getConversationRating(mConversationHelper.getConversationId());
             } else {
@@ -318,12 +317,13 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         }
 
         @Override
-        public void onAddFeedback(Rating.SCORE ratingScore, String message) {
+        public void onAddFeedback(long ratingId, Rating.SCORE score, String message) {
             if (mConversationHelper.isConversationCreated()) {
-                updateConversationRating(mConversationHelper.getConversationId(), ratingScore, message);
+                updateConversationRating(mConversationHelper.getConversationId(), ratingId, score, message);
             } else {
                 throw new IllegalStateException("This method should never be called before the conversation is created!");
             }
+
         }
 
     };
@@ -808,9 +808,10 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                 onUpdateRatingListener);
     }
 
-    private void updateConversationRating(long conversationId, Rating.SCORE score, String feedback) {
+    private void updateConversationRating(long conversationId, long ratingId,Rating.SCORE score, String feedback) {
         mData.updateConversationRating(
                 conversationId,
+                ratingId,
                 new PutRatingBodyParams(score, feedback),
                 onUpdateRatingListener);
     }

@@ -15,7 +15,8 @@ import com.kayako.sdk.android.k5.common.adapter.loadmorelist.EndlessRecyclerView
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.BotMessageHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.DeliveryIndicatorHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.InputFieldEmailHelper;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.InputFieldFeedbackHelper;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.InputFieldFeedbackCommentHelper;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.InputFieldFeedbackRatingHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageContinuedOtherListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageContinuedOtherViewHolder;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageContinuedSelfListItem;
@@ -31,8 +32,10 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.DateSeparator
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.EmptyViewHolder;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputEmailListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputEmailViewHolder;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedbackListItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedbackViewHolder;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedbackCommentListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedbackCommentViewHolder;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedbackRatingListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedbackRatingViewHolder;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageContinuedOtherListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageContinuedOtherViewHolder;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageContinuedSelfListItem;
@@ -265,11 +268,18 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 InputFieldEmailHelper.configureInputEmailField(inputEmailViewHolder, inputEmailListItem);
                 break;
 
-            case MessengerListType.INPUT_FIELD_FEEDBACK:
-                final InputFeedbackViewHolder inputFeedbackViewHolder = (InputFeedbackViewHolder) viewHolder;
-                final InputFeedbackListItem inputFeedbackListItem = (InputFeedbackListItem) getData().get(position);
+            case MessengerListType.INPUT_FIELD_FEEDBACK_RATING:
+                final InputFeedbackRatingViewHolder inputFeedbackViewHolder = (InputFeedbackRatingViewHolder) viewHolder;
+                final InputFeedbackRatingListItem inputFeedbackListItem = (InputFeedbackRatingListItem) getData().get(position);
 
-                InputFieldFeedbackHelper.configureInputFeedbackField(inputFeedbackViewHolder,inputFeedbackListItem);
+                InputFieldFeedbackRatingHelper.configureInputFeedbackField(inputFeedbackViewHolder, inputFeedbackListItem);
+                break;
+
+            case MessengerListType.INPUT_FIELD_FEEDBACK_COMMENT:
+                final InputFeedbackCommentViewHolder inputFeedbackCommentViewHolder = (InputFeedbackCommentViewHolder) viewHolder;
+                final InputFeedbackCommentListItem inputFeedbackCommentListItem = (InputFeedbackCommentListItem) getData().get(position);
+
+                InputFieldFeedbackCommentHelper.configureInputFeedbackField(inputFeedbackCommentViewHolder, inputFeedbackCommentListItem);
                 break;
 
             case MessengerListType.TYPING_FOOTER:
@@ -345,9 +355,13 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 View inputEmailView = LayoutInflater.from(parent.getContext()).inflate(R.layout.ko__list_messenger_input_field, parent, false);
                 return new InputEmailViewHolder(inputEmailView);
 
-            case MessengerListType.INPUT_FIELD_FEEDBACK:
+            case MessengerListType.INPUT_FIELD_FEEDBACK_RATING:
                 View inputFeedbackView = LayoutInflater.from(parent.getContext()).inflate(R.layout.ko__list_messenger_input_field, parent, false);
-                return new InputFeedbackViewHolder(inputFeedbackView);
+                return new InputFeedbackRatingViewHolder(inputFeedbackView);
+
+            case MessengerListType.INPUT_FIELD_FEEDBACK_COMMENT:
+                View inputFeedbackCommentView = LayoutInflater.from(parent.getContext()).inflate(R.layout.ko__list_messenger_input_field, parent, false);
+                return new InputFeedbackCommentViewHolder(inputFeedbackCommentView);
 
             case MessengerListType.TYPING_FOOTER:
                 View typingView = LayoutInflater.from(parent.getContext()).inflate(R.layout.ko__list_messenger_typing, parent, false);
