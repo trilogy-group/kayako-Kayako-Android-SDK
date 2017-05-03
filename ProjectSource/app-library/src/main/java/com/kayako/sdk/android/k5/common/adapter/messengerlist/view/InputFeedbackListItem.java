@@ -6,7 +6,6 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerListType;
 
 public class InputFeedbackListItem extends InputFieldlListItem {
 
-    private RATING submittedRating;
     private String instructionMessage;
     private OnSelectRatingListener onSelectRatingListener;
 
@@ -27,10 +26,6 @@ public class InputFeedbackListItem extends InputFieldlListItem {
         if (submittedRating == null || instructionMessage == null) {
             throw new IllegalStateException("Invalid arguments");
         }
-    }
-
-    public RATING getSubmittedRating() {
-        return submittedRating;
     }
 
     public OnSelectRatingListener getOnSelectRatingListener() {

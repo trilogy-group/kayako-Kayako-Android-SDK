@@ -2,6 +2,7 @@ package com.kayako.sdk.android.k5.messenger.messagelistpage;
 
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedbackListItem;
+import com.kayako.sdk.android.k5.core.MessengerPref;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.FileAttachmentHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.TypingViewHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.UnsentMessage;
@@ -32,8 +33,12 @@ import com.kayako.sdk.messenger.conversation.Conversation;
 import com.kayako.sdk.messenger.message.Message;
 import com.kayako.sdk.messenger.message.MessageSourceType;
 import com.kayako.sdk.messenger.message.PostMessageBodyParams;
+import com.kayako.sdk.messenger.rating.PostRatingBodyParams;
+import com.kayako.sdk.messenger.rating.PutRatingBodyParams;
+import com.kayako.sdk.messenger.rating.Rating;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -47,7 +52,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
     private boolean mIsNewConversation;  // original value when page is opened
 
-    //TODO: on attachment click - if failed to send, resend. if sent, open to view
+    // TODO: on attachment click - if failed to send, resend. if sent, open to view
 
     private MessageListContainerContract.View mView;
     private MessageListContainerContract.Data mData;
@@ -295,14 +300,32 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         }
 
         @Override
-        public void onAddRating(InputFeedbackListItem.RATING rating) {
-            //TODO: Call API
+        public void onLoadRating() {
+            if (mConversationHelper.isConversationCreated()) {
+                getConversationRating(mConversationHelper.getConversationId());
+            } else {
+                throw new IllegalStateException("This method should never be called before the conversation is created!");
+            }
         }
 
         @Override
-        public void onAddFeedback(String message) {
-            // TODO: Call API
+        public void onAddRating(Rating.SCORE ratingScore) {
+            if (mConversationHelper.isConversationCreated()) {
+                addConversationRating(mConversationHelper.getConversationId(), ratingScore);
+            } else {
+                throw new IllegalStateException("This method should never be called before the conversation is created!");
+            }
         }
+
+        @Override
+        public void onAddFeedback(Rating.SCORE ratingScore, String message) {
+            if (mConversationHelper.isConversationCreated()) {
+                updateConversationRating(mConversationHelper.getConversationId(), ratingScore, message);
+            } else {
+                throw new IllegalStateException("This method should never be called before the conversation is created!");
+            }
+        }
+
     };
 
     ////// VIEW MODIFYING METHODS //////
@@ -336,12 +359,8 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         // footer items
         allListItems.addAll(mTypingViewHelper.getTypingViews());
 
-        // FINAL items
-        allListItems.addAll(
-                mOffboardingHelper.getOffboardingListItems(
-                        "Neil Mathew",// TODO: Get existing conversation and then lastAgentReplier - if available
-                        mOffboardingHelperViewCallback
-                ));
+        // Offloading items
+        allListItems.addAll(getOffboardingListItemViews());
 
         // Add space at end
         allListItems.add(new EmptyListItem());
@@ -430,6 +449,27 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         }
     }
 
+    private List<BaseListItem> getOffboardingListItemViews() {
+        if (mConversationHelper.getConversation() != null) {
+            final boolean isCompleted = true; // TODO: FOR TESTING, forcing = true
+//                    mConversationHelper.getConversation().isCompleted() == null
+//                    ? false
+//                    : mConversationHelper.getConversation().isCompleted();
+
+            final String nameOfAgent = mConversationHelper.getConversation().getLastAgentReplier() == null
+                    ? MessengerPref.getInstance().getBrandName()
+                    : mConversationHelper.getConversation().getLastAgentReplier().getFullName();
+
+            return mOffboardingHelper.getOffboardingListItems(
+                    nameOfAgent,
+                    isCompleted,
+                    mOffboardingHelperViewCallback
+            );
+        } else {
+            return Collections.EMPTY_LIST;
+        }
+    }
+
     ////// API / REALTIME / DATA CHANGE CALLBACKS //////
 
     /**
@@ -469,6 +509,9 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                 || !lastConversationValue.getLastRepliedAt().equals(conversation.getLastRepliedAt())) {
             reloadLatestMessages();
         }
+
+        // Load rating when conversation is loaded for first time
+        mOffboardingHelper.onLoadConversation(mOffboardingHelperViewCallback);
     }
 
     private MessageListContainerContract.OnLoadConversationListener onLoadConversationListener = new MessageListContainerContract.OnLoadConversationListener() {
@@ -634,6 +677,29 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         }
     };
 
+    private MessageListContainerContract.OnLoadRatingsListener onLoadRatingsListener = new MessageListContainerContract.OnLoadRatingsListener() {
+        @Override
+        public void onSuccess(List<Rating> ratings) {
+            mOffboardingHelper.onLoadRatings(ratings, mOffboardingHelperViewCallback);
+        }
+
+        @Override
+        public void onFailure(String message) {
+        }
+    };
+
+    private MessageListContainerContract.OnUpdateRatingListener onUpdateRatingListener = new MessageListContainerContract.OnUpdateRatingListener() {
+        @Override
+        public void onSuccess(Rating rating) {
+            mOffboardingHelper.onUpdateRating(rating, mOffboardingHelperViewCallback);
+        }
+
+        @Override
+        public void onFailure(String message) {
+        }
+    };
+
+
     ////// API CALLING METHODS //////
 
     private void reloadLatestMessages() {
@@ -730,4 +796,23 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             return false;
         }
     }
+
+    private void getConversationRating(long conversationId) {
+        mData.getConversationRatings(conversationId, onLoadRatingsListener);
+    }
+
+    private void addConversationRating(long conversationId, Rating.SCORE score) {
+        mData.addConversationRating(
+                conversationId,
+                new PostRatingBodyParams(score),
+                onUpdateRatingListener);
+    }
+
+    private void updateConversationRating(long conversationId, Rating.SCORE score, String feedback) {
+        mData.updateConversationRating(
+                conversationId,
+                new PutRatingBodyParams(score, feedback),
+                onUpdateRatingListener);
+    }
+
 }

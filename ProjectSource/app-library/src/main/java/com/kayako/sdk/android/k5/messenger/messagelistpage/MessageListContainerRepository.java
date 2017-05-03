@@ -8,6 +8,7 @@ import com.kayako.sdk.auth.FingerprintAuth;
 import com.kayako.sdk.base.callback.EmptyCallback;
 import com.kayako.sdk.base.callback.ItemCallback;
 import com.kayako.sdk.base.callback.ListCallback;
+import com.kayako.sdk.base.parser.Resource;
 import com.kayako.sdk.base.requester.AttachmentFile;
 import com.kayako.sdk.error.KayakoException;
 import com.kayako.sdk.error.ResponseMessages;
@@ -18,6 +19,9 @@ import com.kayako.sdk.messenger.conversation.PostConversationBodyParams;
 import com.kayako.sdk.messenger.message.Message;
 import com.kayako.sdk.messenger.message.PostMessageBodyParams;
 import com.kayako.sdk.messenger.message.PutMessageBodyParams;
+import com.kayako.sdk.messenger.rating.PostRatingBodyParams;
+import com.kayako.sdk.messenger.rating.PutRatingBodyParams;
+import com.kayako.sdk.messenger.rating.Rating;
 
 import java.util.List;
 
@@ -206,6 +210,105 @@ public class MessageListContainerRepository implements MessageListContainerContr
                             }
                         });
 
+                    }
+                });
+    }
+
+    @Override
+    public void getConversationRatings(long conversationId, final MessageListContainerContract.OnLoadRatingsListener onLoadRatingsListener) {
+        final Handler handler = new Handler(); // Needed to ensure that the callbacks run on the UI Thread
+        mMessenger
+                .getRatingList(
+                        conversationId,
+                        new ListCallback<Rating>() {
+                            @Override
+                            public void onSuccess(final List<Rating> items) {
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (onLoadRatingsListener != null) {
+                                            onLoadRatingsListener.onSuccess(items);
+                                        }
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onFailure(final KayakoException exception) {
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (onLoadRatingsListener != null) {
+                                            onLoadRatingsListener.onFailure(exception.getMessage());
+                                        }
+                                    }
+                                });
+
+                            }
+                        }
+                );
+    }
+
+    @Override
+    public void addConversationRating(long conversationId, PostRatingBodyParams postRatingBodyParams, final MessageListContainerContract.OnUpdateRatingListener onUpdateRatingListener) {
+        final Handler handler = new Handler(); // Needed to ensure that the callbacks run on the UI Thread
+        mMessenger.postRating(
+                conversationId,
+                postRatingBodyParams,
+                new ItemCallback<Rating>() {
+
+                    @Override
+                    public void onSuccess(final Rating item) {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (onUpdateRatingListener != null)
+                                    onUpdateRatingListener.onSuccess(item);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(final KayakoException exception) {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (onUpdateRatingListener != null)
+                                    onUpdateRatingListener.onFailure(exception.getMessage());
+                            }
+                        });
+                    }
+                });
+    }
+
+    @Override
+    public void updateConversationRating(long conversationId, PutRatingBodyParams putRatingBodyParams, final MessageListContainerContract.OnUpdateRatingListener onUpdateRatingListener) {
+        final Handler handler = new Handler(); // Needed to ensure that the callbacks run on the UI Thread
+        mMessenger.putRating(
+                conversationId,
+                putRatingBodyParams,
+                new ItemCallback<Rating>() {
+
+                    @Override
+                    public void onSuccess(final Rating item) {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (onUpdateRatingListener != null)
+                                    onUpdateRatingListener.onSuccess(item);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(final KayakoException exception) {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (onUpdateRatingListener != null)
+                                    onUpdateRatingListener.onFailure(exception.getMessage());
+                            }
+                        });
                     }
                 });
     }

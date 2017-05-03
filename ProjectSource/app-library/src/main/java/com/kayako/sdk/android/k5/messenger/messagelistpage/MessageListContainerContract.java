@@ -13,6 +13,9 @@ import com.kayako.sdk.messenger.conversation.Conversation;
 import com.kayako.sdk.messenger.conversation.PostConversationBodyParams;
 import com.kayako.sdk.messenger.message.Message;
 import com.kayako.sdk.messenger.message.PostMessageBodyParams;
+import com.kayako.sdk.messenger.rating.PostRatingBodyParams;
+import com.kayako.sdk.messenger.rating.PutRatingBodyParams;
+import com.kayako.sdk.messenger.rating.Rating;
 
 import java.io.File;
 import java.util.List;
@@ -32,6 +35,11 @@ public class MessageListContainerContract {
 
         void markMessageAsRead(long conversationId, long messageId, final OnMarkMessageAsReadListener onLoadConversationListener);
 
+        void getConversationRatings(long conversationId, OnLoadRatingsListener onLoadRatingsListener);
+
+        void addConversationRating(long conversationId, PostRatingBodyParams postRatingBodyParams, OnUpdateRatingListener onUpdateRatingListener);
+
+        void updateConversationRating(long conversationId, PutRatingBodyParams putRatingBodyParams, OnUpdateRatingListener onUpdateRatingListener);
     }
 
     public interface View extends BaseView {
@@ -137,4 +145,17 @@ public class MessageListContainerContract {
         void onFailure(String message);
     }
 
+    public interface OnLoadRatingsListener {
+
+        void onSuccess(List<Rating> ratings);
+
+        void onFailure(String message);
+    }
+
+
+    public interface OnUpdateRatingListener {
+        void onSuccess(Rating rating);
+
+        void onFailure(String message);
+    }
 }
