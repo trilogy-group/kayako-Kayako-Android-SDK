@@ -1,6 +1,9 @@
 package com.kayako.sdk.android.k5.common.adapter.messengerlist.helper;
 
+import android.content.Context;
+import android.util.TypedValue;
 import android.view.View;
+import android.widget.TextView;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.DeliveryIndicator;
@@ -49,6 +52,21 @@ public class DeliveryIndicatorHelper {
         return null;
     }
 
+    public static void setBackgroundColorForOptimisticSending(TextView messageView, DeliveryIndicator deliveryIndicator) {
+        boolean isSending =
+                deliveryIndicator != null &&
+                        deliveryIndicator.getDeliveryStatusTextResId() != null &&
+                        deliveryIndicator.getDeliveryStatusTextResId() == R.string.ko__messenger_delivery_indicators_sending;
+
+
+        MessageStyleHelper.setSelfMessageStyle(messageView);
+
+        if (isSending) {
+            messageView.setBackgroundResource(R.drawable.ko__speech_bubble_self_optimistic_sending);
+        } else {
+            messageView.setBackgroundResource(R.drawable.ko__speech_bubble_self);
+        }
+    }
 
     public static void setDeliveryIndicatorView(DeliveryIndicator deliveryIndicator, Long timeMessageCreated, BaseDeliveryIndicatorViewHolder deliveryIndicatorViewHolder) {
         if (deliveryIndicator == null && timeMessageCreated != null && timeMessageCreated != 0) {

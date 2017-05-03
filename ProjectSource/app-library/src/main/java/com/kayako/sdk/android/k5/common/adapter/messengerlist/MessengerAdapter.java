@@ -89,6 +89,7 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
 
                 // Covers time and delivery status
                 DeliveryIndicatorHelper.setDeliveryIndicatorView(simpleMessageSelfListItem.getDeliveryIndicator(), simpleMessageSelfListItem.getTime(), simpleMessageSelfViewHolder);
+                DeliveryIndicatorHelper.setBackgroundColorForOptimisticSending(simpleMessageSelfViewHolder.message, simpleMessageSelfListItem.getDeliveryIndicator());
                 break;
 
             case MessengerListType.SIMPLE_MESSAGE_OTHER:

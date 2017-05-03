@@ -50,6 +50,8 @@
         <item name="android:minWidth">@dimen/ko__messenger_chat_bubble_min_width</item>
     </style>
 
+    <!-- MessageStyleHelper should also be updated as the following Chat Bubble Styles get updated-->
+
     <style name="Ko__ChatBubbleStyleOther" parent="Ko__ChatBubbleStyle">
         <item name="android:background">@drawable/ko__speech_bubble_other</item>
         <item name="android:textColor">@color/ko__messenger_speech_bubble_other_text_color</item>
@@ -61,6 +63,11 @@
         <item name="android:textColor">@color/ko__messenger_speech_bubble_self_text_color</item>
         <item name="android:textSize">@dimen/ko__messenger_speech_bubble_message_text_size</item>
     </style>
+
+    <style name="Ko__ChatBubbleStyleSelf_OptimisticSending" parent="Ko__ChatBubbleStyleSelf">
+        <item name="android:background">@drawable/ko__speech_bubble_self_optimistic_sending</item>
+    </style>
+
 
     <style name="Ko__ChatBubbleDateStyle">
         <item name="android:textSize">12sp</item>
