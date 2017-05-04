@@ -25,7 +25,8 @@ public class MessageListFragment extends MessengerListFragment implements Messag
     private MessageListContract.OnErrorListener mErrorListener;
     private EndlessRecyclerViewScrollAdapter.OnLoadMoreListener mLoadMoreListener;
     private OnScrollListListener mOnScrollListener;
-    private boolean isListAlreadyInitialized;
+    private boolean mIsListAlreadyInitialized;
+    private ListPageState mListPageState;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,15 +36,7 @@ public class MessageListFragment extends MessengerListFragment implements Messag
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        super.setOnListPageChangeStateListener(new OnListPageStateChangeListener() {
-            @Override
-            public void onListPageStateChanged(ListPageState state) {
-                if (mOnListPageStateChangeListener != null) {
-                    mOnListPageStateChangeListener.onListPageStateChanged(state);
-                }
-            }
-        });
-
+        setPageStateListener();
     }
 
     @Override
@@ -53,15 +46,35 @@ public class MessageListFragment extends MessengerListFragment implements Messag
         if (getActivity().getClass() != KayakoSelectConversationActivity.class) {
             throw new AssertionError("This fragment was intended to be used with KayakoSelectConversationActivity!");
         }
+
+        triggerPageStateCallback();
     }
 
-    private boolean hasPageLoaded(){
+    private void setPageStateListener() {
+        super.setOnListPageChangeStateListener(new OnListPageStateChangeListener() {
+            @Override
+            public void onListPageStateChanged(ListPageState state) {
+                mListPageState = state;
+                if (mOnListPageStateChangeListener != null) {
+                    mOnListPageStateChangeListener.onListPageStateChanged(state);
+                }
+            }
+        });
+    }
+
+    private void triggerPageStateCallback() {
+        if (mOnListPageStateChangeListener != null && mListPageState != null) {
+            mOnListPageStateChangeListener.onListPageStateChanged(mListPageState);
+        }
+    }
+
+    private boolean hasPageLoaded() {
         return isAdded();
     }
 
     @Override
     public void setupList(List<BaseListItem> messageList) {
-        if(!hasPageLoaded()){
+        if (!hasPageLoaded()) {
             return;
         }
 
@@ -69,7 +82,7 @@ public class MessageListFragment extends MessengerListFragment implements Messag
             throw new IllegalStateException("Null argument unacceptable!");
         }
 
-        if (isListAlreadyInitialized) {
+        if (mIsListAlreadyInitialized) {
             replaceMessengerList(messageList);
         } else {
             initMessengerList(messageList);
@@ -82,7 +95,7 @@ public class MessageListFragment extends MessengerListFragment implements Messag
             if (mLoadMoreListener != null) {
                 super.setLoadMoreListener(mLoadMoreListener);
             }
-            isListAlreadyInitialized = true;
+            mIsListAlreadyInitialized = true;
         }
 
         showListViewAndHideOthers();
@@ -90,7 +103,7 @@ public class MessageListFragment extends MessengerListFragment implements Messag
 
     @Override
     public void setHasMoreItemsToLoad(boolean hasMoreItems) {
-        if(!hasPageLoaded()){
+        if (!hasPageLoaded()) {
             return;
         }
 
@@ -99,7 +112,7 @@ public class MessageListFragment extends MessengerListFragment implements Messag
 
     @Override
     public void showLoadMoreView() {
-        if(!hasPageLoaded()){
+        if (!hasPageLoaded()) {
             return;
         }
 
@@ -109,7 +122,7 @@ public class MessageListFragment extends MessengerListFragment implements Messag
 
     @Override
     public void hideLoadMoreView() {
-        if(!hasPageLoaded()){
+        if (!hasPageLoaded()) {
             return;
         }
 
@@ -118,7 +131,7 @@ public class MessageListFragment extends MessengerListFragment implements Messag
 
     @Override
     public void scrollToBottomOfList() {
-        if(!hasPageLoaded()){
+        if (!hasPageLoaded()) {
             return;
         }
 
@@ -128,7 +141,7 @@ public class MessageListFragment extends MessengerListFragment implements Messag
 
     @Override
     public void showEmptyView() {
-        if(!hasPageLoaded()){
+        if (!hasPageLoaded()) {
             return;
         }
 
@@ -137,7 +150,7 @@ public class MessageListFragment extends MessengerListFragment implements Messag
 
     @Override
     public void showErrorView() {
-        if(!hasPageLoaded()){
+        if (!hasPageLoaded()) {
             return;
         }
 
@@ -156,7 +169,7 @@ public class MessageListFragment extends MessengerListFragment implements Messag
 
     @Override
     public void showLoadingView() {
-        if(!hasPageLoaded()){
+        if (!hasPageLoaded()) {
             return;
         }
 
@@ -166,6 +179,10 @@ public class MessageListFragment extends MessengerListFragment implements Messag
     @Override
     public void setOnListPageStateChangeListener(OnListPageStateChangeListener listener) {
         mOnListPageStateChangeListener = listener;
+        if (hasPageLoaded()) {
+            setPageStateListener();
+            triggerPageStateCallback();
+        }
     }
 
     @Override

@@ -11,9 +11,8 @@ import java.util.Set;
 
 public class MessengerActivityTracker {
 
-    // TODO: Create a condition - "Tap again outside to close Messenger" so that accidental clicks won't trigger a close
+    // TODO?: Create a condition - "Tap again outside to close Messenger" so that accidental clicks won't trigger a close
     private final static List<WeakReference<BaseMessengerActivity>> openMessengerActivities = new ArrayList<>();
-    private final static Set<OnCloseMessengerListener> onCloseMessengerListenerSet = new HashSet<>();
 
     public static void addActivity(final BaseMessengerActivity activity) {
         addToMessageQueue(new Runnable() {
@@ -22,6 +21,10 @@ public class MessengerActivityTracker {
                 synchronized (openMessengerActivities) {
                     if (activity == null) {
                         return;
+                    }
+
+                    if (openMessengerActivities.size() == 0) { // if a new activity is added for first time (in synchronized block)
+                        MessengerOpenTracker.callOnOpenMessengerListeners();
                     }
 
                     openMessengerActivities.add(new WeakReference<>(activity));
@@ -50,7 +53,9 @@ public class MessengerActivityTracker {
 
                     openMessengerActivities.removeAll(activitiesToRemove);
 
-                    callOnCloseMessengerListenerIfClosed();
+                    if (openMessengerActivities.size() == 0) { // no messenger pages are open - therefore closed
+                        MessengerOpenTracker.callOnCloseMessengerListener();
+                    }
                 }
             }
         });
@@ -72,27 +77,12 @@ public class MessengerActivityTracker {
 
                     openMessengerActivities.clear();
 
-                    callOnCloseMessengerListenerIfClosed();
+                    if (openMessengerActivities.size() == 0) { // no messenger pages are open - therefore closed
+                        MessengerOpenTracker.callOnCloseMessengerListener();
+                    }
                 }
             }
         });
-    }
-
-    /**
-     * Use this to release resources on Messenger close
-     *
-     * @param listener
-     */
-    public static void addOnCloseMessengerListener(OnCloseMessengerListener listener) {
-        synchronized (onCloseMessengerListenerSet) {
-            onCloseMessengerListenerSet.add(listener);
-        }
-    }
-
-    public static void removeOnCloseMessengerListener(OnCloseMessengerListener listener) {
-        synchronized (onCloseMessengerListenerSet) {
-            onCloseMessengerListenerSet.remove(listener);
-        }
     }
 
     /**
@@ -101,25 +91,6 @@ public class MessengerActivityTracker {
      */
     private static void addToMessageQueue(final Runnable runnable) {
         Handler handler = new Handler();
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                runnable.run();
-            }
-        });
-    }
-
-    private static void callOnCloseMessengerListenerIfClosed() {
-        synchronized (onCloseMessengerListenerSet) {
-            if (openMessengerActivities.size() == 0) {
-                for (OnCloseMessengerListener onCloseMessengerListener : onCloseMessengerListenerSet) {
-                    onCloseMessengerListener.onCloseMessenger();
-                }
-            }
-        }
-    }
-
-    public interface OnCloseMessengerListener {
-        void onCloseMessenger();
+        handler.post(runnable);
     }
 }

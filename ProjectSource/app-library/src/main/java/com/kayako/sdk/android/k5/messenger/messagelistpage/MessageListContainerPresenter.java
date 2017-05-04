@@ -29,7 +29,6 @@ import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.RealtimeHelpe
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ReplyBoxViewHelper;
 import com.kayako.sdk.base.requester.AttachmentFile;
 import com.kayako.sdk.messenger.conversation.Conversation;
-import com.kayako.sdk.messenger.conversation.fields.status.Status;
 import com.kayako.sdk.messenger.message.Message;
 import com.kayako.sdk.messenger.message.MessageSourceType;
 import com.kayako.sdk.messenger.message.PostMessageBodyParams;
@@ -151,8 +150,9 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
     @Override
     public void closePage() {
-        mRealtimeHelper.unsubscribeFromRealtimeChanges();
+        mRealtimeHelper.unsubscribeFromRealtimeConversationChanges();
         mFailsafePollingHelper.stopPolling();
+        resetVariables();
     }
 
     @Override
@@ -172,7 +172,9 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
     @Override
     public void onTypeReply(String messageInProcess) {
-        if (mConversationHelper.isConversationCreated() && mConversationHelper.getConversation() != null) {
+        if (mConversationHelper.isConversationCreated()
+                && mConversationHelper.getConversation() != null
+                && mMessengerPrefHelper.getUserId() != null) { // Current user should be created & saved
             mRealtimeHelper.triggerTyping(mConversationHelper.getConversation(), messageInProcess);
         }
     }
@@ -435,8 +437,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                         mMessengerPrefHelper.setEmail(email);
 
                         configureReplyBoxViewState();
-
-                        mView.focusOnReplyBox(); // Immediately after the Email is entered, the reply box should be focused upon for more information
+                        // Do not focus reply box after email is added - it looks jerky and feels like the user is forced to do something. Let him focus on the reply box
 
                         displayList();
                     }
@@ -491,11 +492,15 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                 .setUserInfo(
                         conversation.getCreator().getId(), // Assuming the current user is always the creator of conversation,
                         conversation.getCreator().getFullName(),
-                        conversation.getCreator().getAvatarUrl()
+                        conversation.getCreator().getAvatarUrl(),
+                        conversation.getCreator().getPresenceChannel()
                 );
 
 
-        mRealtimeHelper.subscribeForRealtimeChanges(conversation);
+        // Subscribe to mark online presence of current user
+        mRealtimeHelper.subscribeForUserOnlinePresence();
+
+        mRealtimeHelper.subscribeForRealtimeConversationChanges(conversation);
         mFailsafePollingHelper.startPolling(new FailsafePollingHelper.PollingListener() {
             @Override
             public void onPoll() {

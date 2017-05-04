@@ -10,6 +10,7 @@ public class MessengerUserPref {
     final private static String KEY_CURRENT_USER_ID = "current_user_id";
     final private static String KEY_FULL_NAME = "full_name";
     final private static String KEY_AVATAR = "avatar";
+    final private static String KEY_PRESENCE_CHANNEL = "presence_channel";
 
     private static MessengerUserPref sInstance;
     private static SharedPreferences sPrefs;
@@ -59,6 +60,14 @@ public class MessengerUserPref {
 
     public void setUserId(long userId) {
         sPrefs.edit().putLong(KEY_CURRENT_USER_ID, userId).commit();
+    }
+
+    public String getPresenceChannel() {
+        return sPrefs.getString(KEY_PRESENCE_CHANNEL, null);
+    }
+
+    public void setPresenceChannel(String presenceChannel) {
+        sPrefs.edit().putString(KEY_PRESENCE_CHANNEL, presenceChannel).commit();
     }
 
 

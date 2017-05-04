@@ -7,12 +7,18 @@ import android.view.DragEvent;
 import android.view.View;
 
 import com.kayako.sdk.android.k5.R;
+import com.kayako.sdk.android.k5.core.KayakoLogHelper;
+import com.kayako.sdk.android.k5.messenger.data.realtime.RealtimeConversationHelper;
+import com.kayako.sdk.android.k5.messenger.data.realtime.RealtimeCurrentUserTrackerHelper;
 
 public class BaseMessengerActivity extends AppCompatActivity {
+
+    private static final String TAG = "BaseMessengerActivity";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadRelevantStaticClasses();
         MessengerActivityTracker.addActivity(this);
     }
 
@@ -49,5 +55,21 @@ public class BaseMessengerActivity extends AppCompatActivity {
 
     private void finishAllActivitiesOfTask() {
         MessengerActivityTracker.finishAllActivities();
+    }
+
+    private void loadRelevantStaticClasses() {
+        // Force following static classes to initialize so that the code in the static block is called before MessengerActivityTracker is called
+        try {
+            Class.forName(RealtimeCurrentUserTrackerHelper.class.getName());
+        } catch (ClassNotFoundException e) {
+            KayakoLogHelper.printStackTrace(TAG, e);
+        }
+
+        try {
+            Class.forName(RealtimeConversationHelper.class.getName());
+        } catch (ClassNotFoundException e) {
+            KayakoLogHelper.printStackTrace(TAG, e);
+        }
+
     }
 }

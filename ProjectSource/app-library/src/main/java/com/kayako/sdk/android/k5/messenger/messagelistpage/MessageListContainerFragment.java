@@ -50,27 +50,27 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         mMessageListView = (MessageListContract.ConfigureView) getChildFragmentManager().findFragmentById(R.id.ko__message_list);
-
         mReplyBoxView = (ReplyBoxContract.ConfigureView) getChildFragmentManager().findFragmentById(R.id.ko__reply_box);
-        mReplyBoxView.setReplyBoxListener(new ReplyBoxContract.ReplyBoxListener() {
-            @Override
-            public void onClickSend(String message) {
-                mPresenter.onClickSendInReplyView(message);
-            }
+        mToolbarView = (MessengerToolbarContract.ConfigureView) getChildFragmentManager().findFragmentById(R.id.ko__messenger_toolbar);
+    }
 
-            @Override
-            public void onClickAddAttachment() {
-                mPresenter.onClickAddAttachment();
-            }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-            @Override
-            public void onTypeReply(String typedMessage) {
-                mPresenter.onTypeReply(typedMessage);
-            }
-        });
+        // Call on Activity Created
+        // Call before initPage()
+        mToolbarView.configureDefaultView();
 
+        Bundle bundle = getActivity().getIntent().getExtras();
+        if (bundle != null && bundle.containsKey(KayakoSelectConversationActivity.ARG_CONVERSATION_ID)) {
+            mPresenter.initPage(false, bundle.getLong(KayakoSelectConversationActivity.ARG_CONVERSATION_ID));
+        } else {
+            mPresenter.initPage(true, null);
+        }
+
+        // Ensure that all methods that use mPresenter should be used only AFTER initPage() is called - this is to ensure resetValues() is called before any mPresenter method is called if the view is recreated
         mMessageListView.setOnErrorListener(new MessageListContract.OnErrorListener() {
             @Override
             public void onClickRetry() {
@@ -106,24 +106,24 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
             }
         });
 
-        mToolbarView = (MessengerToolbarContract.ConfigureView) getChildFragmentManager().findFragmentById(R.id.ko__messenger_toolbar);
+        mReplyBoxView.setReplyBoxListener(new ReplyBoxContract.ReplyBoxListener() {
+            @Override
+            public void onClickSend(String message) {
+                mPresenter.onClickSendInReplyView(message);
+            }
 
-    }
+            @Override
+            public void onClickAddAttachment() {
+                mPresenter.onClickAddAttachment();
+            }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+            @Override
+            public void onTypeReply(String typedMessage) {
+                mPresenter.onTypeReply(typedMessage);
+            }
+        });
 
-        // Call on Activity Created
-        // Call before initPage()
-        mToolbarView.configureDefaultView();
 
-        Bundle bundle = getActivity().getIntent().getExtras();
-        if (bundle != null && bundle.containsKey(KayakoSelectConversationActivity.ARG_CONVERSATION_ID)) {
-            mPresenter.initPage(false, bundle.getLong(KayakoSelectConversationActivity.ARG_CONVERSATION_ID));
-        } else {
-            mPresenter.initPage(true, null);
-        }
     }
 
     @Override

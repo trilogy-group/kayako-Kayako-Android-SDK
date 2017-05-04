@@ -315,6 +315,10 @@ public abstract class BaseListFragment extends Fragment {
         mListPageChangeStateListener = listPageChangeStateListener;
     }
 
+    protected OnListPageStateChangeListener getOnListPageChangeStateListener(){
+        return mListPageChangeStateListener;
+    }
+
     public void addScrollListListener(OnScrollListListener onScrollListener) {
         assert mRecyclerView != null;
 

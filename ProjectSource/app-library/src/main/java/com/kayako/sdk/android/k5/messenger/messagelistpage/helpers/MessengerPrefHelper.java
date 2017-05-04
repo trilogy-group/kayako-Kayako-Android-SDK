@@ -48,13 +48,14 @@ public class MessengerPrefHelper {
         MessengerUserPref.getInstance().setUserId(currentUserId);
     }
 
-    public void setUserInfo(Long currentUserId, String fullName, String avatarUrl) {
-        if (currentUserId == null || currentUserId == 0 || fullName == null || avatarUrl == null) {
+    public void setUserInfo(Long currentUserId, String fullName, String avatarUrl, String presenceChannel) {
+        if (currentUserId == null || currentUserId == 0 || fullName == null || avatarUrl == null || presenceChannel == null) {
             throw new IllegalArgumentException("Values can not be null!");
         }
 
         setUserId(currentUserId);
         setAvatar(avatarUrl);
         MessengerUserPref.getInstance().setFullName(fullName);
+        MessengerUserPref.getInstance().setPresenceChannel(presenceChannel);
     }
 }

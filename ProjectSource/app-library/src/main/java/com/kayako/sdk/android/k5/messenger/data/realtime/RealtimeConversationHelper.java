@@ -3,6 +3,7 @@ package com.kayako.sdk.android.k5.messenger.data.realtime;
 import android.os.Handler;
 
 import com.kayako.sdk.android.k5.common.activities.MessengerActivityTracker;
+import com.kayako.sdk.android.k5.common.activities.MessengerOpenTracker;
 import com.kayako.sdk.android.k5.core.KayakoLogHelper;
 import com.kayako.sdk.android.k5.kre.base.KreSubscription;
 import com.kayako.sdk.android.k5.kre.base.credentials.KreFingerprintCredentials;
@@ -45,16 +46,16 @@ public class RealtimeConversationHelper {
     }
 
     // Close Realtime subscriptions on Messenger close
-    private static MessengerActivityTracker.OnCloseMessengerListener sOnCloseMessengerListener = new MessengerActivityTracker.OnCloseMessengerListener() {
+    private static MessengerOpenTracker.OnCloseMessengerListener sOnCloseMessengerListener = new MessengerOpenTracker.OnCloseMessengerListener() {
         @Override
         public void onCloseMessenger() {
             closeAll();
-            MessengerActivityTracker.removeOnCloseMessengerListener(sOnCloseMessengerListener);
+            // DO NOT REMOVE removeOnCloseMessengerListener() - it should be available after messenger is opened, closed, opened, closed, repeatedly
         }
     };
 
     static {
-        MessengerActivityTracker.addOnCloseMessengerListener(sOnCloseMessengerListener);
+        MessengerOpenTracker.addOnCloseMessengerListener(sOnCloseMessengerListener);
     }
 
     private static void addKreCaseSubscriptionIfNotExisting(String conversationPresenceChannelName, long conversationId) {
@@ -207,8 +208,6 @@ public class RealtimeConversationHelper {
         kreCaseSubscription.unSubscribe(onSubscriptionListener);
     }
 
-    // TODO: Ensure the closeAll() method is called whenever the Messenger is CLOSED!
-
     /**
      * Once KRE is no longer requried for any case.
      * <p>
@@ -227,6 +226,8 @@ public class RealtimeConversationHelper {
         sOnConversationChangeListeners.clear();
         sOnConversationClientActivityListeners.clear();
         sOnConversationMessagesChangeListeners.clear();
+
+        // DO NOT untrack onClose and onOpen
     }
 
     public static void triggerTyping(String conversationPresenceChannelName, long conversationId, boolean isTyping) {
