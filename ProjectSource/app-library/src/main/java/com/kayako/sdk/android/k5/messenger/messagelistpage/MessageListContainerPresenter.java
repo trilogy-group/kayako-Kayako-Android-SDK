@@ -134,8 +134,6 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
         this.mIsNewConversation = isNewConversation;
 
-        mOptimisticMessageHelper.setUserAvatar(mMessengerPrefHelper.getAvatar());
-
         mConversationHelper.setIsConversationCreated(!isNewConversation);
         if (!isNewConversation) {
             mConversationHelper.setConversationId(conversationId);
@@ -545,9 +543,6 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             // IMPORTANT: onLoadConversation() should be called FIRST, then new conversation properties should be set
             // This is required for all dependencies of mConversationHelper and mMessengerPrefHelper
             onLoadConversation(conversation);
-
-            // Update the user avatar (which may have been null before)
-            mOptimisticMessageHelper.setUserAvatar(mMessengerPrefHelper.getAvatar());
 
             // Ensure task removed from queue and other messages get added
             mAddReplyHelper.onSuccessfulCreationOfConversation(clientId, mOnAddReplyCallback);
