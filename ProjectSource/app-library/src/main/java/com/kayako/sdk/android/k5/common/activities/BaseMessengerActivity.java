@@ -2,6 +2,7 @@ package com.kayako.sdk.android.k5.common.activities;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.DragEvent;
 import android.view.View;
@@ -11,22 +12,37 @@ import com.kayako.sdk.android.k5.core.KayakoLogHelper;
 import com.kayako.sdk.android.k5.messenger.data.realtime.RealtimeConversationHelper;
 import com.kayako.sdk.android.k5.messenger.data.realtime.RealtimeCurrentUserTrackerHelper;
 
-public class BaseMessengerActivity extends AppCompatActivity {
+public abstract class BaseMessengerActivity extends AppCompatActivity {
 
     private static final String TAG = "BaseMessengerActivity";
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        loadRelevantStaticClasses();
-        MessengerActivityTracker.addActivity(this);
-    }
+    private static final String FRAGMENT_TAG = "fragment_tag";
+    private Fragment mRetainedFragment;
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        MessengerActivityTracker.refreshList();
+    final protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.ko__activity_messenger_default);
+
+        loadRelevantStaticClasses();
+        MessengerActivityTracker.addActivity(this);
+
+        mRetainedFragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG);
+        if (mRetainedFragment == null) {
+            Fragment fragment = getContainerFragment();
+            if (fragment == null) {
+                throw new IllegalStateException("Invalid fragment returned in abstract method getContainerFragment()");
+            }
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(
+                            R.id.ko__fragment_container,
+                            fragment,
+                            FRAGMENT_TAG)
+                    .commitAllowingStateLoss();
+        }
     }
+
 
     @Override
     final protected void onStart() {
@@ -35,8 +51,27 @@ public class BaseMessengerActivity extends AppCompatActivity {
         setupFloatingViewFunctionality();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if (isFinishing()) {
+            // we will not need this fragment anymore, this may also be a good place to signal to the retained fragment object to perform its own cleanup.
+            if (mRetainedFragment != null) {
+                getSupportFragmentManager().beginTransaction().remove(mRetainedFragment).commit();
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MessengerActivityTracker.refreshList();
+    }
+
+
     private void setupFloatingViewFunctionality() {
-        findViewById(R.id.ko__messenger_custom_foreground).setOnDragListener(new View.OnDragListener() {
+        findViewById(R.id.ko__space_to_close_messenger).setOnDragListener(new View.OnDragListener() {
             @Override
             public boolean onDrag(View v, DragEvent event) {
                 finishAllActivitiesOfTask();
@@ -44,7 +79,6 @@ public class BaseMessengerActivity extends AppCompatActivity {
             }
         });
 
-        // TODO: Causing problems with the toolbar
         findViewById(R.id.ko__space_to_close_messenger).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,6 +104,7 @@ public class BaseMessengerActivity extends AppCompatActivity {
         } catch (ClassNotFoundException e) {
             KayakoLogHelper.printStackTrace(TAG, e);
         }
-
     }
+
+    protected abstract Fragment getContainerFragment();
 }

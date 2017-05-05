@@ -39,6 +39,7 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         mPresenter = MessageListContainerFactory.getPresenter(this);
     }
 

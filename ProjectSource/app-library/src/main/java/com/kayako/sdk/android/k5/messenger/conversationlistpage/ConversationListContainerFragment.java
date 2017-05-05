@@ -24,6 +24,7 @@ public class ConversationListContainerFragment extends Fragment implements Conve
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         mPresenter = ConversationListContainerFactory.getPresenter(this);
     }
 

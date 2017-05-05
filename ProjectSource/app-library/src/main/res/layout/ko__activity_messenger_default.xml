@@ -19,15 +19,17 @@
         android:layout_height="match_parent">
 
         <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/ko__fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <fragment
-                android:id="@+id/ko__messenger_container"
-                android:name="com.kayako.sdk.android.k5.messenger.homescreenpage.HomeScreenContainerFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+            <!--<fragment-->
+                <!--android:id="@+id/ko__message_list_container"-->
+                <!--android:name="com.kayako.sdk.android.k5.messenger.messagelistpage.MessageListContainerFragment"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent" />-->
 
         </android.support.design.widget.CoordinatorLayout>
+
     </FrameLayout>
 </LinearLayout>

@@ -19,6 +19,7 @@ public class HomeScreenContainerFragment extends Fragment implements HomeScreenC
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         mPresenter = HomeScreenContainerFactory.getPresenter(this);
     }
 

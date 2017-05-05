@@ -2,10 +2,10 @@ package com.kayako.sdk.android.k5.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
-import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.activities.BaseMessengerActivity;
+import com.kayako.sdk.android.k5.messenger.messagelistpage.MessageListContainerFragment;
 
 public class KayakoSelectConversationActivity extends BaseMessengerActivity {
 
@@ -13,6 +13,7 @@ public class KayakoSelectConversationActivity extends BaseMessengerActivity {
 
     /**
      * Use this constructor to start a new conversation
+     *
      * @param context
      * @return
      */
@@ -23,6 +24,7 @@ public class KayakoSelectConversationActivity extends BaseMessengerActivity {
 
     /**
      * Use this constructor to open an existing conversation
+     *
      * @param context
      * @return
      */
@@ -33,8 +35,7 @@ public class KayakoSelectConversationActivity extends BaseMessengerActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.ko__activity_messenger_message_listing);
+    protected Fragment getContainerFragment() {
+        return new MessageListContainerFragment();
     }
 }

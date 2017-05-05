@@ -49,7 +49,8 @@ import java.util.Map;
  */
 public class MessageListContainerPresenter implements MessageListContainerContract.Presenter {
 
-    private boolean mIsNewConversation;  // original value when page is opened
+    private Long mPageConversationId; // original value when page is opened
+    private boolean mPageIsNewConversation;  // original value when page is opened
 
     // TODO: on attachment click - if failed to send, resend. if sent, open to view
 
@@ -128,22 +129,22 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
     @Override
     public void initPage(boolean isNewConversation, Long conversationId) {
-        resetVariables(); // TODO: Figure out how to handle orientations
+        if (isNewConversation
+                || (conversationId != null && !conversationId.equals(mPageConversationId))) {
 
-        mFileAttachmentHelper.onReset();
+            resetVariables();
+            mFileAttachmentHelper.onReset();
 
-        this.mIsNewConversation = isNewConversation;
+            this.mPageIsNewConversation = isNewConversation;
+            mConversationHelper.setIsConversationCreated(!isNewConversation);
+            if (!isNewConversation) {
+                mConversationHelper.setConversationId(conversationId);
+            }
 
-        mConversationHelper.setIsConversationCreated(!isNewConversation);
-        if (!isNewConversation) {
-            mConversationHelper.setConversationId(conversationId);
+            mAddReplyHelper.setIsConversationCreated(mConversationHelper.isConversationCreated());
+            mRealtimeHelper.addRealtimeListeners(onConversationChangeListener, onConversationClientActivityListener, onConversationMessagesChangeListener);
+            reloadPage(true);
         }
-
-        mAddReplyHelper.setIsConversationCreated(mConversationHelper.isConversationCreated());
-
-        mRealtimeHelper.addRealtimeListeners(onConversationChangeListener, onConversationClientActivityListener, onConversationMessagesChangeListener);
-
-        reloadPage(true);
     }
 
     @Override
@@ -425,7 +426,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         OnboardingHelper.OnboardingState onboardingState =
                 mOnboardingHelper.getOnboardingState(
                         email != null,
-                        mIsNewConversation);
+                        mPageIsNewConversation);
 
         switch (onboardingState) {
             case ASK_FOR_EMAIL:
@@ -536,7 +537,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private MessageListContainerContract.PostConversationCallback postConversationCallback = new MessageListContainerContract.PostConversationCallback() {
         @Override
         public void onSuccess(String clientId, Conversation conversation) {
-            if (!(mIsNewConversation && !mConversationHelper.isConversationCreated())) {
+            if (!(mPageIsNewConversation && !mConversationHelper.isConversationCreated())) {
                 throw new IllegalStateException("The conditions should be true at this point!");
             }
 
