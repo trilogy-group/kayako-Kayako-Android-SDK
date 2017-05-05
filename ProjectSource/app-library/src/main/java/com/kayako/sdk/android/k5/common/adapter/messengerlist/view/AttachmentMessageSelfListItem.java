@@ -15,12 +15,14 @@ public class AttachmentMessageSelfListItem extends BaseDataListItem {
     private long time;
     private Attachment attachment;
     private DeliveryIndicator deliveryIndicator;
+    private boolean fadeBackground;
 
-    public AttachmentMessageSelfListItem(@Nullable Long id, @Nullable DeliveryIndicator deliveryIndicator, @NonNull Attachment attachment, @Nullable long time, @Nullable Map<String, Object> data) {
+    public AttachmentMessageSelfListItem(@Nullable Long id, @Nullable DeliveryIndicator deliveryIndicator, boolean fadeBackground, @NonNull Attachment attachment, @Nullable long time, @Nullable Map<String, Object> data) {
         super(MessengerListType.ATTACHMENT_MESSAGE_SELF, id, data);
         this.attachment = attachment;
         this.time = time;
         this.deliveryIndicator = deliveryIndicator;
+        this.fadeBackground = fadeBackground;
     }
 
     public Attachment getAttachment() {
@@ -41,5 +43,9 @@ public class AttachmentMessageSelfListItem extends BaseDataListItem {
 
     public DeliveryIndicator getDeliveryIndicator() {
         return deliveryIndicator;
+    }
+
+    public boolean isFadeBackground() {
+        return fadeBackground;
     }
 }

@@ -118,6 +118,7 @@ public class OptimisticSendingHelper {
         // Show time & delivery indicator only for last element
         long time;
         ClientDeliveryStatus clientDeliveryStatus;
+
         if (position == POSITION.END || position == POSITION.ONLY_ELEMENT) {
             time = System.currentTimeMillis();
             clientDeliveryStatus = unsentMessage.getDeliveryStatus();
@@ -135,6 +136,7 @@ public class OptimisticSendingHelper {
                         unsentMessage.getMessage(),
                         time,
                         DeliveryIndicatorHelper.getDeliveryIndicator(clientDeliveryStatus),
+                        true,
                         map
                 );
             } else {
@@ -143,6 +145,7 @@ public class OptimisticSendingHelper {
                         unsentMessage.getMessage(),
                         time,
                         DeliveryIndicatorHelper.getDeliveryIndicator(clientDeliveryStatus),
+                        true,
                         map
                 );
             }
@@ -153,6 +156,7 @@ public class OptimisticSendingHelper {
                 return new AttachmentMessageSelfListItem(
                         null,
                         DeliveryIndicatorHelper.getDeliveryIndicator(clientDeliveryStatus),
+                        true,
                         new AttachmentFileType(null, unsentMessage.getAttachment().getFile(), unsentMessage.getMessage()),
                         time,
                         map
@@ -163,6 +167,7 @@ public class OptimisticSendingHelper {
                         new AttachmentFileType(null, unsentMessage.getAttachment().getFile(), unsentMessage.getMessage()),
                         time,
                         DeliveryIndicatorHelper.getDeliveryIndicator(clientDeliveryStatus),
+                        true,
                         map
                 );
             }

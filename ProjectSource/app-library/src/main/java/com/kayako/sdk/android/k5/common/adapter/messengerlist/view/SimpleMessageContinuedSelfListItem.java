@@ -16,12 +16,14 @@ public class SimpleMessageContinuedSelfListItem extends BaseDataListItem {
     private String message;
     private long time;
     private DeliveryIndicator deliveryIndicator;
+    private boolean fadeBackground;
 
-    public SimpleMessageContinuedSelfListItem(@Nullable Long id, @NonNull String message, @Nullable long time, @Nullable DeliveryIndicator deliveryIndicator, @Nullable Map<String, Object> data) {
+    public SimpleMessageContinuedSelfListItem(@Nullable Long id, @NonNull String message, @Nullable long time, @Nullable DeliveryIndicator deliveryIndicator, boolean fadeBackground, @Nullable Map<String, Object> data) {
         super(MessengerListType.SIMPLE_MESSAGE_CONTINUED_SELF, id, data);
         this.message = message;
         this.time = time;
         this.deliveryIndicator = deliveryIndicator;
+        this.fadeBackground = fadeBackground;
     }
 
     public String getMessage() {
@@ -42,5 +44,9 @@ public class SimpleMessageContinuedSelfListItem extends BaseDataListItem {
 
     public DeliveryIndicator getDeliveryIndicator() {
         return deliveryIndicator;
+    }
+
+    public boolean isFadeBackground() {
+        return fadeBackground;
     }
 }

@@ -311,11 +311,11 @@ public class DataItemHelper {
 
         if (viewBehaviour.showAvatar && viewBehaviour.showAsSelf) {
             // Self is now shown without Avatar - but the padding is different for starting message and continued message
-            return new SimpleMessageSelfListItem(currentDataItem.getId(), currentDataItem.getMessage(), time, deliveryIndicator, currentDataItem.getData());
+            return new SimpleMessageSelfListItem(currentDataItem.getId(), currentDataItem.getMessage(), time, deliveryIndicator, false, currentDataItem.getData());
         } else if (viewBehaviour.showAvatar) {
             return new SimpleMessageOtherListItem(currentDataItem.getId(), currentDataItem.getMessage(), currentDataItem.getUserDecoration().getAvatarUrl(), currentDataItem.getChannelDecoration(), time, currentDataItem.getData());
         } else if (viewBehaviour.showAsSelf) {
-            return new SimpleMessageContinuedSelfListItem(currentDataItem.getId(), currentDataItem.getMessage(), time, deliveryIndicator, currentDataItem.getData());
+            return new SimpleMessageContinuedSelfListItem(currentDataItem.getId(), currentDataItem.getMessage(), time, deliveryIndicator, false, currentDataItem.getData());
         } else {
             return new SimpleMessageContinuedOtherListItem(currentDataItem.getId(), currentDataItem.getMessage(), time, currentDataItem.getData());
         }
@@ -339,11 +339,11 @@ public class DataItemHelper {
 
         if (viewBehaviour.showAvatar && viewBehaviour.showAsSelf) {
             // Self is now shown without Avatar - but the padding is different for starting message and continued message
-            return new AttachmentMessageSelfListItem(currentDataItem.getId(), deliveryIndicator, attachment, time, currentDataItem.getData());
+            return new AttachmentMessageSelfListItem(currentDataItem.getId(), deliveryIndicator, false, attachment, time, currentDataItem.getData());
         } else if (viewBehaviour.showAvatar) {
             return new AttachmentMessageOtherListItem(currentDataItem.getId(), currentDataItem.getUserDecoration().getAvatarUrl(), currentDataItem.getChannelDecoration(), attachment, time, currentDataItem.getData());
         } else if (viewBehaviour.showAsSelf) {
-            return new AttachmentMessageContinuedSelfListItem(currentDataItem.getId(), attachment, time, deliveryIndicator, currentDataItem.getData());
+            return new AttachmentMessageContinuedSelfListItem(currentDataItem.getId(), attachment, time, deliveryIndicator, false, currentDataItem.getData());
         } else {
             return new AttachmentMessageContinuedOtherListItem(currentDataItem.getId(), attachment, time, currentDataItem.getData());
         }

@@ -30,4 +30,5 @@ public class DeliveryIndicator {
     public Long getDeliveryTime() {
         return deliveryTime;
     }
+
 }
