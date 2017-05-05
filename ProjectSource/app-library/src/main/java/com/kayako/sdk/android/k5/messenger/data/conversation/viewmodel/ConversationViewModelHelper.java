@@ -4,10 +4,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.UniqueSortedUpdatableResourceList;
+import com.kayako.sdk.android.k5.core.MessengerPref;
 import com.kayako.sdk.messenger.conversation.Conversation;
 
 import java.util.Collections;
 import java.util.List;
+
+import static com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.BotMessageHelper.getDefaultDrawableForConversation;
 
 /**
  * Responsibilities of this class:
@@ -117,7 +120,6 @@ public class ConversationViewModelHelper {
 
     /**
      * @param id
-     *
      * @return true if the item exists
      */
     public boolean exists(long id) {
@@ -147,26 +149,23 @@ public class ConversationViewModelHelper {
 
         return new ConversationViewModel(
                 conversation.getId(),
-                conversation.getLastReplier().getAvatarUrl(),
-                conversation.getLastReplier().getFullName(),
+                conversation.getLastAgentReplier() == null
+                        ? null
+                        : conversation.getLastAgentReplier().getAvatarUrl(),
+                conversation.getLastAgentReplier() == null
+                        ? null
+                        : conversation.getLastAgentReplier().getFullName(),
                 conversation.getUpdatedAt(),
                 conversation.getLastMessagePreview(),
-                conversation.getReadMarker() == null ? 0 :
-                        conversation.getReadMarker().getUnreadCount() == null ? 0 : conversation.getReadMarker().getUnreadCount(),
-                clientTypingActivity == null ? new ClientTypingActivity(false) : clientTypingActivity
+                conversation.getReadMarker() == null
+                        ? 0
+                        : conversation.getReadMarker().getUnreadCount() == null
+                        ? 0
+                        : conversation.getReadMarker().getUnreadCount(),
+                clientTypingActivity == null
+                        ? new ClientTypingActivity(false)
+                        : clientTypingActivity
         );
-
-
-        // TODO: Add to ConversationListItem - realtime events - istyping
-        // TODO: Which photo to show? The agent? - LastAgentReplier
-        // TODO: Whose name? The agent?
-            /*
-            realtimeConversation.getConversation().getCreator().getAvatarUrl(),
-            realtimeConversation.getConversation().getCreator().getFullName(),
-            realtimeConversation.getConversation().getUpdatedAt(),
-            realtimeConversation.getConversation().getLastMessagePreview(),
-            realtimeConversation.getConversation().getReadMarker() == null ? 0 : realtimeConversation.getConversation().getReadMarker().getUnreadCount() == null ? 0 : realtimeConversation.getConversation().getReadMarker().getUnreadCount(),
-             */
     }
 
 }

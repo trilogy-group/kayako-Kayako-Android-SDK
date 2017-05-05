@@ -8,10 +8,10 @@ public class ConversationViewModel {
     @NonNull
     private long conversationId;
 
-    @NonNull
+    @Nullable  // if null, brand name will be shown
     private String name;
 
-    @NonNull
+    @Nullable // if null, default avatar will be shown
     private String avatarUrl;
 
     @NonNull
@@ -27,16 +27,19 @@ public class ConversationViewModel {
     private ClientTypingActivity lastAgentReplierTyping;
 
     public ConversationViewModel(long conversationId, String avatarUrl, String name, long timeInMilleseconds, String subject, int unreadCount, ClientTypingActivity lastAgentReplierTyping) {
-        this.conversationId = conversationId;
         this.avatarUrl = avatarUrl;
         this.name = name;
+
+        commonConstructor(conversationId, timeInMilleseconds, subject, unreadCount, lastAgentReplierTyping);
+    }
+
+    private void commonConstructor(long conversationId, long timeInMilleseconds, String subject, int unreadCount, ClientTypingActivity lastAgentReplierTyping) {
+        this.conversationId = conversationId;
         this.timeInMilleseconds = timeInMilleseconds;
         this.subject = subject;
 
         if (conversationId == 0
                 || timeInMilleseconds == 0
-                || avatarUrl == null
-                || name == null
                 || subject == null) {
             throw new IllegalArgumentException("Invalid values");
         }
@@ -88,8 +91,9 @@ public class ConversationViewModel {
         if (conversationId != that.conversationId) return false;
         if (timeInMilleseconds != that.timeInMilleseconds) return false;
         if (unreadCount != that.unreadCount) return false;
-        if (!name.equals(that.name)) return false;
-        if (!avatarUrl.equals(that.avatarUrl)) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (avatarUrl != null ? !avatarUrl.equals(that.avatarUrl) : that.avatarUrl != null)
+            return false;
         if (!subject.equals(that.subject)) return false;
         return lastAgentReplierTyping.equals(that.lastAgentReplierTyping);
 
@@ -98,8 +102,8 @@ public class ConversationViewModel {
     @Override
     public int hashCode() {
         int result = (int) (conversationId ^ (conversationId >>> 32));
-        result = 31 * result + name.hashCode();
-        result = 31 * result + avatarUrl.hashCode();
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (avatarUrl != null ? avatarUrl.hashCode() : 0);
         result = 31 * result + (int) (timeInMilleseconds ^ (timeInMilleseconds >>> 32));
         result = 31 * result + subject.hashCode();
         result = 31 * result + unreadCount;

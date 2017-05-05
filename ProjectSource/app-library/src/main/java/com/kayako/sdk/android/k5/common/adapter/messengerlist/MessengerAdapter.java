@@ -249,7 +249,7 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 BotMessageViewHolder botMessageViewHolder = (BotMessageViewHolder) viewHolder;
 
                 botMessageViewHolder.message.setText(Html.fromHtml(botMessageListItem.getMessage()));
-                ImageUtils.setAvatarImage(Kayako.getApplicationContext(), botMessageViewHolder.avatar, BotMessageHelper.getBotDrawable());
+                ImageUtils.setAvatarImage(Kayako.getApplicationContext(), botMessageViewHolder.avatar, BotMessageHelper.getBotDrawableForSystemMessage());
 
                 if (botMessageListItem.getTime() == 0) {
                     botMessageViewHolder.time.setVisibility(View.GONE);

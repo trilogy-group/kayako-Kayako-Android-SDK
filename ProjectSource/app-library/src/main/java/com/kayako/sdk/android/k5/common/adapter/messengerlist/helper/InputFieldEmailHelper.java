@@ -60,7 +60,7 @@ public class InputFieldEmailHelper {
     }
 
     public static void configureInputEmailField(final InputEmailViewHolder viewHolder, final InputEmailListItem listItem) {
-        InputFieldHelper.configureInputField(viewHolder, BotMessageHelper.getBotDrawable(), R.string.ko__messenger_input_email_message_instruction);
+        InputFieldHelper.configureInputField(viewHolder, BotMessageHelper.getBotDrawableForSystemMessage(), R.string.ko__messenger_input_email_message_instruction);
 
         // Set up Input field
         if (listItem.hasSubmittedValue()) {

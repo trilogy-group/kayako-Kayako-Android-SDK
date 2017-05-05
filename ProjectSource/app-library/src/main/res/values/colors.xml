@@ -152,5 +152,6 @@
     <color name="ko__email_input_field_submit_button_text_color">
         @color/ko__messenger_input_field_green
     </color>
+    <color name="ko__messenger_bot_avatar_background_color">#EDEEEF</color>
 
 </resources>

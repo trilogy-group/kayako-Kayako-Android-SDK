@@ -7,8 +7,13 @@ public class BotMessageHelper {
     private BotMessageHelper() {
     }
 
-    public static int getBotDrawable() {
-        return R.drawable.ko__ic_bot_avatar; 
+    public static int getBotDrawableForSystemMessage() {
+        return R.drawable.ko__bot_avatar;
     }
+
+    public static int getDefaultDrawableForConversation() {
+        return R.drawable.ko__ic_default_agent;
+    }
+
 
 }

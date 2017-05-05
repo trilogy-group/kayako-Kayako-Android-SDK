@@ -7,9 +7,11 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.kayako.sdk.android.k5.R;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.BotMessageHelper;
 import com.kayako.sdk.android.k5.common.utils.DateTimeUtils;
 import com.kayako.sdk.android.k5.common.utils.ImageUtils;
 import com.kayako.sdk.android.k5.core.Kayako;
+import com.kayako.sdk.android.k5.core.MessengerPref;
 import com.kayako.sdk.android.k5.helpcenter.articlelistpage.ArticleListContainerContract;
 
 public class ConversationViewItemViewHelper {
@@ -43,6 +45,22 @@ public class ConversationViewItemViewHelper {
         } else {
             typingLoader.setVisibility(View.GONE);
             subjectLine.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public static void setAvatar(Context context, ImageView avatar, String avatarUrl) {
+        if (avatarUrl == null) {
+            ImageUtils.setAvatarImage(context, avatar, BotMessageHelper.getDefaultDrawableForConversation());
+        } else {
+            ImageUtils.setAvatarImage(context, avatar, avatarUrl);
+        }
+    }
+
+    public static void setName(TextView view, String name) {
+        if (name == null) {
+            view.setText(MessengerPref.getInstance().getBrandName());
+        } else {
+            view.setText(name);
         }
     }
 }

@@ -94,7 +94,7 @@ public class ImageUtils {
      * @param avatarView
      * @param avatarResId
      */
-    public static void setAvatarImage(Context context, CircleImageView avatarView, int avatarResId) {
+    public static void setAvatarImage(Context context, ImageView avatarView, int avatarResId) {
         Glide.with(context)
                 .load(avatarResId)
 //                .placeholder(R.color.ko__avatar_image_background)

@@ -58,7 +58,7 @@ public class InputFieldFeedbackCommentHelper {
 
 
     public static void configureInputFeedbackField(final InputFeedbackCommentViewHolder viewHolder, final InputFeedbackCommentListItem listItem) {
-        InputFieldHelper.configureInputField(viewHolder, BotMessageHelper.getBotDrawable(), listItem.getInstructionMessage());
+        InputFieldHelper.configureInputField(viewHolder, BotMessageHelper.getBotDrawableForSystemMessage(), listItem.getInstructionMessage());
 
         // Set up Input field
         if (listItem.hasSubmittedValue()) {

@@ -52,9 +52,7 @@ public class ConversationListAdapter extends EndlessRecyclerViewScrollAdapter {
                 final ConversationListItem conversationListItem = (ConversationListItem) getData().get(position);
 
                 Context context = Kayako.getApplicationContext();
-                ImageUtils.setAvatarImage(context, conversationViewHolder.avatar, conversationListItem.conversationViewModel.getAvatarUrl());
 
-                conversationViewHolder.name.setText(conversationListItem.conversationViewModel.getName());
                 conversationViewHolder.subject.setText(conversationListItem.conversationViewModel.getSubject());
                 conversationViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -64,9 +62,13 @@ public class ConversationListAdapter extends EndlessRecyclerViewScrollAdapter {
                     }
                 });
 
+                ConversationViewItemViewHelper.setName(conversationViewHolder.name, conversationListItem.conversationViewModel.getName());
+                ConversationViewItemViewHelper.setAvatar(context, conversationViewHolder.avatar, conversationListItem.conversationViewModel.getAvatarUrl());
                 ConversationViewItemViewHelper.setFormattedTime(conversationViewHolder.time, conversationListItem.conversationViewModel.getTimeInMilleseconds());
                 ConversationViewItemViewHelper.setUnreadCounter(conversationViewHolder.unreadCounter, conversationListItem.conversationViewModel.getUnreadCount());
                 ConversationViewItemViewHelper.setTypingIndicator(conversationViewHolder.typingLoader, conversationViewHolder.subjectLine, conversationListItem.conversationViewModel.getLastAgentReplierTyping().isTyping());
+                break;
+
             default:
                 super.onBindViewHolder(viewHolder, position);
         }

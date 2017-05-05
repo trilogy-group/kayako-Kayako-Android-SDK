@@ -19,12 +19,12 @@ public class InputFieldFeedbackRatingHelper {
     }
 
     private static void setSelectedRatingState(final InputFeedbackRatingViewHolder viewHolder, final InputFeedbackRatingListItem listItem) {
-        InputFieldHelper.configureInputField(viewHolder, BotMessageHelper.getBotDrawable(), listItem.getInstructionMessage());
+        InputFieldHelper.configureInputField(viewHolder, BotMessageHelper.getBotDrawableForSystemMessage(), listItem.getInstructionMessage());
         InputFieldHelper.enableSubmittedLayout(viewHolder, listItem.getSubmittedValue());
     }
 
     private static void setSelectRatingState(final InputFeedbackRatingViewHolder viewHolder, final InputFeedbackRatingListItem listItem) {
-        InputFieldHelper.configureInputField(viewHolder, BotMessageHelper.getBotDrawable(), listItem.getInstructionMessage());
+        InputFieldHelper.configureInputField(viewHolder, BotMessageHelper.getBotDrawableForSystemMessage(), listItem.getInstructionMessage());
         InputFieldHelper.enableInputLayout(viewHolder);
 
         configureSubmitButtonVisibility(viewHolder);

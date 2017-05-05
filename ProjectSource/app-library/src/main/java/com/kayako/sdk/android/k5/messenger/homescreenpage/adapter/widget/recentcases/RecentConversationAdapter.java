@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.conversationlist.ConversationViewItemViewHelper;
-import com.kayako.sdk.android.k5.common.utils.ImageUtils;
 import com.kayako.sdk.android.k5.core.Kayako;
 import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.ConversationViewModel;
 
@@ -42,8 +41,6 @@ public class RecentConversationAdapter extends RecyclerView.Adapter {
         final ConversationViewModel recentConversation = recentConversationList.get(position);
 
         Context context = Kayako.getApplicationContext();
-        ImageUtils.setAvatarImage(context, viewHolder.avatar, recentConversation.getAvatarUrl());
-        viewHolder.name.setText(recentConversation.getName());
         viewHolder.subject.setText(recentConversation.getSubject());
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,6 +50,9 @@ public class RecentConversationAdapter extends RecyclerView.Adapter {
                 }
             }
         });
+
+        ConversationViewItemViewHelper.setName(viewHolder.name, recentConversation.getName());
+        ConversationViewItemViewHelper.setAvatar(context, viewHolder.avatar, recentConversation.getAvatarUrl());
 
         ConversationViewItemViewHelper.setUnreadCounter(viewHolder.unreadCounter, recentConversation.getUnreadCount());
         ConversationViewItemViewHelper.setFormattedTime(viewHolder.time, recentConversation.getTimeInMilleseconds());
