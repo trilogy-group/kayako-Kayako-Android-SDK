@@ -13,7 +13,7 @@ import com.kayako.sdk.android.k5.messenger.data.conversationstarter.AssignedAgen
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.LastActiveAgentsData;
 import com.kayako.sdk.android.k5.messenger.toolbarview.MessengerToolbarContract;
 
-public class MessengerToolbarExpandedFragment extends Fragment implements MessengerToolbarContract.ChildToolbarConfigureView {
+public class MessengerToolbarExpandedFragment extends BaseToolbarFragment implements MessengerToolbarContract.ChildToolbarConfigureView {
 
     private View mRoot;
     private MessengerToolbarContract.OnExpandOrCollapseListener mListener;
@@ -37,32 +37,45 @@ public class MessengerToolbarExpandedFragment extends Fragment implements Messen
                 });
     }
 
-
     private boolean isPageReady() {
         return isAdded() && getActivity() != null && !getActivity().isFinishing() && mRoot != null;
     }
 
     @Override
-    public void update(@NonNull LastActiveAgentsData data) {
-        if (!isPageReady() && data != null) {
+    public void update(@NonNull final LastActiveAgentsData data) {
+        if (!isPageReadyButView() && data != null) {
             return;
         }
 
-        CommonToolbarViewUtil.setTitle(mRoot, data.getBrandName());
-        CommonToolbarViewUtil.setSubtitleForAverageResponseTime(mRoot, data.getAverageReplyTime());
-        CommonToolbarViewUtil.setLastActiveAgentAvatars(mRoot, data);
+        setOnViewLoadedListener(new OnViewLoadedListener() {
+            @Override
+            public void onViewLoaded() {
+                if (!isPageReady()) {
+                    return;
+                }
 
-        CommonToolbarViewUtil.customizeColorsToMatchMessengerStyle(mRoot);
-        CommonToolbarViewUtil.customizeColorsToMatchMessengerStyleForExpandedToolbar(mRoot);
+                CommonToolbarViewUtil.setTitle(mRoot, data.getBrandName());
+                CommonToolbarViewUtil.setSubtitleForAverageResponseTime(mRoot, data.getAverageReplyTime());
+                CommonToolbarViewUtil.setLastActiveAgentAvatars(mRoot, data);
+
+                CommonToolbarViewUtil.customizeColorsToMatchMessengerStyle(mRoot);
+                CommonToolbarViewUtil.customizeColorsToMatchMessengerStyleForExpandedToolbar(mRoot);
+            }
+        });
     }
 
     @Override
     public void update(@NonNull AssignedAgentData data) {
-        if (!isPageReady() && data != null) {
+        if (!isPageReadyButView() && data != null) {
             return;
         }
 
         // TODO:
+    }
+
+    @Override
+    public void update(@NonNull String title) {
+        throw new IllegalStateException("This method should never be called. For simple view - expanded view should not exist!");
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.kayako.sdk.android.k5.messenger.toolbarview.child;
 
 import android.app.Activity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -39,10 +40,16 @@ public class CommonToolbarViewUtil {
     }
 
     public static void setSubtitleForAverageResponseTime(View mRoot, Long averageReplyTimeInMilliseconds) {
-        ((TextView) mRoot.findViewById(R.id.ko__messenger_toolbar_subtitle))
-                .setText(
-                        ConversationStarterHelper.getAverageResponseTimeCaption(averageReplyTimeInMilliseconds)
-                );
+        String subtitle = ConversationStarterHelper.getAverageResponseTimeCaption(averageReplyTimeInMilliseconds);
+
+        TextView subtitleView = ((TextView) mRoot.findViewById(R.id.ko__messenger_toolbar_subtitle));
+
+        if (TextUtils.isEmpty(subtitle)) {
+            subtitleView.setVisibility(View.GONE);
+        } else {
+            subtitleView.setVisibility(View.VISIBLE);
+            subtitleView.setText(subtitle);
+        }
     }
 
     public static void setLastActiveAgentAvatars(View mRoot, LastActiveAgentsData lastActiveAgentsData) {
@@ -62,6 +69,20 @@ public class CommonToolbarViewUtil {
         }
     }
 
+    public static void setOnlyTitle(View root, String title) {
+        if (root.findViewById(R.id.ko__messenger_toolbar_avatar_caption_text) != null) {
+            throw new IllegalStateException("This method should only be called on a collapsed view!");
+        }
+
+        TextView titleView = ((TextView) root.findViewById(R.id.ko__messenger_toolbar_title));
+        titleView.setVisibility(View.VISIBLE);
+        titleView.setText(title);
+
+        root.findViewById(R.id.ko__messenger_toolbar_subtitle).setVisibility(View.GONE);
+        root.findViewById(R.id.ko__messenger_toolbar_avatars).setVisibility(View.GONE);
+    }
+
+
     public static void customizeColorsToMatchMessengerStyle(View mRoot) {
         MessengerTemplateHelper.applyTextColor(((TextView) mRoot.findViewById(R.id.ko__messenger_toolbar_subtitle)));
         MessengerTemplateHelper.applyTextColor(((TextView) mRoot.findViewById(R.id.ko__messenger_toolbar_title)));
@@ -71,5 +92,4 @@ public class CommonToolbarViewUtil {
         MessengerTemplateHelper.applyTextColor(((TextView) mRoot.findViewById(R.id.ko__messenger_toolbar_avatar_caption_text)));
         MessengerTemplateHelper.applyBackgroundColor(mRoot.findViewById(R.id.ko__messenger_toolbar_avatar_separator));
     }
-
 }

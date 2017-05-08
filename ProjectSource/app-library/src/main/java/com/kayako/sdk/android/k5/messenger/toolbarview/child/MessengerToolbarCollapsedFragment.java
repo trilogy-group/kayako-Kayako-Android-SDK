@@ -13,7 +13,7 @@ import com.kayako.sdk.android.k5.messenger.data.conversationstarter.AssignedAgen
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.LastActiveAgentsData;
 import com.kayako.sdk.android.k5.messenger.toolbarview.MessengerToolbarContract;
 
-public class MessengerToolbarCollapsedFragment extends Fragment implements MessengerToolbarContract.ChildToolbarConfigureView {
+public class MessengerToolbarCollapsedFragment extends BaseToolbarFragment implements MessengerToolbarContract.ChildToolbarConfigureView {
 
     private View mRoot;
     private MessengerToolbarContract.OnExpandOrCollapseListener mListener;
@@ -45,25 +45,51 @@ public class MessengerToolbarCollapsedFragment extends Fragment implements Messe
         return isAdded() && getActivity() != null && !getActivity().isFinishing() && mRoot != null;
     }
 
-
     @Override
-    public synchronized void update(@NonNull LastActiveAgentsData data) {
-        if (!isPageReady()) {
+    public synchronized void update(@NonNull final LastActiveAgentsData data) {
+        if (!isPageReadyButView()) {
             return;
         }
 
-        CommonToolbarViewUtil.setTitle(mRoot, data.getBrandName());
-        CommonToolbarViewUtil.setSubtitleForAverageResponseTime(mRoot, data.getAverageReplyTime());
-        CommonToolbarViewUtil.setLastActiveAgentAvatars(mRoot, data);
+        setOnViewLoadedListener(new OnViewLoadedListener() {
+            @Override
+            public void onViewLoaded() {
+                if(!isPageReady()){
+                    return;
+                }
+
+                CommonToolbarViewUtil.setTitle(mRoot, data.getBrandName());
+                CommonToolbarViewUtil.setSubtitleForAverageResponseTime(mRoot, data.getAverageReplyTime());
+                CommonToolbarViewUtil.setLastActiveAgentAvatars(mRoot, data);
+            }
+        });
     }
 
     @Override
     public synchronized void update(@NonNull AssignedAgentData data) {
-        if (!isPageReady()) {
+        if (!isPageReadyButView()) {
             return;
         }
 
-        // TODO:
+    }
+
+    @Override
+    public synchronized void update(@NonNull final String title) {
+        if (!isPageReadyButView()) {
+            return;
+        }
+
+        setOnViewLoadedListener(new OnViewLoadedListener() {
+            @Override
+            public void onViewLoaded() {
+                if(!isPageReady()){
+                    return;
+                }
+
+                CommonToolbarViewUtil.setOnlyTitle(mRoot, title);
+                CommonToolbarViewUtil.customizeColorsToMatchMessengerStyle(mRoot);
+            }
+        });
     }
 
 

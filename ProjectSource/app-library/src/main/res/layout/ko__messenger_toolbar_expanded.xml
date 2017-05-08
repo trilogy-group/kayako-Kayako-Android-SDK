@@ -9,6 +9,12 @@
 
     <include layout="@layout/ko__include_messenger_toolbar_common" />
 
+    <include
+        layout="@layout/ko__include_separator"
+        android:id="@+id/ko__messenger_toolbar_avatar_separator"
+        android:layout_width="match_parent"
+        android:layout_height="1px" />
+
     <LinearLayout
         android:id="@+id/ko__messenger_toolbar_avatars"
         android:layout_width="match_parent"
@@ -20,17 +26,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="8dp" />
-
-        <include
-            layout="@layout/ko__include_separator"
-            android:id="@+id/ko__messenger_toolbar_avatar_separator"
-            android:layout_width="match_parent"
-            android:layout_height="1px" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="24dp" />
+            android:layout_height="32dp" />
 
         <include
             layout="@layout/ko__include_messenger_toolbar_avatar_expanded"

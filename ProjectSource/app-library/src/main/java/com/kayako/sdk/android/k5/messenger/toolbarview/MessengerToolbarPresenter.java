@@ -22,16 +22,18 @@ public class MessengerToolbarPresenter implements MessengerToolbarContract.Prese
 
     @Override
     public void initPage() {
-        // Set in case there's a network error - otherwise toolbar covers entire screen
-        String brand = MessengerPref.getInstance().getBrandName();
-        mView.configureForLastActiveUsersView(new LastActiveAgentsData(
-                brand,
-                -1L, // Default average response time // TODO: Change it to a vague answer or remove line?
-                null, null, null));
+        if (!mView.isToolbarAreadyConfigured()) {
+            // Set in case there's a network error - otherwise toolbar covers entire screen
+            String brand = MessengerPref.getInstance().getBrandName();
+            mView.configureForLastActiveUsersView(new LastActiveAgentsData(
+                    brand,
+                    -1L, // Default average response time // TODO: Change it to a vague answer or remove line?
+                    null, null, null));
 
-        // TODO: Show this version of the toolbar ONLY
-        // TODO: Set the default toolbar version
-        mData.getConversationStarter(null);
+            // TODO: Show this version of the toolbar ONLY
+            // TODO: Set the default toolbar version
+            mData.getConversationStarter(null);
+        }
     }
 
     @Override

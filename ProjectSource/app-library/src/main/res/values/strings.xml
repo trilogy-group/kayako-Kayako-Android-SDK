@@ -76,4 +76,5 @@
     <string name="ko__messenger_input_feedback_comment_message_hint_default">Your feedback</string>
     <string name="ko__messenger_input_feedback_comment_message_hint_error">Oops, you haven\'t typed anything. Please enter your feedback and click submit</string>
     <string name="ko__messenger_input_feedback_comment_message_submitted">Feedback sent</string>
+    <string name="ko__messenger_toolbar_title_conversations">Conversations</string>
 </resources>

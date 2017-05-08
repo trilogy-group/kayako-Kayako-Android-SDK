@@ -20,7 +20,6 @@ public class ConversationListContainerPresenter implements ConversationListConta
 
     @Override
     public void onOpenPage() {
-        mView.configureDefaultToolbar();
     }
 
     @Override
@@ -65,9 +64,6 @@ public class ConversationListContainerPresenter implements ConversationListConta
     public void onScrollConversationList(boolean isScrolling) {
         mIsScrolling = isScrolling;
         configureNewConversationVisibility();
-
-        // Collapse Toolbar on scroll
-        mView.collapseToolbar();
     }
 
     @Override

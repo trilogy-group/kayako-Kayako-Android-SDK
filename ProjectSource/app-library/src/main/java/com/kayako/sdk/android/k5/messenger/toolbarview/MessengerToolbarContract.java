@@ -22,6 +22,8 @@ public class MessengerToolbarContract {
 
         void configureForAssignedAgentView(@NonNull AssignedAgentData data);
 
+        void configureForSimpleTitle(@NonNull String title);
+
         // TODO: Simple view for Conversation page
 
         void expandToolbarView();
@@ -31,6 +33,8 @@ public class MessengerToolbarContract {
         boolean isToolbarCollapsed();
 
         boolean isToolbarExpanded();
+
+        boolean isToolbarAreadyConfigured();
     }
 
     public interface ChildToolbarConfigureView {
@@ -41,12 +45,14 @@ public class MessengerToolbarContract {
 
         void update(@NonNull AssignedAgentData data);
 
+        void update(@NonNull String title);
+
         void setExpandCollapseButtonClicked(OnExpandOrCollapseListener listener);
     }
 
 
     public enum MessengerToolbarType {
-        ASSIGNED_AGENT, LAST_ACTIVE_AGENTS
+        ASSIGNED_AGENT, LAST_ACTIVE_AGENTS, SIMPLE_TITLE
     }
 
     public interface OnExpandOrCollapseListener {

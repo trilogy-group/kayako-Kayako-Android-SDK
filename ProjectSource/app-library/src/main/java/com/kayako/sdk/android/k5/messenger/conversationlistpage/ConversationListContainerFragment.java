@@ -65,6 +65,7 @@ public class ConversationListContainerFragment extends Fragment implements Conve
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        mToolbarView.configureForSimpleTitle(getString(R.string.ko__messenger_toolbar_title_conversations));
         mPresenter.onOpenPage();
     }
 
@@ -123,22 +124,4 @@ public class ConversationListContainerFragment extends Fragment implements Conve
         mConversationListView.reloadConversations();
     }
 
-    @Override
-    public void configureDefaultToolbar() {
-        if (!hasPageLoaded()) {
-            return;
-        }
-
-        // TODO: Configure for this view?
-        mToolbarView.configureDefaultView(); // call onActivityCreated()
-    }
-
-    @Override
-    public void collapseToolbar() {
-        if (!hasPageLoaded()) {
-            return;
-        }
-
-        mToolbarView.collapseToolbarView();
-    }
 }

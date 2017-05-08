@@ -12,9 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kayako.sdk.android.k5.R;
-import com.kayako.sdk.android.k5.messenger.style.MessengerTemplateHelper;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.AssignedAgentData;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.LastActiveAgentsData;
+import com.kayako.sdk.android.k5.messenger.style.MessengerTemplateHelper;
 import com.kayako.sdk.android.k5.messenger.toolbarview.child.MessengerToolbarCollapsedFragment;
 import com.kayako.sdk.android.k5.messenger.toolbarview.child.MessengerToolbarExpandedFragment;
 
@@ -35,6 +35,7 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
     private boolean mIsExpanded;
     private AssignedAgentData mAssignedAgentData;
     private LastActiveAgentsData mLastActiveAgentsData;
+    private String mTitle;
 
     private MessengerToolbarContract.Presenter mPresenter;
 
@@ -75,6 +76,8 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
             throw new IllegalStateException("The necessary fields are not initialized!");
         }
 
+        // TODO: If nothing has changed, prevent re-generation of child fragment
+
         Fragment childFragment = generateChildFragment();
 
         FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction().replace(R.id.ko__messenger_child_toolbar_container, childFragment);
@@ -106,6 +109,12 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
                 } else {
                     childFragment = new MessengerToolbarCollapsedFragment();
                 }
+                break;
+
+            case SIMPLE_TITLE:
+                // Only collapsed view supported
+                childFragment = new MessengerToolbarCollapsedFragment();
+                mIsExpanded = false;
                 break;
 
             default:
@@ -149,6 +158,10 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
                             .addSharedElement(configureView.getView().findViewById(R.id.ko__messenger_toolbar_avatar1), "ko__messenger_toolbar_avatar1");
                     return;
 
+                case SIMPLE_TITLE:
+                    // No avatars shown
+                    return;
+
                 default:
                     throw new IllegalStateException("Unhandled type!");
             }
@@ -179,12 +192,21 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
 
                 configureView.update(mAssignedAgentData);
                 break;
+
             case LAST_ACTIVE_AGENTS:
                 if (mLastActiveAgentsData == null) {
                     throw new IllegalStateException("Null LastActiveAgents Data!");
                 }
 
                 configureView.update(mLastActiveAgentsData);
+                break;
+
+            case SIMPLE_TITLE:
+                if (mTitle == null) {
+                    throw new IllegalStateException("Null LastActiveAgents Data!");
+                }
+
+                configureView.update(mTitle);
                 break;
 
             default:
@@ -230,6 +252,21 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
     }
 
     @Override
+    public void configureForSimpleTitle(@NonNull String title) {
+        if (!isViewReady()) {
+            return;
+        }
+
+        if (title == null) {
+            throw new IllegalArgumentException("Null not allowed!");
+        }
+
+        mTitle = title;
+        mToolbarType = MessengerToolbarContract.MessengerToolbarType.SIMPLE_TITLE;
+        setupToolbar();
+    }
+
+    @Override
     public synchronized void expandToolbarView() {
         if (!isViewReady() || mToolbarType == null) {
             return;
@@ -257,5 +294,10 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
     @Override
     public boolean isToolbarExpanded() {
         return mLastAddedChildFragment != null && mLastAddedChildFragment instanceof MessengerToolbarExpandedFragment;
+    }
+
+    @Override
+    public boolean isToolbarAreadyConfigured() {
+        return mLastAddedChildFragment != null && mToolbarType != null;
     }
 }
