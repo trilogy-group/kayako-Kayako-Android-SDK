@@ -9,7 +9,6 @@ import com.kayako.sdk.android.k5.common.utils.ImageUtils;
 import com.kayako.sdk.android.k5.core.Kayako;
 import com.kayako.sdk.android.k5.core.MessengerPref;
 import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.UserViewModel;
-import com.kayako.sdk.android.k5.messenger.data.conversationstarter.LastActiveAgentsData;
 import com.kayako.sdk.helpcenter.user.UserMinimal;
 import com.kayako.sdk.messenger.conversationstarter.ConversationStarter;
 
@@ -59,22 +58,28 @@ public class ConversationStarterHelper {
     }
 
     public static String getAverageResponseTimeCaption(Long averageReplyTimeInMilliseconds) {
-        final long ONE_HOUR_IN_MILLISECONDS = 60 * 60 * 1000;
-        final long ONE_DAY_IN_MILLISECONDS = 24 * ONE_HOUR_IN_MILLISECONDS;
+        final long ONE_MINUTE_IN_MILLISECONDS = 60 * 1000;
 
-        String subtitle;
-        if (averageReplyTimeInMilliseconds == null || averageReplyTimeInMilliseconds == -1L || averageReplyTimeInMilliseconds == 0L) { // Get default subtitle
-            // TODO: Check if correct DEFAULT to show?
-            subtitle = null; // Show nothing if unknown
-        } else if (Math.round(averageReplyTimeInMilliseconds / ONE_DAY_IN_MILLISECONDS) > 1) { // replies in more than one day
-            subtitle = String.format(Kayako.getApplicationContext().getString(R.string.ko__messenger_toolbar_subtitle_average_reply_time_in_days), Math.round(averageReplyTimeInMilliseconds / ONE_DAY_IN_MILLISECONDS));
-        } else if (Math.round(averageReplyTimeInMilliseconds / ONE_DAY_IN_MILLISECONDS) == 1) { // replies in about 1.4 days time (1.5 rounds off to 2)
-            subtitle = Kayako.getApplicationContext().getString(R.string.ko__messenger_toolbar_subtitle_average_reply_time_in_a_day);
+        long numberOfMinutes = averageReplyTimeInMilliseconds / ONE_MINUTE_IN_MILLISECONDS;
+
+        if (numberOfMinutes < 5) {
+            return Kayako.getApplicationContext().getString(R.string.ko__messenger_toolbar_subtitle_average_reply_time_in_a_few_minutes);
+        } else if (numberOfMinutes < 15) {
+            return Kayako.getApplicationContext().getString(R.string.ko__messenger_toolbar_subtitle_average_reply_time_in_ten_minutes);
+        } else if (numberOfMinutes < 25) {
+            return Kayako.getApplicationContext().getString(R.string.ko__messenger_toolbar_subtitle_average_reply_time_in_twenty_minutes);
+        } else if (numberOfMinutes < 40) {
+            return Kayako.getApplicationContext().getString(R.string.ko__messenger_toolbar_subtitle_average_reply_time_in_thirty_minutes);
+        } else if (numberOfMinutes < 80) { // 1 HOUR & 20 MINUTES
+            return Kayako.getApplicationContext().getString(R.string.ko__messenger_toolbar_subtitle_average_reply_time_in_an_hour);
+        } else if (numberOfMinutes < 240) { // 4 HOURS
+            return Kayako.getApplicationContext().getString(R.string.ko__messenger_toolbar_subtitle_average_reply_time_in_few_hours);
+        } else if (numberOfMinutes < 1800) { // 30 HOURS = 1 DAY 8 HOURS
+            return Kayako.getApplicationContext().getString(R.string.ko__messenger_toolbar_subtitle_average_reply_time_in_a_day);
         } else {
-            subtitle = String.format(Kayako.getApplicationContext().getString(R.string.ko__messenger_toolbar_subtitle_average_reply_time_in_hours), Math.round(averageReplyTimeInMilliseconds / ONE_HOUR_IN_MILLISECONDS));
+            // SHOW NOTHING if it takes more than a day
+            return "";
         }
-
-        return subtitle;
     }
 
     public static String getLastActiveAgentsCaption(LastActiveAgentsData lastActiveAgentsData) {
