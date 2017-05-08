@@ -3,7 +3,6 @@ package com.kayako.sdk.android.k5.messenger.toolbarview.child;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +53,7 @@ public class MessengerToolbarCollapsedFragment extends BaseToolbarFragment imple
         setOnViewLoadedListener(new OnViewLoadedListener() {
             @Override
             public void onViewLoaded() {
-                if(!isPageReady()){
+                if (!isPageReady()) {
                     return;
                 }
 
@@ -66,11 +65,23 @@ public class MessengerToolbarCollapsedFragment extends BaseToolbarFragment imple
     }
 
     @Override
-    public synchronized void update(@NonNull AssignedAgentData data) {
+    public synchronized void update(@NonNull final AssignedAgentData data) {
         if (!isPageReadyButView()) {
             return;
         }
 
+        setOnViewLoadedListener(new OnViewLoadedListener() {
+            @Override
+            public void onViewLoaded() {
+                if (!isPageReady()) {
+                    return;
+                }
+
+                CommonToolbarViewUtil.setTitle(mRoot, data.getUser().getFullName());
+                CommonToolbarViewUtil.setAssignedAgentAvatar(mRoot, data);
+                CommonToolbarViewUtil.setSubtitleForUserLastActiveTime(mRoot, data);
+            }
+        });
     }
 
     @Override
@@ -82,7 +93,7 @@ public class MessengerToolbarCollapsedFragment extends BaseToolbarFragment imple
         setOnViewLoadedListener(new OnViewLoadedListener() {
             @Override
             public void onViewLoaded() {
-                if(!isPageReady()){
+                if (!isPageReady()) {
                     return;
                 }
 
@@ -91,7 +102,6 @@ public class MessengerToolbarCollapsedFragment extends BaseToolbarFragment imple
             }
         });
     }
-
 
     @Override
     public void setExpandCollapseButtonClicked(MessengerToolbarContract.OnExpandOrCollapseListener listener) {

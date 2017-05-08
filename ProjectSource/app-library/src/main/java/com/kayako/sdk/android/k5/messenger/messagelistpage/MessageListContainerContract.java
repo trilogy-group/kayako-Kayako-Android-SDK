@@ -9,6 +9,7 @@ import com.kayako.sdk.android.k5.common.mvp.BaseData;
 import com.kayako.sdk.android.k5.common.mvp.BasePresenter;
 import com.kayako.sdk.android.k5.common.mvp.BaseView;
 import com.kayako.sdk.android.k5.common.utils.file.FileAttachment;
+import com.kayako.sdk.android.k5.messenger.data.conversationstarter.AssignedAgentData;
 import com.kayako.sdk.messenger.conversation.Conversation;
 import com.kayako.sdk.messenger.conversation.PostConversationBodyParams;
 import com.kayako.sdk.messenger.message.Message;
@@ -75,6 +76,10 @@ public class MessageListContainerContract {
         void openFilePickerForAttachments();
 
         void setAttachmentButtonVisibilityInReplyBox(boolean showAttachment);
+
+        void configureToolbarForAssignedAgent(AssignedAgentData assignedAgentData);
+
+        void configureToolbarForLastActiveAgents();
     }
 
     public interface Presenter extends BasePresenter<MessageListContainerContract.View> {

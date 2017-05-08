@@ -6,6 +6,7 @@ import com.kayako.sdk.android.k5.messenger.data.realtime.OnConversationClientAct
 import com.kayako.sdk.android.k5.messenger.data.realtime.OnConversationMessagesChangeListener;
 import com.kayako.sdk.android.k5.messenger.data.realtime.RealtimeConversationHelper;
 import com.kayako.sdk.android.k5.messenger.data.realtime.RealtimeCurrentUserTrackerHelper;
+import com.kayako.sdk.helpcenter.user.UserMinimal;
 import com.kayako.sdk.messenger.conversation.Conversation;
 
 import java.util.concurrent.atomic.AtomicBoolean;

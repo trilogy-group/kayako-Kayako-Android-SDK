@@ -1,5 +1,6 @@
 package com.kayako.sdk.android.k5.messenger.data.conversationstarter;
 
+import android.provider.Settings;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -79,6 +80,54 @@ public class ConversationStarterHelper {
         } else {
             // SHOW NOTHING if it takes more than a day
             return "";
+        }
+    }
+
+    public static String getLastActiveTimeCaption(boolean isActive, Long averageReplyTimeInMilliseconds) {
+        final long ONE_MINUTE_IN_MILLISECONDS = 60 * 1000;
+
+        long numberOfMinutes = (System.currentTimeMillis() - averageReplyTimeInMilliseconds) / ONE_MINUTE_IN_MILLISECONDS;
+
+        // Assertion due to invalid time on machine
+        if (numberOfMinutes < 0) {
+            // if the time on the machine is behind, the current time will be less than the time the user was active last, leading to a negative value
+            return "";
+        }
+
+        if (isActive) {
+            return Kayako.getApplicationContext().getString(R.string.ko__messenger_toolbar_subtitle_assigned_agent_active);
+        } else if (numberOfMinutes <= 15) {
+            return String.format(
+                    Kayako.getApplicationContext().getString(R.string.ko__messenger_toolbar_subtitle_assigned_agent_active_in_x_minutes),
+                    15);
+
+        } else if (numberOfMinutes <= 37) {
+            return String.format(
+                    Kayako.getApplicationContext().getString(R.string.ko__messenger_toolbar_subtitle_assigned_agent_active_in_x_minutes),
+                    30);
+
+        } else if (numberOfMinutes <= 52) {
+            return String.format(
+                    Kayako.getApplicationContext().getString(R.string.ko__messenger_toolbar_subtitle_assigned_agent_active_in_x_minutes),
+                    45);
+
+        } else if (numberOfMinutes <= 90) {
+            return Kayako.getApplicationContext().getString(R.string.ko__messenger_toolbar_subtitle_assigned_agent_active_in_one_hour);
+
+        } else if (numberOfMinutes < 1410) { // 23.5 HOURS
+            return String.format(
+                    Kayako.getApplicationContext().getString(R.string.ko__messenger_toolbar_subtitle_assigned_agent_active_in_x_hours),
+                    Math.round((numberOfMinutes - 1) / 60));
+
+        } else if (numberOfMinutes < 1470) { // 24.5 HOURS
+            return Kayako.getApplicationContext().getString(R.string.ko__messenger_toolbar_subtitle_assigned_agent_active_in_one_day);
+
+        } else if (numberOfMinutes < 5760) { // ~ 4 DAYS
+            return String.format(
+                    Kayako.getApplicationContext().getString(R.string.ko__messenger_toolbar_subtitle_assigned_agent_active_in_x_days),
+                    Math.round((numberOfMinutes - 1) / (60 * 24)));
+        } else {
+            return ""; // SHOW NOTHING if user was active for more than 4 days
         }
     }
 

@@ -12,8 +12,8 @@ public class AssignedAgentData {
         this.user = user;
         this.isActive = isActive;
 
-        if (user == null) {
-            throw new IllegalArgumentException("User can not be null!");
+        if (user == null || user.getLastActiveAt() == null || user.getFullName() == null || user.getAvatar() == null) {
+            throw new IllegalArgumentException("User and properties can not be null!");
         }
     }
 

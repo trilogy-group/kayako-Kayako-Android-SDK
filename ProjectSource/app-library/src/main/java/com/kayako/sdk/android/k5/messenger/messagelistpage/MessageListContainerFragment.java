@@ -20,6 +20,7 @@ import com.kayako.sdk.android.k5.common.fragments.OnListPageStateChangeListener;
 import com.kayako.sdk.android.k5.common.fragments.OnScrollListListener;
 import com.kayako.sdk.android.k5.common.utils.file.FileAttachmentUtil;
 import com.kayako.sdk.android.k5.core.KayakoLogHelper;
+import com.kayako.sdk.android.k5.messenger.data.conversationstarter.AssignedAgentData;
 import com.kayako.sdk.android.k5.messenger.replyboxview.ReplyBoxContract;
 import com.kayako.sdk.android.k5.messenger.toolbarview.MessengerToolbarContract;
 
@@ -298,5 +299,23 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
         }
 
         mReplyBoxView.setAttachmentButtonVisibility(showAttachment);
+    }
+
+    @Override
+    public void configureToolbarForAssignedAgent(AssignedAgentData assignedAgentData) {
+        if (!hasPageLoaded()) {
+            return;
+        }
+
+        mToolbarView.configureForAssignedAgentView(assignedAgentData);
+    }
+
+    @Override
+    public void configureToolbarForLastActiveAgents() {
+        if (!hasPageLoaded()) {
+            return;
+        }
+
+        mToolbarView.configureDefaultView();
     }
 }

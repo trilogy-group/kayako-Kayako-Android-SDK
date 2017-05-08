@@ -96,11 +96,9 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
 
         switch (mToolbarType) {
             case ASSIGNED_AGENT:
-                if (mIsExpanded) {
-                    childFragment = new MessengerToolbarExpandedFragment();
-                } else {
-                    childFragment = new MessengerToolbarCollapsedFragment();
-                }
+                // Only collapsed view supported
+                childFragment = new MessengerToolbarCollapsedFragment();
+                mIsExpanded = false;
                 break;
 
             case LAST_ACTIVE_AGENTS:
@@ -146,11 +144,6 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
 
             // Specific Transitions
             switch (mToolbarType) {
-                case ASSIGNED_AGENT:
-                    fragmentTransaction
-                            .addSharedElement(configureView.getView().findViewById(R.id.ko__messenger_toolbar_avatar3), "ko__messenger_toolbar_avatar3");
-                    return;
-
                 case LAST_ACTIVE_AGENTS:
                     fragmentTransaction
                             .addSharedElement(configureView.getView().findViewById(R.id.ko__messenger_toolbar_avatar3), "ko__messenger_toolbar_avatar3")
@@ -158,8 +151,12 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
                             .addSharedElement(configureView.getView().findViewById(R.id.ko__messenger_toolbar_avatar1), "ko__messenger_toolbar_avatar1");
                     return;
 
+                case ASSIGNED_AGENT:
+                    // no expanded view - not relevant
+                    return;
+
                 case SIMPLE_TITLE:
-                    // No avatars shown
+                    // No avatars shown - not relevant
                     return;
 
                 default:
@@ -231,6 +228,7 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
             throw new IllegalArgumentException("Null not allowed!");
         }
 
+        mPresenter.configureOtherView();
         mLastActiveAgentsData = data;
         mToolbarType = MessengerToolbarContract.MessengerToolbarType.LAST_ACTIVE_AGENTS;
         setupToolbar();
@@ -246,6 +244,7 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
             throw new IllegalArgumentException("Null not allowed!");
         }
 
+        mPresenter.configureOtherView();
         mAssignedAgentData = data;
         mToolbarType = MessengerToolbarContract.MessengerToolbarType.ASSIGNED_AGENT;
         setupToolbar();

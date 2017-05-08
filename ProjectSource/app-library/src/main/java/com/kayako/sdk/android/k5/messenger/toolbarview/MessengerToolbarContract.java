@@ -12,6 +12,8 @@ public class MessengerToolbarContract {
         void initPage();
 
         void configureDefaultView();
+
+        void configureOtherView();
     }
 
     public interface ConfigureView {
@@ -23,8 +25,6 @@ public class MessengerToolbarContract {
         void configureForAssignedAgentView(@NonNull AssignedAgentData data);
 
         void configureForSimpleTitle(@NonNull String title);
-
-        // TODO: Simple view for Conversation page
 
         void expandToolbarView();
 

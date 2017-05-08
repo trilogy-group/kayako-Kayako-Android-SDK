@@ -15,6 +15,8 @@ public class MessengerToolbarPresenter implements MessengerToolbarContract.Prese
     private MessengerToolbarContract.ConfigureView mView;
     private IConversationStarterRepository mData;
 
+    private boolean mIsLastActiveAgentView;
+
     public MessengerToolbarPresenter(MessengerToolbarContract.ConfigureView view, IConversationStarterRepository data) {
         mView = view;
         mData = data;
@@ -38,11 +40,21 @@ public class MessengerToolbarPresenter implements MessengerToolbarContract.Prese
 
     @Override
     public void configureDefaultView() {
+        mIsLastActiveAgentView = true;
         mData.getConversationStarter(this);
     }
 
     @Override
+    public void configureOtherView() {
+        mIsLastActiveAgentView = false;
+    }
+
+    @Override
     public synchronized void onLoadConversationMetrics(ConversationStarter conversationStarter) {
+        if (!mIsLastActiveAgentView) {
+            return; // Skip if not set to conversation metric view
+        }
+
         try {
             LastActiveAgentsData lastActiveAgentsData = ConversationStarterHelper.convertToLastActiveAgentsData(conversationStarter);
             if (lastActiveAgentsData != null) {

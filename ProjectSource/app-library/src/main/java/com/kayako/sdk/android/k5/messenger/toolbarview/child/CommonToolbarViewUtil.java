@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kayako.sdk.android.k5.R;
+import com.kayako.sdk.android.k5.messenger.data.conversationstarter.AssignedAgentData;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.LastActiveAgentsData;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.ConversationStarterHelper;
 import com.kayako.sdk.android.k5.messenger.style.MessengerTemplateHelper;
@@ -52,6 +53,20 @@ public class CommonToolbarViewUtil {
         }
     }
 
+    public static void setSubtitleForUserLastActiveTime(View mRoot, AssignedAgentData data) {
+        String subtitle = ConversationStarterHelper.getLastActiveTimeCaption(data.isActive(), data.getUser().getLastActiveAt());
+
+        TextView subtitleView = ((TextView) mRoot.findViewById(R.id.ko__messenger_toolbar_subtitle));
+
+        if (TextUtils.isEmpty(subtitle)) {
+            subtitleView.setVisibility(View.GONE);
+        } else {
+            subtitleView.setVisibility(View.VISIBLE);
+            subtitleView.setText(subtitle);
+        }
+    }
+
+
     public static void setLastActiveAgentAvatars(View mRoot, LastActiveAgentsData lastActiveAgentsData) {
         // TODO: Name of Users?
         ImageView imageView1 = (ImageView) mRoot.findViewById(R.id.ko__messenger_toolbar_avatar1);
@@ -67,6 +82,11 @@ public class CommonToolbarViewUtil {
             String captionText = ConversationStarterHelper.getLastActiveAgentsCaption(lastActiveAgentsData);
             ConversationStarterHelper.setCaptionText(captionText, textView);
         }
+    }
+
+    public static void setAssignedAgentAvatar(View mRoot, AssignedAgentData data) {
+        ImageView imageView3 = (ImageView) mRoot.findViewById(R.id.ko__messenger_toolbar_avatar2);
+        ConversationStarterHelper.setAgentAvatar(imageView3, data.getUser());
     }
 
     public static void setOnlyTitle(View root, String title) {
@@ -92,4 +112,5 @@ public class CommonToolbarViewUtil {
         MessengerTemplateHelper.applyTextColor(((TextView) mRoot.findViewById(R.id.ko__messenger_toolbar_avatar_caption_text)));
         MessengerTemplateHelper.applyBackgroundColor(mRoot.findViewById(R.id.ko__messenger_toolbar_avatar_separator));
     }
+
 }

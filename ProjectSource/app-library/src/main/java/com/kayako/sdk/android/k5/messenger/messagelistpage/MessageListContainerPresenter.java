@@ -2,6 +2,7 @@ package com.kayako.sdk.android.k5.messenger.messagelistpage;
 
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.core.MessengerPref;
+import com.kayako.sdk.android.k5.messenger.data.conversationstarter.AssignedAgentData;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.FileAttachmentHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.TypingViewHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.UnsentMessage;
@@ -478,6 +479,18 @@ public class MessageListContainerPresenter implements MessageListContainerContra
      */
     private void onLoadConversation(Conversation conversation) {
         Conversation lastConversationValue = mConversationHelper.getConversation();
+
+        if (conversation.getLastAgentReplier() != null) {
+            mView.configureToolbarForAssignedAgent(
+                    new AssignedAgentData(
+                            new UserViewModel(
+                                    conversation.getLastAgentReplier().getAvatarUrl(),
+                                    conversation.getLastAgentReplier().getFullName(),
+                                    conversation.getLastAgentReplier().getLastActiveAt()
+                            ),
+                            false // TODO: Find if the user is active or not
+                    ));
+        }
 
         // Update existing Conversation
         mConversationHelper.setIsConversationCreated(true);

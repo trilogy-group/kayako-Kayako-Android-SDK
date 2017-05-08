@@ -66,11 +66,7 @@ public class MessengerToolbarExpandedFragment extends BaseToolbarFragment implem
 
     @Override
     public void update(@NonNull AssignedAgentData data) {
-        if (!isPageReadyButView() && data != null) {
-            return;
-        }
-
-        // TODO:
+        throw new IllegalStateException("This method should never be called. For Assigned Agent view - expanded view should not exist!");
     }
 
     @Override
