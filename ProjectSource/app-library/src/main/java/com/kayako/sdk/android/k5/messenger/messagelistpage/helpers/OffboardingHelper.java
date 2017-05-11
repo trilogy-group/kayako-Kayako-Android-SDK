@@ -165,9 +165,7 @@ public class OffboardingHelper {
         // TODO: Show feedback item directly
         List<BaseListItem> listItems = new ArrayList<>();
         listItems.add(new InputFeedbackRatingListItem(
-                String.format(
-                        Kayako.getApplicationContext().getString(R.string.ko__messenger_input_feedback_rating_instruction_message),
-                        lastAgentReplierName),
+                Kayako.getApplicationContext().getString(R.string.ko__messenger_input_feedback_rating_instruction_message),
                 rating.name())
         );
         return listItems;

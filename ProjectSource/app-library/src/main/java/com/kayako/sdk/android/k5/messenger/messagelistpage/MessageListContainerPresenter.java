@@ -541,8 +541,6 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
         // Track for Unread Indicators
         UnreadCounterRepository.addOrUpdateConversation(conversation);
-
-
     }
 
     private MessageListContainerContract.OnLoadConversationListener onLoadConversationListener = new MessageListContainerContract.OnLoadConversationListener() {

@@ -86,6 +86,9 @@ public class ConversationStarterHelper {
         final long ONE_MINUTE_IN_MILLISECONDS = 60 * 1000;
 
         long numberOfMinutes = (System.currentTimeMillis() - averageReplyTimeInMilliseconds) / ONE_MINUTE_IN_MILLISECONDS;
+        long numberOfHours = Math.round(numberOfMinutes / 60);
+        long numberOfDays = Math.round(numberOfHours / 24);
+
 
         // Assertion due to invalid time on machine
         if (numberOfMinutes < 0) {
@@ -110,21 +113,21 @@ public class ConversationStarterHelper {
                     Kayako.getApplicationContext().getString(R.string.ko__messenger_toolbar_subtitle_assigned_agent_active_in_x_minutes),
                     45);
 
-        } else if (numberOfMinutes <= 90) {
+        } else if (numberOfMinutes <= 90 || numberOfHours <=1) {
             return Kayako.getApplicationContext().getString(R.string.ko__messenger_toolbar_subtitle_assigned_agent_active_in_one_hour);
 
         } else if (numberOfMinutes < 1410) { // 23.5 HOURS
             return String.format(
                     Kayako.getApplicationContext().getString(R.string.ko__messenger_toolbar_subtitle_assigned_agent_active_in_x_hours),
-                    Math.round((numberOfMinutes - 1) / 60));
+                    numberOfHours);
 
-        } else if (numberOfMinutes < 1470) { // 24.5 HOURS
+        } else if (numberOfMinutes < 1470 || numberOfDays <= 1) { // 24.5 HOURS
             return Kayako.getApplicationContext().getString(R.string.ko__messenger_toolbar_subtitle_assigned_agent_active_in_one_day);
 
         } else if (numberOfMinutes < 5760) { // ~ 4 DAYS
             return String.format(
                     Kayako.getApplicationContext().getString(R.string.ko__messenger_toolbar_subtitle_assigned_agent_active_in_x_days),
-                    Math.round((numberOfMinutes - 1) / (60 * 24)));
+                    numberOfDays);
         } else {
             return ""; // SHOW NOTHING if user was active for more than 4 days
         }
