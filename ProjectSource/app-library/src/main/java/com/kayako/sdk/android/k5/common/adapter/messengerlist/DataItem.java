@@ -22,9 +22,6 @@ public class DataItem {
     private boolean isRead;
     private List<Attachment> attachments;
 
-    // TODO: Unfurled content model?
-    // TODO: Activity Message? isActivity <-- checks should be added before isSelf
-
     public DataItem(Long id, Map<String, Object> data, UserDecoration userDecoration, ChannelDecoration channelDecoration, DeliveryIndicator deliveryIndicator, String message, Long timeInMilliseconds, List<Attachment> attachments, boolean isRead) {
         assert userDecoration != null;
         assert message != null;

@@ -51,6 +51,7 @@ public class ListHelper {
                 isRead = false;
             }
 
+
             dataItems.add(
                     new DataItem(
                             message.getId(),
@@ -58,7 +59,7 @@ public class ListHelper {
                             UserDecorationHelper.getUserDecoration(message, userId),
                             null, // no channelDecoration
                             com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.DeliveryIndicatorHelper.getDeliveryIndicator(message),
-                            message.getContentText(),
+                            getContent(message), // Prevent attachment name to show if the contents of a message which has an attachment is the name of that attachment
                             message.getCreatedAt(),
                             convert(message.getAttachments()),
                             isRead
@@ -86,6 +87,21 @@ public class ListHelper {
         }
 
         return attachments;
+    }
+
+    private String getContent(Message message) {
+        if (message.getAttachments() != null && message.getAttachments().size() > 0) {
+
+            String contents = message.getContentText();
+
+            for (com.kayako.sdk.messenger.attachment.Attachment attachment : message.getAttachments()) {
+                if (attachment.getName() != null && attachment.getName().equals(contents)) {
+                    return null;
+                }
+            }
+        }
+
+        return message.getContentText();
     }
 
     private String getThumnailUrl(com.kayako.sdk.messenger.attachment.Attachment attachment) {
