@@ -39,6 +39,21 @@ public class FileStorageUtil {
         return String.format("%s%s_%s", ATTACHMENT_NAME_PREFIX, uniqueId, originalFileName);
     }
 
+
+    /**
+     * Format the file name so that it doesn't have any spaces or any other characters that might be purified on backend
+     *
+     * @param originalFileName
+     * @return
+     */
+    public static String purify(@NonNull String originalFileName) {
+        if (originalFileName == null || originalFileName.length() == 0) {
+            return null;
+        }
+        return originalFileName.replaceAll("[^a-zA-Z0-9.\\\\s]", ""); // Replace any non-alphanumeric value
+    }
+
+
     /**
      * Extract the file path
      *
@@ -109,7 +124,7 @@ public class FileStorageUtil {
             inputStream = resolver.openInputStream(contentUri);
 
             // Create a unique filename that does not already exist in internal storage
-            String fileName = getUniqueFileNameForInternalStorage(originalFileName);
+            String fileName = getUniqueFileNameForInternalStorage(purify(originalFileName));
 
             // Create file in Internal App Directory
             outputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE); // creates file if not existing

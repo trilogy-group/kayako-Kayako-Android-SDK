@@ -7,6 +7,7 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.DataItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.DataItemHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.UserDecorationHelper;
 import com.kayako.sdk.android.k5.common.fragments.ListPageState;
+import com.kayako.sdk.android.k5.common.utils.file.FileStorageUtil;
 import com.kayako.sdk.android.k5.core.MessengerPref;
 import com.kayako.sdk.messenger.attachment.Thumbnail;
 import com.kayako.sdk.messenger.message.Message;
@@ -91,11 +92,11 @@ public class ListHelper {
 
     private String getContent(Message message) {
         if (message.getAttachments() != null && message.getAttachments().size() > 0) {
-
-            String contents = message.getContentText();
+            String contents = FileStorageUtil.purify(message.getContentText());
 
             for (com.kayako.sdk.messenger.attachment.Attachment attachment : message.getAttachments()) {
-                if (attachment.getName() != null && attachment.getName().equals(contents)) {
+                String attachmentName = FileStorageUtil.purify(attachment.getName());
+                if (attachmentName != null && attachmentName.equals(contents)) {
                     return null;
                 }
             }

@@ -23,12 +23,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left|center_vertical" />
 
-
         <ImageView
             android:id="@+id/ko__attachment_placeholder"
             android:layout_width="24dp"
             android:layout_height="30dp"
-            android:layout_gravity="center"
+            android:layout_gravity="left|center_vertical"
             android:src="@drawable/ko__img_attachment_placeholder_dark" />
 
     </FrameLayout>
