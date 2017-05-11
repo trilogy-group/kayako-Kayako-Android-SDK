@@ -7,7 +7,7 @@ import com.kayako.sdk.android.k5.R;
 
 public class FadedBackgroundHelper {
 
-    public static void setBackgroundColorForOptimisticSending(@NonNull TextView messageView, boolean fadeBackground) {
+    public static void configureBackground(@NonNull TextView messageView, boolean fadeBackground) {
         // This method was designed to only be called for SELF message!
         MessageStyleHelper.setSelfMessageStyle(messageView);
 
@@ -17,5 +17,4 @@ public class FadedBackgroundHelper {
             messageView.setBackgroundResource(R.drawable.ko__speech_bubble_self);
         }
     }
-
 }

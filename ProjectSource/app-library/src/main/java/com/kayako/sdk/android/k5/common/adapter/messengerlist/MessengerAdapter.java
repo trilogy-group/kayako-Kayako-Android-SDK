@@ -88,7 +88,7 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
 
                 // Covers time and delivery status
                 DeliveryIndicatorHelper.setDeliveryIndicatorView(simpleMessageSelfListItem.getDeliveryIndicator(), simpleMessageSelfListItem.getTime(), simpleMessageSelfViewHolder);
-                FadedBackgroundHelper.setBackgroundColorForOptimisticSending(simpleMessageSelfViewHolder.message, simpleMessageSelfListItem.isFadeBackground());
+                FadedBackgroundHelper.configureBackground(simpleMessageSelfViewHolder.message, simpleMessageSelfListItem.isFadeBackground());
                 break;
 
             case MessengerListType.SIMPLE_MESSAGE_OTHER:
@@ -126,7 +126,7 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
 
                 // Covers time and delivery status
                 DeliveryIndicatorHelper.setDeliveryIndicatorView(simpleMessageContinuedSelfListItem.getDeliveryIndicator(), simpleMessageContinuedSelfListItem.getTime(), simpleMessageContinuedSelfViewHolder);
-                FadedBackgroundHelper.setBackgroundColorForOptimisticSending(simpleMessageContinuedSelfViewHolder.message, simpleMessageContinuedSelfListItem.isFadeBackground());
+                FadedBackgroundHelper.configureBackground(simpleMessageContinuedSelfViewHolder.message, simpleMessageContinuedSelfListItem.isFadeBackground());
                 break;
 
             case MessengerListType.SIMPLE_MESSAGE_CONTINUED_OTHER:
@@ -158,7 +158,7 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
 
                 // Covers time and delivery status
                 DeliveryIndicatorHelper.setDeliveryIndicatorView(attachmentMessageSelfListItem.getDeliveryIndicator(), attachmentMessageSelfListItem.getTime(), attachmentMessageSelfViewHolder);
-                FadedBackgroundHelper.setBackgroundColorForOptimisticSending(attachmentMessageSelfViewHolder.message, attachmentMessageSelfListItem.isFadeBackground());
+                FadedBackgroundHelper.configureBackground(attachmentMessageSelfViewHolder.message, attachmentMessageSelfListItem.isFadeBackground());
                 break;
 
             case MessengerListType.ATTACHMENT_MESSAGE_OTHER:
@@ -204,7 +204,7 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
 
                 // Covers time and delivery status
                 DeliveryIndicatorHelper.setDeliveryIndicatorView(attachmentMessageContinuedSelfListItem.getDeliveryIndicator(), attachmentMessageContinuedSelfListItem.getTime(), attachmentMessageContinuedSelfViewHolder);
-                FadedBackgroundHelper.setBackgroundColorForOptimisticSending(attachmentMessageContinuedSelfViewHolder.message, attachmentMessageContinuedSelfListItem.isFadeBackground());
+                FadedBackgroundHelper.configureBackground(attachmentMessageContinuedSelfViewHolder.message, attachmentMessageContinuedSelfListItem.isFadeBackground());
                 break;
 
             case MessengerListType.ATTACHMENT_MESSAGE_CONTINUED_OTHER:
