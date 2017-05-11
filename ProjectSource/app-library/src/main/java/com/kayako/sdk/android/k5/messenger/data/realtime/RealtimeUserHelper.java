@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Responsibilities:
@@ -46,6 +47,7 @@ public class RealtimeUserHelper {
     private static Map<String, KreUserSubscription> sMapSubscriptions = new HashMap<>();
     private static Map<String, KreSubscription.OnSubscriptionListener> sMapListeners = new HashMap<>();
 
+    private static final Object sListenerKey = new Object();
     private static List<UserPresenceListener> sOnlinePresenceListeners = new ArrayList();
 
     // Close Realtime subscriptions on Messenger close
@@ -101,8 +103,10 @@ public class RealtimeUserHelper {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                for (UserPresenceListener userPresenceListener : sOnlinePresenceListeners) {
-                                    userPresenceListener.onUserOnline(userId);
+                                synchronized (sListenerKey) {
+                                    for (UserPresenceListener userPresenceListener : sOnlinePresenceListeners) {
+                                        userPresenceListener.onUserOnline(userId);
+                                    }
                                 }
                             }
                         });
@@ -113,8 +117,10 @@ public class RealtimeUserHelper {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                for (UserPresenceListener userPresenceListener : sOnlinePresenceListeners) {
-                                    userPresenceListener.onUserOffline(userId);
+                                synchronized (sListenerKey) {
+                                    for (UserPresenceListener userPresenceListener : sOnlinePresenceListeners) {
+                                        userPresenceListener.onUserOffline(userId);
+                                    }
                                 }
                             }
                         });
@@ -156,6 +162,10 @@ public class RealtimeUserHelper {
 
         sMapSubscriptions.clear();
         sMapListeners.clear();
+
+        synchronized (sListenerKey) {
+            sOnlinePresenceListeners.clear();
+        }
     }
 
     public static void trackUser(String userPresenceChannel, long userId, UserPresenceListener listener) {
@@ -163,14 +173,18 @@ public class RealtimeUserHelper {
             throw new IllegalArgumentException("Invalid Listener argument");
         }
 
-        sOnlinePresenceListeners.add(listener);
-        addKreUserSubscriptionIfNotAlreadyAdded(userPresenceChannel, userId);
+        synchronized (sListenerKey) {
+            sOnlinePresenceListeners.add(listener);
+            addKreUserSubscriptionIfNotAlreadyAdded(userPresenceChannel, userId);
 
-        KayakoLogHelper.d(TAG, "trackUser, set = " + sOnlinePresenceListeners.size());
+            KayakoLogHelper.d(TAG, "trackUser, set = " + sOnlinePresenceListeners.size());
+        }
     }
 
     public static void untrackUser(UserPresenceListener listener) {
-        sOnlinePresenceListeners.remove(listener);
+        synchronized (sListenerKey) {
+            sOnlinePresenceListeners.remove(listener);
+        }
     }
 
     public interface UserPresenceListener {
@@ -179,4 +193,5 @@ public class RealtimeUserHelper {
 
         void onUserOffline(long userId);
     }
+
 }

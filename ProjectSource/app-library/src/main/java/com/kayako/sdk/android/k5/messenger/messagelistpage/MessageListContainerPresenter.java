@@ -1,10 +1,6 @@
 package com.kayako.sdk.android.k5.messenger.messagelistpage;
 
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
-import com.kayako.sdk.android.k5.core.MessengerPref;
-import com.kayako.sdk.android.k5.messenger.data.conversation.unreadcounter.UnreadCounterRepository;
-import com.kayako.sdk.android.k5.messenger.data.conversationstarter.AssignedAgentData;
-import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.FileAttachmentHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.TypingViewHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.UnsentMessage;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.EmptyListItem;
@@ -13,14 +9,19 @@ import com.kayako.sdk.android.k5.common.fragments.ListPageState;
 import com.kayako.sdk.android.k5.common.fragments.OnScrollListListener;
 import com.kayako.sdk.android.k5.common.utils.FailsafePollingHelper;
 import com.kayako.sdk.android.k5.common.utils.file.FileAttachment;
+import com.kayako.sdk.android.k5.core.MessengerPref;
+import com.kayako.sdk.android.k5.messenger.data.conversation.unreadcounter.UnreadCounterRepository;
 import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.UserViewModel;
 import com.kayako.sdk.android.k5.messenger.data.realtime.OnConversationChangeListener;
 import com.kayako.sdk.android.k5.messenger.data.realtime.OnConversationClientActivityListener;
 import com.kayako.sdk.android.k5.messenger.data.realtime.OnConversationMessagesChangeListener;
+import com.kayako.sdk.android.k5.messenger.data.realtime.OnConversationUserOnlineListener;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.AddReplyHelper;
+import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.AssignedAgentToolbarHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ClientIdHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ConversationHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ConversationMessagesHelper;
+import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.FileAttachmentHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ListHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.MarkReadHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.MessengerPrefHelper;
@@ -74,6 +75,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private FailsafePollingHelper mFailsafePollingHelper = new FailsafePollingHelper();
     private FileAttachmentHelper mFileAttachmentHelper = new FileAttachmentHelper();
     private OffboardingHelper mOffboardingHelper = new OffboardingHelper();
+    private AssignedAgentToolbarHelper mAssignedAgentToolbarHelper = new AssignedAgentToolbarHelper();
 
     public MessageListContainerPresenter(MessageListContainerContract.View view, MessageListContainerContract.Data data) {
         mView = view;
@@ -144,7 +146,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             }
 
             mAddReplyHelper.setIsConversationCreated(mConversationHelper.isConversationCreated());
-            mRealtimeHelper.addRealtimeListeners(onConversationChangeListener, onConversationClientActivityListener, onConversationMessagesChangeListener);
+            mRealtimeHelper.addRealtimeListeners(onConversationChangeListener, onConversationClientActivityListener, onConversationMessagesChangeListener, mAssignedAgentOnlinePresenceListener);
             reloadPage(true);
         }
     }
@@ -210,6 +212,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         mFailsafePollingHelper = new FailsafePollingHelper();
         mFileAttachmentHelper = new FileAttachmentHelper();
         mOffboardingHelper = new OffboardingHelper();
+        mAssignedAgentToolbarHelper = new AssignedAgentToolbarHelper();
     }
 
     private void reloadPage(boolean resetView) {
@@ -471,6 +474,14 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         }
     }
 
+    private void configureToolbarForAssignedAgent() {
+        if(mAssignedAgentToolbarHelper.getAssignedAgentData() == null){
+            throw new IllegalStateException("This method should not be called if AssignedAgentData is set yet");
+        }
+        mView.configureToolbarForAssignedAgent(mAssignedAgentToolbarHelper.getAssignedAgentData());
+    }
+
+
     ////// API / REALTIME / DATA CHANGE CALLBACKS //////
 
     /**
@@ -482,15 +493,8 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         Conversation lastConversationValue = mConversationHelper.getConversation();
 
         if (conversation.getLastAgentReplier() != null) {
-            mView.configureToolbarForAssignedAgent(
-                    new AssignedAgentData(
-                            new UserViewModel(
-                                    conversation.getLastAgentReplier().getAvatarUrl(),
-                                    conversation.getLastAgentReplier().getFullName(),
-                                    conversation.getLastAgentReplier().getLastActiveAt()
-                            ),
-                            false // TODO: Find if the user is active or not
-                    ));
+            mAssignedAgentToolbarHelper.setAssignedAgentData(conversation);
+            configureToolbarForAssignedAgent();
         }
 
         // Update existing Conversation
@@ -511,9 +515,9 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
 
         // Subscribe to mark online presence of current user
-        mRealtimeHelper.subscribeForUserOnlinePresence();
-
+        mRealtimeHelper.subscribeForCurrentUserOnlinePresence();
         mRealtimeHelper.subscribeForRealtimeConversationChanges(conversation);
+
         mFailsafePollingHelper.startPolling(new FailsafePollingHelper.PollingListener() {
             @Override
             public void onPoll() {
@@ -537,6 +541,8 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
         // Track for Unread Indicators
         UnreadCounterRepository.addOrUpdateConversation(conversation);
+
+
     }
 
     private MessageListContainerContract.OnLoadConversationListener onLoadConversationListener = new MessageListContainerContract.OnLoadConversationListener() {
@@ -725,6 +731,29 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         }
     };
 
+    private OnConversationUserOnlineListener mAssignedAgentOnlinePresenceListener = new OnConversationUserOnlineListener() {
+        @Override
+        public void onUserOnline(long conversationId, long userId) {
+            if (mConversationHelper.getConversation() != null
+                    && mConversationHelper.getConversation().getLastAgentReplier() != null
+                    && mConversationHelper.getConversation().getLastAgentReplier().getId() == userId) {
+
+                mAssignedAgentToolbarHelper.markActiveStatus(true);
+                configureToolbarForAssignedAgent();
+            }
+
+        }
+
+        @Override
+        public void onUserOffline(long conversationId, long userId) {
+            if (mConversationHelper.getConversation() != null
+                    && mConversationHelper.getConversation().getLastAgentReplier() != null
+                    && mConversationHelper.getConversation().getLastAgentReplier().getId() == userId) {
+                mAssignedAgentToolbarHelper.markActiveStatus(false);
+                configureToolbarForAssignedAgent();
+            }
+        }
+    };
 
     ////// API CALLING METHODS //////
 

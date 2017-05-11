@@ -17,7 +17,6 @@ import com.kayako.sdk.android.k5.kre.helpers.presence.KrePresenceHelper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -40,6 +39,7 @@ public class KreCaseSubscription {
     private KreSubscription mKreSubscription;
     private KrePresenceHelper mKrePresenceHelper;
     private KreSubscription.OnSubscriptionListener mMainListener;
+    private boolean mIsAgent;
     private List<KreSubscription.OnSubscriptionListener> mChildListeners = new ArrayList<>();
 
     private AtomicBoolean hasSubscribeBeenCalledOnce = new AtomicBoolean(false);
@@ -120,17 +120,22 @@ public class KreCaseSubscription {
         return mKreSubscription.isConnected() && mKreSubscription.hasSubscribed();
     }
 
-    public synchronized void subscribe(@NonNull KreCredentials kreCredentials, @NonNull final String channel, @NonNull final KreSubscription.OnSubscriptionListener onSubscriptionListener) {
+    public synchronized void subscribe(@NonNull KreCredentials kreCredentials, @NonNull final String channel, @NonNull final boolean isAgent, @NonNull final KreSubscription.OnSubscriptionListener onSubscriptionListener) {
         if (kreCredentials == null || channel == null || onSubscriptionListener == null) {
             throw new IllegalArgumentException("Null arguments are not allowed");
         }
 
         if (mMainListener == null) {
+            mIsAgent = isAgent;
             mMainListener = new KreSubscription.OnSubscriptionListener() {
                 @Override
                 public synchronized void onSubscription() {
-                    // For Cases Presence Channels, subscribing alone does not imply a user is online, instead, we need to trigger an event to show the user is online
-                    mKrePresenceHelper.triggerClientForegroundEvent(true, true);
+                    if (isAgent) {
+                        // For Cases Presence Channels, subscribing alone does not imply a user is online, instead, we need to trigger an event to show the user is online
+                        mKrePresenceHelper.triggerClientForegroundEvent(true, true);
+                    } else {
+                        mKrePresenceHelper.triggerClientForegroundEvent(false, false);
+                    }
 
                     // The listening of events should only be called once (except for a new case realtime channel). Every other subscription should only add a listener and expect events (from the first subscription)
                     mKrePresenceHelper.setRawUserOnCasePresenceListener(new RawUserOnCasePresenceListener() {
@@ -303,6 +308,10 @@ public class KreCaseSubscription {
             };
 
             mKreSubscription.subscribe(kreCredentials, channel, mMainListener);
+        }
+
+        if (mIsAgent != isAgent) {
+            throw new IllegalStateException("Ensure that this state does not change for a single conversation instance");
         }
 
         // Keep track of listeners

@@ -2,7 +2,6 @@ package com.kayako.sdk.android.k5.messenger.data.realtime;
 
 import android.os.Handler;
 
-import com.kayako.sdk.android.k5.common.activities.MessengerActivityTracker;
 import com.kayako.sdk.android.k5.common.activities.MessengerOpenTracker;
 import com.kayako.sdk.android.k5.core.KayakoLogHelper;
 import com.kayako.sdk.android.k5.kre.base.KreSubscription;
@@ -12,6 +11,7 @@ import com.kayako.sdk.android.k5.kre.data.Change;
 import com.kayako.sdk.android.k5.kre.helpers.MinimalClientTypingListener;
 import com.kayako.sdk.android.k5.kre.helpers.RawCaseChangeListener;
 import com.kayako.sdk.android.k5.kre.helpers.RawCasePostChangeListener;
+import com.kayako.sdk.android.k5.kre.helpers.RawUserOnCasePresenceListener;
 import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.UserViewModel;
 import com.kayako.sdk.base.callback.ItemCallback;
 import com.kayako.sdk.error.KayakoException;
@@ -20,6 +20,7 @@ import com.kayako.sdk.messenger.message.Message;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -41,6 +42,7 @@ public class RealtimeConversationHelper {
     private static Set<OnConversationChangeListener> sOnConversationChangeListeners = new HashSet<>();
     private static Set<OnConversationClientActivityListener> sOnConversationClientActivityListeners = new HashSet<>();
     private static Set<OnConversationMessagesChangeListener> sOnConversationMessagesChangeListeners = new HashSet<>();
+    private static Set<OnConversationUserOnlineListener> sOnConversationUserOnlineListeners = new HashSet<>();
 
     private RealtimeConversationHelper() {
     }
@@ -80,6 +82,7 @@ public class RealtimeConversationHelper {
         kreCaseSubscription.subscribe(
                 new KreFingerprintCredentials(kreStarterValues.getInstanceUrl(), kreStarterValues.getFingerprintId()),
                 conversationPresenceChannelName,
+                false,
                 onSubscriptionListener
         );
     }
@@ -185,6 +188,64 @@ public class RealtimeConversationHelper {
                         KayakoLogHelper.e(TAG, "onConnectionError()");
                     }
                 });
+
+                kreCaseSubscription.addUserPresenceListener(new RawUserOnCasePresenceListener() {
+                    @Override
+                    public void onUsersAlreadyViewingCase(final List<Long> onlineUserIds, long entryTime) {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                for (Long userId : onlineUserIds) {
+                                    if (userId != null) {
+                                        for (OnConversationUserOnlineListener onConversationUserOnlineListener : sOnConversationUserOnlineListeners) {
+                                            onConversationUserOnlineListener.onUserOnline(conversationId, userId);
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onNewUserViewingCase(final Long onlineUser, long entryTime) {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (onlineUser != null) {
+                                    for (OnConversationUserOnlineListener onConversationUserOnlineListener : sOnConversationUserOnlineListeners) {
+                                        onConversationUserOnlineListener.onUserOnline(conversationId, onlineUser);
+                                    }
+                                }
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onUserNoLongerViewingCase(final Long offlineUserId) {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                if (offlineUserId != null) {
+                                    for (OnConversationUserOnlineListener onConversationUserOnlineListener : sOnConversationUserOnlineListeners) {
+                                        onConversationUserOnlineListener.onUserOffline(conversationId, offlineUserId);
+                                    }
+                                }
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onExistingUserPerformingSomeActivity(Long onlineUser, long lastActiveTime) {
+
+                    }
+
+                    @Override
+                    public void onConnectionError() {
+
+                    }
+                });
             }
 
             @Override
@@ -272,6 +333,17 @@ public class RealtimeConversationHelper {
         KayakoLogHelper.d(TAG, "trackMessageChange, set = " + sOnConversationMessagesChangeListeners.size());
     }
 
+    public static void trackPresenceUser(String conversationPresenceChannelName, long conversationId, final OnConversationUserOnlineListener listener) {
+        if (listener == null) {
+            throw new IllegalArgumentException("Invalid Listener argument");
+        }
+
+        sOnConversationUserOnlineListeners.add(listener);
+        addKreCaseSubscriptionIfNotExisting(conversationPresenceChannelName, conversationId);
+
+        KayakoLogHelper.d(TAG, "trackMessageChange, set = " + sOnConversationMessagesChangeListeners.size());
+    }
+
     public static void untrack(OnConversationChangeListener listener) {
         sOnConversationChangeListeners.remove(listener);
     }
@@ -283,5 +355,10 @@ public class RealtimeConversationHelper {
     public static void untrack(OnConversationMessagesChangeListener listener) {
         sOnConversationMessagesChangeListeners.remove(listener);
     }
+
+    public static void untrack(OnConversationUserOnlineListener listener) {
+        sOnConversationUserOnlineListeners.remove(listener);
+    }
+
 
 }
