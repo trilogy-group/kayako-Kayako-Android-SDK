@@ -28,7 +28,8 @@
     <dimen name="ko__messenger_chat_bubble_min_width">45dp</dimen>
 
     <dimen name="ko__messenger_attachment_margin_vertical">8dp</dimen>
-    <dimen name="ko__messenger_attachment_min_width">120dp</dimen>
+    <dimen name="ko__messenger_attachment_min_width">200dp</dimen>
+    <dimen name="ko__messenger_attachment_max_width">200dp</dimen>
     <dimen name="ko__messenger_attachment_min_height">80dp</dimen>
     <dimen name="ko__messenger_attachment_max_height">80dp</dimen>
     <dimen name="ko__messenger_channel_size">18dp</dimen>
@@ -53,9 +54,9 @@
     <dimen name="ko__messenger_toolbar_back_button_padding">16dp</dimen>
     <dimen name="ko__messenger_toolbar_back_button_layout_size">64dp</dimen> <!-- (ko__messenger_toolbar_back_button_padding + ko__messenger_toolbar_back_button_size) -->
 
-    <dimen name="ko__messenger_toolbar_collapsed_avatars_layout_size">@dimen/ko__messenger_toolbar_back_button_layout_size</dimen> <!-- same as ko__messenger_toolbar_back_button_layout_size -->
-    <dimen name="ko__messenger_toolbar_collapsed_avatar_size">24dp</dimen>
+    <dimen name="ko__messenger_toolbar_avatars_layout_size">@dimen/ko__messenger_toolbar_back_button_layout_size</dimen> <!-- same as ko__messenger_toolbar_back_button_layout_size -->
     <dimen name="ko__messenger_toolbar_expanded_avatar_size">48dp</dimen>
+    <dimen name="ko__messenger_toolbar_collapsed_avatar_size">24dp</dimen>
     <dimen name="ko__messenger_toolbar_expanded_avatar_padding_horizontal">8dp</dimen>
 
     <dimen name="ko__messenger_home_screen_widget_header_corner_top">8dp</dimen>

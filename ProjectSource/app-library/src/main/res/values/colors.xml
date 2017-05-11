@@ -132,6 +132,7 @@
 
     <!-- TODO Shift to code? THen make this default -->
     <color name="ko__messenger_primary_color">#F1703F</color>
+
     <color name="ko__messenger_home_screen_widget_header_action_button_text_color">#2D3138</color>
 
     <color name="ko__messenger_input_field_green">#4EAC5E</color>
@@ -152,6 +153,10 @@
     <color name="ko__email_input_field_submit_button_text_color">
         @color/ko__messenger_input_field_green
     </color>
+
     <color name="ko__messenger_bot_avatar_background_color">#EDEEEF</color>
+    <color name="ko__messenger_bot_attachment_background_color">#EDEEEF</color>
+
+
 
 </resources>

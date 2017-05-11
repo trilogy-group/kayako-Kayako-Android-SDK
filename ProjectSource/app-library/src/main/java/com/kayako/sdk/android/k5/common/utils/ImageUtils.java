@@ -97,7 +97,8 @@ public class ImageUtils {
     public static void setAvatarImage(Context context, ImageView avatarView, int avatarResId) {
         Glide.with(context)
                 .load(avatarResId)
-//                .placeholder(R.color.ko__avatar_image_background)
+                .crossFade()
+                .placeholder(R.drawable.ko__bot_avatar)
                 .centerCrop()
                 .skipMemoryCache(false) // false because avatars are repeatedly used in message listing, case listing, etc - when true, it shows placeholders
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -125,24 +126,22 @@ public class ImageUtils {
      * @param imageView
      * @param file
      */
-    public static void loadFileAsAttachmentImage(@NonNull Context context, @NonNull ImageView imageView, @NonNull File file, int placeholderDrawable) {
+    public static void loadFileAsAttachmentImage(@NonNull Context context, @NonNull ImageView imageView, @NonNull File file) {
         Glide.with(context)
                 .load(file)
-                .placeholder(placeholderDrawable)
+                .placeholder(R.drawable.ko__loading_attachment)
                 .skipMemoryCache(false)
                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
                 .into(imageView);
     }
 
-
-    public static void loadUrlAsAttachmentImage(@NonNull Context context, @NonNull ImageView imageView, @NonNull String imageUrl, int placeholderDrawable) {
+    public static void loadUrlAsAttachmentImage(@NonNull Context context, @NonNull ImageView imageView, @NonNull String imageUrl) {
         Glide.with(context)
                 .load(imageUrl)
-                .placeholder(placeholderDrawable)
+                .placeholder(R.drawable.ko__loading_attachment)
                 .skipMemoryCache(false)
                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
                 .into(imageView);
     }
-
 
 }

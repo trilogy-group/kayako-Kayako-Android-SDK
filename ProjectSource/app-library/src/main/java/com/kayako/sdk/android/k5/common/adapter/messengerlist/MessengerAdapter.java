@@ -63,9 +63,7 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
     private OnAvatarClickListener mAvatarClickListener;
     private OnAttachmentClickListener mAttachmentClickListener;
 
-    // TODO: Replace attachment placeholder with a loadig indicator instead?
     // TODO: Redesign so that the attachments are on white background
-    private static final int DEFAULT_PLACEHOLDER_ATTACHMENT = R.drawable.ko__img_attachment_placeholder_light;
 
     public MessengerAdapter(List<BaseListItem> itemList) {
         super(itemList);
@@ -432,7 +430,7 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 } else {
                     attachmentPlaceholder.setVisibility(View.GONE);
                     thumbnailImageView.setVisibility(View.VISIBLE);
-                    ImageUtils.loadUrlAsAttachmentImage(Kayako.getApplicationContext(), thumbnailImageView, attachmentUrl, DEFAULT_PLACEHOLDER_ATTACHMENT);
+                    ImageUtils.loadUrlAsAttachmentImage(Kayako.getApplicationContext(), thumbnailImageView, attachmentUrl);
                 }
 
                 String attachmentCaption = ((AttachmentUrlType) attachment).getCaption();
@@ -447,7 +445,7 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 } else {
                     attachmentPlaceholder.setVisibility(View.GONE);
                     thumbnailImageView.setVisibility(View.VISIBLE);
-                    ImageUtils.loadFileAsAttachmentImage(Kayako.getApplicationContext(), thumbnailImageView, attachmentFile, DEFAULT_PLACEHOLDER_ATTACHMENT);
+                    ImageUtils.loadFileAsAttachmentImage(Kayako.getApplicationContext(), thumbnailImageView, attachmentFile);
                 }
 
                 String attachmentFileCaption = ((AttachmentFileType) attachment).getCaption();

@@ -72,7 +72,7 @@
 
 
     <Space
-        android:layout_width="@dimen/ko__messenger_toolbar_collapsed_avatars_layout_size"
+        android:layout_width="@dimen/ko__messenger_toolbar_avatars_layout_size"
         android:layout_height="match_parent" />
 
 </LinearLayout>
