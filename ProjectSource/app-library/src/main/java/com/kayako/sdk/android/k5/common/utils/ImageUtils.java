@@ -75,14 +75,15 @@ public class ImageUtils {
         if (avatarUrl != null) {
             Glide.with(context)
                     .load(avatarUrl)
-//                    .placeholder(R.color.ko__avatar_image_background)
+                    .placeholder(R.drawable.ko__bot_avatar)
+                    .crossFade()
                     .centerCrop()
                     .skipMemoryCache(false) // false because avatars are repeatedly used in message listing, case listing, etc - when true, it shows placeholders
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(avatarView);
         } else {
             Glide.with(context)
-                    .load(R.color.ko__avatar_image_background)
+                    .load(R.drawable.ko__bot_avatar)
                     .into(avatarView);
         }
     }
@@ -98,7 +99,6 @@ public class ImageUtils {
         Glide.with(context)
                 .load(avatarResId)
                 .crossFade()
-                .placeholder(R.drawable.ko__bot_avatar)
                 .centerCrop()
                 .skipMemoryCache(false) // false because avatars are repeatedly used in message listing, case listing, etc - when true, it shows placeholders
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
