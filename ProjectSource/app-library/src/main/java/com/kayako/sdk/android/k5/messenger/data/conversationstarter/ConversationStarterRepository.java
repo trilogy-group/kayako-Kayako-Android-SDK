@@ -70,4 +70,11 @@ public class ConversationStarterRepository implements IConversationStarterReposi
             }
         });
     }
+
+    @Override
+    public void clear() {
+        synchronized (key) {
+            mConversationStarter = null;
+        }
+    }
 }

@@ -25,6 +25,17 @@ public class ConversationStarterRepositoryManyListeners implements IConversation
     }
 
     @Override
+    public synchronized void clear() {
+        if (conversationStarterRepository != null) {
+            conversationStarterRepository.clear();
+        }
+
+        if (listeners != null) {
+            listeners.clear();
+        }
+    }
+
+    @Override
     public synchronized void onLoadConversationMetrics(final ConversationStarter conversationStarter) {
         List<WeakReference<OnLoadConversationStarterListener>> listenersToRemove = new ArrayList<>();
         for (WeakReference<OnLoadConversationStarterListener> weakReference : listeners) {

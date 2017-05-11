@@ -95,7 +95,7 @@
                     android:maxLines="1"
                     android:textColor="@color/ko__conversation_item_subject_text_color"
                     android:textSize="@dimen/ko__messenger_home_screen_widget_recent_cases__conversation_list_item_subject_text_size"
-                    tools:text="@string/lorem_ipsum" />
+                    tools:text="blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah" />
 
                 <include
                     layout="@layout/ko__include_unread_message_counter"

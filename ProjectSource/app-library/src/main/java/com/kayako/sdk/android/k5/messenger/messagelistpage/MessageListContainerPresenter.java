@@ -2,6 +2,7 @@ package com.kayako.sdk.android.k5.messenger.messagelistpage;
 
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.core.MessengerPref;
+import com.kayako.sdk.android.k5.messenger.data.conversation.unreadcounter.UnreadCounterRepository;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.AssignedAgentData;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.FileAttachmentHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.TypingViewHelper;
@@ -533,6 +534,9 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
         // Since reply box visibility depends on conversation status - refresh reply box every time conversation is loaded
         configureReplyBoxViewState();
+
+        // Track for Unread Indicators
+        UnreadCounterRepository.addOrUpdateConversation(conversation);
     }
 
     private MessageListContainerContract.OnLoadConversationListener onLoadConversationListener = new MessageListContainerContract.OnLoadConversationListener() {
@@ -650,6 +654,10 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private OnConversationChangeListener onConversationChangeListener = new OnConversationChangeListener() {
         @Override
         public void onChange(Conversation conversation) {
+            if (conversation.getId() != mConversationHelper.getConversationId()) {
+                return;
+            }
+
             onLoadConversation(conversation);
         }
     };

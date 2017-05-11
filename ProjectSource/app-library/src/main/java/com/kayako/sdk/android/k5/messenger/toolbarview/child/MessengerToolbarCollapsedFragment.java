@@ -35,7 +35,8 @@ public class MessengerToolbarCollapsedFragment extends BaseToolbarFragment imple
                             mListener.onCollapseOrExpand();
                         }
                     }
-                });
+                },
+                0);
 
         CommonToolbarViewUtil.customizeColorsToMatchMessengerStyle(mRoot);
     }
@@ -45,7 +46,7 @@ public class MessengerToolbarCollapsedFragment extends BaseToolbarFragment imple
     }
 
     @Override
-    public synchronized void update(@NonNull final LastActiveAgentsData data) {
+    public synchronized void update(@NonNull final LastActiveAgentsData data, final int unreadCount) {
         if (!isPageReadyButView()) {
             return;
         }
@@ -60,12 +61,13 @@ public class MessengerToolbarCollapsedFragment extends BaseToolbarFragment imple
                 CommonToolbarViewUtil.setTitle(mRoot, data.getBrandName());
                 CommonToolbarViewUtil.setSubtitleForAverageResponseTime(mRoot, data.getAverageReplyTime());
                 CommonToolbarViewUtil.setLastActiveAgentAvatars(mRoot, data);
+                CommonToolbarViewUtil.setUnreadCount(mRoot, unreadCount);
             }
         });
     }
 
     @Override
-    public synchronized void update(@NonNull final AssignedAgentData data) {
+    public synchronized void update(@NonNull final AssignedAgentData data, final int unreadCount) {
         if (!isPageReadyButView()) {
             return;
         }
@@ -80,12 +82,13 @@ public class MessengerToolbarCollapsedFragment extends BaseToolbarFragment imple
                 CommonToolbarViewUtil.setTitle(mRoot, data.getUser().getFullName());
                 CommonToolbarViewUtil.setAssignedAgentAvatar(mRoot, data);
                 CommonToolbarViewUtil.setSubtitleForUserLastActiveTime(mRoot, data);
+                CommonToolbarViewUtil.setUnreadCount(mRoot, unreadCount);
             }
         });
     }
 
     @Override
-    public synchronized void update(@NonNull final String title) {
+    public synchronized void update(@NonNull final String title, final int unreadCount) {
         if (!isPageReadyButView()) {
             return;
         }
@@ -99,6 +102,7 @@ public class MessengerToolbarCollapsedFragment extends BaseToolbarFragment imple
 
                 CommonToolbarViewUtil.setOnlyTitle(mRoot, title);
                 CommonToolbarViewUtil.customizeColorsToMatchMessengerStyle(mRoot);
+                CommonToolbarViewUtil.setUnreadCount(mRoot, unreadCount);
             }
         });
     }

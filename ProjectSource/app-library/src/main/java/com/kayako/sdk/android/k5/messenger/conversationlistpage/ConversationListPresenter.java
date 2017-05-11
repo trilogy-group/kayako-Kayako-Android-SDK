@@ -4,6 +4,7 @@ import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.conversationlist.ConversationListItem;
 import com.kayako.sdk.android.k5.common.utils.FailsafePollingHelper;
 import com.kayako.sdk.android.k5.core.MessengerPref;
+import com.kayako.sdk.android.k5.messenger.data.conversation.unreadcounter.UnreadCounterRepository;
 import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.ClientTypingActivity;
 import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.ConversationViewModel;
 import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.ConversationViewModelHelper;
@@ -124,6 +125,9 @@ public class ConversationListPresenter implements ConversationListContract.Prese
 
                     configureIfMoreItemsAvailable(conversations.size());
                     mOffset = offset + conversations.size();
+
+                    // Track for Unread Indicators
+                    UnreadCounterRepository.addOrUpdateConversations(conversations);
                 }
             }
 
@@ -210,6 +214,8 @@ public class ConversationListPresenter implements ConversationListContract.Prese
             refreshListView();
         }
 
+        // Track for Unread Indicators
+        UnreadCounterRepository.addOrUpdateConversation(conversation);
     }
 
     @Override

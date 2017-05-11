@@ -8,8 +8,8 @@ import android.widget.TextView;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.AssignedAgentData;
-import com.kayako.sdk.android.k5.messenger.data.conversationstarter.LastActiveAgentsData;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.ConversationStarterHelper;
+import com.kayako.sdk.android.k5.messenger.data.conversationstarter.LastActiveAgentsData;
 import com.kayako.sdk.android.k5.messenger.style.MessengerTemplateHelper;
 
 public class CommonToolbarViewUtil {
@@ -17,7 +17,7 @@ public class CommonToolbarViewUtil {
     private CommonToolbarViewUtil() {
     }
 
-    public static void setupCommonToolbar(View root, final Activity activity, View.OnClickListener onAvatarsClick) {
+    public static void setupCommonToolbar(View root, final Activity activity, View.OnClickListener onAvatarsClick, int unreadCount) {
         root.findViewById(R.id.ko__messenger_toolbar_title);
         root.findViewById(R.id.ko__messenger_toolbar_subtitle);
         root.findViewById(R.id.ko__messenger_toolbar_back_button).setOnClickListener(new View.OnClickListener() {
@@ -30,6 +30,21 @@ public class CommonToolbarViewUtil {
         });
 
         root.findViewById(R.id.ko__messenger_toolbar_avatars).setOnClickListener(onAvatarsClick);
+
+        setUnreadCount(root, unreadCount);
+    }
+
+    public static void setUnreadCount(View root, int unreadCount) {
+        TextView unreadCounterView = (TextView) root.findViewById(R.id.ko__unread_counter);
+        if (unreadCount > 9) {
+            unreadCounterView.setVisibility(View.VISIBLE);
+            unreadCounterView.setText("+9");
+        } else if (unreadCount > 0) {
+            unreadCounterView.setVisibility(View.VISIBLE);
+            unreadCounterView.setText(String.valueOf(unreadCount));
+        } else {
+            unreadCounterView.setVisibility(View.GONE);
+        }
     }
 
     public static void setTitle(View mRoot, String brandName) {

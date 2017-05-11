@@ -1,6 +1,5 @@
 package com.kayako.sdk.android.k5.messenger.data.conversationstarter;
 
-import android.provider.Settings;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;

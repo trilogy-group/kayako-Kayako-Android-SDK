@@ -4,7 +4,8 @@ import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.utils.FailsafePollingHelper;
 import com.kayako.sdk.android.k5.core.KayakoLogHelper;
-import com.kayako.sdk.android.k5.messenger.data.RepoFactory;
+import com.kayako.sdk.android.k5.messenger.data.MessengerRepoFactory;
+import com.kayako.sdk.android.k5.messenger.data.conversation.unreadcounter.UnreadCounterRepository;
 import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.ClientTypingActivity;
 import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.ConversationViewModel;
 import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.ConversationViewModelHelper;
@@ -63,7 +64,7 @@ public class HomeScreenListPresenter implements HomeScreenListContract.Presenter
     }
 
     private void loadConversationStarter() {
-        RepoFactory.getConversationStarterRepository().getConversationStarter(mOnLoadConversationStarterListener);
+        MessengerRepoFactory.getConversationStarterRepository().getConversationStarter(mOnLoadConversationStarterListener);
     }
 
     private List<ConversationViewModel> generateConversationViewModels(ConversationStarter conversationStarter) {
@@ -127,7 +128,6 @@ public class HomeScreenListPresenter implements HomeScreenListContract.Presenter
         mView.setupList(baseListItems);
     }
 
-
     private IConversationStarterRepository.OnLoadConversationStarterListener mOnLoadConversationStarterListener = new IConversationStarterRepository.OnLoadConversationStarterListener() {
         @Override
         public void onLoadConversationMetrics(ConversationStarter conversationStarter) {
@@ -142,6 +142,12 @@ public class HomeScreenListPresenter implements HomeScreenListContract.Presenter
 
                 // If successful, generate the Recent Cases Widget
                 try {
+
+                    // Track for Unread Indicators
+                    if (conversationStarter.getActiveConversations() != null) {
+                        UnreadCounterRepository.addOrUpdateConversations(conversationStarter.getActiveConversations());
+                    }
+
                     generateConversationViewModels(conversationStarter);
                     refreshRecentConversationsWidget();
                 } catch (IllegalArgumentException e) {
@@ -172,6 +178,8 @@ public class HomeScreenListPresenter implements HomeScreenListContract.Presenter
             setupList();
         }
 
+        // Track for Unread Indicators
+        UnreadCounterRepository.addOrUpdateConversation(conversation);
     }
 
     @Override

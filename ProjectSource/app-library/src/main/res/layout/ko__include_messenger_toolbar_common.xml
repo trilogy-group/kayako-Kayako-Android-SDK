@@ -8,23 +8,38 @@
     android:paddingBottom="8dp"
     android:paddingTop="8dp">
 
-    <ImageButton
-        android:id="@+id/ko__messenger_toolbar_back_button"
-        android:layout_width="@dimen/ko__messenger_toolbar_back_button_size"
-        android:layout_height="@dimen/ko__messenger_toolbar_back_button_size"
-        android:layout_gravity="center"
-        android:background="?android:selectableItemBackground"
-        android:padding="@dimen/ko__messenger_toolbar_back_button_padding"
-        android:scaleType="centerInside"
-        android:src="@drawable/ko__ic_messenger_back"
-        android:transitionName="ko__messenger_toolbar_back_button" />
+    <FrameLayout
+        android:layout_width="@dimen/ko__messenger_toolbar_back_button_layout_size"
+        android:layout_height="wrap_content"
+        tools:background="#000"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/ko__messenger_toolbar_back_button"
+            android:layout_width="@dimen/ko__messenger_toolbar_back_button_size"
+            android:layout_height="@dimen/ko__messenger_toolbar_back_button_size"
+            android:layout_gravity="left|center_vertical"
+            android:background="?android:selectableItemBackground"
+            android:padding="@dimen/ko__messenger_toolbar_back_button_padding"
+            android:scaleType="centerInside"
+            android:src="@drawable/ko__ic_messenger_back"
+            android:transitionName="ko__messenger_toolbar_back_button" />
+
+
+        <include
+            layout="@layout/ko__include_unread_message_counter"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="right|center_vertical" />
+
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_weight="1"
         android:gravity="center"
-        android:layout_gravity="center"
         android:orientation="vertical"
         android:padding="4dp">
 
@@ -32,8 +47,8 @@
             android:id="@+id/ko__messenger_toolbar_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
             android:layout_gravity="center"
+            android:ellipsize="end"
             android:gravity="center"
             android:maxLines="1"
             android:singleLine="true"
@@ -55,8 +70,9 @@
             tools:text="We usually reply in an hr" />
     </LinearLayout>
 
+
     <Space
-        android:layout_width="48dp"
-        android:layout_height="48dp" />
+        android:layout_width="@dimen/ko__messenger_toolbar_collapsed_avatars_layout_size"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

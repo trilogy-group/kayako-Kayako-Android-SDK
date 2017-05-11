@@ -11,20 +11,24 @@ public class MessengerToolbarContract {
     public interface Presenter {
         void initPage();
 
+        void closePage();
+
         void configureDefaultView();
 
-        void configureOtherView();
+        void configureOtherView(boolean showUnreadCounter);
+
+        int getUnreadCount();
     }
 
     public interface ConfigureView {
 
         void configureDefaultView();
 
-        void configureForLastActiveUsersView(@NonNull LastActiveAgentsData data);
+        void configureForLastActiveUsersView(@NonNull LastActiveAgentsData data, boolean showUnreadCount);
 
-        void configureForAssignedAgentView(@NonNull AssignedAgentData data);
+        void configureForAssignedAgentView(@NonNull AssignedAgentData data, boolean showUnreadCount);
 
-        void configureForSimpleTitle(@NonNull String title);
+        void configureForSimpleTitle(@NonNull String title, boolean showUnreadCount);
 
         void expandToolbarView();
 
@@ -35,17 +39,19 @@ public class MessengerToolbarContract {
         boolean isToolbarExpanded();
 
         boolean isToolbarAreadyConfigured();
+
+        void refreshUnreadCounter(int newUnreadCount);
     }
 
     public interface ChildToolbarConfigureView {
 
         View getView();
 
-        void update(@NonNull LastActiveAgentsData data);
+        void update(@NonNull LastActiveAgentsData data, int unreadCount);
 
-        void update(@NonNull AssignedAgentData data);
+        void update(@NonNull AssignedAgentData data, int unreadCount);
 
-        void update(@NonNull String title);
+        void update(@NonNull String title, int unreadCount);
 
         void setExpandCollapseButtonClicked(OnExpandOrCollapseListener listener);
     }

@@ -34,7 +34,8 @@ public class MessengerToolbarExpandedFragment extends BaseToolbarFragment implem
                             mListener.onCollapseOrExpand();
                         }
                     }
-                });
+                },
+                0);
     }
 
     private boolean isPageReady() {
@@ -42,7 +43,7 @@ public class MessengerToolbarExpandedFragment extends BaseToolbarFragment implem
     }
 
     @Override
-    public void update(@NonNull final LastActiveAgentsData data) {
+    public void update(@NonNull final LastActiveAgentsData data, final int unreadCount) {
         if (!isPageReadyButView() && data != null) {
             return;
         }
@@ -60,17 +61,18 @@ public class MessengerToolbarExpandedFragment extends BaseToolbarFragment implem
 
                 CommonToolbarViewUtil.customizeColorsToMatchMessengerStyle(mRoot);
                 CommonToolbarViewUtil.customizeColorsToMatchMessengerStyleForExpandedToolbar(mRoot);
+                CommonToolbarViewUtil.setUnreadCount(mRoot, unreadCount);
             }
         });
     }
 
     @Override
-    public void update(@NonNull AssignedAgentData data) {
+    public void update(@NonNull AssignedAgentData data, int unreadCount) {
         throw new IllegalStateException("This method should never be called. For Assigned Agent view - expanded view should not exist!");
     }
 
     @Override
-    public void update(@NonNull String title) {
+    public void update(@NonNull String title, int unreadCount) {
         throw new IllegalStateException("This method should never be called. For simple view - expanded view should not exist!");
     }
 

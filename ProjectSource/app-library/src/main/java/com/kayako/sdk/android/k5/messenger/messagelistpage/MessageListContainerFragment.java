@@ -307,7 +307,7 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
             return;
         }
 
-        mToolbarView.configureForAssignedAgentView(assignedAgentData);
+        mToolbarView.configureForAssignedAgentView(assignedAgentData, true);
     }
 
     @Override

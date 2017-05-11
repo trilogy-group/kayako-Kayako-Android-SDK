@@ -65,7 +65,7 @@ public class ConversationListContainerFragment extends Fragment implements Conve
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mToolbarView.configureForSimpleTitle(getString(R.string.ko__messenger_toolbar_title_conversations));
+        mToolbarView.configureForSimpleTitle(getString(R.string.ko__messenger_toolbar_title_conversations), false);
         mPresenter.onOpenPage();
     }
 

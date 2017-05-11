@@ -1,14 +1,15 @@
 package com.kayako.sdk.android.k5.messenger.data;
 
+import com.kayako.sdk.android.k5.messenger.data.conversation.unreadcounter.UnreadCounterRepository;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.ConversationStarterRepositoryManyListeners;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.IConversationStarterRepository;
 
-public class RepoFactory {
+public class MessengerRepoFactory {
 
     // TODO: One problem with having a universal ConversationStarter data - when the data is cleared - old data persists in-memory
     // TODO: Need to clear all in-memory cache too!
 
-    private RepoFactory() {
+    private MessengerRepoFactory() {
     }
 
     private static IConversationStarterRepository mConversationStarterData;
@@ -21,6 +22,9 @@ public class RepoFactory {
     }
 
     public static void reset() {
+        UnreadCounterRepository.clear();
+
+        mConversationStarterData.clear();
         mConversationStarterData = null;
     }
 }

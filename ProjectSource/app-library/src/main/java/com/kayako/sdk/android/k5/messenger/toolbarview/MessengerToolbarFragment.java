@@ -65,6 +65,12 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
         mPresenter.initPage();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mPresenter.closePage();
+    }
+
     private boolean isViewReady() {
         return getActivity() != null
                 && !getActivity().isFinishing()
@@ -181,13 +187,15 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
             }
         });
 
+        int unreadCount = mPresenter.getUnreadCount();
+
         switch (mToolbarType) {
             case ASSIGNED_AGENT:
                 if (mAssignedAgentData == null) {
                     throw new IllegalStateException("Null AssignedAgent Data!");
                 }
 
-                configureView.update(mAssignedAgentData);
+                configureView.update(mAssignedAgentData, unreadCount);
                 break;
 
             case LAST_ACTIVE_AGENTS:
@@ -195,7 +203,7 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
                     throw new IllegalStateException("Null LastActiveAgents Data!");
                 }
 
-                configureView.update(mLastActiveAgentsData);
+                configureView.update(mLastActiveAgentsData, unreadCount);
                 break;
 
             case SIMPLE_TITLE:
@@ -203,7 +211,7 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
                     throw new IllegalStateException("Null LastActiveAgents Data!");
                 }
 
-                configureView.update(mTitle);
+                configureView.update(mTitle, unreadCount);
                 break;
 
             default:
@@ -219,7 +227,7 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
     }
 
     @Override
-    public synchronized void configureForLastActiveUsersView(@NonNull LastActiveAgentsData data) {
+    public synchronized void configureForLastActiveUsersView(@NonNull LastActiveAgentsData data, boolean showUnreadCount) {
         if (!isViewReady()) {
             return;
         }
@@ -228,14 +236,15 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
             throw new IllegalArgumentException("Null not allowed!");
         }
 
-        mPresenter.configureOtherView();
+
+        mPresenter.configureOtherView(showUnreadCount);
         mLastActiveAgentsData = data;
         mToolbarType = MessengerToolbarContract.MessengerToolbarType.LAST_ACTIVE_AGENTS;
         setupToolbar();
     }
 
     @Override
-    public synchronized void configureForAssignedAgentView(@NonNull AssignedAgentData data) {
+    public synchronized void configureForAssignedAgentView(@NonNull AssignedAgentData data, boolean showUnreadCount) {
         if (!isViewReady()) {
             return;
         }
@@ -244,14 +253,14 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
             throw new IllegalArgumentException("Null not allowed!");
         }
 
-        mPresenter.configureOtherView();
+        mPresenter.configureOtherView(showUnreadCount);
         mAssignedAgentData = data;
         mToolbarType = MessengerToolbarContract.MessengerToolbarType.ASSIGNED_AGENT;
         setupToolbar();
     }
 
     @Override
-    public void configureForSimpleTitle(@NonNull String title) {
+    public void configureForSimpleTitle(@NonNull String title, boolean showUnreadCount) {
         if (!isViewReady()) {
             return;
         }
@@ -260,6 +269,7 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
             throw new IllegalArgumentException("Null not allowed!");
         }
 
+        mPresenter.configureOtherView(showUnreadCount);
         mTitle = title;
         mToolbarType = MessengerToolbarContract.MessengerToolbarType.SIMPLE_TITLE;
         setupToolbar();
@@ -298,5 +308,14 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
     @Override
     public boolean isToolbarAreadyConfigured() {
         return mLastAddedChildFragment != null && mToolbarType != null;
+    }
+
+    @Override
+    public void refreshUnreadCounter(int newUnreadCount) {
+        if (!isViewReady() || mToolbarType == null) {
+            return;
+        }
+
+        setupToolbar(); // refresh toolbar
     }
 }
