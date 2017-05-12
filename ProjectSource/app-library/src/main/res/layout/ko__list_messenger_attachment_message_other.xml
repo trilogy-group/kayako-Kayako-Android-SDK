@@ -19,10 +19,11 @@
         android:layout_marginRight="@dimen/ko__messenger_gap_between_message_and_end"
         android:layout_toRightOf="@+id/ko__avatar">
 
-        <include layout="@layout/ko__include_attachment_image"             android:layout_width="wrap_content"
+        <include
+            layout="@layout/ko__include_attachment_image"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left|center_vertical" />
-
 
         <ImageView
             android:id="@+id/ko__attachment_placeholder"

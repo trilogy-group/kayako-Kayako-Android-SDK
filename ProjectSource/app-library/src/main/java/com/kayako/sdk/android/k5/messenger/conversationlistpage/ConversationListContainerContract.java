@@ -30,5 +30,6 @@ public class ConversationListContainerContract {
         void onPageStateChange(ListPageState state);
 
         void onActivityResult(int requestCode, int resultCode);
+
     }
 }

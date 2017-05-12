@@ -54,6 +54,8 @@ public class ConversationListContract {
         void onActivityResult(int requestCode, int resultCode);
 
         void reloadConversations();
+
+        void onStart();
     }
 
     interface ConfigureView {

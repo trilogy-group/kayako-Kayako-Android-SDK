@@ -56,7 +56,8 @@ public class ConversationListPresenter implements ConversationListContract.Prese
         // TODO: For testing
         //.setFingerprintId("d0bc691c-62c5-468c-a4a5-3b096684dc96");
 
-        reloadPage();
+        mView.showLoadingView();
+        // loadConversations will be started in onStart()
 
         mFailsafePollingHelper.startPolling(new FailsafePollingHelper.PollingListener() {
             @Override
@@ -75,7 +76,6 @@ public class ConversationListPresenter implements ConversationListContract.Prese
 
         mFailsafePollingHelper.stopPolling();
     }
-
 
     private void reloadPage() {
         mView.showLoadingView();
@@ -179,6 +179,11 @@ public class ConversationListPresenter implements ConversationListContract.Prese
 
     @Override
     public void reloadConversations() {
+        loadConversations(0);
+    }
+
+    @Override
+    public void onStart() {
         loadConversations(0);
     }
 

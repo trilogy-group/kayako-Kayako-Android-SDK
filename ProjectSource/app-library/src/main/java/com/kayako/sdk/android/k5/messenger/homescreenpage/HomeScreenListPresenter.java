@@ -44,7 +44,7 @@ public class HomeScreenListPresenter implements HomeScreenListContract.Presenter
     @Override
     public void initPage() {
         setupList();
-        loadConversationStarter();
+        // load conversation started in onStart()
 
         mFailsafePollingHelper.startPolling(new FailsafePollingHelper.PollingListener() {
             @Override
@@ -61,6 +61,11 @@ public class HomeScreenListPresenter implements HomeScreenListContract.Presenter
         RealtimeConversationHelper.untrack((OnConversationClientActivityListener) this);
 
         mFailsafePollingHelper.stopPolling();
+    }
+
+    @Override
+    public void onStart() {
+        loadConversationStarter();
     }
 
     private void loadConversationStarter() {

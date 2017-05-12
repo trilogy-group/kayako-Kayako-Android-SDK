@@ -22,6 +22,8 @@ public class HomeScreenListContract {
         void initPage();
 
         void closePage();
+
+        void onStart();
     }
 
     public interface ConfigureView {
