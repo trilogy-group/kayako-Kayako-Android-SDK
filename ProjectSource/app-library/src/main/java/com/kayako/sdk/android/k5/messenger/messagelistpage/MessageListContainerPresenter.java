@@ -555,11 +555,19 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private MessageListContainerContract.OnLoadConversationListener onLoadConversationListener = new MessageListContainerContract.OnLoadConversationListener() {
         @Override
         public void onSuccess(Conversation conversation) {
+            if(!mView.hasPageLoaded()){ // Ensure callbacks after activity/fragment closed doesn't cause crashes
+                return;
+            }
+
             onLoadConversation(conversation);
         }
 
         @Override
         public void onFailure(String message) {
+            if(!mView.hasPageLoaded()){ // Ensure callbacks after activity/fragment closed doesn't cause crashes
+                return;
+            }
+
             // TODO: Show error mesasage?
         }
     };
@@ -567,6 +575,10 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private MessageListContainerContract.PostConversationCallback postConversationCallback = new MessageListContainerContract.PostConversationCallback() {
         @Override
         public void onSuccess(String clientId, Conversation conversation) {
+            if(!mView.hasPageLoaded()){ // Ensure callbacks after activity/fragment closed doesn't cause crashes
+                return;
+            }
+
             if (!(mPageIsNewConversation && !mConversationHelper.isConversationCreated())) {
                 throw new IllegalStateException("The conditions should be true at this point!");
             }
@@ -584,6 +596,14 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
         @Override
         public void onFailure(String clientId, String message) {
+            if(!mView.hasPageLoaded()){ // Ensure callbacks after activity/fragment closed doesn't cause crashes
+                return;
+            }
+
+            if(!mView.hasPageLoaded()){ // Ensure callbacks after activity/fragment closed doesn't cause crashes
+                return;
+            }
+
             // Indicate the request failed
             mAddReplyHelper.onFailedSendingOfConversation(clientId);
 
@@ -595,6 +615,10 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private MessageListContainerContract.OnLoadMessagesListener onLoadMessagesListener = new MessageListContainerContract.OnLoadMessagesListener() {
         @Override
         public void onSuccess(List<Message> messageList, int offset) {
+            if(!mView.hasPageLoaded()){ // Ensure callbacks after activity/fragment closed doesn't cause crashes
+                return;
+            }
+
             if (offset != 0) {
                 mView.hideLoadMoreView();
             }
@@ -624,6 +648,10 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
         @Override
         public void onFailure(String message) {
+            if(!mView.hasPageLoaded()){ // Ensure callbacks after activity/fragment closed doesn't cause crashes
+                return;
+            }
+
             // TODO: Add conditions to show toast if load-more and show error view if lastSuccessfulOffset=0
 
             // Show error view only if there are no messages to show
@@ -636,6 +664,10 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private MessageListContainerContract.PostNewMessageCallback onPostMessageListener = new MessageListContainerContract.PostNewMessageCallback() {
         @Override
         public void onSuccess(Message message) {
+            if(!mView.hasPageLoaded()){ // Ensure callbacks after activity/fragment closed doesn't cause crashes
+                return;
+            }
+
             mAddReplyHelper.onSuccessfulSendingOfMessage(message.getClientId(), mOnAddReplyCallback);
             mMarkReadHelper.disableOriginalLastMessageMarked(); // Should be called before any list rendering is done
 
@@ -646,6 +678,10 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
         @Override
         public void onFailure(final String clientId) {
+            if(!mView.hasPageLoaded()){ // Ensure callbacks after activity/fragment closed doesn't cause crashes
+                return;
+            }
+
             // Indicate the request failed
             mAddReplyHelper.onFailedSendingOfMessage(clientId);
 
@@ -659,11 +695,19 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private MessageListContainerContract.OnMarkMessageAsReadListener onMarkMessageAsReadListener = new MessageListContainerContract.OnMarkMessageAsReadListener() {
         @Override
         public void onSuccess(long messageId) {
+            if(!mView.hasPageLoaded()){ // Ensure callbacks after activity/fragment closed doesn't cause crashes
+                return;
+            }
+
             mMarkReadHelper.setLastMessageMarkedReadSuccessfully(messageId);
         }
 
         @Override
         public void onFailure(String message) {
+            if(!mView.hasPageLoaded()){ // Ensure callbacks after activity/fragment closed doesn't cause crashes
+                return;
+            }
+
             mMarkReadHelper.setLastMessageBeingMarkedRead(0L); // TODO: Confirm logic here?
         }
     };
@@ -671,6 +715,10 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private OnConversationChangeListener onConversationChangeListener = new OnConversationChangeListener() {
         @Override
         public void onChange(Conversation conversation) {
+            if(!mView.hasPageLoaded()){ // Ensure callbacks after activity/fragment closed doesn't cause crashes
+                return;
+            }
+
             if (conversation.getId() != mConversationHelper.getConversationId()) {
                 return;
             }
@@ -682,6 +730,10 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private OnConversationClientActivityListener onConversationClientActivityListener = new OnConversationClientActivityListener() {
         @Override
         public void onTyping(long conversationId, UserViewModel userTyping, boolean isTyping) {
+            if(!mView.hasPageLoaded()){ // Ensure callbacks after activity/fragment closed doesn't cause crashes
+                return;
+            }
+
             if (conversationId != mConversationHelper.getConversationId()) {
                 return;
             }
@@ -696,6 +748,10 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private OnConversationMessagesChangeListener onConversationMessagesChangeListener = new OnConversationMessagesChangeListener() {
         @Override
         public void onNewMessage(long conversationId, long messageId) {
+            if(!mView.hasPageLoaded()){ // Ensure callbacks after activity/fragment closed doesn't cause crashes
+                return;
+            }
+
             if (conversationId != mConversationHelper.getConversationId()) {
                 return;
             }
@@ -709,6 +765,10 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
         @Override
         public void onUpdateMessage(long conversationId, Message message) {
+            if(!mView.hasPageLoaded()){ // Ensure callbacks after activity/fragment closed doesn't cause crashes
+                return;
+            }
+
             if (conversationId != mConversationHelper.getConversationId()) {
                 return;
             }
@@ -725,28 +785,46 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private MessageListContainerContract.OnLoadRatingsListener onLoadRatingsListener = new MessageListContainerContract.OnLoadRatingsListener() {
         @Override
         public void onSuccess(List<Rating> ratings) {
+            if(!mView.hasPageLoaded()){ // Ensure callbacks after activity/fragment closed doesn't cause crashes
+                return;
+            }
+
             mOffboardingHelper.onLoadRatings(ratings, mOffboardingHelperViewCallback);
         }
 
         @Override
         public void onFailure(String message) {
+            if(!mView.hasPageLoaded()){ // Ensure callbacks after activity/fragment closed doesn't cause crashes
+                return;
+            }
         }
     };
 
     private MessageListContainerContract.OnUpdateRatingListener onUpdateRatingListener = new MessageListContainerContract.OnUpdateRatingListener() {
         @Override
         public void onSuccess(Rating rating) {
+            if(!mView.hasPageLoaded()){ // Ensure callbacks after activity/fragment closed doesn't cause crashes
+                return;
+            }
+
             mOffboardingHelper.onUpdateRating(rating, mOffboardingHelperViewCallback);
         }
 
         @Override
         public void onFailure(String message) {
+            if(!mView.hasPageLoaded()){ // Ensure callbacks after activity/fragment closed doesn't cause crashes
+                return;
+            }
         }
     };
 
     private OnConversationUserOnlineListener mAssignedAgentOnlinePresenceListener = new OnConversationUserOnlineListener() {
         @Override
         public void onUserOnline(long conversationId, long userId) {
+            if(!mView.hasPageLoaded()){ // Ensure callbacks after activity/fragment closed doesn't cause crashes
+                return;
+            }
+
             if (mConversationHelper.getConversation() != null
                     && mConversationHelper.getConversation().getLastAgentReplier() != null
                     && mConversationHelper.getConversation().getLastAgentReplier().getId() == userId) {
@@ -759,6 +837,10 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
         @Override
         public void onUserOffline(long conversationId, long userId) {
+            if(!mView.hasPageLoaded()){ // Ensure callbacks after activity/fragment closed doesn't cause crashes
+                return;
+            }
+
             if (mConversationHelper.getConversation() != null
                     && mConversationHelper.getConversation().getLastAgentReplier() != null
                     && mConversationHelper.getConversation().getLastAgentReplier().getId() == userId) {

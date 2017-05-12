@@ -153,7 +153,8 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
         mPresenter.closePage();
     }
 
-    private boolean hasPageLoaded() {
+    @Override
+    public boolean hasPageLoaded() {
         return isAdded() && getActivity() != null;
     }
 

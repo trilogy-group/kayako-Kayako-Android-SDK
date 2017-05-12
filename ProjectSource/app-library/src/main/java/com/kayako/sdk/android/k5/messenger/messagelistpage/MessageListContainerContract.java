@@ -45,6 +45,8 @@ public class MessageListContainerContract {
 
     public interface View extends BaseView {
 
+        boolean hasPageLoaded();
+
         void showToastMessage(String errorMessage);
 
         void setupListInMessageListingView(List<BaseListItem> baseListItems);
