@@ -114,7 +114,7 @@
     <color name="ko__messenger_completed_field_green_background_color">#DCEEDF</color>
     <color name="ko__messenger_completed_field_green_text_color">#2D3138</color>
 
-    <color name="ko__messenger_new_conversation_background_colour">#F1703F</color>
+    <color name="ko__messenger_new_conversation_background_colour">@color/ko__messenger_primary_color</color>
     <color name="ko__messenger_new_conversation_text_colour">#FFFFFF</color>
     <color name="ko__messenger_reply_box_send_button_background_colour">#F1703F</color>
     <color name="ko__messenger_reply_box_background_colour">#F7F8F9</color>
