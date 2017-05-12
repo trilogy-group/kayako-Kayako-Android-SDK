@@ -117,6 +117,7 @@
     <color name="ko__messenger_new_conversation_background_colour">@color/ko__messenger_primary_color</color>
     <color name="ko__messenger_new_conversation_text_colour">#FFFFFF</color>
     <color name="ko__messenger_reply_box_send_button_background_colour">#F1703F</color>
+    <color name="ko__messenger_reply_box_send_button_background_colour_disabled">#A1AAAF</color>
     <color name="ko__messenger_reply_box_background_colour">#F7F8F9</color>
     <color name="ko__messenger_floating_background_color">@android:color/transparent</color>
     <color name="ko__messenger_floating_foreground_color">#FFF</color>
@@ -157,6 +158,7 @@
     <color name="ko__messenger_bot_avatar_background_color">#EDEEEF</color>
     <color name="ko__messenger_bot_attachment_background_color">#EDEEEF</color>
     <color name="ko__messenger_conversation_separator_line_color">#ebeef0</color>
+
 
 
 </resources>

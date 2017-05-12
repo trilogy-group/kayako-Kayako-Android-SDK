@@ -34,7 +34,7 @@ public class ReplyBoxContract {
 
         void setReplyBoxListener(ReplyBoxListener listener);
 
-        void setReplyBoxText(String message); // TODO: Attachments later?
+        void setReplyBoxText(String message);
 
         void hideReplyBox();
 

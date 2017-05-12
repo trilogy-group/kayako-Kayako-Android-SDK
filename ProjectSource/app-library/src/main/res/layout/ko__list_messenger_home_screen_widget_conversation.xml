@@ -104,8 +104,8 @@
 
                     <include
                         layout="@layout/ko__include_unread_message_counter"
-                        android:layout_width="18sp"
-                        android:layout_height="18sp"
+                        android:layout_width="20dp"
+                        android:layout_height="20sp"
                         android:layout_marginLeft="4dp"
                         android:gravity="center_vertical|left"
                         android:textSize="8sp" />
