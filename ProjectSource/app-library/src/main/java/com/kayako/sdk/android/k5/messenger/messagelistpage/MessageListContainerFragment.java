@@ -289,7 +289,7 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
             return;
         }
 
-        FileAttachmentUtil.openFileChooserActivityFromFragment(this, REQUEST_CODE_ATTACHMENT);
+        FileAttachmentUtil.openImageChooserActivityFromFragment(this, REQUEST_CODE_ATTACHMENT); // TODO: Temporarily limiting to image attachments - revert to files when UI is complete
     }
 
     @Override

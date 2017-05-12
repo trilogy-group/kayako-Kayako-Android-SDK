@@ -49,6 +49,20 @@ public class FileAttachmentUtil {
     }
 
     /**
+     * Open File Picker For Images fragment
+     *
+     * @param fragment
+     * @param requestCode
+     */
+    public static void openImageChooserActivityFromFragment(Fragment fragment, int requestCode) {
+        Intent intentBrowseFiles = new Intent(Intent.ACTION_GET_CONTENT);
+        intentBrowseFiles.setType("image/*");
+        intentBrowseFiles.addCategory(Intent.CATEGORY_OPENABLE);
+        fragment.startActivityForResult(intentBrowseFiles, requestCode);
+    }
+
+
+    /**
      * Open File Picker from activity
      *
      * @param activity
