@@ -8,6 +8,7 @@ import com.kayako.sdk.messenger.conversation.fields.readmarker.ReadMarker;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Track all the unread posts in all conversations.
@@ -17,12 +18,22 @@ import java.util.List;
 public class UnreadCounterRepository {
 
     private static final Object sConversationKey = new Object();
-    private static UniqueSortedUpdatableResourceList<ReadMarker> sConversationReadMarkerList = new UniqueSortedUpdatableResourceList<>();
+    private static UniqueSortedUpdatableResourceList<Conversation> sConversationList = new UniqueSortedUpdatableResourceList<>();
 
     private static int sUnreadCounter;
 
     private static final Object sListenerKey = new Object();
     private static List<OnUnreadCounterChangeListener> sListeners = new ArrayList<>();
+
+    private static AtomicLong sCurrentConversationBeingViewedId = new AtomicLong(0);
+
+    /**
+     * @param conversationId 0 to unassign
+     */
+    public static void setCurrentConversationBeingViewed(long conversationId) {
+        sCurrentConversationBeingViewedId.set(conversationId);
+        refreshUnreadCounter();
+    }
 
     public static void addOrUpdateConversation(@NonNull Conversation conversation) {
         synchronized (sConversationKey) {
@@ -34,7 +45,7 @@ public class UnreadCounterRepository {
                 return;
             }
 
-            sConversationReadMarkerList.addElement(conversation.getId(), conversation.getReadMarker());
+            sConversationList.addElement(conversation.getId(), conversation);
             refreshUnreadCounter();
         }
     }
@@ -50,7 +61,7 @@ public class UnreadCounterRepository {
                     continue;
                 }
 
-                sConversationReadMarkerList.addElement(conversation.getId(), conversation.getReadMarker());
+                sConversationList.addElement(conversation.getId(), conversation);
             }
 
             refreshUnreadCounter();
@@ -59,8 +70,10 @@ public class UnreadCounterRepository {
 
     public static void clear() {
         synchronized (sConversationKey) {
-            sConversationReadMarkerList = new UniqueSortedUpdatableResourceList<>();
+            sConversationList = new UniqueSortedUpdatableResourceList<>();
             sUnreadCounter = 0;
+            sCurrentConversationBeingViewedId.set(0);
+            ;
         }
 
         synchronized (sListenerKey) {
@@ -98,13 +111,14 @@ public class UnreadCounterRepository {
         synchronized (sConversationKey) {
             int previousCount = sUnreadCounter;
             sUnreadCounter = 0;
-            for (ReadMarker readMarker : sConversationReadMarkerList.getList()) {
-                if (readMarker != null) {
-                    sUnreadCounter += readMarker.getUnreadCount();
+            for (Conversation conversation : sConversationList.getList()) {
+                if (conversation.getReadMarker() != null
+                        && sCurrentConversationBeingViewedId.get() != conversation.getId()) { // skip adding unread count of current conversation if the user is viewing it
+                    sUnreadCounter += conversation.getReadMarker().getUnreadCount();
                 }
             }
 
-            if (previousCount != sUnreadCounter) {
+            if (previousCount != sUnreadCounter) { // prevent redundant callbacks
                 callListeners(sUnreadCounter);
             }
         }

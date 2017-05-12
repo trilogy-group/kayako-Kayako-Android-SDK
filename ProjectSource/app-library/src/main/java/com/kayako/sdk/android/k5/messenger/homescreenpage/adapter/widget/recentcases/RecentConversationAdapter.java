@@ -31,7 +31,7 @@ public class RecentConversationAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View recentConversationViewHolder = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.ko__list_messengerhome_screen_widget_conversation, parent, false);
+                .inflate(R.layout.ko__list_messenger_home_screen_widget_conversation, parent, false);
         return new RecentConversationViewHolder(recentConversationViewHolder);
     }
 

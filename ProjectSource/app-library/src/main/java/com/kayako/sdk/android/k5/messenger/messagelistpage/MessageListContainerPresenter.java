@@ -143,6 +143,9 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             mConversationHelper.setIsConversationCreated(!isNewConversation);
             if (!isNewConversation) {
                 mConversationHelper.setConversationId(conversationId);
+
+                // Mark current conversation being viewed to prevent unread counters for this conversation
+                UnreadCounterRepository.setCurrentConversationBeingViewed(conversationId);
             }
 
             mAddReplyHelper.setIsConversationCreated(mConversationHelper.isConversationCreated());
@@ -155,6 +158,10 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     public void closePage() {
         mRealtimeHelper.unsubscribeFromRealtimeConversationChanges();
         mFailsafePollingHelper.stopPolling();
+
+        // Mark current conversation being viewed to prevent unread counters for this conversation
+        UnreadCounterRepository.setCurrentConversationBeingViewed(0);
+
         resetVariables();
     }
 
@@ -229,6 +236,9 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         } else {
             reloadConversation();
             reloadLatestMessages();
+
+            // Mark current conversation being viewed to prevent unread counters for this conversation
+            UnreadCounterRepository.setCurrentConversationBeingViewed(mConversationHelper.getConversationId());
         }
 
         configureReplyBoxViewState();
@@ -539,8 +549,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         // Since reply box visibility depends on conversation status - refresh reply box every time conversation is loaded
         configureReplyBoxViewState();
 
-        // Track for Unread Indicators
-        UnreadCounterRepository.addOrUpdateConversation(conversation);
+        UnreadCounterRepository.addOrUpdateConversation(conversation); // Track for Unread Indicators
     }
 
     private MessageListContainerContract.OnLoadConversationListener onLoadConversationListener = new MessageListContainerContract.OnLoadConversationListener() {
@@ -561,6 +570,9 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             if (!(mPageIsNewConversation && !mConversationHelper.isConversationCreated())) {
                 throw new IllegalStateException("The conditions should be true at this point!");
             }
+
+            // Mark newly created conversation as being viewed to prevent unread counters for this conversation
+            UnreadCounterRepository.setCurrentConversationBeingViewed(conversation.getId());
 
             // IMPORTANT: onLoadConversation() should be called FIRST, then new conversation properties should be set
             // This is required for all dependencies of mConversationHelper and mMessengerPrefHelper
