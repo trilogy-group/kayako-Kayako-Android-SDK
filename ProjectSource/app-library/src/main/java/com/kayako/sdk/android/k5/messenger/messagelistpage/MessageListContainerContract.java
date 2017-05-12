@@ -80,6 +80,10 @@ public class MessageListContainerContract {
         void configureToolbarForAssignedAgent(AssignedAgentData assignedAgentData);
 
         void configureToolbarForLastActiveAgents();
+
+        boolean isNearBottomOfList();
+
+        boolean isKeyboardOpen();
     }
 
     public interface Presenter extends BasePresenter<MessageListContainerContract.View> {

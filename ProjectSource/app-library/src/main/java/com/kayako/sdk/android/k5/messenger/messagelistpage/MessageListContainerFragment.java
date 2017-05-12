@@ -318,4 +318,18 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
 
         mToolbarView.configureDefaultView();
     }
+
+    @Override
+    public boolean isNearBottomOfList() {
+        if (!hasPageLoaded()) {
+            return false;
+        }
+
+        return mMessageListView.isNearBottomOfList();
+    }
+
+    @Override
+    public boolean isKeyboardOpen() {
+        return false; // TODO:
+    }
 }

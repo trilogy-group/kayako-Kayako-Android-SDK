@@ -43,6 +43,8 @@ public class MessageListContract {
         void hideLoadMoreView();
 
         void scrollToBottomOfList();
+
+        boolean isNearBottomOfList();
     }
 
     public interface OnErrorListener {

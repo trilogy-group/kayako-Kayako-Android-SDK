@@ -536,8 +536,8 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         });
 
         // Reload the messages of existing conversation if a new message is added
-        if (lastConversationValue == null // first time load
-                || !lastConversationValue.getLastRepliedAt().equals(conversation.getLastRepliedAt())) {
+        if ((mPageIsNewConversation && lastConversationValue == null) // first time load after new conversation started, don't load for originally existing conversations (already called)
+                || (lastConversationValue !=null && !lastConversationValue.getLastRepliedAt().equals(conversation.getLastRepliedAt()))) { // reload messages everytime the lastRepliedAt changes
             reloadLatestMessages();
         }
 
@@ -599,8 +599,9 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                 mView.hideLoadMoreView();
             }
 
-            boolean scrollToBottom = !mConversationMessagesHelper.hasLoadedMessagesBefore(); // scroll to bottom if messages are being loaded for the first time
-            // TODO: Scroll to bottom if near to bottom
+            boolean scrollToBottom = !mConversationMessagesHelper.hasLoadedMessagesBefore() // scroll to bottom if messages are being loaded for the first time
+                                                || mView.isNearBottomOfList() // scroll to bottom whenever user is near the end
+                                                || mView.isKeyboardOpen();
 
             mConversationMessagesHelper.onLoadNextMessages(messageList, offset);
 
@@ -698,6 +699,8 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             if (conversationId != mConversationHelper.getConversationId()) {
                 return;
             }
+
+            mMarkReadHelper.disableOriginalLastMessageMarked(); // Should be called before any list rendering is done
 
             if (!mConversationMessagesHelper.exists(messageId)) { // Load latest messages only if not loaded before
                 reloadLatestMessages();

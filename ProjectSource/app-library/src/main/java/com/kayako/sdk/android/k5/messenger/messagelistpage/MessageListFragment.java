@@ -138,6 +138,15 @@ public class MessageListFragment extends MessengerListFragment implements Messag
         super.scrollToEndOfList();
     }
 
+    @Override
+    public boolean isNearBottomOfList() {
+        if (!hasPageLoaded()) {
+            return false;
+        }
+
+        return super.isNearEndOfList();
+    }
+
 
     @Override
     public void showEmptyView() {

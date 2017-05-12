@@ -27,7 +27,6 @@ public class ImageUtils {
             Glide.with(context)
                     .load(avatarUrl)
                     .bitmapTransform(new CropCircleTransformation(context))
-//                    .placeholder(R.color.ko__avatar_image_background)
                     .centerCrop()
                     .skipMemoryCache(false) // false because avatars are repeatedly used in message listing, case listing, etc - when true, it shows placeholders
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)

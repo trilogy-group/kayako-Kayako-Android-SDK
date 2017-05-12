@@ -4,10 +4,10 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="horizontal"
-    android:paddingBottom="@dimen/ko__messenger_list_item_separator_margin_bottom"
+    android:paddingBottom="@dimen/ko__messenger_list_item_unread_separator_margin_vertical"
     android:paddingLeft="@dimen/ko__messenger_list_item_margin"
     android:paddingRight="@dimen/ko__messenger_list_item_margin"
-    android:paddingTop="@dimen/ko__messenger_list_item_separator_margin_top">
+    android:paddingTop="@dimen/ko__messenger_list_item_unread_separator_margin_vertical">
 
     <View
         android:layout_width="0dp"

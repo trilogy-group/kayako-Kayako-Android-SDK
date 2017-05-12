@@ -123,7 +123,7 @@ public class MessengerListFragment extends BaseListFragment {
 
     @Override
     public void scrollToBeginningOfList() {
-        super.scrollToBeginningOfList();
+        super.scrollToEndOfList();
     }
 
     @Override
@@ -257,6 +257,13 @@ public class MessengerListFragment extends BaseListFragment {
         }
 
         return positions;
+    }
+
+    public boolean isNearEndOfList() {
+        int lastPosition = 0; // new messages are added at the top
+        int lastVisibleItemPosition = findLastVisibleItemPosition();
+
+        return Math.abs(lastVisibleItemPosition - lastPosition) < 4;
     }
 
     /**
