@@ -3,22 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:elevation="@dimen/ko__messenger_home_screen_widget_elevation"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/ko__messenger_home_screen_list_item_padding_vertical"
     android:paddingLeft="@dimen/ko__messenger_home_screen_widget_padding_horizontal"
     android:paddingRight="@dimen/ko__messenger_home_screen_widget_padding_horizontal"
-    android:paddingTop="@dimen/ko__messenger_home_screen_list_item_padding_vertical"
-    android:elevation="@dimen/ko__messenger_home_screen_widget_elevation"
-    android:orientation="vertical">
+    android:paddingTop="@dimen/ko__messenger_home_screen_list_item_padding_vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/ko__messenger_home_screen_widget_header_background"
+        android:elevation="1dp"
         android:orientation="horizontal"
+        android:paddingBottom="@dimen/ko__messenger_home_screen_widget_header_padding_vertical"
         android:paddingLeft="@dimen/ko__messenger_home_screen_widget_header_padding_horizontal"
         android:paddingRight="@dimen/ko__messenger_home_screen_widget_header_padding_horizontal"
-        android:paddingTop="@dimen/ko__messenger_home_screen_widget_header_padding_vertical"
-        android:paddingBottom="@dimen/ko__messenger_home_screen_widget_header_padding_vertical">
+        android:paddingTop="@dimen/ko__messenger_home_screen_widget_header_padding_vertical">
 
         <com.kayako.sdk.android.k5.common.view.BoldTextView
             android:id="@+id/ko__messenger_home_screen_widget_title"
@@ -27,8 +28,8 @@
             android:layout_weight="1"
             android:gravity="left|center_vertical"
             android:textAllCaps="true"
-            android:textSize="12sp"
             android:textColor="@color/ko__messenger_primary_color"
+            android:textSize="12sp"
             tools:text="RECENT CONVERSATIONS" />
 
         <com.kayako.sdk.android.k5.common.view.RegularTextView
@@ -36,8 +37,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="left|center_vertical"
-            android:textSize="14sp"
             android:textColor="@color/ko__messenger_home_screen_widget_header_action_button_text_color"
+            android:textSize="14sp"
             tools:text="View All ->" />
 
     </LinearLayout>
@@ -47,8 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/ko__messenger_home_screen_widget_content_background"
-        android:orientation="vertical"
-        android:padding="8dp" />
+        android:orientation="vertical" />
 
 
 </LinearLayout>

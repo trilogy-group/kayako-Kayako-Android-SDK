@@ -16,7 +16,6 @@ import com.kayako.sdk.android.k5.common.fragments.BaseListFragment;
 import com.kayako.sdk.android.k5.common.fragments.ListPageState;
 import com.kayako.sdk.android.k5.common.fragments.OnListPageStateChangeListener;
 import com.kayako.sdk.android.k5.core.Kayako;
-import com.kayako.sdk.messenger.conversation.Conversation;
 
 import java.util.List;
 

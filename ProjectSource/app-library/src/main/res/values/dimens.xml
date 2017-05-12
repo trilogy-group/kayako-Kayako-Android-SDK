@@ -99,10 +99,10 @@
         8dp
     </dimen>
     <dimen name="ko__messenger_home_screen_widget_recent_cases__conversation_list_item_padding_horizontal">
-        8dp
+        16dp
     </dimen>
     <dimen name="ko__messenger_home_screen_widget_recent_cases__conversation_list_item_minimum_height">
-        40dp
+        48dp
     </dimen>
     <dimen name="ko__messenger_reply_box_footer">14sp</dimen>
     <dimen name="ko__messenger_gap_between_end_and_message_self">0dp</dimen>
@@ -111,5 +111,6 @@
     <dimen name="ko__messenger_input_feedback_rating_gap_between_image_and_text">4dp</dimen>
     <dimen name="ko__messenger_input_feedback_rating_next_button_text_size">16sp</dimen>
     <dimen name="ko__email_input_field_submit_button_text_size">16sp</dimen>
+    <dimen name="ko__messenger_home_screen_widget_container_default_padding">8dp</dimen>
 
 </resources>

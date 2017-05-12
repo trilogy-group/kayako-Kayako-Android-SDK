@@ -19,6 +19,7 @@ public class RecentConversationViewHolder extends RecyclerView.ViewHolder {
     public View subjectLine;
 
     public View itemView;
+    public View separator;
 
     public RecentConversationViewHolder(View v) {
         super(v);
@@ -30,5 +31,6 @@ public class RecentConversationViewHolder extends RecyclerView.ViewHolder {
         unreadCounter = (TextView) v.findViewById(R.id.ko__unread_counter);
         typingLoader = (ImageView) v.findViewById(R.id.ko__typing_progress_loader);
         subjectLine = v.findViewById(R.id.ko__subject_line);
+        separator = v.findViewById(R.id.ko__recent_conversation_list_separator);
     }
 }

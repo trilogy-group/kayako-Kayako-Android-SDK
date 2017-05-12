@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.messenger.data.conversationstarter.ConversationStarterHelper;
 import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.header.FooterViewHolder;
 import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.header.HeaderListItem;
 import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.header.HeaderViewHolder;
@@ -17,7 +18,6 @@ import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.widget.recentc
 import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.widget.recentcases.RecentConversationAdapter;
 import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.widget.recentcases.RecentConversationsWidgetListItem;
 import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.widget.recentcases.RecentConversationsWidgetViewHolder;
-import com.kayako.sdk.android.k5.messenger.data.conversationstarter.ConversationStarterHelper;
 import com.kayako.sdk.android.k5.messenger.style.MessengerTemplateHelper;
 
 import java.util.ArrayList;
@@ -48,12 +48,12 @@ public class HomeScreenListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         switch (viewType) {
             case HomeScreenListType.HEADER:
                 View headerView = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.ko__list_home_screen_header, parent, false);
+                        .inflate(R.layout.ko__list_messenger_home_screen_header, parent, false);
                 return new HeaderViewHolder(headerView);
 
             case HomeScreenListType.FOOTER:
                 View footerView = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.ko__list_home_screen_footer, parent, false);
+                        .inflate(R.layout.ko__list_messenger_home_screen_footer, parent, false);
                 return new FooterViewHolder(footerView);
 
             case HomeScreenListType.WIDGET_PRESENCE:
@@ -123,6 +123,7 @@ public class HomeScreenListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         recentConversationListItem.getOnClickActionListener().onClickActionButton();
                     }
                 });
+
                 recentCasesWidgetViewHolder.recyclerView.setAdapter(new RecentConversationAdapter(
                         recentConversationListItem.getConversations(),
                         new OnClickRecentConversationListener() {

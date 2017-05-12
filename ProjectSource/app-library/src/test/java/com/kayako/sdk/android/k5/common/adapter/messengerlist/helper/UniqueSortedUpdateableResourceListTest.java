@@ -13,14 +13,14 @@ public class UniqueSortedUpdateableResourceListTest {
     @Test
     public void test1() throws Exception {
         UniqueSortedUpdatableResourceList<Message> originalResources = new UniqueSortedUpdatableResourceList<Message>();
-        originalResources.addElement(55L, new Message(55L, null, null, null, null, null, null, null, null, null, null, null));
-        originalResources.addElement(2L, new Message(2L, null, null, "First One", null, null, null, null, null, null, null, null));
-        originalResources.addElement(100L, new Message(100L, null, null, null, null, null, null, null, null, null, null, null));
-        originalResources.addElement(4L, new Message(4L, null, null, null, null, null, null, null, null, null, null, null));
-        originalResources.addElement(123L, new Message(123L, null, null, null, null, null, null, null, null, null, null, null));
-        originalResources.addElement(8L, new Message(8L, null, null, null, null, null, null, null, null, null, null, null));
-        originalResources.addElement(2L, new Message(2L, null, null, "Second One", null, null, null, null, null, null, null, null));
-        originalResources.addElement(2L, new Message(2L, null, null, "Third One", null, null, null, null, null, null, null, null));
+        originalResources.addElement(55L, new Message(55L, null, null, null, null, null, null, null, null, null, null, null, null));
+        originalResources.addElement(2L, new Message(2L, null, null, "First One", null, null, null, null, null, null, null, null, null));
+        originalResources.addElement(100L, new Message(100L, null, null, null, null, null, null, null, null, null, null, null, null));
+        originalResources.addElement(4L, new Message(4L, null, null, null, null, null, null, null, null, null, null, null, null));
+        originalResources.addElement(123L, new Message(123L, null, null, null, null, null, null, null, null, null, null, null, null));
+        originalResources.addElement(8L, new Message(8L, null, null, null, null, null, null, null, null, null, null, null, null));
+        originalResources.addElement(2L, new Message(2L, null, null, "Second One", null, null, null, null, null, null, null, null, null));
+        originalResources.addElement(2L, new Message(2L, null, null, "Third One", null, null, null, null, null, null, null, null, null));
 
         List<Message> resourceList = originalResources.getList();
 

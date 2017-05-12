@@ -31,7 +31,7 @@ public class RecentConversationAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View recentConversationViewHolder = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.ko__list_home_screen_widget_conversation, parent, false);
+                .inflate(R.layout.ko__list_messengerhome_screen_widget_conversation, parent, false);
         return new RecentConversationViewHolder(recentConversationViewHolder);
     }
 
@@ -61,6 +61,13 @@ public class RecentConversationAdapter extends RecyclerView.Adapter {
                 viewHolder.typingLoader,
                 viewHolder.subjectLine,
                 recentConversation.getLastAgentReplierTyping().isTyping());
+
+        if (position == getItemCount() - 1) {
+            viewHolder.separator.setVisibility(View.GONE);
+        } else {
+            viewHolder.separator.setVisibility(View.VISIBLE);
+        }
+
     }
 
     @Override

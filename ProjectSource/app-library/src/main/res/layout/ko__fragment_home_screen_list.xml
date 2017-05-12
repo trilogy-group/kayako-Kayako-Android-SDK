@@ -12,6 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"
-        tools:listitem="@layout/ko__list_home_screen_header" />
+        tools:listitem="@layout/ko__list_messenger_home_screen_header" />
 
 </FrameLayout>
