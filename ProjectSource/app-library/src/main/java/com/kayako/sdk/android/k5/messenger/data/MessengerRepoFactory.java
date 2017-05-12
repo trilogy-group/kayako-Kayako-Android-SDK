@@ -24,7 +24,9 @@ public class MessengerRepoFactory {
     public static void reset() {
         UnreadCounterRepository.clear();
 
-        mConversationStarterData.clear();
-        mConversationStarterData = null;
+        if (mConversationStarterData != null) {
+            mConversationStarterData.clear();
+            mConversationStarterData = null;
+        }
     }
 }
