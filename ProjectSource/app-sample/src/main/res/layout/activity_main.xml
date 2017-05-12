@@ -94,7 +94,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <include layout="@layout/separator" />
+            <!--TESTING: Hiding Primary Color field - TODO: Decide if set via code or xml -->
+
+            <include
+                layout="@layout/separator"
+                android:visibility="gone" />
 
             <EditText
                 android:id="@+id/edittext_primary_color"
@@ -104,7 +108,8 @@
                 android:hint="Primary Color"
                 android:maxLines="1"
                 android:padding="8dp"
-                android:text="#F1703F" />
+                android:text="#F1703F"
+                android:visibility="gone" />
 
             <include layout="@layout/separator" />
 
