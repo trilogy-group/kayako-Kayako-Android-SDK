@@ -4,11 +4,13 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <include
+        layout="@layout/ko__include_messenger_rating_view"/>
+
     <LinearLayout
         android:id="@+id/ko__feedback_input_field_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/ko__speech_bubble_input_field_background"
         android:orientation="vertical">
 
         <com.kayako.sdk.android.k5.common.view.RegularTextView
@@ -40,7 +42,6 @@
             tools:text="There are 2 kinds of people. Those who dig. And those holding the gun. There are 2 kinds of people. Those who dig. And those holding the gun." />
 
     </LinearLayout>
-
 
     <LinearLayout
         android:id="@+id/ko__feedback_input_field_submit_button_layout"

@@ -75,9 +75,6 @@
     <string name="ko__messenger_input_feedback_rating_bad_text">Bad</string>
     <string name="ko__messenger_input_feedback_rating_next_button_text">Next</string>
     <string name="ko__messenger_input_feedback_rating_instruction_message">How did we do?</string>
-    <string name="ko__messenger_input_feedback_comment_instruction_message_good">Write your feedback…</string>
-    <string name="ko__messenger_input_feedback_comment_instruction_message_bad">Write your feedback…</string>
-    <string name="ko__messenger_input_feedback_comment_instruction_message_generic">What were the best/worse things about this conversation?</string>
     <string name="ko__messenger_input_feedback_comment_message_hint_default">Your feedback</string>
     <string name="ko__messenger_input_feedback_comment_message_hint_error">Oops, you haven\'t typed anything. Please enter your feedback and click submit</string>
     <string name="ko__messenger_input_feedback_comment_message_submitted">Feedback sent</string>

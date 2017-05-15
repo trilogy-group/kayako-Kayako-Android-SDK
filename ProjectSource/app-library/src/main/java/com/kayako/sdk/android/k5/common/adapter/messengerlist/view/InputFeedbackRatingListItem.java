@@ -7,9 +7,9 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerListType;
 public class InputFeedbackRatingListItem extends InputFieldlListItem {
 
     private String instructionMessage;
-    private OnSelectRatingListener onSelectRatingListener;
+    private InputFeedback.OnSelectRatingListener onSelectRatingListener;
 
-    public InputFeedbackRatingListItem(@NonNull String instructionMessage, @NonNull OnSelectRatingListener onSelectRatingListener) {
+    public InputFeedbackRatingListItem(@NonNull String instructionMessage, @NonNull InputFeedback.OnSelectRatingListener onSelectRatingListener) {
         super(MessengerListType.INPUT_FIELD_FEEDBACK_RATING);
         this.onSelectRatingListener = onSelectRatingListener;
         this.instructionMessage = instructionMessage;
@@ -28,19 +28,11 @@ public class InputFeedbackRatingListItem extends InputFieldlListItem {
         }
     }
 
-    public OnSelectRatingListener getOnSelectRatingListener() {
+    public InputFeedback.OnSelectRatingListener getOnSelectRatingListener() {
         return onSelectRatingListener;
     }
 
     public String getInstructionMessage() {
         return instructionMessage;
-    }
-
-    public enum RATING {
-        GOOD, BAD
-    }
-
-    public interface OnSelectRatingListener {
-        void onSelectRating(RATING rating);
     }
 }

@@ -57,7 +57,7 @@ public class ConversationListPresenter implements ConversationListContract.Prese
         //.setFingerprintId("d0bc691c-62c5-468c-a4a5-3b096684dc96");
 
         mView.showLoadingView();
-        // loadConversations will be started in onStart()
+        // loadConversations will be started in onResume()
 
         mFailsafePollingHelper.startPolling(new FailsafePollingHelper.PollingListener() {
             @Override

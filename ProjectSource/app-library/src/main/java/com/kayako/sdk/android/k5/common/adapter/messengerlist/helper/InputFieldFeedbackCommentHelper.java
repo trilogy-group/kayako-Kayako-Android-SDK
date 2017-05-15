@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.kayako.sdk.android.k5.R;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedback;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedbackCommentListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedbackCommentViewHolder;
 import com.kayako.sdk.android.k5.core.Kayako;
@@ -66,13 +67,20 @@ public class InputFieldFeedbackCommentHelper {
         } else {
             InputFieldHelper.enableInputLayout(viewHolder);
 
+            // Set up Rating View
+            InputFieldFeedbackRatingHelper.setRatingView(listItem.getRating(), viewHolder.ratingView);
+            InputFieldFeedbackRatingHelper.setSelectRatingListener(viewHolder.ratingView, new InputFeedback.OnSelectRatingListener() {
+                @Override
+                public void onSelectRating(InputFeedback.RATING rating) {
+                    listItem.getOnAddFeedbackComment().onChangeFeedbackRating(rating);
+                }
+            });
+
             // Set up  field
             setFocusedFieldState(viewHolder);
             viewHolder.feedbackFieldLayout.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
-
-
                     setFeedbackFieldState(viewHolder, false);
                 }
             });

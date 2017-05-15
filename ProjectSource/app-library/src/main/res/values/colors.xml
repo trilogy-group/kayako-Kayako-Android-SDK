@@ -70,8 +70,8 @@
 
     <!-- Messenger -->
     <color name="ko__default_dark_text_color">#2D3138</color>
-    <color name="ko__messenger_speech_bubble_self_background_color">#F1703F</color>
-    <color name="ko__messenger_speech_bubble_self_optimistic_sending_background_color">#46F1703F</color>
+    <color name="ko__messenger_speech_bubble_self_background_color">@color/ko__messenger_primary_color</color>
+    <color name="ko__messenger_speech_bubble_self_optimistic_sending_background_color">@color/ko__messenger_primary_color_transparent_70</color>
     <!-- TODO: Should be primary messenger color-->
 
     <color name="ko__messenger_speech_bubble_self_text_color">#fff</color>
@@ -82,8 +82,8 @@
     <color name="ko__messenger_date_separator_line_color">#ebeef0</color>
     <color name="ko__messenger_date_separator_text_color">#2d3138</color>
 
-    <color name="ko__messenger_unread_separator_line_color">#F1703F</color>
-    <color name="ko__messenger_unread_separator_text_color">#F1703F</color>
+    <color name="ko__messenger_unread_separator_line_color">@color/ko__messenger_primary_color</color>
+    <color name="ko__messenger_unread_separator_text_color">@color/ko__messenger_primary_color</color>
 
     <!-- Conversation -->
     <color name="ko_conversation_item_dot_separator_color">#D1D5D7</color>
@@ -116,8 +116,8 @@
 
     <color name="ko__messenger_new_conversation_background_colour">@color/ko__messenger_primary_color</color>
     <color name="ko__messenger_new_conversation_text_colour">#FFFFFF</color>
-    <color name="ko__messenger_reply_box_send_button_background_colour">#F1703F</color>
-    <color name="ko__messenger_reply_box_send_button_background_colour_selected">#5AF1703F</color>
+    <color name="ko__messenger_reply_box_send_button_background_colour">@color/ko__messenger_primary_color</color>
+    <color name="ko__messenger_reply_box_send_button_background_colour_selected">@color/ko__messenger_primary_color_transparent_90</color>
     <color name="ko__messenger_reply_box_send_button_background_colour_disabled">#A1AAAF</color>
     <color name="ko__messenger_reply_box_background_colour">#F7F8F9</color>
     <color name="ko__messenger_floating_background_color">@android:color/transparent</color>
@@ -134,6 +134,9 @@
 
     <!-- TODO Shift to code? THen make this default -->
     <color name="ko__messenger_primary_color">#F1703F</color>
+    <color name="ko__messenger_primary_color_transparent_70">#46F1703F</color>
+    <color name="ko__messenger_primary_color_transparent_90">#5AF1703F</color>
+    <!--TODO: Transparent version of ko__messenger_primary_color - figure out how to handle this too -->
 
     <color name="ko__messenger_home_screen_widget_header_action_button_text_color">#2D3138</color>
 

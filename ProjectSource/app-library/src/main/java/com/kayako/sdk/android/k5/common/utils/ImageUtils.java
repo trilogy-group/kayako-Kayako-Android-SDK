@@ -97,7 +97,6 @@ public class ImageUtils {
     public static void setAvatarImage(Context context, ImageView avatarView, int avatarResId) {
         Glide.with(context)
                 .load(avatarResId)
-                .crossFade()
                 .centerCrop()
                 .skipMemoryCache(false) // false because avatars are repeatedly used in message listing, case listing, etc - when true, it shows placeholders
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)

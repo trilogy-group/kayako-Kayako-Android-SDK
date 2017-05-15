@@ -250,7 +250,7 @@ public class MessageListContainerRepository implements MessageListContainerContr
     }
 
     @Override
-    public void addConversationRating(long conversationId, PostRatingBodyParams postRatingBodyParams, final MessageListContainerContract.OnUpdateRatingListener onUpdateRatingListener) {
+    public void addConversationRating(long conversationId, final PostRatingBodyParams postRatingBodyParams, final MessageListContainerContract.OnUpdateRatingListener onUpdateRatingListener) {
         final Handler handler = new Handler(); // Needed to ensure that the callbacks run on the UI Thread
         mMessenger.postRating(
                 conversationId,
@@ -274,7 +274,7 @@ public class MessageListContainerRepository implements MessageListContainerContr
                             @Override
                             public void run() {
                                 if (onUpdateRatingListener != null)
-                                    onUpdateRatingListener.onFailure(exception.getMessage());
+                                    onUpdateRatingListener.onFailure(postRatingBodyParams.getScore(), postRatingBodyParams.getComment(), exception.getMessage());
                             }
                         });
                     }
@@ -282,7 +282,7 @@ public class MessageListContainerRepository implements MessageListContainerContr
     }
 
     @Override
-    public void updateConversationRating(long conversationId, long ratingId, PutRatingBodyParams putRatingBodyParams, final MessageListContainerContract.OnUpdateRatingListener onUpdateRatingListener) {
+    public void updateConversationRating(long conversationId, long ratingId, final PutRatingBodyParams putRatingBodyParams, final MessageListContainerContract.OnUpdateRatingListener onUpdateRatingListener) {
         final Handler handler = new Handler(); // Needed to ensure that the callbacks run on the UI Thread
         mMessenger.putRating(
                 conversationId,
@@ -306,8 +306,9 @@ public class MessageListContainerRepository implements MessageListContainerContr
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                if (onUpdateRatingListener != null)
-                                    onUpdateRatingListener.onFailure(exception.getMessage());
+                                if (onUpdateRatingListener != null) {
+                                    onUpdateRatingListener.onFailure(putRatingBodyParams.getScore(), putRatingBodyParams.getComment(), exception.getMessage());
+                                }
                             }
                         });
                     }
