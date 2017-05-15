@@ -62,6 +62,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
     private MessengerPrefHelper mMessengerPrefHelper = new MessengerPrefHelper();
     private MarkReadHelper mMarkReadHelper = new MarkReadHelper();
+    // TODO: Create an Attachment Uploader helper.
     private OnboardingHelper mOnboardingHelper = new OnboardingHelper();
     private ConversationHelper mConversationHelper = new ConversationHelper();
     private ReplyBoxViewHelper mReplyBoxHelper = new ReplyBoxViewHelper();

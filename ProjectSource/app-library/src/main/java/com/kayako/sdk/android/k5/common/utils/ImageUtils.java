@@ -128,18 +128,20 @@ public class ImageUtils {
     public static void loadFileAsAttachmentImage(@NonNull Context context, @NonNull ImageView imageView, @NonNull File file) {
         Glide.with(context)
                 .load(file)
+                .crossFade()
                 .placeholder(R.drawable.ko__loading_attachment)
                 .skipMemoryCache(false)
-                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE) // using source because RESULT messes up when image resizes to fit into imageview with wrap_content
                 .into(imageView);
     }
 
     public static void loadUrlAsAttachmentImage(@NonNull Context context, @NonNull ImageView imageView, @NonNull String imageUrl) {
         Glide.with(context)
                 .load(imageUrl)
+                .crossFade()
                 .placeholder(R.drawable.ko__loading_attachment)
                 .skipMemoryCache(false)
-                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE) // using source because RESULT messes up when image resizes to fit into imageview with wrap_content
                 .into(imageView);
     }
 
