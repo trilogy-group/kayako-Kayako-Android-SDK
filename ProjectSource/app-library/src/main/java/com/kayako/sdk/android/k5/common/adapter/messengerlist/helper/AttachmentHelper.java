@@ -62,7 +62,4 @@ public class AttachmentHelper {
         }
     }
 
-    private static void setupImageSize(ImageView imageView){
-
-    }
 }
