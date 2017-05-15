@@ -129,14 +129,12 @@ public class ReplyBoxFragment extends Fragment implements ReplyBoxContract.View,
     public void enableSendButton() {
         ImageButton button = (ImageButton) mRoot.findViewById(R.id.ko__reply_box_send_button);
         button.setEnabled(true);
-        button.setBackgroundResource(R.drawable.ko__reply_box_send_button_background);
     }
 
     @Override
     public void disableSendButton() {
         ImageButton button = (ImageButton) mRoot.findViewById(R.id.ko__reply_box_send_button);
         button.setEnabled(false);
-        button.setBackgroundResource(R.drawable.ko__reply_box_send_button_background_disabled);
     }
 
     @Override
