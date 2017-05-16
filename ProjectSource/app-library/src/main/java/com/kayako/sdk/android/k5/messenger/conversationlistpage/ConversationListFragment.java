@@ -3,6 +3,7 @@ package com.kayako.sdk.android.k5.messenger.conversationlistpage;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
@@ -182,7 +183,7 @@ public class ConversationListFragment extends BaseListFragment implements Conver
             return;
         }
 
-        startActivityForResult(KayakoSelectConversationActivity.getIntent(getActivity(), id), requestCode);
+        KayakoSelectConversationActivity.startActivityForResult(getActivity(), this, id, requestCode);
     }
 
     @Override

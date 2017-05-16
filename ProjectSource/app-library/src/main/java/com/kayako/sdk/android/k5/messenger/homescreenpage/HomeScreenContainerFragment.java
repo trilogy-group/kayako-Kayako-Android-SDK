@@ -3,6 +3,7 @@ package com.kayako.sdk.android.k5.messenger.homescreenpage;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,6 +85,6 @@ public class HomeScreenContainerFragment extends Fragment implements HomeScreenC
             return;
         }
 
-        startActivity(KayakoSelectConversationActivity.getIntent(getContext()));
+        KayakoSelectConversationActivity.startActivity((AppCompatActivity) getActivity());
     }
 }

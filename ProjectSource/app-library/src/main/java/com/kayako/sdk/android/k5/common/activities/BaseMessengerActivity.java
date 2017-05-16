@@ -1,5 +1,7 @@
 package com.kayako.sdk.android.k5.common.activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -107,4 +109,45 @@ public abstract class BaseMessengerActivity extends AppCompatActivity {
     }
 
     protected abstract Fragment getContainerFragment();
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransitionExit(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransitionExit(this);
+    }
+
+
+    @Override
+    public void startActivity(Intent intent) {
+        super.startActivity(intent);
+        overridePendingTransitionEnter(this);
+    }
+
+    /**
+     * Overrides the pending Activity transition by performing the "Enter" animation.
+     */
+    protected static void overridePendingTransitionEnter(AppCompatActivity activity) {
+        activity.overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+    }
+
+    /**
+     * Overrides the pending Activity transition by performing the "Enter" animation.
+     */
+    protected static void overridePendingTransitionEnter(Activity activity) {
+        activity.overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+    }
+
+    /**
+     * Overrides the pending Activity transition by performing the "Exit" animation.
+     */
+    protected static void overridePendingTransitionExit(AppCompatActivity activity) {
+        activity.overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.kayako.sdk.android.k5.core;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -7,6 +8,7 @@ import android.graphics.Color;
 import android.support.annotation.ColorRes;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Patterns;
 import android.webkit.URLUtil;
 
@@ -17,6 +19,8 @@ import com.kayako.sdk.android.k5.messenger.style.ForegroundFactory;
 import com.kayako.sdk.android.k5.messenger.style.type.Background;
 import com.kayako.sdk.android.k5.messenger.style.type.Foreground;
 import com.kayako.sdk.utils.FingerprintUtils;
+
+import java.util.Locale;
 
 public class MessengerBuilder {
 
@@ -118,7 +122,17 @@ public class MessengerBuilder {
         return this;
     }
 
-    public void open(Context context) {
+    public void open(AppCompatActivity activity) {
+        commonOpen();
+        KayakoMessengerActivity.startActivity(activity);
+    }
+
+    public void open(Activity activity) {
+        commonOpen();
+        KayakoMessengerActivity.startActivity(activity);
+    }
+
+    private void commonOpen() {
         // Mandatory Fields
         saveOrValidateUrl();
         saveOrValidateBrandName();
@@ -131,10 +145,6 @@ public class MessengerBuilder {
 
         // Optional Fields
         saveIfAvailableUserEmail();
-
-        Intent intent = KayakoMessengerActivity.getIntent(context);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
     }
 
     private void saveIfAvailableUserEmail() {

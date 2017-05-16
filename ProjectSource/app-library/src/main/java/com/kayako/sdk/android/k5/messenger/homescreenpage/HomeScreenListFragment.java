@@ -3,6 +3,7 @@ package com.kayako.sdk.android.k5.messenger.homescreenpage;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -101,7 +102,7 @@ public class HomeScreenListFragment extends Fragment implements HomeScreenListCo
             return;
         }
 
-        startActivity(KayakoConversationListActivity.getIntent(getActivity()));
+        KayakoConversationListActivity.startActivity((AppCompatActivity) getActivity());
     }
 
     @Override
@@ -110,7 +111,7 @@ public class HomeScreenListFragment extends Fragment implements HomeScreenListCo
             return;
         }
 
-        startActivity(KayakoSelectConversationActivity.getIntent(getActivity(), conversationId));
+        KayakoSelectConversationActivity.startActivity((AppCompatActivity) getActivity(), conversationId);
     }
 
     @Override

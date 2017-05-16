@@ -30,6 +30,7 @@ public class ConversationListPresenter implements ConversationListContract.Prese
     private FailsafePollingHelper mFailsafePollingHelper = new FailsafePollingHelper();
 
     // TODO: Refactor conversation list to retain list of realtimeconversation and re-render whole list everytime
+    // TODO: Scroll to the top of the list when there's a new item - gets hidden and user assumes there're no new conversations
 
     public ConversationListPresenter(ConversationListContract.View mView, ConversationListContract.Data mData) {
         this.mData = mData;
