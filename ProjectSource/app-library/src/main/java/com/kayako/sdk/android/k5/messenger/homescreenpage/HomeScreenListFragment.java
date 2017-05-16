@@ -46,11 +46,10 @@ public class HomeScreenListFragment extends Fragment implements HomeScreenListCo
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        mPresenter.onStart();
+    public void onResume() {
+        super.onResume();
+        mPresenter.onResume();
     }
-
 
     @Override
     public void onDestroyView() {

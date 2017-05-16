@@ -44,7 +44,7 @@ public class HomeScreenListPresenter implements HomeScreenListContract.Presenter
     @Override
     public void initPage() {
         setupList();
-        // load conversation started in onStart()
+        // load conversation started in onResume()
 
         mFailsafePollingHelper.startPolling(new FailsafePollingHelper.PollingListener() {
             @Override
@@ -64,7 +64,7 @@ public class HomeScreenListPresenter implements HomeScreenListContract.Presenter
     }
 
     @Override
-    public void onStart() {
+    public void onResume() {
         loadConversationStarter();
     }
 

@@ -23,7 +23,7 @@ public class HomeScreenListContract {
 
         void closePage();
 
-        void onStart();
+        void onResume();
     }
 
     public interface ConfigureView {
