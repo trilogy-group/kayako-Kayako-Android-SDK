@@ -16,7 +16,7 @@ public class KayakoMessengerActivity extends BaseMessengerActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         activity.startActivity(intent);
-        overridePendingTransitionEnter(activity);
+        overrideFinalPendingTransitionEnter(activity);
     }
 
     public static void startActivity(AppCompatActivity activity) {
@@ -24,19 +24,19 @@ public class KayakoMessengerActivity extends BaseMessengerActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         activity.startActivity(new Intent(activity, KayakoMessengerActivity.class));
-        overridePendingTransitionEnter(activity);
+        overrideFinalPendingTransitionEnter(activity);
     }
 
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransitionExit(this);
+        overrideFinalPendingTransitionExit(this);
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        overridePendingTransitionExit(this);
+        overrideFinalPendingTransitionExit(this);
     }
 
     @Override
@@ -44,26 +44,6 @@ public class KayakoMessengerActivity extends BaseMessengerActivity {
         return new HomeScreenContainerFragment();
     }
 
-    /**
-     * Overrides the pending Activity transition by performing the "Enter" animation.
-     */
-    protected static void overridePendingTransitionEnter(AppCompatActivity activity) {
-        activity.overridePendingTransition(R.anim.slide_from_top, R.anim.slide_to_bottom);
-    }
-
-    /**
-     * Overrides the pending Activity transition by performing the "Enter" animation.
-     */
-    protected static void overridePendingTransitionEnter(Activity activity) {
-        activity.overridePendingTransition(R.anim.slide_from_top, R.anim.slide_to_bottom);
-    }
-
-    /**
-     * Overrides the pending Activity transition by performing the "Exit" animation.
-     */
-    protected static void overridePendingTransitionExit(AppCompatActivity activity) {
-        activity.overridePendingTransition(R.anim.slide_from_bottom, R.anim.slide_to_top);
-    }
 
 
 }

@@ -68,9 +68,9 @@ public class MessengerActivityTracker {
                 synchronized (openMessengerActivities) {
                     for (WeakReference weakReference : openMessengerActivities) {
                         if (weakReference != null && weakReference.get() != null) {
-                            AppCompatActivity appCompatActivity = (AppCompatActivity) weakReference.get();
-                            if (!appCompatActivity.isFinishing()) {
-                                appCompatActivity.finish();
+                            BaseMessengerActivity baseMessengerActivity = (BaseMessengerActivity) weakReference.get();
+                            if (!baseMessengerActivity.isFinishing()) {
+                                baseMessengerActivity.finishFinal();
                             }
                         }
                     }

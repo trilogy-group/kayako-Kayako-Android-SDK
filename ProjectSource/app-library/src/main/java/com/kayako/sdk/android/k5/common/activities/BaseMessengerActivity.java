@@ -71,7 +71,6 @@ public abstract class BaseMessengerActivity extends AppCompatActivity {
         MessengerActivityTracker.refreshList();
     }
 
-
     private void setupFloatingViewFunctionality() {
         findViewById(R.id.ko__space_to_close_messenger).setOnDragListener(new View.OnDragListener() {
             @Override
@@ -109,6 +108,11 @@ public abstract class BaseMessengerActivity extends AppCompatActivity {
     }
 
     protected abstract Fragment getContainerFragment();
+
+    public void finishFinal() {
+        super.finish();
+        overrideFinalPendingTransitionExit(this);
+    }
 
     @Override
     public void finish() {
@@ -148,6 +152,28 @@ public abstract class BaseMessengerActivity extends AppCompatActivity {
      */
     protected static void overridePendingTransitionExit(AppCompatActivity activity) {
         activity.overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
+    }
+
+
+    /**
+     * Overrides the pending Activity transition by performing the "Enter" animation.
+     */
+    protected static void overrideFinalPendingTransitionEnter(AppCompatActivity activity) {
+        activity.overridePendingTransition(R.anim.slide_from_top, R.anim.slide_to_bottom);
+    }
+
+    /**
+     * Overrides the pending Activity transition by performing the "Enter" animation.
+     */
+    protected static void overrideFinalPendingTransitionEnter(Activity activity) {
+        activity.overridePendingTransition(R.anim.slide_from_top, R.anim.slide_to_bottom);
+    }
+
+    /**
+     * Overrides the pending Activity transition by performing the "Exit" animation.
+     */
+    protected static void overrideFinalPendingTransitionExit(AppCompatActivity activity) {
+        activity.overridePendingTransition(R.anim.slide_from_bottom, R.anim.slide_to_top);
     }
 
 }
