@@ -21,7 +21,7 @@
     <string name="ko__messenger_input_email_message_hint_error">Oops, email address seems invalid. Try again?</string>
     <string name="ko__messenger_input_email_edittext_hint">you@youremail.com</string>
     <string name="ko__messenger_input_email_message_hint_default">Your Email</string>
-    <string name="ko__email_input_field_msg_you_will_be_notified">Thanks! You will be notified here or via email</string>
+    <string name="ko__email_input_field_msg_you_will_be_notified">Thanks! If you miss our reply here, we\'ll send it to your email</string>
     <string name="ko__email_input_field_submit_button_text">@string/ko__label_submit</string>
     <string name="ko__label_submit">Submit</string>
     <string name="ko__messenger_label_new_conversation">Start a conversation</string>

@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <solid android:color="@color/ko__messenger_new_conversation_background_colour" />
+    <item android:drawable="@drawable/ko__button_new_conversation_selected" android:state_pressed="true" />
 
-    <corners
-        android:bottomLeftRadius="@dimen/ko__messenger_button_new_conversation_corner"
-        android:bottomRightRadius="@dimen/ko__messenger_button_new_conversation_corner"
-        android:topLeftRadius="@dimen/ko__messenger_button_new_conversation_corner"
-        android:topRightRadius="@dimen/ko__messenger_button_new_conversation_corner" />
-</shape>
+    <item android:drawable="@drawable/ko__button_new_conversation_selected" android:state_focused="true" />
+
+    <item android:drawable="@drawable/ko__button_new_conversation_active" />
+
+</selector>
