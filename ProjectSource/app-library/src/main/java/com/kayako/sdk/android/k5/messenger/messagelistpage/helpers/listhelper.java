@@ -22,6 +22,7 @@ import java.util.List;
 public class ListHelper {
 
     private ListPageState mListPageState;
+    private List<BaseListItem> mLastDisplayedItems;
 
     public ListPageState getListPageState() {
         return mListPageState;
@@ -29,6 +30,18 @@ public class ListHelper {
 
     public void setListPageState(ListPageState mListPageState) {
         this.mListPageState = mListPageState;
+    }
+
+    public void setLastDisplayedItems(List<BaseListItem> mLastDisplayedItems) {
+        this.mLastDisplayedItems = mLastDisplayedItems;
+    }
+
+    public boolean shouldUpdateViewList(List<BaseListItem> newItems) {
+        if (newItems == null || mLastDisplayedItems == null) {
+            return true; // EMPTY <-> NOT-EMPTY
+        }
+
+        return !newItems.equals(mLastDisplayedItems);
     }
 
     public List<BaseListItem> getMessageAsListItemViews(List<Message> messages, long lastOriginalMessageMarkedRead, long userId) {

@@ -37,12 +37,12 @@ public class MessengerListFragment extends BaseListFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-/* TESTING:
+        /* TESTING:
         if (SHOW_SAMPLE_DATA) {
             testSample1();
             testSample2();
         }
-*/
+        */
     }
 
     /**

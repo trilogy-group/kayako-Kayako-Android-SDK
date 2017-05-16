@@ -62,7 +62,6 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
     private MessengerPrefHelper mMessengerPrefHelper = new MessengerPrefHelper();
     private MarkReadHelper mMarkReadHelper = new MarkReadHelper();
-    // TODO: Create an Attachment Uploader helper.
     private OnboardingHelper mOnboardingHelper = new OnboardingHelper();
     private ConversationHelper mConversationHelper = new ConversationHelper();
     private ReplyBoxViewHelper mReplyBoxHelper = new ReplyBoxViewHelper();
@@ -395,8 +394,14 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private void displayList() {
         List<BaseListItem> allListItems = generateListItems();
 
+        if (!mListHelper.shouldUpdateViewList(allListItems)) {
+            return; // Don't update list if there are no changes
+        }
+
         if (allListItems.size() != 0) {
-            mView.setupListInMessageListingView(allListItems);
+            mView.setupListInMessageListingView(
+                    new ArrayList<>(allListItems)); // Create and send copy because reference is updated (order reversed in view)
+            mListHelper.setLastDisplayedItems(allListItems);
 
             if (!mConversationHelper.isConversationCreated()) {
                 mView.setHasMoreItems(false);
@@ -405,21 +410,30 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             }
         } else {
             // There should never be an empty state view shown! Leave it blank inviting customer to add stuff.
-            mView.setupListInMessageListingView(allListItems); // Set empty list to show as blank
+            mView.setupListInMessageListingView(new ArrayList<>(allListItems)); // Set empty list to show as blank
+            mListHelper.setLastDisplayedItems(allListItems);
         }
     }
 
     private void configureReplyBoxViewState() {
-        ReplyBoxViewHelper.ReplyBoxViewState replyBoxViewState =
+        ReplyBoxViewHelper.ReplyBoxViewState stateToApply =
                 mReplyBoxHelper.getReplyBoxVisibility(
                         !mConversationHelper.isConversationCreated(),
                         mMessengerPrefHelper.getEmail() != null,
                         mConversationHelper.isConversationClosed() || mConversationHelper.isConversationCompleted(),
                         mListHelper.getListPageState());
-        switch (replyBoxViewState) {
 
+
+        ReplyBoxViewHelper.ReplyBoxViewState lastState = mReplyBoxHelper.getLastSetReplyBoxViewState();
+
+        if (lastState != null && lastState == stateToApply) {
+            return; // do not configure visibility of reply box if there is no change
+            // Also, hiding the reply box hides the keyboard (which causes problems when dealing with feedback list item)
+        }
+
+        switch (stateToApply) {
             case DISABLED:
-                // TODO: Have not handled for disabled state yet!
+                // Have not handled for disabled state yet!
                 break;
 
             case VISIBLE:
@@ -431,6 +445,8 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                 mView.hideReplyBox();
                 break;
         }
+
+        mReplyBoxHelper.setLastSetReplyBoxViewState(stateToApply);
     }
 
     private void configureAttachmentButton() {

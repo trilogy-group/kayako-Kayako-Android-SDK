@@ -12,8 +12,15 @@ public class ReplyBoxViewHelper {
     public ReplyBoxViewHelper() {
     }
 
-    public enum ReplyBoxViewState {
-        DISABLED, HIDDEN, VISIBLE
+
+    private ReplyBoxViewState lastSetReplyBoxViewState;
+
+    public void setLastSetReplyBoxViewState(ReplyBoxViewState lastSetReplyBoxViewState) {
+        this.lastSetReplyBoxViewState = lastSetReplyBoxViewState;
+    }
+
+    public ReplyBoxViewState getLastSetReplyBoxViewState() {
+        return lastSetReplyBoxViewState;
     }
 
     /**
@@ -52,5 +59,9 @@ public class ReplyBoxViewHelper {
         } else {
             return ReplyBoxViewState.HIDDEN;
         }
+    }
+
+    public enum ReplyBoxViewState {
+        DISABLED, HIDDEN, VISIBLE
     }
 }

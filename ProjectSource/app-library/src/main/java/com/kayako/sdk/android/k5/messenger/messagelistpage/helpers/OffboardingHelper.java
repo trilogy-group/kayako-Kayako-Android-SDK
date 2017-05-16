@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedback;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedbackCommentListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedbackRatingListItem;
 import com.kayako.sdk.android.k5.core.Kayako;
@@ -12,35 +13,42 @@ import com.kayako.sdk.messenger.rating.Rating;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * All logic involving offboarding items that ask for feedback
+ * <p>
+ * NOTE:
+ * - A conversation can have multiple ratings.
+ * - Select the latest rating to update the feedback
+ * <p>
+ * Currently:
+ * - This code is made in such a way that only one rating per customer is allowed for a conversation8
  */
 public class OffboardingHelper {
+
+    // TODO: Should we sort in order of when the rating was applied or always leave at the end of a conversation?
+    // TODO: Uncomment and add callback to update the message view - "Submitting rating..."? - making responsive ui for user v/s showing users only what's loaded on the backend
 
     public OffboardingHelper() {
     }
 
-    /**
-     * NOTE:
-     * - A conversation can have multiple ratings.
-     * - Select the latest rating to update the feedback
-     * <p>
-     * Currently:
-     * - This code is made in such a way that only one rating per customer is allowed for a conversation
-     */
-
     // State after sending via API are saved here
     private AtomicReference<Rating> latestRatingOfConversation = new AtomicReference<>();
+    private AtomicBoolean hasRatingsBeenLoadedViaApi = new AtomicBoolean(false);
 
     // Interactions and switching between different Feedback views are done based on in-memory values (not api state)
     private Rating.SCORE currentRatingSubmittedViaUI;
     private String currentFeedbackSubmittedViaUI;
 
-    private AtomicBoolean hasRatingsBeenLoadedViaApi = new AtomicBoolean(false);
+    // Queuing requests to ensure new ratings are not created if the existing ones can be updated
+    private Queue<UnsentRating> updateRatingQueue = new ConcurrentLinkedQueue<>();
+    private AtomicReference<UnsentRating> lastRatingBeingSent = new AtomicReference<>();
 
+    //////////// API CALLBACK METHODS ////////////
 
     public void onLoadRatings(List<Rating> ratings, OffboardingHelperViewCallback callback) {
         if (ratings == null) { // ratings.size = 0 is allowed -> no ratings assigned to case but ratings are loaded
@@ -52,7 +60,7 @@ public class OffboardingHelper {
         // Update current rating if api values are not null
         // This prevents additional Ratings to be applied if already applied once before
         if (latestRatingOfConversation.get() != null) {
-            setCurrentRatingViaUI(latestRatingOfConversation.get());
+            setCurrentRatingViaUIIfNotSetAlready(latestRatingOfConversation.get());
         }
 
         // Refresh list view if ratings loaded via API for first time and a rating is available to show
@@ -69,20 +77,34 @@ public class OffboardingHelper {
             This method is called when feedback has been successfully sent via API.
          */
 
-        latestRatingOfConversation.set(rating);
+        removeFromQueue(callback, rating.getScore(), rating.getComment()); // since successful
+        resetRatingSendingState(callback); // no longer sending
+        runNextInQueueIfReady(callback);
 
-        // setCurrentRatingViaAPI(rating);
+        latestRatingOfConversation.set(rating);
         hasRatingsBeenLoadedViaApi.set(true);
+
         callback.onRefreshListView();
+    }
+
+    public void onFailureToUpdateRating(Rating.SCORE score, String feedback, OffboardingHelperViewCallback callback) {
+        /*
+            This method is called when feedback has failed to be sent via API.
+         */
+
+        resetRatingSendingState(callback);
+        runNextInQueueIfReady(callback);
     }
 
     public void onLoadConversation(boolean isConversationCompletedOrClosed, OffboardingHelperViewCallback callback) {
         // Both when a new conversation is created and when loading an existing conversation
         // This is done only once a conversation is loaded because to load ratings of a conversation, we need to make sure the conversation exists
 
-        // Load rating via API as long current rating is null
-        if (latestRatingOfConversation.get() == null) {
+        if (isConversationCompletedOrClosed
+                && latestRatingOfConversation.get() == null) { // Load rating via API as long current rating is null
             callback.onLoadRatings();
+        } else {
+            callback.onRefreshListView(); // Ensure that during status changes from open -> completed -> open, the feedback is removed
         }
 
         // TODO: Handle a situation where a customer may want to rate the conversation multiple times
@@ -100,40 +122,45 @@ public class OffboardingHelper {
 
 
         if (currentRatingSubmittedViaUI == null) {
-            return getOffboardingItemsToSelectRating(nameToAddRatingAndFeedbackOf, new InputFeedbackRatingListItem.OnSelectRatingListener() {
+            return getOffboardingItemsToSelectRating(new InputFeedback.OnSelectRatingListener() {
                 @Override
-                public void onSelectRating(InputFeedbackRatingListItem.RATING rating) {
-                    Rating.SCORE score = convertFromFeedbackRating(rating);
-                    currentRatingSubmittedViaUI = score;
+                public void onSelectRating(InputFeedback.RATING rating) {
 
-                    callback.onAddRating(score);
+                    Rating.SCORE score = convertFromInputFieldRating(rating);
+                    addToQueue(callback, score, null);
+                    runNextInQueueIfReady(callback);
+
                     callback.onRefreshListView();
                 }
             });
 
-        } else if (latestRatingOfConversation.get() == null) {
-            /*
-                If the network fails or is slow and the latestRating hasn't been loaded yet, then we can not update the rating without the id.
-                Therefore, do not show the user the input field to add Feedback. Only show to the user that rating is submitted (even though we are unsure if it failed or not)
-                // TODO: There are better ways to handle this! Inform user of bad network, consider failure states, cache task, etc. Right now, if network is bad, rating is never sent - although visually the user is informed that it is
-             */
-
-            return getOffboardingItemsOnRatingSubmission(nameToAddRatingAndFeedbackOf, convertToFeedbackRating(currentRatingSubmittedViaUI));
 
         } else if (currentFeedbackSubmittedViaUI == null) {
 
+            /*
+            NOTE: New feedback view combines rating and feedback views - no more intermediate state
             if (latestRatingOfConversation.get() == null) {
                 throw new IllegalStateException("This should never be called if the latestRating is not loaded");
             }
+            */
 
             List<BaseListItem> list = new ArrayList<>();
-            list.addAll(getOffboardingItemsOnRatingSubmission(nameToAddRatingAndFeedbackOf, convertToFeedbackRating(currentRatingSubmittedViaUI)));
             list.addAll(getOffboardingItemsToAddComment(currentRatingSubmittedViaUI, new InputFeedbackCommentListItem.OnAddFeedbackCommentCallback() {
                 @Override
-                public void onAddFeedbackComment(InputFeedbackCommentListItem.RATING rating, String feedback) {
-                    currentFeedbackSubmittedViaUI = feedback;
+                public void onChangeFeedbackRating(InputFeedback.RATING rating) {
+                    Rating.SCORE score = convertFromInputFieldRating(rating);
+                    addToQueue(callback, score, null);
+                    runNextInQueueIfReady(callback);
 
-                    callback.onAddFeedback(latestRatingOfConversation.get().getId(), convertFromFeedbackComment(rating), feedback);
+                    callback.onRefreshListView();
+                }
+
+                @Override
+                public void onAddFeedbackComment(InputFeedback.RATING rating, String feedback) {
+                    Rating.SCORE score = convertFromInputFieldRating(rating);
+                    addToQueue(callback, score, feedback);
+                    runNextInQueueIfReady(callback);
+
                     callback.onRefreshListView();
                 }
             }));
@@ -141,28 +168,24 @@ public class OffboardingHelper {
 
         } else {
             List<BaseListItem> list = new ArrayList<>();
-            list.addAll(getOffboardingItemsOnRatingSubmission(nameToAddRatingAndFeedbackOf, convertToFeedbackRating(currentRatingSubmittedViaUI)));
-            list.addAll(getOffboardingItemsOnCommentSubmission(currentRatingSubmittedViaUI, currentFeedbackSubmittedViaUI));
+            list.addAll(getOffboardingItemsOnRatingSubmission(convert(currentRatingSubmittedViaUI)));
             return list;
         }
     }
 
-    private List<BaseListItem> getOffboardingItemsToSelectRating(String lastAgentReplierName,
-                                                                 final InputFeedbackRatingListItem.OnSelectRatingListener onSelectRatingListener) {
+    //////////// LIST ITEM METHODS ////////////
+
+
+    private List<BaseListItem> getOffboardingItemsToSelectRating(final InputFeedback.OnSelectRatingListener onSelectRatingListener) {
         List<BaseListItem> listItems = new ArrayList<>();
         listItems.add(new InputFeedbackRatingListItem(
-                String.format(
-                        Kayako.getApplicationContext().getString(R.string.ko__messenger_input_feedback_rating_instruction_message),
-                        lastAgentReplierName),
+                Kayako.getApplicationContext().getString(R.string.ko__messenger_input_feedback_rating_instruction_message),
                 onSelectRatingListener)
         );
         return listItems;
     }
 
-    private List<BaseListItem> getOffboardingItemsOnRatingSubmission(String lastAgentReplierName, InputFeedbackRatingListItem.RATING rating) {
-        // TODO: Should we sort in order of when the rating was applied or always leave at the end of a conversation?
-
-        // TODO: Show feedback item directly
+    private List<BaseListItem> getOffboardingItemsOnRatingSubmission(InputFeedback.RATING rating) {
         List<BaseListItem> listItems = new ArrayList<>();
         listItems.add(new InputFeedbackRatingListItem(
                 Kayako.getApplicationContext().getString(R.string.ko__messenger_input_feedback_rating_instruction_message),
@@ -175,7 +198,7 @@ public class OffboardingHelper {
         List<BaseListItem> listItems = new ArrayList<>();
         listItems.add(new InputFeedbackCommentListItem(
                 getCommentInstructionMessage(rating),
-                convertToFeebackComment(rating),
+                convert(rating),
                 onAddFeedbackComment));
         return listItems;
     }
@@ -188,20 +211,9 @@ public class OffboardingHelper {
         return listItems;
     }
 
-    private Rating getLatestRating(List<Rating> ratings) {
-        Rating latestRating = null;
-        for (Rating rating : ratings) {
-            if (latestRating == null) {
-                latestRating = rating;
-            } else if (latestRating.getCreatedAt() < rating.getCreatedAt()) { // latest has greater epoch in milliseconds
-                latestRating = rating;
-            }
-        }
+    //////////// UTIL METHODS ////////////
 
-        return latestRating;
-    }
-
-    private void setCurrentRatingViaUI(Rating rating) {
+    private void setCurrentRatingViaUIIfNotSetAlready(Rating rating) {
         if (rating == null || rating == null) {
             throw new IllegalArgumentException("Invalid argument");
         }
@@ -219,68 +231,135 @@ public class OffboardingHelper {
     }
 
 
-    private InputFeedbackRatingListItem.RATING convertToFeedbackRating(Rating.SCORE score) {
+    private Rating getLatestRating(List<Rating> ratings) {
+        Rating latestRating = null;
+        for (Rating rating : ratings) {
+            if (latestRating == null) {
+                latestRating = rating;
+            } else if (latestRating.getCreatedAt() < rating.getCreatedAt()) { // latest has greater epoch in milliseconds
+                latestRating = rating;
+            }
+        }
+
+        return latestRating;
+    }
+
+    private InputFeedback.RATING convert(Rating.SCORE score) {
         if (score == Rating.SCORE.BAD) {
-            return InputFeedbackRatingListItem.RATING.BAD;
+            return InputFeedback.RATING.BAD;
         } else if (score == Rating.SCORE.GOOD) {
-            return InputFeedbackRatingListItem.RATING.GOOD;
+            return InputFeedback.RATING.GOOD;
         } else {
             throw new IllegalStateException("Unhandled enum state!");
         }
     }
 
-    private InputFeedbackCommentListItem.RATING convertToFeebackComment(Rating.SCORE score) {
-        if (score == Rating.SCORE.BAD) {
-            return InputFeedbackCommentListItem.RATING.BAD;
-        } else if (score == Rating.SCORE.GOOD) {
-            return InputFeedbackCommentListItem.RATING.GOOD;
-        } else {
-            throw new IllegalStateException("Unhandled enum state!");
-        }
-    }
-
-
-    private Rating.SCORE convertFromFeedbackRating(InputFeedbackRatingListItem.RATING rating) {
-        if (rating == InputFeedbackRatingListItem.RATING.BAD) {
+    private Rating.SCORE convertFromInputFieldRating(InputFeedback.RATING rating) {
+        if (rating == InputFeedback.RATING.BAD) {
             return Rating.SCORE.BAD;
-        } else if (rating == InputFeedbackRatingListItem.RATING.GOOD) {
+        } else if (rating == InputFeedback.RATING.GOOD) {
             return Rating.SCORE.GOOD;
         } else {
             throw new IllegalStateException("Unhandled enum state!");
         }
     }
-
-    private Rating.SCORE convertFromFeedbackComment(InputFeedbackCommentListItem.RATING rating) {
-        if (rating == InputFeedbackCommentListItem.RATING.BAD) {
-            return Rating.SCORE.BAD;
-        } else if (rating == InputFeedbackCommentListItem.RATING.GOOD) {
-            return Rating.SCORE.GOOD;
-        } else {
-            throw new IllegalStateException("Unhandled enum state!");
-        }
-    }
-
 
     private String getCommentInstructionMessage(Rating.SCORE score) {
         Context context = Kayako.getApplicationContext();
-        switch (score) {
-            case BAD:
-                return context.getResources().getString(R.string.ko__messenger_input_feedback_comment_instruction_message_bad);
-            case GOOD:
-                return context.getResources().getString(R.string.ko__messenger_input_feedback_comment_instruction_message_good);
-            default:
-                return context.getResources().getString(R.string.ko__messenger_input_feedback_comment_instruction_message_generic);
+        return context.getResources().getString(R.string.ko__messenger_input_feedback_rating_instruction_message); // Same as Rating message
+    }
+
+    //////////// QUEUEING CODE ////////////
+
+    private void addOrUpdateRating(OffboardingHelperViewCallback callback, Rating.SCORE rating, String feedback) {
+        if (latestRatingOfConversation.get() == null) {
+            callback.onAddRating(rating, feedback);
+        } else if (feedback == null) {
+            callback.onUpdateRating(latestRatingOfConversation.get().getId(), rating);
+        } else {
+            callback.onUpdateFeedback(latestRatingOfConversation.get().getId(), rating, feedback);
         }
     }
 
+    private void addToQueue(OffboardingHelperViewCallback callback, Rating.SCORE rating, String feedback) {
+        updateRatingQueue.add(new UnsentRating(rating, feedback));
+
+        currentFeedbackSubmittedViaUI = feedback;
+        currentRatingSubmittedViaUI = rating;
+    }
+
+    private void removeFromQueue(OffboardingHelperViewCallback callback, Rating.SCORE rating, String feedback) {
+        if (!updateRatingQueue.peek().equals(new UnsentRating(rating, feedback))) {
+            throw new IllegalStateException("Should remove the same rating from queue. State should be consistent!");
+        }
+        updateRatingQueue.remove();
+    }
+
+    private void resetRatingSendingState(OffboardingHelperViewCallback callback) {
+        lastRatingBeingSent.set(null);
+    }
+
+    private void runNextInQueueIfReady(OffboardingHelperViewCallback callback) {
+        if (updateRatingQueue.size() == 0
+                || lastRatingBeingSent.get() != null) {
+            return; // Wait till it's ready
+        }
+
+        UnsentRating unsentRating = updateRatingQueue.peek();
+        lastRatingBeingSent.set(unsentRating);
+        addOrUpdateRating(callback, unsentRating.getRatingScore(), unsentRating.getFeedback());
+    }
+
+    //////////// INTERFACES & PVT CLASSES ////////////
+
+
     public interface OffboardingHelperViewCallback {
+
         void onRefreshListView();
 
         void onLoadRatings();
 
-        void onAddRating(Rating.SCORE ratingScore);
+        void onAddRating(Rating.SCORE ratingScore, String message);
 
-        void onAddFeedback(long ratingId, Rating.SCORE score, String message);
+        void onUpdateRating(long ratingId, Rating.SCORE score);
+
+        void onUpdateFeedback(long ratingId, Rating.SCORE score, String message);
     }
 
+    private static class UnsentRating {
+
+        private Rating.SCORE ratingScore;
+        private String feedback;
+
+        public UnsentRating(Rating.SCORE ratingScore, String feedback) {
+            this.ratingScore = ratingScore;
+            this.feedback = feedback;
+        }
+
+        public Rating.SCORE getRatingScore() {
+            return ratingScore;
+        }
+
+        public String getFeedback() {
+            return feedback;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            UnsentRating that = (UnsentRating) o;
+
+            if (ratingScore != that.ratingScore) return false;
+            return feedback != null ? feedback.equals(that.feedback) : that.feedback == null;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = ratingScore != null ? ratingScore.hashCode() : 0;
+            result = 31 * result + (feedback != null ? feedback.hashCode() : 0);
+            return result;
+        }
+    }
 }
