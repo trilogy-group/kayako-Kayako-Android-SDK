@@ -5,6 +5,9 @@ import android.support.annotation.NonNull;
 import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.HomeScreenListType;
 import com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.widget.BaseWidgetListItem;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class PresenceWidgetListItem extends BaseWidgetListItem {
 
     private String presenceCaption;
@@ -36,4 +39,16 @@ public class PresenceWidgetListItem extends BaseWidgetListItem {
     public String getAvatarUrl3() {
         return avatarUrl3;
     }
+
+    @Override
+    public Map<String, String> getContents() {
+        Map<String, String> map = new HashMap<>();
+        map.put("title", String.valueOf(getTitle()));
+        map.put("presenceCaption", String.valueOf(presenceCaption));
+        map.put("avatarUrl1", String.valueOf(avatarUrl1));
+        map.put("avatarUrl2", String.valueOf(avatarUrl2));
+        map.put("avatarUrl3", String.valueOf(avatarUrl3));
+        return map;
+    }
+
 }

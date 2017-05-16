@@ -3,6 +3,9 @@ package com.kayako.sdk.android.k5.common.adapter.list;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.base.parser.Resource;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
@@ -31,5 +34,12 @@ public class HeaderListItem extends BaseListItem {
 
     public void setResource(Resource resource) {
         this.resource = resource;
+    }
+
+    @Override
+    public Map<String, String> getContents() {
+        Map<String, String> map = new HashMap<>();
+        map.put("title", String.valueOf(title));
+        return map;
     }
 }

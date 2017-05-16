@@ -6,7 +6,9 @@ import android.support.annotation.Nullable;
 import com.kayako.sdk.android.k5.common.adapter.BaseDataListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.ChannelDecoration;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerListType;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.DiffUtilsHelper;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class SimpleMessageOtherListItem extends BaseDataListItem {
@@ -16,8 +18,8 @@ public class SimpleMessageOtherListItem extends BaseDataListItem {
     private long time;
     private ChannelDecoration channel;
 
-    public SimpleMessageOtherListItem(@Nullable Long id,@NonNull String message, @NonNull String avatarUrl, @Nullable ChannelDecoration channel, @Nullable long time, @Nullable Map<String, Object> data) {
-        super(MessengerListType.SIMPLE_MESSAGE_OTHER, id,data);
+    public SimpleMessageOtherListItem(@Nullable Long id, @NonNull String message, @NonNull String avatarUrl, @Nullable ChannelDecoration channel, @Nullable long time, @Nullable Map<String, Object> data) {
+        super(MessengerListType.SIMPLE_MESSAGE_OTHER, id, data);
 
         this.message = message;
         this.avatarUrl = avatarUrl;
@@ -56,4 +58,17 @@ public class SimpleMessageOtherListItem extends BaseDataListItem {
     public void setChannel(ChannelDecoration channel) {
         this.channel = channel;
     }
+
+    @Override
+    public Map<String, String> getContents() {
+        Map<String, String> map = new HashMap<>();
+        map.put("message", String.valueOf(message));
+        map.put("avatarUrl", String.valueOf(avatarUrl));
+        map.put("time", String.valueOf(time));
+        if(channel!=null){
+            map.putAll(channel.getContents());
+        }
+        return map;
+    }
+
 }

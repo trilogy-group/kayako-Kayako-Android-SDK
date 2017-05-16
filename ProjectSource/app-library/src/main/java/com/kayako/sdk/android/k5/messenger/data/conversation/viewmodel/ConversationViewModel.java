@@ -3,7 +3,12 @@ package com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-public class ConversationViewModel {
+import com.kayako.sdk.android.k5.common.adapter.ContentComparable;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class ConversationViewModel implements ContentComparable {
 
     @NonNull
     private long conversationId;
@@ -109,5 +114,20 @@ public class ConversationViewModel {
         result = 31 * result + unreadCount;
         result = 31 * result + lastAgentReplierTyping.hashCode();
         return result;
+    }
+
+    @Override
+    public Map<String, String> getContents() {
+        Map<String, String> map = new HashMap<>();
+        map.put("conversationId", String.valueOf(conversationId));
+        map.put("name", String.valueOf(name));
+        map.put("avatarUrl", String.valueOf(avatarUrl));
+        map.put("timeInMilleseconds", String.valueOf(timeInMilleseconds));
+        map.put("subject", String.valueOf(subject));
+        map.put("unreadCount", String.valueOf(unreadCount));
+        if (lastAgentReplierTyping != null) {
+            map.putAll(lastAgentReplierTyping.getContents());
+        }
+        return map;
     }
 }

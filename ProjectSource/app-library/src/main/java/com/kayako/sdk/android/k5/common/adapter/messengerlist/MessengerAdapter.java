@@ -1,5 +1,7 @@
 package com.kayako.sdk.android.k5.common.adapter.messengerlist;
 
+import android.support.annotation.MainThread;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
@@ -15,6 +17,7 @@ import com.kayako.sdk.android.k5.common.adapter.loadmorelist.EndlessRecyclerView
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.AttachmentHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.BotMessageHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.DeliveryIndicatorHelper;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.DiffUtilsCallback;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.FadedBackgroundHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.InputFieldEmailHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.InputFieldFeedbackCommentHelper;

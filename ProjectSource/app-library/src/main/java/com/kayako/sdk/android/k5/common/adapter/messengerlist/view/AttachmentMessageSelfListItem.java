@@ -8,6 +8,7 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.Attachment;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.DeliveryIndicator;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerListType;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class AttachmentMessageSelfListItem extends BaseDataListItem {
@@ -48,4 +49,19 @@ public class AttachmentMessageSelfListItem extends BaseDataListItem {
     public boolean isFadeBackground() {
         return fadeBackground;
     }
+
+    @Override
+    public Map<String, String> getContents() {
+        Map<String, String> map = new HashMap<>();
+        map.put("time", String.valueOf(time));
+        map.put("fadeBackground", String.valueOf(fadeBackground));
+        if (attachment != null) {
+            map.putAll(attachment.getContents());
+        }
+        if (deliveryIndicator != null) {
+            map.putAll(deliveryIndicator.getContents());
+        }
+        return map;
+    }
+
 }

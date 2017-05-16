@@ -54,7 +54,7 @@ public class OnboardingHelper {
         }
         List<BaseListItem> baseListItems = new ArrayList<>();
         baseListItems.add(new InputEmailListItem(email));
-        baseListItems.add(new BotMessageListItem(Kayako.getApplicationContext().getString(R.string.ko__email_input_field_msg_you_will_be_notified), 0, null));
+        baseListItems.add(new BotMessageListItem(Kayako.getApplicationContext().getString(R.string.ko__email_input_field_msg_you_will_be_notified), 0));
         return baseListItems;
     }
 

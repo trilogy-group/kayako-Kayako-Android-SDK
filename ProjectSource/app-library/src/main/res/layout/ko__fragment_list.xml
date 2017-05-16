@@ -12,8 +12,6 @@
         android:name="com.kayako.sdk.android.k5.welcomepage.ItemFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:descendantFocusability="beforeDescendants"
-        android:focusableInTouchMode="true"
         app:layoutManager="LinearLayoutManager"
         tools:context=".view.ListFragment"
         tools:listitem="@layout/ko__list_item_search_result" />

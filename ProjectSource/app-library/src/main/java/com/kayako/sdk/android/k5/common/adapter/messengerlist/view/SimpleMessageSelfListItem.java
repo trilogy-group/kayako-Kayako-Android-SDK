@@ -7,7 +7,9 @@ import com.kayako.sdk.android.k5.common.adapter.BaseDataListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.ChannelDecoration;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.DeliveryIndicator;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerListType;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.DiffUtilsHelper;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class SimpleMessageSelfListItem extends BaseDataListItem {
@@ -51,5 +53,17 @@ public class SimpleMessageSelfListItem extends BaseDataListItem {
 
     public boolean isFadeBackground() {
         return fadeBackground;
+    }
+
+    @Override
+    public Map<String, String> getContents() {
+        Map<String, String> map = new HashMap<>();
+        map.put("message", String.valueOf(message));
+        map.put("time", String.valueOf(time));
+        map.put("fadeBackground", String.valueOf(fadeBackground));
+        if (deliveryIndicator != null) {
+            map.putAll(deliveryIndicator.getContents());
+        }
+        return map;
     }
 }

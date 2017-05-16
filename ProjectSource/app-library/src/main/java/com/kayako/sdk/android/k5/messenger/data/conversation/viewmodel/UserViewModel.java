@@ -1,6 +1,11 @@
 package com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel;
 
-public class UserViewModel {
+import com.kayako.sdk.android.k5.common.adapter.ContentComparable;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class UserViewModel implements ContentComparable{
 
     private String avatar;
 
@@ -24,6 +29,15 @@ public class UserViewModel {
 
     public Long getLastActiveAt() {
         return lastActiveAt;
+    }
+
+    @Override
+    public Map<String, String> getContents() {
+        Map<String, String> map = new HashMap<>();
+        map.put("avatar",String.valueOf(avatar));
+        map.put("fullName",String.valueOf(fullName));
+        map.put("lastActiveAt",String.valueOf(lastActiveAt));
+        return map;
     }
 }
 

@@ -4,9 +4,11 @@ import android.support.annotation.NonNull;
 
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerListType;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class InputEmailListItem extends InputFieldlListItem {
 
-    private String submittedEmail;
     private OnClickSubmitListener onClickSubmitListener;
 
     public InputEmailListItem(@NonNull OnClickSubmitListener onClickSubmitListener) {
@@ -24,5 +26,13 @@ public class InputEmailListItem extends InputFieldlListItem {
 
     public interface OnClickSubmitListener {
         void onClickSubmit(String email);
+    }
+
+    @Override
+    public Map<String, String> getContents() {
+        Map<String, String> map = new HashMap<>();
+        map.put("hasSubmittedValue", String.valueOf(hasSubmittedValue()));
+        map.put("getSubmittedValue", String.valueOf(getSubmittedValue()));
+        return map;
     }
 }

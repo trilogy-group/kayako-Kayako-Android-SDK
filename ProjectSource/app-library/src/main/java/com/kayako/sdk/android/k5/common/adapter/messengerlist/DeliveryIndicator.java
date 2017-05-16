@@ -3,7 +3,12 @@ package com.kayako.sdk.android.k5.common.adapter.messengerlist;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
 
-public class DeliveryIndicator {
+import com.kayako.sdk.android.k5.common.adapter.ContentComparable;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class DeliveryIndicator implements ContentComparable{
 
     @DrawableRes
     private int deliveryStatusIconResId;
@@ -31,4 +36,12 @@ public class DeliveryIndicator {
         return deliveryTime;
     }
 
+    @Override
+    public Map<String, String> getContents() {
+        Map<String, String> map = new HashMap<>();
+        map.put("DeliveryIndicator.deliveryStatusIconResId", String.valueOf(deliveryStatusIconResId));
+        map.put("DeliveryIndicator.deliveryStatusTextResId", String.valueOf(deliveryStatusTextResId));
+        map.put("DeliveryIndicator.deliveryTime", String.valueOf(deliveryTime));
+        return map;
+    }
 }

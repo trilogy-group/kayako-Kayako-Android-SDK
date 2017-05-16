@@ -1,6 +1,11 @@
 package com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel;
 
-public class ClientTypingActivity {
+import com.kayako.sdk.android.k5.common.adapter.ContentComparable;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class ClientTypingActivity implements ContentComparable {
 
     private UserViewModel user;
     private boolean isTyping;
@@ -44,5 +49,15 @@ public class ClientTypingActivity {
         int result = user != null ? user.hashCode() : 0;
         result = 31 * result + (isTyping ? 1 : 0);
         return result;
+    }
+
+    @Override
+    public Map<String, String> getContents() {
+        Map<String, String> map = new HashMap<>();
+        map.put("isTyping", String.valueOf(isTyping));
+        if (user != null) {
+            map.putAll(user.getContents());
+        }
+        return map;
     }
 }

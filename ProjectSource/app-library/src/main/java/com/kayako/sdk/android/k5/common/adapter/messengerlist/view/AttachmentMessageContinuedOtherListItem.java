@@ -7,6 +7,7 @@ import com.kayako.sdk.android.k5.common.adapter.BaseDataListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.Attachment;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerListType;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class AttachmentMessageContinuedOtherListItem extends BaseDataListItem {
@@ -34,5 +35,15 @@ public class AttachmentMessageContinuedOtherListItem extends BaseDataListItem {
 
     public void setTime(long time) {
         this.time = time;
+    }
+
+    @Override
+    public Map<String, String> getContents() {
+        Map<String, String> map = new HashMap<>();
+        map.put("time", String.valueOf(time));
+        if (attachment != null) {
+            map.putAll(attachment.getContents());
+        }
+        return map;
     }
 }

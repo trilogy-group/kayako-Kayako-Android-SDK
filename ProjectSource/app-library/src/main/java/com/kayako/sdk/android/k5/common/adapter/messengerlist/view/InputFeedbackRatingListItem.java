@@ -4,6 +4,9 @@ import android.support.annotation.NonNull;
 
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerListType;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class InputFeedbackRatingListItem extends InputFieldlListItem {
 
     private String instructionMessage;
@@ -35,4 +38,14 @@ public class InputFeedbackRatingListItem extends InputFieldlListItem {
     public String getInstructionMessage() {
         return instructionMessage;
     }
+
+    @Override
+    public Map<String, String> getContents() {
+        Map<String, String> map = new HashMap<>();
+        map.put("instructionMessage", String.valueOf(instructionMessage));
+        map.put("hasSubmittedValue", String.valueOf(hasSubmittedValue()));
+        map.put("getSubmittedValue", String.valueOf(getSubmittedValue()));
+        return map;
+    }
+
 }
