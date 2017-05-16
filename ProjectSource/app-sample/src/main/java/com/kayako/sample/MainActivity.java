@@ -69,6 +69,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String url = editText.getText().toString();
                 if (validateUrl(url)) {
+
+                    if (Store.getInstance().getHelpCenterUrl() != null
+                            && !Store.getInstance().getHelpCenterUrl().equals(url)) {
+                        Kayako.clearCache();
+                    }
+
                     Store.getInstance().setHelpCenterUrl(url);
                     Kayako.getInstance().openHelpCenter(MainActivity.this, url, selectedLocale); // Command to open Help Center
                 }
@@ -107,6 +113,11 @@ public class MainActivity extends AppCompatActivity {
                 String url = editTextMessengerUrl.getText().toString();
                 if (!validateUrl(url)) {
                     return;
+                }
+
+                if (Store.getInstance().getMessengerUrl() != null
+                        && !Store.getInstance().getMessengerUrl().equals(url)) {
+                    Kayako.clearCache();
                 }
 
                 final EditText editTextMessengerPrimaryColor = (EditText) findViewById(R.id.edittext_primary_color);
