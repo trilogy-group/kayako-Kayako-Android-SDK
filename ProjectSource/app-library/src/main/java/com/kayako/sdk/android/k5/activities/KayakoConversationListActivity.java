@@ -10,8 +10,7 @@ import com.kayako.sdk.android.k5.messenger.conversationlistpage.ConversationList
 public class KayakoConversationListActivity extends BaseMessengerActivity {
 
     public static void startActivity(AppCompatActivity activity) {
-        activity.startActivity(new Intent(activity, KayakoConversationListActivity.class));
-        overridePendingTransitionEnter(activity);
+        activity.startActivity(new Intent(activity, KayakoConversationListActivity.class), getAnimation(activity).toBundle());
     }
 
     @Override

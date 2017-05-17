@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.ChangeBounds;
 import android.view.DragEvent;
 import android.view.View;
 
@@ -43,6 +46,8 @@ public abstract class BaseMessengerActivity extends AppCompatActivity {
                             FRAGMENT_TAG)
                     .commitAllowingStateLoss();
         }
+
+        setAnimationDuration();
     }
 
 
@@ -109,7 +114,7 @@ public abstract class BaseMessengerActivity extends AppCompatActivity {
 
     protected abstract Fragment getContainerFragment();
 
-    public void finishFinal() {
+    final public void finishFinal() {
         super.finish();
         overrideFinalPendingTransitionExit(this);
     }
@@ -117,43 +122,41 @@ public abstract class BaseMessengerActivity extends AppCompatActivity {
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransitionExit(this);
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        overridePendingTransitionExit(this);
     }
-
 
     @Override
     public void startActivity(Intent intent) {
-        super.startActivity(intent);
-        overridePendingTransitionEnter(this);
+        super.startActivity(intent, getAnimation(this).toBundle());
     }
 
-    /**
-     * Overrides the pending Activity transition by performing the "Enter" animation.
-     */
-    protected static void overridePendingTransitionEnter(AppCompatActivity activity) {
-        activity.overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+    protected static ActivityOptionsCompat getAnimation(Activity activity) {
+        View backgroundView = activity.findViewById(R.id.ko__messenger_custom_background);
+        View backButton = activity.findViewById(R.id.ko__messenger_toolbar_back_button);
+
+        if (backgroundView != null && backButton == null) { // From Home Screen that has no back button
+            // TODO: Commented out animation is the most meaningful transition - but it's looking odd. Not done right. Till I figure it out, let it fade
+            // Pair<View, String> pairBackground = new Pair<>(backgroundView, "ko__messenger_background");
+            //;, pairBackground);
+            return ActivityOptionsCompat.makeSceneTransitionAnimation(activity);
+
+        } else if (backgroundView != null) { // From Screens with Toolbars
+            Pair<View, String> pairBackground = new Pair<>(backgroundView, "ko__messenger_background");
+            Pair<View, String> pairBackButton = new Pair<>(backButton, "ko__messenger_toolbar_back_button");
+            return ActivityOptionsCompat.makeSceneTransitionAnimation(activity, pairBackground, pairBackButton);
+
+        } else { // Others
+            return ActivityOptionsCompat.makeSceneTransitionAnimation(activity);
+        }
     }
 
-    /**
-     * Overrides the pending Activity transition by performing the "Enter" animation.
-     */
-    protected static void overridePendingTransitionEnter(Activity activity) {
-        activity.overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+    protected void setAnimationDuration() {
+        this.getWindow().setSharedElementEnterTransition(new ChangeBounds().setDuration(200));
     }
-
-    /**
-     * Overrides the pending Activity transition by performing the "Exit" animation.
-     */
-    protected static void overridePendingTransitionExit(AppCompatActivity activity) {
-        activity.overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
-    }
-
 
     /**
      * Overrides the pending Activity transition by performing the "Enter" animation.

@@ -44,6 +44,4 @@ public class KayakoMessengerActivity extends BaseMessengerActivity {
         return new HomeScreenContainerFragment();
     }
 
-
-
 }

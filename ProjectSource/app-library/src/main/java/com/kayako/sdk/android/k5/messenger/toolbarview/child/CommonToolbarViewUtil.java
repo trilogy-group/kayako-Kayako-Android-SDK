@@ -24,7 +24,7 @@ public class CommonToolbarViewUtil {
             @Override
             public void onClick(View v) {
                 if (activity != null && !activity.isFinishing()) {
-                    activity.finish();
+                    activity.onBackPressed(); // not finish() because activity transition animation is then lost
                 }
             }
         });
