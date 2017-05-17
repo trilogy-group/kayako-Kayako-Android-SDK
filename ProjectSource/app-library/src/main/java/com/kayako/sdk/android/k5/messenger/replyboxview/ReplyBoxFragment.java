@@ -1,16 +1,19 @@
 package com.kayako.sdk.android.k5.messenger.replyboxview;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.utils.KeyboardUtils;
@@ -48,7 +51,16 @@ public class ReplyBoxFragment extends Fragment implements ReplyBoxContract.View,
         EditText replyBoxText = (EditText) mRoot.findViewById(R.id.reply_box_edittext);
         replyBoxText.addTextChangedListener(this);
         replyBoxText.setText(null); // trigger textChangeListener for first time
-        // TODO: Allow enter to be used to send a new message
+
+        replyBoxText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) { // Required to recognize ENTER when typing on hardware keyboard
+                    mPresenter.onClickEnter();
+                }
+                return true;
+            }
+        });
 
         View attachButton = mRoot.findViewById(R.id.ko__reply_box_attach_button);
         attachButton.setOnClickListener(new View.OnClickListener() {
@@ -153,7 +165,18 @@ public class ReplyBoxFragment extends Fragment implements ReplyBoxContract.View,
     }
 
     @Override
-    public void afterTextChanged(Editable s) {
-        mPresenter.onReplyTyped(s.toString());
+    public void afterTextChanged(final Editable s) {
+        Handler handler = new Handler();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (s.toString().contains("\n")) { // Required to recognize ENTER when typing on SOFT KEYBOARDS
+                    mPresenter.onClickEnter();
+                } else {
+                    mPresenter.onReplyTyped(s.toString());
+                }
+            }
+        });
+
     }
 }

@@ -25,6 +25,8 @@ public class ReplyBoxContract {
 
         void onClickSend();
 
+        void onClickEnter();
+
         void onClickAddAttachment();
 
         void setReplyBoxListener(ReplyBoxListener listener);
