@@ -55,7 +55,7 @@ public class ReplyBoxFragment extends Fragment implements ReplyBoxContract.View,
         replyBoxText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) { // Required to recognize ENTER when typing on hardware keyboard
+                if (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) { // Required to recognize ENTER when typing on hardware keyboard
                     mPresenter.onClickEnter();
                 }
                 return true;
@@ -165,15 +165,18 @@ public class ReplyBoxFragment extends Fragment implements ReplyBoxContract.View,
     }
 
     @Override
-    public void afterTextChanged(final Editable s) {
+    public void afterTextChanged(Editable s) {
+
+        final String messageTyped = s == null ? null : s.toString();
         Handler handler = new Handler();
         handler.post(new Runnable() {
             @Override
             public void run() {
-                if (s.toString().contains("\n")) { // Required to recognize ENTER when typing on SOFT KEYBOARDS
+                if (messageTyped != null
+                        && messageTyped.contains("\n")) { // Required to recognize ENTER when typing on SOFT KEYBOARDS
                     mPresenter.onClickEnter();
                 } else {
-                    mPresenter.onReplyTyped(s.toString());
+                    mPresenter.onReplyTyped(messageTyped);
                 }
             }
         });
