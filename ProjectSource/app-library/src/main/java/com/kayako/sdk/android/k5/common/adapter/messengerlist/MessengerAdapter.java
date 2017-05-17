@@ -1,15 +1,10 @@
 package com.kayako.sdk.android.k5.common.adapter.messengerlist;
 
-import android.support.annotation.MainThread;
-import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
@@ -17,11 +12,10 @@ import com.kayako.sdk.android.k5.common.adapter.loadmorelist.EndlessRecyclerView
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.AttachmentHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.BotMessageHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.DeliveryIndicatorHelper;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.DiffUtilsCallback;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.FadedBackgroundHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.InputFieldEmailHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.InputFieldFeedbackCommentHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.InputFieldFeedbackRatingHelper;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.MessageStyleHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageContinuedOtherListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageContinuedOtherViewHolder;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageContinuedSelfListItem;
@@ -57,7 +51,6 @@ import com.kayako.sdk.android.k5.common.utils.DateTimeUtils;
 import com.kayako.sdk.android.k5.common.utils.ImageUtils;
 import com.kayako.sdk.android.k5.core.Kayako;
 
-import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -92,7 +85,8 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
 
                 // Covers time and delivery status
                 DeliveryIndicatorHelper.setDeliveryIndicatorView(simpleMessageSelfListItem.getDeliveryIndicator(), simpleMessageSelfListItem.getTime(), simpleMessageSelfViewHolder);
-                FadedBackgroundHelper.configureBackground(simpleMessageSelfViewHolder.message, simpleMessageSelfListItem.isFadeBackground());
+
+                MessageStyleHelper.setMessageStyle(true, simpleMessageSelfListItem.isFadeBackground(), simpleMessageSelfViewHolder.message, simpleMessageSelfListItem.getMessage());
                 break;
 
             case MessengerListType.SIMPLE_MESSAGE_OTHER:
@@ -116,6 +110,8 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                     simpleMessageOtherViewHolder.time.setText(DateTimeUtils.formatTime(Kayako.getApplicationContext(), simpleMessageOtherListItem.getTime()));
                 }
 
+                MessageStyleHelper.setMessageStyle(false, false, simpleMessageOtherViewHolder.message, simpleMessageOtherListItem.getMessage());
+
                 setAvatarClickListenerOnView(simpleMessageOtherViewHolder.avatar, simpleMessageOtherListItem.getItemType(), simpleMessageOtherListItem.getId(), simpleMessageOtherListItem.getData());
                 setItemClickListenerOnView(simpleMessageOtherViewHolder.itemView, simpleMessageOtherListItem.getItemType(), simpleMessageOtherListItem.getId(), simpleMessageOtherListItem.getData());
                 break;
@@ -125,12 +121,12 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 SimpleMessageContinuedSelfViewHolder simpleMessageContinuedSelfViewHolder = (SimpleMessageContinuedSelfViewHolder) viewHolder;
 
                 simpleMessageContinuedSelfViewHolder.message.setText(Html.fromHtml(simpleMessageContinuedSelfListItem.getMessage()));
-
                 setItemClickListenerOnView(simpleMessageContinuedSelfViewHolder.itemView, simpleMessageContinuedSelfListItem.getItemType(), simpleMessageContinuedSelfListItem.getId(), simpleMessageContinuedSelfListItem.getData());
+
+                MessageStyleHelper.setMessageStyle(true, simpleMessageContinuedSelfListItem.isFadeBackground(), simpleMessageContinuedSelfViewHolder.message, simpleMessageContinuedSelfListItem.getMessage());
 
                 // Covers time and delivery status
                 DeliveryIndicatorHelper.setDeliveryIndicatorView(simpleMessageContinuedSelfListItem.getDeliveryIndicator(), simpleMessageContinuedSelfListItem.getTime(), simpleMessageContinuedSelfViewHolder);
-                FadedBackgroundHelper.configureBackground(simpleMessageContinuedSelfViewHolder.message, simpleMessageContinuedSelfListItem.isFadeBackground());
                 break;
 
             case MessengerListType.SIMPLE_MESSAGE_CONTINUED_OTHER:
@@ -145,6 +141,8 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                     simpleMessageContinuedOtherViewHolder.time.setVisibility(View.VISIBLE);
                     simpleMessageContinuedOtherViewHolder.time.setText(DateTimeUtils.formatTime(Kayako.getApplicationContext(), simpleMessageContinuedOtherListItem.getTime()));
                 }
+
+                MessageStyleHelper.setMessageStyle(false, false, simpleMessageContinuedOtherViewHolder.message, simpleMessageContinuedOtherListItem.getMessage());
 
                 setItemClickListenerOnView(simpleMessageContinuedOtherViewHolder.itemView, simpleMessageContinuedOtherListItem.getItemType(), simpleMessageContinuedOtherListItem.getId(), simpleMessageContinuedOtherListItem.getData());
                 break;
@@ -162,7 +160,6 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
 
                 // Covers time and delivery status
                 DeliveryIndicatorHelper.setDeliveryIndicatorView(attachmentMessageSelfListItem.getDeliveryIndicator(), attachmentMessageSelfListItem.getTime(), attachmentMessageSelfViewHolder);
-                FadedBackgroundHelper.configureBackground(attachmentMessageSelfViewHolder.message, attachmentMessageSelfListItem.isFadeBackground());
                 break;
 
             case MessengerListType.ATTACHMENT_MESSAGE_OTHER:
@@ -192,7 +189,6 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 setAvatarClickListenerOnView(attachmentMessageOtherViewHolder.avatar, attachmentMessageOtherListItem.getItemType(), attachmentMessageOtherListItem.getId(), attachmentMessageOtherListItem.getData());
                 setAttachmentClickListenerOnView(attachmentMessageOtherViewHolder.attachmentThumbnail, attachmentMessageOtherListItem.getItemType(), attachmentMessageOtherListItem.getId(), attachmentMessageOtherListItem.getData());
                 setAttachmentClickListenerOnView(attachmentMessageOtherViewHolder.attachmentPlaceholder, attachmentMessageOtherListItem.getItemType(), attachmentMessageOtherListItem.getId(), attachmentMessageOtherListItem.getData());
-
                 break;
 
             case MessengerListType.ATTACHMENT_MESSAGE_CONTINUED_SELF:
@@ -208,7 +204,6 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
 
                 // Covers time and delivery status
                 DeliveryIndicatorHelper.setDeliveryIndicatorView(attachmentMessageContinuedSelfListItem.getDeliveryIndicator(), attachmentMessageContinuedSelfListItem.getTime(), attachmentMessageContinuedSelfViewHolder);
-                FadedBackgroundHelper.configureBackground(attachmentMessageContinuedSelfViewHolder.message, attachmentMessageContinuedSelfListItem.isFadeBackground());
                 break;
 
             case MessengerListType.ATTACHMENT_MESSAGE_CONTINUED_OTHER:
