@@ -106,7 +106,7 @@
     <dimen name="ko__messenger_home_screen_widget_recent_cases__conversation_list_item_minimum_height">
         48dp
     </dimen>
-    <dimen name="ko__messenger_reply_box_footer">14sp</dimen>
+    <dimen name="ko__messenger_reply_box_footer">12sp</dimen>
     <dimen name="ko__messenger_gap_between_end_and_message_self">0dp</dimen>
     <dimen name="ko__messenger_input_feedback_rating_image_size">48dp</dimen>
     <dimen name="ko__messenger_input_feedback_rating_text_size">14sp</dimen>

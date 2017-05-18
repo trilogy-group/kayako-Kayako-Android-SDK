@@ -56,11 +56,11 @@
             android:transitionName="ko__messenger_toolbar_title"
             tools:text="Kayako Team" />
 
-        <com.kayako.sdk.android.k5.common.view.LightTextView
+        <com.kayako.sdk.android.k5.common.view.RegularTextView
             android:id="@+id/ko__messenger_toolbar_subtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="2dp"
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="1"

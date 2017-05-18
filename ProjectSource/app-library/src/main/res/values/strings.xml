@@ -79,5 +79,7 @@
     <string name="ko__messenger_input_feedback_comment_message_hint_error">Oops, you haven\'t typed anything. Please enter your feedback and click submit</string>
     <string name="ko__messenger_input_feedback_comment_message_submitted">Feedback sent</string>
     <string name="ko__messenger_toolbar_title_conversations">Conversations</string>
+    <string name="ko__messenger_credits_messenger_by">Live chat by </string>
+    <string name="ko__messenger_credits_kayako">Kayako</string>
 
 </resources>
