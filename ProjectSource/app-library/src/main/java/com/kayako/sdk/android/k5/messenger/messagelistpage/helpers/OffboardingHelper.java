@@ -103,7 +103,7 @@ public class OffboardingHelper {
         // This is done only once a conversation is loaded because to load ratings of a conversation, we need to make sure the conversation exists
 
         if (isConversationCompletedOrClosed
-                || latestRatingOfConversation.get() == null) { // Load rating via API as long current rating is null
+                || !hasRatingsBeenLoadedViaApi.get()) { // Load rating via API as long current rating is null
             callback.onLoadRatings();
         } else {
             callback.onRefreshListView(); // Ensure that during status changes from open -> completed -> open, the feedback is removed
