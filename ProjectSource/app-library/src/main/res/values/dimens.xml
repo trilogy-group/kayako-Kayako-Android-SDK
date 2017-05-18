@@ -22,7 +22,8 @@
     <dimen name="ko__messenger_gap_between_channel_and_avatar_top_corner">20dp
     </dimen>  <!-- Shouldn't be greater than value[ko__messenger_avatar_size]-->
 
-    <dimen name="ko__messenger_list_item_unread_separator_margin_vertical">0dp</dimen>
+    <dimen name="ko__messenger_list_item_unread_separator_margin_bottom">0dp</dimen>
+    <dimen name="ko__messenger_list_item_unread_separator_margin_top">2dp</dimen>
 
     <dimen name="ko__messenger_chat_bubble_corner">8dp</dimen>
     <dimen name="ko__messenger_chat_bubble_padding_vertical">16dp</dimen>
