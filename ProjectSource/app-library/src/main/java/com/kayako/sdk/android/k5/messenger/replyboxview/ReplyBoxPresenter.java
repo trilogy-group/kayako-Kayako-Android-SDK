@@ -20,7 +20,7 @@ public class ReplyBoxPresenter implements ReplyBoxContract.Presenter {
 
     @Override
     public void onReplyTyped(String message) {
-        if (message == null || message.length() == 0) {
+        if (!isContentValidForSending(message)) {
             mView.disableSendButton();
         } else {
             mView.enableSendButton();
@@ -35,8 +35,8 @@ public class ReplyBoxPresenter implements ReplyBoxContract.Presenter {
     public void onClickSend() {
         String messageContent = mView.getReplyBoxText();
 
-        if (messageContent == null || messageContent.length() == 0) {
-            // TODO: Disable the button when no item typed?
+        if (!isContentValidForSending(messageContent)) {
+            mView.disableSendButton(); // Disable button, shouldn't have been enabled
         } else {
             if (mListener != null) {
                 mListener.onClickSend(messageContent);
@@ -60,5 +60,10 @@ public class ReplyBoxPresenter implements ReplyBoxContract.Presenter {
     @Override
     public void setReplyBoxListener(ReplyBoxContract.ReplyBoxListener listener) {
         mListener = listener;
+    }
+
+    private boolean isContentValidForSending(String content) {
+        return content != null
+                && content.trim().length() > 0; // trim messageContent to prevent user from sending spaces
     }
 }

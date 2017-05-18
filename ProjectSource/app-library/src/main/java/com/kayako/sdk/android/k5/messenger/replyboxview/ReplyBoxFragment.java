@@ -166,7 +166,6 @@ public class ReplyBoxFragment extends Fragment implements ReplyBoxContract.View,
 
     @Override
     public void afterTextChanged(Editable s) {
-
         final String messageTyped = s == null ? null : s.toString();
         Handler handler = new Handler();
         handler.post(new Runnable() {
