@@ -11,7 +11,7 @@
     android:paddingTop="@dimen/ko__messenger_list_item_separator_margin_top">
 
 
-    <com.kayako.sdk.android.k5.common.view.BoldTextView
+    <com.kayako.sdk.android.k5.common.view.RegularTextView
         android:id="@+id/ko__time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

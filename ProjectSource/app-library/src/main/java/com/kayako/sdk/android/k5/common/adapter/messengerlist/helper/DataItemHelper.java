@@ -194,7 +194,8 @@ public class DataItemHelper {
      * @return
      */
     protected boolean isGroupableByTime(DataItem previousDataItem, DataItem currentDataItem) {
-        return Math.abs(currentDataItem.getTimeInMilliseconds() - previousDataItem.getTimeInMilliseconds()) <= MINIMUM_MILLISECONDS_TO_GROUP;
+        return true; // Set to always true.  TIME is only shown for last element now and therefore everything is grouped as one block.
+        //Math.abs(currentDataItem.getTimeInMilliseconds() - previousDataItem.getTimeInMilliseconds()) <= MINIMUM_MILLISECONDS_TO_GROUP;
     }
 
     /**
@@ -207,18 +208,8 @@ public class DataItemHelper {
     protected boolean getTimeVisibility(DataItem currentDataItem, DataItem nextDataItem) {
         assert currentDataItem != null;
 
-        // Show Time if is last element of list
-        if (nextDataItem == null) {
-            return true;
-        }
-
-        // Show time if the next message is sent by someone other than who sent the current message
-        if (!nextDataItem.getUserDecoration().getUserId().equals(currentDataItem.getUserDecoration().getUserId())) {
-            return true;
-        }
-
-        // Show time if current item can NOT be grouped with the next item
-        return !isGroupableByTime(currentDataItem, nextDataItem);
+        // Show Time ONLY if is last element of list
+        return nextDataItem == null;
     }
 
     /**
@@ -232,6 +223,11 @@ public class DataItemHelper {
 
         assert currentDataItem != null;
 
+        // Self Messages no longer show avatar
+        if (getIfSelf(currentDataItem)) {
+            return false;
+        }
+
         // Show avatar if first item of list
         if (previousDataItem == null) {
             return true;
@@ -243,7 +239,6 @@ public class DataItemHelper {
         }
 
         // Show Avatar if the previous message is sent via another channel as compared to the current message
-        // TODO: Find another way to identify if channels match or not - add channel name?
         if (previousDataItem.getChannelDecoration() != null &&
                 currentDataItem.getChannelDecoration() != null &&
                 previousDataItem.getChannelDecoration().getSourceDrawable() != currentDataItem.getChannelDecoration().getSourceDrawable()) {
@@ -309,13 +304,12 @@ public class DataItemHelper {
             deliveryIndicator = null;
         }
 
-        if (viewBehaviour.showAvatar && viewBehaviour.showAsSelf) {
+        if (viewBehaviour.showAsSelf) {
             // Self is now shown without Avatar - but the padding is different for starting message and continued message
+            // Self is now shown without timestamps - so using only starting message
             return new SimpleMessageSelfListItem(currentDataItem.getId(), currentDataItem.getMessage(), time, deliveryIndicator, false, currentDataItem.getData());
         } else if (viewBehaviour.showAvatar) {
             return new SimpleMessageOtherListItem(currentDataItem.getId(), currentDataItem.getMessage(), currentDataItem.getUserDecoration().getAvatarUrl(), currentDataItem.getChannelDecoration(), time, currentDataItem.getData());
-        } else if (viewBehaviour.showAsSelf) {
-            return new SimpleMessageContinuedSelfListItem(currentDataItem.getId(), currentDataItem.getMessage(), time, deliveryIndicator, false, currentDataItem.getData());
         } else {
             return new SimpleMessageContinuedOtherListItem(currentDataItem.getId(), currentDataItem.getMessage(), time, currentDataItem.getData());
         }
