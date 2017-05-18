@@ -163,8 +163,9 @@ class KrePresenceMetaDataHelper {
         // It should not be possible for is viewing to be false and is foreground to be true HOWEVER events are still received with this wrong values!
         return existingUserData.getActivityData() != null
                 && newUser.getActivityData() != null
-                && existingUserData.getActivityData().isForeground() != newUser.getActivityData().isForeground()
-                && existingUserData.getActivityData().isViewing() != newUser.getActivityData().isViewing(); // look at isForeground and isViewing (both needs to be true to be online)
+                && ( // look at isForeground and isViewing (if either one changes)
+                existingUserData.getActivityData().isForeground() != newUser.getActivityData().isForeground()
+                        || existingUserData.getActivityData().isViewing() != newUser.getActivityData().isViewing());
     }
 
     private static void triggerTypingStatus(@NonNull PresenceUser newUserData, RawClientTypingListener rawClientTypingListener) {

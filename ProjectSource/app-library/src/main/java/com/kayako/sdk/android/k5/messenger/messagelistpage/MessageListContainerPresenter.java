@@ -15,7 +15,6 @@ import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.UserViewM
 import com.kayako.sdk.android.k5.messenger.data.realtime.OnConversationChangeListener;
 import com.kayako.sdk.android.k5.messenger.data.realtime.OnConversationClientActivityListener;
 import com.kayako.sdk.android.k5.messenger.data.realtime.OnConversationMessagesChangeListener;
-import com.kayako.sdk.android.k5.messenger.data.realtime.OnConversationUserOnlineListener;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.AddReplyHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.AssignedAgentToolbarHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ClientIdHelper;
@@ -551,6 +550,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         // Subscribe to mark online presence of current user
         mRealtimeHelper.subscribeForCurrentUserOnlinePresence();
         mRealtimeHelper.subscribeForRealtimeConversationChanges(conversation);
+        mRealtimeHelper.updateAssignedAgent(conversation);
 
         mFailsafePollingHelper.startPolling(new FailsafePollingHelper.PollingListener() {
             @Override
@@ -610,7 +610,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             // Mark newly created conversation as being viewed to prevent unread counters for this conversation
             UnreadCounterRepository.setCurrentConversationBeingViewed(conversation.getId());
 
-            // IMPORTANT: onLoadConversation() should be called FIRST, then new conversation properties should be set
+            // IMPORTANT: updateAssignedAgent() should be called FIRST, then new conversation properties should be set
             // This is required for all dependencies of mConversationHelper and mMessengerPrefHelper
             onLoadConversation(conversation);
 
@@ -845,33 +845,18 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         }
     };
 
-    private OnConversationUserOnlineListener mAssignedAgentOnlinePresenceListener = new OnConversationUserOnlineListener() {
+    private RealtimeHelper.OnAgentPresenceChangeListener mAssignedAgentOnlinePresenceListener = new RealtimeHelper.OnAgentPresenceChangeListener() {
         @Override
-        public void onUserOnline(long conversationId, long userId) {
+        public void onAgentPresenceChange(long agentUserId, boolean isOnline) {
             if (!mView.hasPageLoaded()) { // Ensure callbacks after activity/fragment closed doesn't cause crashes
                 return;
             }
 
             if (mConversationHelper.getConversation() != null
                     && mConversationHelper.getConversation().getLastAgentReplier() != null
-                    && mConversationHelper.getConversation().getLastAgentReplier().getId() == userId) {
+                    && mConversationHelper.getConversation().getLastAgentReplier().getId() == agentUserId) {
 
-                mAssignedAgentToolbarHelper.markActiveStatus(true);
-                configureToolbarForAssignedAgent();
-            }
-
-        }
-
-        @Override
-        public void onUserOffline(long conversationId, long userId) {
-            if (!mView.hasPageLoaded()) { // Ensure callbacks after activity/fragment closed doesn't cause crashes
-                return;
-            }
-
-            if (mConversationHelper.getConversation() != null
-                    && mConversationHelper.getConversation().getLastAgentReplier() != null
-                    && mConversationHelper.getConversation().getLastAgentReplier().getId() == userId) {
-                mAssignedAgentToolbarHelper.markActiveStatus(false);
+                mAssignedAgentToolbarHelper.markActiveStatus(isOnline);
                 configureToolbarForAssignedAgent();
             }
         }

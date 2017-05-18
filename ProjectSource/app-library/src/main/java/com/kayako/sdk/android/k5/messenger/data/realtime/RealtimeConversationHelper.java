@@ -1,6 +1,8 @@
 package com.kayako.sdk.android.k5.messenger.data.realtime;
 
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.util.LongSparseArray;
 
 import com.kayako.sdk.android.k5.common.activities.MessengerOpenTracker;
 import com.kayako.sdk.android.k5.core.KayakoLogHelper;
@@ -18,6 +20,7 @@ import com.kayako.sdk.error.KayakoException;
 import com.kayako.sdk.messenger.conversation.Conversation;
 import com.kayako.sdk.messenger.message.Message;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -43,6 +46,9 @@ public class RealtimeConversationHelper {
     private static Set<OnConversationClientActivityListener> sOnConversationClientActivityListeners = new HashSet<>();
     private static Set<OnConversationMessagesChangeListener> sOnConversationMessagesChangeListeners = new HashSet<>();
     private static Set<OnConversationUserOnlineListener> sOnConversationUserOnlineListeners = new HashSet<>();
+
+    private static final Object mActiveUsersKey = new Object();
+    private static LongSparseArray<Set<Long>> sMapActiveUsers = new LongSparseArray<>();
 
     private RealtimeConversationHelper() {
     }
@@ -195,6 +201,19 @@ public class RealtimeConversationHelper {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
+                                // Precaution
+                                if (onlineUserIds == null || onlineUserIds.contains(null)) {
+                                    return;
+                                }
+
+                                // Save state BEFORE CALLBACKS
+                                synchronized (mActiveUsersKey) {
+                                    Set<Long> activeUsers = getActiveUsers(conversationId);
+                                    activeUsers.addAll(onlineUserIds);
+                                    sMapActiveUsers.put(conversationId, activeUsers);
+                                }
+
+                                // Callbacks
                                 for (Long userId : onlineUserIds) {
                                     if (userId != null) {
                                         for (OnConversationUserOnlineListener onConversationUserOnlineListener : sOnConversationUserOnlineListeners) {
@@ -212,6 +231,15 @@ public class RealtimeConversationHelper {
                             @Override
                             public void run() {
                                 if (onlineUser != null) {
+
+                                    // Save state BEFORE CALLBACKS
+                                    synchronized (mActiveUsersKey) {
+                                        Set<Long> activeUsers = getActiveUsers(conversationId);
+                                        activeUsers.add(onlineUser);
+                                        sMapActiveUsers.put(conversationId, activeUsers);
+                                    }
+
+                                    // Callbacks
                                     for (OnConversationUserOnlineListener onConversationUserOnlineListener : sOnConversationUserOnlineListeners) {
                                         onConversationUserOnlineListener.onUserOnline(conversationId, onlineUser);
                                     }
@@ -228,6 +256,15 @@ public class RealtimeConversationHelper {
                             public void run() {
 
                                 if (offlineUserId != null) {
+
+                                    // Save state BEFORE CALLBACKS
+                                    synchronized (mActiveUsersKey) {
+                                        Set<Long> activeUsers = getActiveUsers(conversationId);
+                                        activeUsers.remove(offlineUserId);
+                                        sMapActiveUsers.put(conversationId, activeUsers);
+                                    }
+
+                                    // Callbacks
                                     for (OnConversationUserOnlineListener onConversationUserOnlineListener : sOnConversationUserOnlineListeners) {
                                         onConversationUserOnlineListener.onUserOffline(conversationId, offlineUserId);
                                     }
@@ -287,6 +324,7 @@ public class RealtimeConversationHelper {
         sOnConversationChangeListeners.clear();
         sOnConversationClientActivityListeners.clear();
         sOnConversationMessagesChangeListeners.clear();
+        sMapActiveUsers.clear();
 
         // DO NOT untrack onClose and onOpen
     }
@@ -360,5 +398,14 @@ public class RealtimeConversationHelper {
         sOnConversationUserOnlineListeners.remove(listener);
     }
 
+    @NonNull
+    public static Set<Long> getActiveUsers(long conversationId) {
+        synchronized (mActiveUsersKey) {
+            if (sMapActiveUsers == null) {
+                throw new IllegalStateException("No yet initialized! Method called too soon!");
+            }
 
+            return sMapActiveUsers.get(conversationId, new HashSet<Long>()); // Return empty set that can be added to! Not null!
+        }
+    }
 }

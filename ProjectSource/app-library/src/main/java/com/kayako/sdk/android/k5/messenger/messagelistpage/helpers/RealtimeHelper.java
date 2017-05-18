@@ -9,6 +9,8 @@ import com.kayako.sdk.android.k5.messenger.data.realtime.RealtimeConversationHel
 import com.kayako.sdk.android.k5.messenger.data.realtime.RealtimeCurrentUserTrackerHelper;
 import com.kayako.sdk.messenger.conversation.Conversation;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class RealtimeHelper {
@@ -20,14 +22,32 @@ public class RealtimeHelper {
     private OnConversationChangeListener mOnConversationChangeListener;
     private OnConversationClientActivityListener mOnConversationClientActivityListener;
     private OnConversationMessagesChangeListener mOnConversationMessagesChangeListener;
-    private OnConversationUserOnlineListener mOnConversationUserOnlineListener;
+    private OnAgentPresenceChangeListener mOnAgentPresenceChangeListener;
+
+    private OnConversationUserOnlineListener mInternalOnConversationUserOnlineListener = new OnConversationUserOnlineListener() {
+        @Override
+        public void onUserOnline(long conversationId, long userId) {
+            if (mConversationId != null && mConversationId == conversationId) { // ensure only current converation gets presence updates
+                triggerPresenceCallbacks();
+            }
+        }
+
+        @Override
+        public void onUserOffline(long conversationId, long userId) {
+            if (mConversationId != null && mConversationId == conversationId) { // ensure only current converation gets presence updates
+                triggerPresenceCallbacks();
+            }
+        }
+    };
 
     private String mLastMessageTyped;
+    private Long mAgentUserId;
+    private Long mConversationId;
 
     public void addRealtimeListeners(OnConversationChangeListener onConversationChangeListener,
                                      OnConversationClientActivityListener onConversationClientActivityListener,
                                      OnConversationMessagesChangeListener onConversationMessagesChangeListener,
-                                     OnConversationUserOnlineListener onConversationUserOnlineListener) {
+                                     OnAgentPresenceChangeListener onAgentPresenceChangeListener) {
 
         if (mOnConversationChangeListener != null
                 || mOnConversationClientActivityListener != null
@@ -38,7 +58,7 @@ public class RealtimeHelper {
         mOnConversationChangeListener = onConversationChangeListener;
         mOnConversationClientActivityListener = onConversationClientActivityListener;
         mOnConversationMessagesChangeListener = onConversationMessagesChangeListener;
-        mOnConversationUserOnlineListener = onConversationUserOnlineListener;
+        mOnAgentPresenceChangeListener = onAgentPresenceChangeListener;
     }
 
     public void triggerTyping(Conversation conversation, String messageBeingTyped) {
@@ -78,7 +98,7 @@ public class RealtimeHelper {
             RealtimeConversationHelper.trackChange(conversation.getRealtimeChannel(), conversation.getId(), mOnConversationChangeListener);
             RealtimeConversationHelper.trackClientActivity(conversation.getRealtimeChannel(), conversation.getId(), mOnConversationClientActivityListener);
             RealtimeConversationHelper.trackMessageChange(conversation.getRealtimeChannel(), conversation.getId(), mOnConversationMessagesChangeListener);
-            RealtimeConversationHelper.trackPresenceUser(conversation.getRealtimeChannel(),conversation.getId(),mOnConversationUserOnlineListener);
+            RealtimeConversationHelper.trackPresenceUser(conversation.getRealtimeChannel(), conversation.getId(), mInternalOnConversationUserOnlineListener);
             mIsTrackingConversation.set(true);
         }
     }
@@ -87,7 +107,7 @@ public class RealtimeHelper {
         RealtimeConversationHelper.untrack(mOnConversationChangeListener);
         RealtimeConversationHelper.untrack(mOnConversationClientActivityListener);
         RealtimeConversationHelper.untrack(mOnConversationMessagesChangeListener);
-        RealtimeConversationHelper.untrack(mOnConversationUserOnlineListener);
+        RealtimeConversationHelper.untrack(mInternalOnConversationUserOnlineListener);
         mIsTrackingConversation.set(false);
     }
 
@@ -96,4 +116,22 @@ public class RealtimeHelper {
         RealtimeCurrentUserTrackerHelper.trackCurrentUserIfNotTrackedAlready();
     }
 
+    public void updateAssignedAgent(Conversation conversation) {
+        if (conversation.getLastAgentReplier() != null) {
+            mAgentUserId = conversation.getLastAgentReplier().getId();
+            mConversationId = conversation.getId();
+            triggerPresenceCallbacks();
+        }
+    }
+
+    private void triggerPresenceCallbacks() {
+        if (mOnAgentPresenceChangeListener != null && mAgentUserId != null && mConversationId != null) {
+            Set<Long> set = RealtimeConversationHelper.getActiveUsers(mConversationId);
+            mOnAgentPresenceChangeListener.onAgentPresenceChange(mAgentUserId, set.contains(mAgentUserId));
+        }
+    }
+
+    public interface OnAgentPresenceChangeListener {
+        void onAgentPresenceChange(long agentUserId, boolean isOnline);
+    }
 }

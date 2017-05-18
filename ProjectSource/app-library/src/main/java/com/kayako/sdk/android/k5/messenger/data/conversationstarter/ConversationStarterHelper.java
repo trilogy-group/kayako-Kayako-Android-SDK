@@ -89,15 +89,12 @@ public class ConversationStarterHelper {
         long numberOfHours = Math.round(numberOfMinutes / 60);
         long numberOfDays = Math.round(numberOfHours / 24);
 
-
-        // Assertion due to invalid time on machine
-        if (numberOfMinutes < 0) {
-            // if the time on the machine is behind, the current time will be less than the time the user was active last, leading to a negative value
-            return "";
-        }
-
         if (isActive) {
             return Kayako.getApplicationContext().getString(R.string.ko__messenger_toolbar_subtitle_assigned_agent_active);
+        } else if (numberOfMinutes < 0) { // Assertion due to invalid time on machine
+            // if the time on the machine is behind, the current time will be less than the time the user was active last, leading to a negative value
+            return "";
+
         } else if (numberOfMinutes <= 15) {
             return String.format(
                     Kayako.getApplicationContext().getString(R.string.ko__messenger_toolbar_subtitle_assigned_agent_active_in_x_minutes),
@@ -113,7 +110,7 @@ public class ConversationStarterHelper {
                     Kayako.getApplicationContext().getString(R.string.ko__messenger_toolbar_subtitle_assigned_agent_active_in_x_minutes),
                     45);
 
-        } else if (numberOfMinutes <= 90 || numberOfHours <=1) {
+        } else if (numberOfMinutes <= 90 || numberOfHours <= 1) {
             return Kayako.getApplicationContext().getString(R.string.ko__messenger_toolbar_subtitle_assigned_agent_active_in_one_hour);
 
         } else if (numberOfMinutes < 1410) { // 23.5 HOURS
