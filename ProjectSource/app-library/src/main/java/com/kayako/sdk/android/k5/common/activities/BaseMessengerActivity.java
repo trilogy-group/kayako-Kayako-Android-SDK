@@ -2,6 +2,7 @@ package com.kayako.sdk.android.k5.common.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -28,6 +29,9 @@ public abstract class BaseMessengerActivity extends AppCompatActivity {
     final protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ko__activity_messenger_default);
+
+        // Ensure the screen is always in portrait mode for Messenger - choosing to do this programmatically so that developers can't change the behaviour
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         loadRelevantStaticClasses();
         MessengerActivityTracker.addActivity(this);
