@@ -10,6 +10,7 @@ import com.kayako.sdk.android.k5.kre.helpers.RawUserOnCasePresenceListener;
 import com.kayako.sdk.android.k5.kre.helpers.RawUserSubscribedPresenceListener;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -44,7 +45,7 @@ class KrePresenceMetaDataHelper {
         // Handle on state event change
         onlineUsers.clear();
         onlineUsers.addAll(newUsers);
-        triggerOnlineStatusesForUserOnCase(newUsers, rawUserPresenceListener);
+        triggerOnlineStatusesForUsersOnCase(newUsers, rawUserPresenceListener);
         triggerSubscribedStatuses(newUsers, mRawUserSubscribedPresenceListener);
     }
 
@@ -202,10 +203,9 @@ class KrePresenceMetaDataHelper {
             rawUserPresenceListener.onExistingUserPerformingSomeActivity(newUser.getUserData().getId(), newUser.getActivityData().getLastActiveAt());
         }
     }
-
     private static void triggerOnlineStatusForUserOnCase(PresenceUser newUser, RawUserOnCasePresenceListener rawUserOnlinePresenceListener) {
         if (rawUserOnlinePresenceListener != null) {
-            if (newUser.getActivityData().isForeground() && newUser.getActivityData().isViewing()) { // look at isForeground and isViewing (both needs to be true to be online)
+            if (isUserOnlineOnCase(newUser)) {
                 rawUserOnlinePresenceListener.onNewUserViewingCase(newUser.getUserData().getId(), newUser.getActivityData().getLastActiveAt());
             } else {
                 rawUserOnlinePresenceListener.onUserNoLongerViewingCase(newUser.getUserData().getId());
@@ -213,9 +213,17 @@ class KrePresenceMetaDataHelper {
         }
     }
 
-    private static void triggerOnlineStatusesForUserOnCase(Set<PresenceUser> users, RawUserOnCasePresenceListener rawUserOnlinePresenceListener) {
+    private static void triggerOnlineStatusesForUsersOnCase(Set<PresenceUser> users, RawUserOnCasePresenceListener rawUserOnlinePresenceListener) {
         if (rawUserOnlinePresenceListener != null) {
-            rawUserOnlinePresenceListener.onUsersAlreadyViewingCase(PresenceUserHelper.convertToListOfIds(users), System.currentTimeMillis());
+
+            Set<PresenceUser> viewingUsers = new HashSet<>();
+            for (PresenceUser presenceUser : users) {
+                if (isUserOnlineOnCase(presenceUser)) {
+                    viewingUsers.add(presenceUser);
+                }
+            }
+
+            rawUserOnlinePresenceListener.onUsersAlreadyViewingCase(PresenceUserHelper.convertToListOfIds(viewingUsers), System.currentTimeMillis());
         }
     }
 
@@ -243,6 +251,18 @@ class KrePresenceMetaDataHelper {
         } else {
             return PresenceUserHelper.getDefaultUser(); // All values are set as false - which should trigger for any status = true
         }
+    }
+
+    /**
+     * User is considered online on Case if his activity data has isForeground = true
+     *
+     * @param user
+     * @return
+     */
+    private static boolean isUserOnlineOnCase(PresenceUser user) {
+        return user != null
+                && user.getActivityData() != null
+                && user.getActivityData().isForeground(); // look at only isForeground() - tab is opened and actively being viewed. Not looking at isViewing because of inconsistencies
     }
 
     /**
