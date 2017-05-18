@@ -48,6 +48,8 @@ public class OffboardingHelper {
     private Queue<UnsentRating> updateRatingQueue = new ConcurrentLinkedQueue<>();
     private AtomicReference<UnsentRating> lastRatingBeingSent = new AtomicReference<>();
 
+    private AtomicBoolean isConversationOriginallyCompleted = new AtomicBoolean(false);
+
     //////////// API CALLBACK METHODS ////////////
 
     public void onLoadRatings(List<Rating> ratings, OffboardingHelperViewCallback callback) {
@@ -101,7 +103,7 @@ public class OffboardingHelper {
         // This is done only once a conversation is loaded because to load ratings of a conversation, we need to make sure the conversation exists
 
         if (isConversationCompletedOrClosed
-                && latestRatingOfConversation.get() == null) { // Load rating via API as long current rating is null
+                || latestRatingOfConversation.get() == null) { // Load rating via API as long current rating is null
             callback.onLoadRatings();
         } else {
             callback.onRefreshListView(); // Ensure that during status changes from open -> completed -> open, the feedback is removed
