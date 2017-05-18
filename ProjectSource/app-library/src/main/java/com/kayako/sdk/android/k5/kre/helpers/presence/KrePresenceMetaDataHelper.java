@@ -163,9 +163,10 @@ class KrePresenceMetaDataHelper {
         // It should not be possible for is viewing to be false and is foreground to be true HOWEVER events are still received with this wrong values!
         return existingUserData.getActivityData() != null
                 && newUser.getActivityData() != null
-                && ( // look at isForeground and isViewing (if either one changes)
-                existingUserData.getActivityData().isForeground() != newUser.getActivityData().isForeground()
-                        || existingUserData.getActivityData().isViewing() != newUser.getActivityData().isViewing());
+                && (
+                // Supposed to look at both isForeground and isViewing - but not always consistent
+                // Instead, looking at only isForeground (Tab on frontend open AND being actively viewed by agent)
+                existingUserData.getActivityData().isForeground() != newUser.getActivityData().isForeground());
     }
 
     private static void triggerTypingStatus(@NonNull PresenceUser newUserData, RawClientTypingListener rawClientTypingListener) {

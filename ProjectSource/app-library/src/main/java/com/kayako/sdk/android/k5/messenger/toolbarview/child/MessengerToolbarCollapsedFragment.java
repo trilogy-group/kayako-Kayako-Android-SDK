@@ -17,6 +17,13 @@ public class MessengerToolbarCollapsedFragment extends BaseToolbarFragment imple
     private View mRoot;
     private MessengerToolbarContract.OnExpandOrCollapseListener mListener;
 
+    // State variables to prevent redundant UI updates
+    private MessengerToolbarContract.MessengerToolbarType mMessengerToolbarType;
+    private LastActiveAgentsData mPreviousLastActiveAgentsData;
+    private AssignedAgentData mPreviousAssignedAgentData;
+    private String mPreviousSimpleTitle;
+    private int mPreviousUnreadCount;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return mRoot = inflater.inflate(R.layout.ko__messenger_toolbar_collapsed, container, false);
@@ -58,10 +65,20 @@ public class MessengerToolbarCollapsedFragment extends BaseToolbarFragment imple
                     return;
                 }
 
+                if (mMessengerToolbarType != null && mMessengerToolbarType == MessengerToolbarContract.MessengerToolbarType.LAST_ACTIVE_AGENTS &&
+                        mPreviousLastActiveAgentsData != null && mPreviousLastActiveAgentsData.equals(data) &&
+                        mPreviousUnreadCount == unreadCount) {
+                    return; // Nothing new to update
+                }
+
                 CommonToolbarViewUtil.setTitle(mRoot, data.getBrandName());
                 CommonToolbarViewUtil.setSubtitleForAverageResponseTime(mRoot, data.getAverageReplyTime());
                 CommonToolbarViewUtil.setLastActiveAgentAvatars(mRoot, data);
                 CommonToolbarViewUtil.setUnreadCount(mRoot, unreadCount);
+
+                mMessengerToolbarType = MessengerToolbarContract.MessengerToolbarType.LAST_ACTIVE_AGENTS;
+                mPreviousLastActiveAgentsData = data;
+                mPreviousUnreadCount = unreadCount;
             }
         });
     }
@@ -79,10 +96,20 @@ public class MessengerToolbarCollapsedFragment extends BaseToolbarFragment imple
                     return;
                 }
 
+                if (mMessengerToolbarType != null && mMessengerToolbarType == MessengerToolbarContract.MessengerToolbarType.ASSIGNED_AGENT &&
+                        mPreviousAssignedAgentData != null && mPreviousAssignedAgentData.equals(data) &&
+                        mPreviousUnreadCount == unreadCount) {
+                    return; // Nothing new to update
+                }
+
                 CommonToolbarViewUtil.setTitle(mRoot, data.getUser().getFullName());
                 CommonToolbarViewUtil.setAssignedAgentAvatar(mRoot, data);
                 CommonToolbarViewUtil.setSubtitleForUserLastActiveTime(mRoot, data);
                 CommonToolbarViewUtil.setUnreadCount(mRoot, unreadCount);
+
+                mMessengerToolbarType = MessengerToolbarContract.MessengerToolbarType.ASSIGNED_AGENT;
+                mPreviousAssignedAgentData = data;
+                mPreviousUnreadCount = unreadCount;
             }
         });
     }
@@ -100,9 +127,19 @@ public class MessengerToolbarCollapsedFragment extends BaseToolbarFragment imple
                     return;
                 }
 
+                if (mMessengerToolbarType != null && mMessengerToolbarType == MessengerToolbarContract.MessengerToolbarType.ASSIGNED_AGENT &&
+                        mPreviousSimpleTitle != null && mPreviousSimpleTitle.equals(title) &&
+                        mPreviousUnreadCount == unreadCount) {
+                    return; // Nothing new to update
+                }
+
                 CommonToolbarViewUtil.setOnlyTitle(mRoot, title);
                 CommonToolbarViewUtil.customizeColorsToMatchMessengerStyle(mRoot);
                 CommonToolbarViewUtil.setUnreadCount(mRoot, unreadCount);
+
+                mMessengerToolbarType = MessengerToolbarContract.MessengerToolbarType.SIMPLE_TITLE;
+                mPreviousSimpleTitle = title;
+                mPreviousUnreadCount = unreadCount;
             }
         });
     }

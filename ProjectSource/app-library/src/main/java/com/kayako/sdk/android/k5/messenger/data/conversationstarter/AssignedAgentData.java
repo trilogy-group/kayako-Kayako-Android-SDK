@@ -24,4 +24,22 @@ public class AssignedAgentData {
     public boolean isActive() {
         return isActive;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AssignedAgentData that = (AssignedAgentData) o;
+
+        if (isActive != that.isActive) return false;
+        return user != null ? user.equals(that.user) : that.user == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = user != null ? user.hashCode() : 0;
+        result = 31 * result + (isActive ? 1 : 0);
+        return result;
+    }
 }

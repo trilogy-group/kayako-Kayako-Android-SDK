@@ -54,4 +54,31 @@ public class LastActiveAgentsData {
     public UserViewModel getUser3() {
         return user3;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        LastActiveAgentsData that = (LastActiveAgentsData) o;
+
+        if (brandName != null ? !brandName.equals(that.brandName) : that.brandName != null)
+            return false;
+        if (averageReplyTime != null ? !averageReplyTime.equals(that.averageReplyTime) : that.averageReplyTime != null)
+            return false;
+        if (user1 != null ? !user1.equals(that.user1) : that.user1 != null) return false;
+        if (user2 != null ? !user2.equals(that.user2) : that.user2 != null) return false;
+        return user3 != null ? user3.equals(that.user3) : that.user3 == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = brandName != null ? brandName.hashCode() : 0;
+        result = 31 * result + (averageReplyTime != null ? averageReplyTime.hashCode() : 0);
+        result = 31 * result + (user1 != null ? user1.hashCode() : 0);
+        result = 31 * result + (user2 != null ? user2.hashCode() : 0);
+        result = 31 * result + (user3 != null ? user3.hashCode() : 0);
+        return result;
+    }
 }
