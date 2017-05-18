@@ -223,10 +223,9 @@ public class DataItemHelper {
 
         assert currentDataItem != null;
 
-        // Self Messages no longer show avatar
-        if (getIfSelf(currentDataItem)) {
-            return false;
-        }
+        // NOTE: Self Messages no longer show avatar but the grouping logic is still based on the avatars.
+        // Meaning, if self-message has showAvatar = true, it uses a SelfMessage. If showAvatar = false, it uses a SelfContinuedMessage
+        // For the sake of the padding, use showAvatar to choose between continued and starting message
 
         // Show avatar if first item of list
         if (previousDataItem == null) {
@@ -304,10 +303,11 @@ public class DataItemHelper {
             deliveryIndicator = null;
         }
 
-        if (viewBehaviour.showAsSelf) {
-            // Self is now shown without Avatar - but the padding is different for starting message and continued message
-            // Self is now shown without timestamps - so using only starting message
+        if (viewBehaviour.showAsSelf && viewBehaviour.showAvatar) {
+            // Self is now shown without Avatar - but the padding is different for starting message and continued message - therefore continue using the showAvatar boolean
             return new SimpleMessageSelfListItem(currentDataItem.getId(), currentDataItem.getMessage(), time, deliveryIndicator, false, currentDataItem.getData());
+        } else if (viewBehaviour.showAsSelf) {
+            return new SimpleMessageContinuedSelfListItem(currentDataItem.getId(), currentDataItem.getMessage(), time, deliveryIndicator, false, currentDataItem.getData());
         } else if (viewBehaviour.showAvatar) {
             return new SimpleMessageOtherListItem(currentDataItem.getId(), currentDataItem.getMessage(), currentDataItem.getUserDecoration().getAvatarUrl(), currentDataItem.getChannelDecoration(), time, currentDataItem.getData());
         } else {
