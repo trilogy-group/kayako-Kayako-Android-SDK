@@ -67,7 +67,7 @@ public class OffboardingHelper {
 
         // Refresh list view if ratings loaded via API for first time and a rating is available to show
         if (latestRatingOfConversation.get() != null && !hasRatingsBeenLoadedViaApi.get()) {
-            callback.onRefreshListView();
+            callback.onRefreshListView(true);
         }
 
         // Set ratings have been loaded via API successfully
@@ -86,7 +86,7 @@ public class OffboardingHelper {
         latestRatingOfConversation.set(rating);
         hasRatingsBeenLoadedViaApi.set(true);
 
-        callback.onRefreshListView();
+        callback.onRefreshListView(true);
     }
 
     public void onFailureToUpdateRating(Rating.SCORE score, String feedback, OffboardingHelperViewCallback callback) {
@@ -106,7 +106,7 @@ public class OffboardingHelper {
                 || !hasRatingsBeenLoadedViaApi.get()) { // Load rating via API as long current rating is null
             callback.onLoadRatings();
         } else {
-            callback.onRefreshListView(); // Ensure that during status changes from open -> completed -> open, the feedback is removed
+            callback.onRefreshListView(false); // Ensure that during status changes from open -> completed -> open, the feedback is removed
         }
 
         // TODO: Handle a situation where a customer may want to rate the conversation multiple times
@@ -132,7 +132,7 @@ public class OffboardingHelper {
                     addToQueue(callback, score, null);
                     runNextInQueueIfReady(callback);
 
-                    callback.onRefreshListView();
+                    callback.onRefreshListView(true);
                 }
             });
 
@@ -154,7 +154,7 @@ public class OffboardingHelper {
                     addToQueue(callback, score, null);
                     runNextInQueueIfReady(callback);
 
-                    callback.onRefreshListView();
+                    callback.onRefreshListView(false);
                 }
 
                 @Override
@@ -163,7 +163,7 @@ public class OffboardingHelper {
                     addToQueue(callback, score, feedback);
                     runNextInQueueIfReady(callback);
 
-                    callback.onRefreshListView();
+                    callback.onRefreshListView(false);
                 }
             }));
             return list;
@@ -317,7 +317,7 @@ public class OffboardingHelper {
 
     public interface OffboardingHelperViewCallback {
 
-        void onRefreshListView();
+        void onRefreshListView(boolean scrollToBottom);
 
         void onLoadRatings();
 

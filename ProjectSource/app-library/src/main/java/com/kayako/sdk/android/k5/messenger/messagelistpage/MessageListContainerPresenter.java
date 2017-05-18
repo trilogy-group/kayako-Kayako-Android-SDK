@@ -310,8 +310,11 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
     private OffboardingHelper.OffboardingHelperViewCallback mOffboardingHelperViewCallback = new OffboardingHelper.OffboardingHelperViewCallback() {
         @Override
-        public void onRefreshListView() {
+        public void onRefreshListView(boolean scrollToBottom) {
             displayList();
+            if (scrollToBottom) {
+                mView.scrollToBottomOfList();
+            }
         }
 
         @Override
