@@ -422,9 +422,18 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                         mConversationHelper.isConversationClosed() || mConversationHelper.isConversationCompleted(),
                         mListHelper.getListPageState());
 
+        // Assertions
+        if (stateToApply == null) {
+            throw new IllegalStateException("Can not be null");
+        }
+
+        // Configure Attachment Button
+        configureAttachmentButton(
+                stateToApply == ReplyBoxViewHelper.ReplyBoxViewState.VISIBLE,
+                mConversationHelper.isConversationCreated()
+        );
 
         ReplyBoxViewHelper.ReplyBoxViewState lastState = mReplyBoxHelper.getLastSetReplyBoxViewState();
-
         if (lastState != null && lastState == stateToApply) {
             return; // do not configure visibility of reply box if there is no change
             // Also, hiding the reply box hides the keyboard (which causes problems when dealing with feedback list item)
@@ -437,7 +446,6 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
             case VISIBLE:
                 mView.showReplyBox();
-                configureAttachmentButton();
                 break;
 
             case HIDDEN:
@@ -448,8 +456,8 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         mReplyBoxHelper.setLastSetReplyBoxViewState(stateToApply);
     }
 
-    private void configureAttachmentButton() {
-        if (mFileAttachmentHelper.getAttachmentButtonVisibility(mConversationHelper.isConversationCreated())) {
+    private void configureAttachmentButton(boolean isReplyBoxVisible, boolean isConversationCreated) {
+        if (isReplyBoxVisible && isConversationCreated) {
             mView.setAttachmentButtonVisibilityInReplyBox(true);
         } else {
             mView.setAttachmentButtonVisibilityInReplyBox(false);
