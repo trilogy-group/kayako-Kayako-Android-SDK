@@ -17,7 +17,8 @@
         <!-- TODO: Change primary colors for messenger -->
         <item name="colorPrimary">@color/ko__colorPrimary</item>
         <item name="colorPrimaryDark">@color/ko__colorPrimaryDark</item>
-        <item name="colorAccent">@color/ko__messenger_primary_color</item> <!-- NOTE: All progress indicators, scroll end effect will use this color -->
+        <item name="colorAccent">@color/ko__messenger_primary_color
+        </item> <!-- NOTE: All progress indicators, scroll end effect will use this color -->
 
         <!-- Added to remove toolbar -->
         <item name="android:windowActionBar">false</item>
@@ -56,7 +57,8 @@
         <item name="android:background">@drawable/ko__speech_bubble_other</item>
         <item name="android:textColor">@color/ko__messenger_speech_bubble_other_text_color</item>
         <item name="android:textSize">@dimen/ko__messenger_speech_bubble_message_text_size</item>
-        <item name="android:textColorLink">@color/ko__messenger_speech_bubble_other_text_color</item>
+        <item name="android:textColorLink">@color/ko__messenger_speech_bubble_other_text_color
+        </item>
     </style>
 
     <style name="Ko__ChatBubbleStyleSelf" parent="Ko__ChatBubbleStyle">
@@ -74,6 +76,7 @@
 
     <style name="Ko__ChatBubbleDateStyle">
         <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/ko__messenger_delivery_indicator_time_text_color</item>
         <item name="android:layout_margin">@dimen/ko__messenger_list_item_time_margin</item>
     </style>
 
