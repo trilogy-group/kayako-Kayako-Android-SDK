@@ -2,9 +2,13 @@ package com.kayako.sdk.android.k5.common.adapter.messengerlist;
 
 import android.support.annotation.NonNull;
 
+import com.kayako.sdk.android.k5.common.adapter.ContentComparable;
 import com.kayako.sdk.messenger.message.Message;
 
-public class UserDecoration {
+import java.util.HashMap;
+import java.util.Map;
+
+public class UserDecoration implements ContentComparable {
     private String name;
     private Long userId;
     private String avatarUrl;
@@ -55,5 +59,13 @@ public class UserDecoration {
         isSelf = self;
     }
 
-
+    @Override
+    public Map<String, String> getContents() {
+        Map<String, String> map = new HashMap<>();
+        map.put("name", String.valueOf(name));
+        map.put("userId", String.valueOf(userId));
+        map.put("avatarUrl", String.valueOf(avatarUrl));
+        map.put("isSelf", String.valueOf(isSelf));
+        return map;
+    }
 }
