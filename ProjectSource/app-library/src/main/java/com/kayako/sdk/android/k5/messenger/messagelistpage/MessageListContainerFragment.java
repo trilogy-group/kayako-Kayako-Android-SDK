@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerAdapter;
 import com.kayako.sdk.android.k5.common.fragments.ListPageState;
 import com.kayako.sdk.android.k5.common.fragments.OnListPageStateChangeListener;
 import com.kayako.sdk.android.k5.common.fragments.OnScrollListListener;
+import com.kayako.sdk.android.k5.common.utils.KeyboardUtils;
 import com.kayako.sdk.android.k5.common.utils.file.FileAttachmentUtil;
 import com.kayako.sdk.android.k5.core.KayakoLogHelper;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.AssignedAgentData;
@@ -329,8 +331,13 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
         return mMessageListView.isNearBottomOfList();
     }
 
+
     @Override
-    public boolean isKeyboardOpen() {
-        return false; // TODO:
+    public void setKeyboardVisibility(boolean b) {
+        if (!hasPageLoaded()) {
+            return;
+        }
+
+        KeyboardUtils.hideKeyboard((AppCompatActivity) getActivity());
     }
 }

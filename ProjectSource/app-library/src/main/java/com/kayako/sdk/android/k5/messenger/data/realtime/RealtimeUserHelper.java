@@ -70,8 +70,15 @@ public class RealtimeUserHelper {
     }
 
     private static void addNewKreCaseSubscription(String userPresenceChannel, long userId) {
-        // Retrieve Messenger Values
-        KreStarter kreStarterValues = KreStarterFactory.getKreStarterValues();
+        KreStarter kreStarterValues;
+        try {
+            // Retrieve Messenger Values
+            kreStarterValues = KreStarterFactory.getKreStarterValues();
+        } catch (IllegalStateException e) {
+            KayakoLogHelper.e(TAG, "KRE Starter Values could not be created yet! Skipping...");
+            KayakoLogHelper.logException(TAG, e);
+            return;
+        }
 
         // Set up CaseSubscription
         KreUserSubscription kreUserSubscription = new KreUserSubscription(userPresenceChannel);

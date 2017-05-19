@@ -327,6 +327,11 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         }
 
         @Override
+        public void onHideKeyboard() {
+            mView.setKeyboardVisibility(false);
+        }
+
+        @Override
         public void onAddRating(Rating.SCORE ratingScore, String message) {
             if (mConversationHelper.isConversationCreated()) {
                 addConversationRating(mConversationHelper.getConversationId(), ratingScore, message);
@@ -659,8 +664,8 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             }
 
             boolean scrollToBottom = !mConversationMessagesHelper.hasLoadedMessagesBefore() // scroll to bottom if messages are being loaded for the first time
-                    || mView.isNearBottomOfList() // scroll to bottom whenever user is near the end
-                    || mView.isKeyboardOpen();
+                    || mView.isNearBottomOfList(); // scroll to bottom whenever user is near the end
+            // TODO: Another option is to check if keyboard is open, and scroll if true
 
             mConversationMessagesHelper.onLoadNextMessages(messageList, offset);
 

@@ -9,10 +9,20 @@ public class KreStarterFactory {
     }
 
     public static KreStarter getKreStarterValues() {
+        Long userId = MessengerUserPref.getInstance().getUserId();
+        String url = MessengerPref.getInstance().getUrl();
+        String fingerprintId = MessengerPref.getInstance().getFingerprintId();
+
+        if (userId == null
+                || url == null
+                || fingerprintId == null) {
+            throw new IllegalStateException("Invalid Arguments");
+        }
+
         return new KreStarter(
-                MessengerUserPref.getInstance().getUserId(),
-                MessengerPref.getInstance().getUrl(),
-                MessengerPref.getInstance().getFingerprintId()
+                userId,
+                url,
+                fingerprintId
         );
     }
 

@@ -164,6 +164,7 @@ public class OffboardingHelper {
                     runNextInQueueIfReady(callback);
 
                     callback.onRefreshListView(false);
+                    callback.onHideKeyboard();
                 }
             }));
             return list;
@@ -320,6 +321,8 @@ public class OffboardingHelper {
         void onRefreshListView(boolean scrollToBottom);
 
         void onLoadRatings();
+
+        void onHideKeyboard();
 
         void onAddRating(Rating.SCORE ratingScore, String message);
 

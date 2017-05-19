@@ -86,7 +86,7 @@ public class MessageListContainerContract {
 
         boolean isNearBottomOfList();
 
-        boolean isKeyboardOpen();
+        void setKeyboardVisibility(boolean b);
     }
 
     public interface Presenter extends BasePresenter<MessageListContainerContract.View> {
