@@ -104,7 +104,7 @@ public class MessageListContainerContract {
 
         void onClickAddAttachment();
 
-        void onAttachmentAttached(FileAttachment file);
+        void onConfirmSendingOfAttachment(FileAttachment file);
 
         void setData(Data data);
 

@@ -33,16 +33,16 @@
                 android:layout_weight="1"
                 android:background="@null"
                 android:ellipsize="end"
-                android:imeOptions="actionSend"
                 android:gravity="center_vertical|start"
+                android:hint="@string/ko__messenger_reply_box_hint"
+                android:imeOptions="actionSend"
                 android:maxLines="4"
                 android:minHeight="40dp"
-                android:hint="@string/ko__messenger_reply_box_hint"
                 android:scrollIndicators="end"
-                android:textColor="@color/ko__messenger_reply_box_text_colour"
-                android:textColorHint="@color/ko__messenger_reply_box_hint_text_colour"
                 android:scrollbarAlwaysDrawVerticalTrack="true"
                 android:scrollbars="vertical"
+                android:textColor="@color/ko__messenger_reply_box_text_colour"
+                android:textColorHint="@color/ko__messenger_reply_box_hint_text_colour"
                 android:textSize="16sp"
                 tools:text="LOONG MESSAGE. IT GOES ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON....">
 
@@ -50,17 +50,7 @@
             </EditText>
 
 
-            <ImageButton
-                android:id="@+id/ko__reply_box_send_button"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:layout_margin="2dp"
-                android:background="@drawable/ko__messenger_button_send_background"
-                android:elevation="2dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/ko__ic_send_button" />
-
+            <include layout="@layout/ko__include_send_button" />
 
         </LinearLayout>
 
@@ -101,18 +91,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
+                    android:text="@string/ko__messenger_credits_messenger_by"
                     android:textColor="@color/ko__messenger_reply_box_credits_text_colour"
-                    android:textSize="@dimen/ko__messenger_reply_box_footer"
 
-                    android:text="@string/ko__messenger_credits_messenger_by" />
+                    android:textSize="@dimen/ko__messenger_reply_box_footer" />
 
                 <com.kayako.sdk.android.k5.common.view.BoldTextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:gravity="center"
                     android:layout_marginLeft="2dp"
-                    android:textColor="@color/ko__messenger_reply_box_credits_kayako_text_colour"
+                    android:gravity="center"
                     android:text="@string/ko__messenger_credits_kayako"
+                    android:textColor="@color/ko__messenger_reply_box_credits_kayako_text_colour"
                     android:textSize="@dimen/ko__messenger_reply_box_footer"
                     android:textStyle="bold" />
 

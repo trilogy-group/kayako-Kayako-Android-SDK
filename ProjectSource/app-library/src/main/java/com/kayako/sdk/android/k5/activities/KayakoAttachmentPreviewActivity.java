@@ -12,15 +12,27 @@ import com.kayako.sdk.android.k5.messenger.attachmentpreview.AttachmentPreviewFr
 public class KayakoAttachmentPreviewActivity extends BaseMessengerActivity {
 
     public static final String ARG_IMAGE_URL = "attachmentimageurl";
+    public static final String ARG_FILE_PATH = "attachmentfilepath";
+    public static final String ARG_SHOW_SEND_BUTTON = "showsendbutton";
 
     public static final int RESULT_EXIT = 1;
+    public static final int RESULT_SEND = 2;
 
-    public static void startActivityForResult(Activity activity, Fragment fragment, View attachmentView, String imageUrl, int requestCode) {
+    public static void startActivityForPreview(Activity activity, Fragment fragment, View attachmentView, String imageUrl, int requestCode) {
         Intent intent = new Intent(activity, KayakoAttachmentPreviewActivity.class);
         intent.putExtra(ARG_IMAGE_URL, imageUrl);
+        intent.putExtra(ARG_SHOW_SEND_BUTTON, false);
 
         ActivityOptionsCompat activityOptionsCompat = getAttachmentAnimation(activity, attachmentView);
         fragment.startActivityForResult(intent, requestCode, activityOptionsCompat.toBundle());
+    }
+
+    public static void startActivityForConfirmation(Activity activity, Fragment fragment, String filePath, int requestCode) {
+        Intent intent = new Intent(activity, KayakoAttachmentPreviewActivity.class);
+        intent.putExtra(ARG_FILE_PATH, filePath);
+        intent.putExtra(ARG_SHOW_SEND_BUTTON, true);
+
+        fragment.startActivityForResult(intent, requestCode);
     }
 
     @Override
@@ -35,5 +47,4 @@ public class KayakoAttachmentPreviewActivity extends BaseMessengerActivity {
             return ActivityOptionsCompat.makeSceneTransitionAnimation(activity);
         }
     }
-
 }

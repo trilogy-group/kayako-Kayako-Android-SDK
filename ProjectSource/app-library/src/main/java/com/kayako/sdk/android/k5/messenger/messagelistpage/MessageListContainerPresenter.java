@@ -218,8 +218,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     }
 
     @Override
-    public void onAttachmentAttached(FileAttachment file) {
-        //TODO: Later, create a separate attachment preview screen so the user has the option to cancel-
+    public void onConfirmSendingOfAttachment(FileAttachment file) {
         onSendAttachmentReply(file);
     }
 

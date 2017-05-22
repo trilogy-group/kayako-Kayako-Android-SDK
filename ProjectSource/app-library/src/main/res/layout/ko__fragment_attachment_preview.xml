@@ -9,6 +9,7 @@
         layout="@layout/ko__include_attachment_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/ko__reply_box_send_button"
         android:layout_below="@+id/ko__button_exit"
         android:layout_gravity="center"
         android:layout_margin="32dp" />
@@ -25,5 +26,13 @@
         android:layout_marginTop="16dp"
         android:background="?android:selectableItemBackgroundBorderless"
         android:src="@drawable/ko__ic_close" />
+
+    <include
+        layout="@layout/ko__include_send_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="16dp" />
 
 </RelativeLayout>

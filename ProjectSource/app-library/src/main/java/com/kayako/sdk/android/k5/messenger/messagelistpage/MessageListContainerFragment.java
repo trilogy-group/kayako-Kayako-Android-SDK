@@ -22,6 +22,7 @@ import com.kayako.sdk.android.k5.common.fragments.ListPageState;
 import com.kayako.sdk.android.k5.common.fragments.OnListPageStateChangeListener;
 import com.kayako.sdk.android.k5.common.fragments.OnScrollListListener;
 import com.kayako.sdk.android.k5.common.utils.KeyboardUtils;
+import com.kayako.sdk.android.k5.common.utils.file.FileAttachment;
 import com.kayako.sdk.android.k5.common.utils.file.FileAttachmentUtil;
 import com.kayako.sdk.android.k5.core.KayakoLogHelper;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.AssignedAgentData;
@@ -40,9 +41,11 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
     private MessengerToolbarContract.ConfigureView mToolbarView;
 
     private static final int REQUEST_CODE_ADD_ATTACHMENT = 100;
-    private static final int REQUEST_CODE_VIEW_ATTACHMENT = 200;
+    private static final int REQUEST_CODE_VIEW_UPLOADED_ATTACHMENT = 200;
+    private static final int REQUEST_CODE_VIEW_ATTACHMENT_BEFORE_SENDING = 300;
 
     private View mLastAttachmentListItemViewClicked;
+    private FileAttachment mLastFileAttachmentAttached;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -120,7 +123,18 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
             if (requestCode == REQUEST_CODE_ADD_ATTACHMENT) {
                 File file = FileAttachmentUtil.getFileOnActivityResult(resultCode, data);
                 if (file != null) {
-                    mPresenter.onAttachmentAttached(FileAttachmentUtil.generateFileAttachment("attachment", file));
+                    mLastFileAttachmentAttached = FileAttachmentUtil.generateFileAttachment("attachment", file);
+                    KayakoAttachmentPreviewActivity.startActivityForConfirmation(getActivity(), MessageListContainerFragment.this, mLastFileAttachmentAttached.getPath(), REQUEST_CODE_VIEW_ATTACHMENT_BEFORE_SENDING);
+                } else {
+                    mLastFileAttachmentAttached = null; // RESET IF CANCELLED
+                }
+
+            } else if (requestCode == REQUEST_CODE_VIEW_ATTACHMENT_BEFORE_SENDING) {
+                if (resultCode == KayakoAttachmentPreviewActivity.RESULT_SEND && mLastFileAttachmentAttached != null) {
+                    mPresenter.onConfirmSendingOfAttachment(mLastFileAttachmentAttached);
+                    mLastFileAttachmentAttached = null; // RESET AFTER USE
+                } else if (resultCode == KayakoAttachmentPreviewActivity.RESULT_EXIT) {
+                    mLastFileAttachmentAttached = null; // RESET IF CANCELLED
                 }
             }
         } catch (Exception e) {
@@ -360,7 +374,7 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
             return;
         }
 
-        // TODO: Show original image url - not thumbnail
-        KayakoAttachmentPreviewActivity.startActivityForResult(getActivity(), this, mLastAttachmentListItemViewClicked, imageUrl, REQUEST_CODE_VIEW_ATTACHMENT);
+        KayakoAttachmentPreviewActivity.startActivityForPreview(getActivity(), this, mLastAttachmentListItemViewClicked, imageUrl, REQUEST_CODE_VIEW_UPLOADED_ATTACHMENT);
     }
+
 }
