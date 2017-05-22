@@ -25,6 +25,8 @@ import java.util.Locale;
 public class MessengerBuilder {
 
     // Mandatory
+    private String title;
+    private String description;
     private String brandName;
     private String url;
 
@@ -41,21 +43,35 @@ public class MessengerBuilder {
     }
 
     public MessengerBuilder setBrandName(@StringRes int stringResId) {
-        String brandName;
-        try {
-            brandName = Kayako.getApplicationContext().getResources().getString(stringResId);
-            return setBrandName(brandName);
-        } catch (Resources.NotFoundException e) {
-            throw new IllegalArgumentException("Invalid String resource for Brand Name");
-        }
+        String brandName = getStringFromResourceId(stringResId);
+        return setBrandName(brandName);
     }
 
-
     public MessengerBuilder setBrandName(String brandName) {
-        if (brandName == null || brandName.length() < 1) {
-            throw new IllegalArgumentException("Invalid Brand Name");
-        }
+        assertValidString(brandName);
         this.brandName = brandName;
+        return this;
+    }
+
+    public MessengerBuilder setTitle(@StringRes int stringResId) {
+        String title = getStringFromResourceId(stringResId);
+        return setTitle(title);
+    }
+
+    public MessengerBuilder setTitle(String title) {
+        assertValidString(title);
+        this.title = title;
+        return this;
+    }
+
+    public MessengerBuilder setDescription(@StringRes int stringResId) {
+        String description = getStringFromResourceId(stringResId);
+        return setDescription(description);
+    }
+
+    public MessengerBuilder setDescription(String description) {
+        assertValidString(description);
+        this.description = description;
         return this;
     }
 
@@ -74,7 +90,6 @@ public class MessengerBuilder {
         this.fingerprintId = fingerprintId;
         return this;
     }
-
 
     public MessengerBuilder setUserEmail(String userEmail) {
         if (!Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
@@ -136,6 +151,8 @@ public class MessengerBuilder {
         // Mandatory Fields
         saveOrValidateUrl();
         saveOrValidateBrandName();
+        saveOrValidateTitle();
+        saveOrValidateDescription();
 
         // Fields that can not be null but need not be specified by user
         saveOrUseCachedOrGenerateNewFingerprintId();
@@ -161,6 +178,20 @@ public class MessengerBuilder {
         } else {
             setPrimaryColor(R.color.ko__messenger_primary_color);
             MessengerStylePref.getInstance().setPrimaryColor(primaryHexColor);
+        }
+    }
+
+    private String getStringFromResourceId(@StringRes int stringResId) {
+        try {
+            return Kayako.getApplicationContext().getResources().getString(stringResId);
+        } catch (Resources.NotFoundException e) {
+            throw new IllegalArgumentException("Invalid String resource for Brand Name");
+        }
+    }
+
+    private void assertValidString(String string) {
+        if (string == null || string.length() < 1) {
+            throw new IllegalArgumentException("Invalid String");
         }
     }
 
@@ -196,6 +227,22 @@ public class MessengerBuilder {
             throw new IllegalArgumentException("BrandName is mandatory. Please call setBrandName()");
         } else {
             MessengerPref.getInstance().setBrandName(brandName);
+        }
+    }
+
+    private void saveOrValidateTitle() {
+        if (title == null) {
+            throw new IllegalArgumentException("Title is mandatory. Please call setTitle()");
+        } else {
+            MessengerPref.getInstance().setTitle(title);
+        }
+    }
+
+    private void saveOrValidateDescription() {
+        if (description == null) {
+            throw new IllegalArgumentException("Description is mandatory. Please call setDescription()");
+        } else {
+            MessengerPref.getInstance().setDescription(description);
         }
     }
 

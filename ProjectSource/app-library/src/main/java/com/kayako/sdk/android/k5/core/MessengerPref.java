@@ -7,11 +7,14 @@ public class MessengerPref {
     final private static String PREF_NAME = "kayako_messenger_info";
     final private static String KEY_FINGERPRINT_ID = "fingerprint_id";
     final private static String KEY_BRAND_NAME = "brand_name";
+    final private static String KEY_TITLE = "title";
+    final private static String KEY_DESCRIPTION = "description";
     final private static String KEY_URL = "url";
     final private static String KEY_EMAIL_ID = "email_id";
 
     private static MessengerPref sInstance;
     private static SharedPreferences sPrefs;
+    private String title;
 
     private MessengerPref(Context context) {
         context = context.getApplicationContext();
@@ -47,6 +50,22 @@ public class MessengerPref {
         sPrefs.edit().putString(KEY_BRAND_NAME, brandName).apply();
     }
 
+    public String getTitle() {
+        return sPrefs.getString(KEY_TITLE, null);
+    }
+
+    public void setTitle(String title) {
+        sPrefs.edit().putString(KEY_TITLE, title).apply();
+    }
+
+    public String getDescription() {
+        return sPrefs.getString(KEY_DESCRIPTION, null);
+    }
+
+    public void setDescription(String description) {
+        sPrefs.edit().putString(KEY_DESCRIPTION, description).apply();
+    }
+
     public String getUrl() {
         return sPrefs.getString(KEY_URL, null);
     }
@@ -66,5 +85,4 @@ public class MessengerPref {
     public void clearAll() {
         sPrefs.edit().clear().apply();
     }
-
 }

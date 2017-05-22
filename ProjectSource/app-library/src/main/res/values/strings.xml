@@ -21,7 +21,7 @@
     <string name="ko__messenger_input_email_message_hint_error">Oops, email address seems invalid. Try again?</string>
     <string name="ko__messenger_input_email_edittext_hint">you@youremail.com</string>
     <string name="ko__messenger_input_email_message_hint_default">Your Email</string>
-    <string name="ko__email_input_field_msg_you_will_be_notified">Thanks! If you miss our reply here, we\'ll send it to your email</string>
+    <string name="ko__email_input_field_msg_you_will_be_notified">Thanks! As soon as someone is available, you\'ll get a notification here or via email</string>
     <string name="ko__email_input_field_submit_button_text">@string/ko__label_submit</string>
     <string name="ko__label_submit">Submit</string>
     <string name="ko__messenger_label_new_conversation">Start a conversation</string>
@@ -48,9 +48,6 @@
     <string name="ko__messenger_toolbar_avatar_caption_text_one_agent"><xliff:g example="John" id="name">%1$s</xliff:g> is online</string>
     <string name="ko__messenger_toolbar_avatar_caption_text_two_agent"><xliff:g example="John" id="name">%1$s</xliff:g> and <xliff:g example="Jim" id="name2">%2$s</xliff:g> are online</string>
     <string name="ko__messenger_toolbar_avatar_caption_text_three_agent"><xliff:g example="John" id="name">%1$s</xliff:g>, <xliff:g example="Jim" id="name2">%2$s</xliff:g> and <xliff:g example="Tina" id="name3">%3$s</xliff:g> are online</string>
-
-    <string name="ko__messenger_home_screen_header_title">Howdy</string>
-    <string name="ko__messenger_home_screen_header_subtitle">You can always reach us here to get the help!</string>
 
     <string name="ko__messenger_home_screen_widget_presence_title">We are here to help</string>
     <string name="ko__messenger_home_screen_widget_recent_cases_title">Recent conversations</string>

@@ -110,6 +110,20 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
 
+                final EditText editTextTitle = (EditText) findViewById(R.id.edittext_title);
+                String title = editTextTitle.getText().toString();
+                if (!validateTitle(brandName)) {
+                    return;
+                }
+
+
+                final EditText editTextDescription = (EditText) findViewById(R.id.edittext_description);
+                String description = editTextDescription.getText().toString();
+                if (!validateDescription(brandName)) {
+                    return;
+                }
+
+
                 String url = editTextMessengerUrl.getText().toString();
                 if (!validateUrl(url)) {
                     return;
@@ -130,6 +144,8 @@ public class MainActivity extends AppCompatActivity {
                         .getMessenger()
                         .setUrl(url)
                         .setBrandName(brandName)
+                        .setTitle(title)
+                        .setDescription(description)
                         .setPrimaryColor(primaryColor)
                         .setBackground(BackgroundFactory.getBackground(
                                 Arrays.asList(BackgroundFactory.BackgroundOption.values()).get(spinnerMessengerBackground.getSelectedItemPosition())
@@ -178,6 +194,26 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
     }
+
+    private boolean validateTitle(String title) {
+        if (TextUtils.isEmpty(title)) {
+            Toast.makeText(MainActivity.this, "Title can not be blank", Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
+    private boolean validateDescription(String description) {
+        if (TextUtils.isEmpty(description)) {
+            Toast.makeText(MainActivity.this, "Description can not be blank", Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 
     private boolean validateColor(String hexColor) {
         try {

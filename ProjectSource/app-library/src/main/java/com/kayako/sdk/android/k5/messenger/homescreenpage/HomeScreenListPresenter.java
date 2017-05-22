@@ -4,6 +4,7 @@ import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.utils.FailsafePollingHelper;
 import com.kayako.sdk.android.k5.core.KayakoLogHelper;
+import com.kayako.sdk.android.k5.core.MessengerPref;
 import com.kayako.sdk.android.k5.messenger.data.MessengerRepoFactory;
 import com.kayako.sdk.android.k5.messenger.data.conversation.unreadcounter.UnreadCounterRepository;
 import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.ClientTypingActivity;
@@ -125,8 +126,8 @@ public class HomeScreenListPresenter implements HomeScreenListContract.Presenter
         }
 
         baseListItems.add(0, new HeaderListItem(
-                mView.getResourceString(R.string.ko__messenger_home_screen_header_title),
-                mView.getResourceString(R.string.ko__messenger_home_screen_header_subtitle)));
+                MessengerPref.getInstance().getTitle(),
+                MessengerPref.getInstance().getDescription()));
 
         baseListItems.add(new FooterListItem());
 

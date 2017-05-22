@@ -73,6 +73,27 @@
             <include layout="@layout/separator" />
 
             <EditText
+                android:id="@+id/edittext_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:padding="8dp"
+                android:text="Howdy" />
+
+            <include layout="@layout/separator" />
+
+
+            <EditText
+                android:id="@+id/edittext_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:padding="8dp"
+                android:text="You can always reach us here to get the help!" />
+
+            <include layout="@layout/separator" />
+
+            <EditText
                 android:id="@+id/edittext_messenger_url"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
