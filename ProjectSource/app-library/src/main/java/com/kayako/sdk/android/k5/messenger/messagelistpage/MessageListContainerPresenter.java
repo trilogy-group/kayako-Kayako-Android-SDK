@@ -1,5 +1,6 @@
 package com.kayako.sdk.android.k5.messenger.messagelistpage;
 
+import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.Attachment;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentUrlType;
@@ -743,6 +744,8 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             if (!mView.hasPageLoaded()) { // Ensure callbacks after activity/fragment closed doesn't cause crashes
                 return;
             }
+
+            mView.showToastMessage(R.string.ko__messenger_msg_failed_to_send_reply);
 
             // Indicate the request failed
             mAddReplyHelper.onFailedSendingOfMessage(clientId);

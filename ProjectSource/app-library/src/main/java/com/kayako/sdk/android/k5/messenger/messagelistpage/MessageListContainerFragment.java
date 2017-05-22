@@ -157,8 +157,12 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
     }
 
     @Override
+    public void showToastMessage(int stringResId) {
+        Toast.makeText(getContext(), stringResId, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void showToastMessage(String errorMessage) {
-        // TODO: See if this method is really required
         Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
     }
 
