@@ -76,7 +76,8 @@
 
     <style name="Ko__ChatBubbleDateStyle">
         <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@color/ko__messenger_delivery_indicator_time_text_color</item>
+        <item name="android:textColor">@color/ko__messenger_delivery_indicator_time_text_color
+        </item>
         <item name="android:layout_margin">@dimen/ko__messenger_list_item_time_margin</item>
     </style>
 
@@ -100,8 +101,7 @@
     </style>
 
     <style name="Ko__AttachmentContainerChatBubbleStyle">
-        <item name="android:maxHeight">@dimen/ko__messenger_attachment_max_height</item>
-        <item name="android:minWidth">@dimen/ko__messenger_attachment_min_width</item>
+        <!-- do not add image heights here - morphs image badly -->
         <item name="android:layout_marginTop">@dimen/ko__messenger_attachment_margin_vertical</item>
     </style>
 

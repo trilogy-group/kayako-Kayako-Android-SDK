@@ -92,7 +92,7 @@ public class MessengerListFragment extends BaseListFragment {
         mMessengerAdapter.setOnAvatarClickListener(listener);
     }
 
-    public void setOnAttachmentClickListener(MessengerAdapter.OnAttachmentClickListener listener) {
+    public void setOnListAttachmentClickListener(MessengerAdapter.OnAttachmentClickListener listener) {
         mMessengerAdapter.setOnAttachmentClickListener(listener);
     }
 
@@ -368,7 +368,7 @@ public class MessengerListFragment extends BaseListFragment {
 
         });
 
-        setOnAttachmentClickListener(new MessengerAdapter.OnAttachmentClickListener() {
+        setOnListAttachmentClickListener(new MessengerAdapter.OnAttachmentClickListener() {
             @Override
             public void onClickAttachment(int messageType, Long id, Map<String, Object> messageData) {
                 ViewUtils.showToastMessage(getContext(), "Attachment " + messageType, Toast.LENGTH_SHORT);

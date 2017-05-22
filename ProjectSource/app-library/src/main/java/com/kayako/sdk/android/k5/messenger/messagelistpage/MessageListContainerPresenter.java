@@ -1,6 +1,8 @@
 package com.kayako.sdk.android.k5.messenger.messagelistpage;
 
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.Attachment;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentUrlType;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.TypingViewHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.UnsentMessage;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.EmptyListItem;
@@ -115,6 +117,20 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                 && mOptimisticMessageHelper.isFailedToSendMessage(messageData)) {
             mOptimisticMessageHelper.markAllAsSending(mOptimisticSendingViewCallback);
             mAddReplyHelper.resendReplies(mOnAddReplyCallback);
+        }
+    }
+
+    @Override
+    public void onListAttachmentClick(Attachment attachment) {
+        if (attachment.getType() == Attachment.TYPE.URL) {
+            String imageUrl = ((AttachmentUrlType) attachment).getOriginalImageUrl();
+            if (imageUrl != null) {
+                mView.showAttachmentPreview(imageUrl);
+            } else {
+                // TODO: Start download
+            }
+        } else {
+            // TODO:
         }
     }
 

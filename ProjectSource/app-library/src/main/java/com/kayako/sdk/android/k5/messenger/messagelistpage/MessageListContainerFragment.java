@@ -12,9 +12,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.kayako.sdk.android.k5.R;
+import com.kayako.sdk.android.k5.activities.KayakoAttachmentPreviewActivity;
 import com.kayako.sdk.android.k5.activities.KayakoSelectConversationActivity;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.loadmorelist.EndlessRecyclerViewScrollAdapter;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.Attachment;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerAdapter;
 import com.kayako.sdk.android.k5.common.fragments.ListPageState;
 import com.kayako.sdk.android.k5.common.fragments.OnListPageStateChangeListener;
@@ -37,7 +39,10 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
     private ReplyBoxContract.ConfigureView mReplyBoxView;
     private MessengerToolbarContract.ConfigureView mToolbarView;
 
-    private static final int REQUEST_CODE_ATTACHMENT = 100;
+    private static final int REQUEST_CODE_ADD_ATTACHMENT = 100;
+    private static final int REQUEST_CODE_VIEW_ATTACHMENT = 200;
+
+    private View mLastAttachmentListItemViewClicked;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,27 +94,6 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
             }
         });
 
-        mMessageListView.setOnListScrollListener(new OnScrollListListener() {
-            @Override
-            public void onScrollList(boolean isScrolling, ScrollDirection direction) {
-                mPresenter.onScrollList(isScrolling, direction);
-            }
-        });
-
-        mMessageListView.setOnListItemClickListener(new MessengerAdapter.OnItemClickListener() {
-            @Override
-            public void onClickItem(int messageType, Long id, Map<String, Object> messageData) {
-                mPresenter.onListItemClick(messageType, id, messageData);
-            }
-        });
-
-        mMessageListView.setOnLoadMoreListener(new EndlessRecyclerViewScrollAdapter.OnLoadMoreListener() {
-            @Override
-            public void loadMoreItems() {
-                mPresenter.onLoadMoreItems();
-            }
-        });
-
         mReplyBoxView.setReplyBoxListener(new ReplyBoxContract.ReplyBoxListener() {
             @Override
             public void onClickSend(String message) {
@@ -126,8 +110,6 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
                 mPresenter.onTypeReply(typedMessage);
             }
         });
-
-
     }
 
     @Override
@@ -135,7 +117,7 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
         super.onActivityResult(requestCode, resultCode, data);
 
         try {
-            if (requestCode == REQUEST_CODE_ATTACHMENT) {
+            if (requestCode == REQUEST_CODE_ADD_ATTACHMENT) {
                 File file = FileAttachmentUtil.getFileOnActivityResult(resultCode, data);
                 if (file != null) {
                     mPresenter.onAttachmentAttached(FileAttachmentUtil.generateFileAttachment("attachment", file));
@@ -172,8 +154,39 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
             return;
         }
 
-        synchronized (this) { // TODO: Ensure the message listing is updated at a time, shift this logic to library for all view rendering logic!
+        synchronized (this) { // Ensure the message listing is updated at a time // TODO: shift this logic to library for all view rendering logic!
+
             mMessageListView.setupList(baseListItems);
+
+            mMessageListView.setOnListScrollListener(new OnScrollListListener() {
+                @Override
+                public void onScrollList(boolean isScrolling, ScrollDirection direction) {
+                    mPresenter.onScrollList(isScrolling, direction);
+                }
+            });
+
+            mMessageListView.setOnListItemClickListener(new MessengerAdapter.OnItemClickListener() {
+                @Override
+                public void onClickItem(int messageType, Long id, Map<String, Object> messageData) {
+                    mPresenter.onListItemClick(messageType, id, messageData);
+                }
+            });
+
+            mMessageListView.setOnListAttachmentClickListener(new MessengerAdapter.OnAttachmentClickListener() {
+                @Override
+                public void onClickAttachment(int messageType, Long id, Attachment attachment, View attachmentView, Map<String, Object> messageData) {
+                    mLastAttachmentListItemViewClicked = attachmentView;
+                    mPresenter.onListAttachmentClick(attachment);
+                }
+
+            });
+
+            mMessageListView.setListOnLoadMoreListener(new EndlessRecyclerViewScrollAdapter.OnLoadMoreListener() {
+                @Override
+                public void loadMoreItems() {
+                    mPresenter.onLoadMoreItems();
+                }
+            });
         }
     }
 
@@ -292,7 +305,7 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
             return;
         }
 
-        FileAttachmentUtil.openImageChooserActivityFromFragment(this, REQUEST_CODE_ATTACHMENT); // TODO: Temporarily limiting to image attachments - revert to files when UI is complete
+        FileAttachmentUtil.openImageChooserActivityFromFragment(this, REQUEST_CODE_ADD_ATTACHMENT); // TODO: Temporarily limiting to image attachments - revert to files when UI is complete
     }
 
     @Override
@@ -339,5 +352,15 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
         }
 
         KeyboardUtils.hideKeyboard((AppCompatActivity) getActivity());
+    }
+
+    @Override
+    public void showAttachmentPreview(String imageUrl) {
+        if (!hasPageLoaded()) {
+            return;
+        }
+
+        // TODO: Show original image url - not thumbnail
+        KayakoAttachmentPreviewActivity.startActivityForResult(getActivity(), this, mLastAttachmentListItemViewClicked, imageUrl, REQUEST_CODE_VIEW_ATTACHMENT);
     }
 }

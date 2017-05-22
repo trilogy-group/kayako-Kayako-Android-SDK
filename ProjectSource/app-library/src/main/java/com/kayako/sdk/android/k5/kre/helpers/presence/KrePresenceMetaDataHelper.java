@@ -203,6 +203,7 @@ class KrePresenceMetaDataHelper {
             rawUserPresenceListener.onExistingUserPerformingSomeActivity(newUser.getUserData().getId(), newUser.getActivityData().getLastActiveAt());
         }
     }
+
     private static void triggerOnlineStatusForUserOnCase(PresenceUser newUser, RawUserOnCasePresenceListener rawUserOnlinePresenceListener) {
         if (rawUserOnlinePresenceListener != null) {
             if (isUserOnlineOnCase(newUser)) {
@@ -262,7 +263,8 @@ class KrePresenceMetaDataHelper {
     private static boolean isUserOnlineOnCase(PresenceUser user) {
         return user != null
                 && user.getActivityData() != null
-                && user.getActivityData().isForeground(); // look at only isForeground() - tab is opened and actively being viewed. Not looking at isViewing because of inconsistencies
+                && user.getActivityData().isForeground() != null // look at only isForeground() - tab is opened and actively being viewed. Not looking at isViewing because of inconsistencies
+                && user.getActivityData().isForeground().booleanValue();
     }
 
     /**

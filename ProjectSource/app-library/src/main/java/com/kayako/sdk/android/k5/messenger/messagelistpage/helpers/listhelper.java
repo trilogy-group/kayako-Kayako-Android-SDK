@@ -92,7 +92,8 @@ public class ListHelper {
         List<Attachment> attachments = new ArrayList<>();
         for (com.kayako.sdk.messenger.attachment.Attachment attachment : attachmentFiles) {
             attachments.add(new AttachmentUrlType(
-                    appendFingerprintIdToUrl(getThumnailUrl(attachment)),
+                    appendFingerprintIdToUrl(attachment.getUrl()), // using original image as thumnail size because unable to scale it correctly
+                    appendFingerprintIdToUrl(attachment.getUrl()),
                     attachment.getName(),
                     attachment.getSize() == null ? 0 : attachment.getSize(),
                     attachment.getType(),
@@ -118,7 +119,7 @@ public class ListHelper {
         return message.getContentText();
     }
 
-    private String getThumnailUrl(com.kayako.sdk.messenger.attachment.Attachment attachment) {
+    private String getThumbnailUrl(com.kayako.sdk.messenger.attachment.Attachment attachment) {
         List<Thumbnail> thumbnails = attachment.getThumbnails();
         if (thumbnails == null || thumbnails.size() == 0) {
             return null;

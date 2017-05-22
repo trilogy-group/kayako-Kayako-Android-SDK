@@ -205,7 +205,7 @@ public class MessageListFragment extends MessengerListFragment implements Messag
     }
 
     @Override
-    public void setOnLoadMoreListener(EndlessRecyclerViewScrollAdapter.OnLoadMoreListener listener) {
+    public void setListOnLoadMoreListener(EndlessRecyclerViewScrollAdapter.OnLoadMoreListener listener) {
         mLoadMoreListener = listener;
     }
 

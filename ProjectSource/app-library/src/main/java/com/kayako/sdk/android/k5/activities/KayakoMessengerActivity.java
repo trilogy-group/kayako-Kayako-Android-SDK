@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
-import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.activities.BaseMessengerActivity;
 import com.kayako.sdk.android.k5.messenger.homescreenpage.HomeScreenContainerFragment;
 

@@ -15,11 +15,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="@dimen/ko__messenger_gap_between_message_and_end"
+        android:layout_marginLeft="@dimen/ko__messenger_gap_between_attachment_and_other_end"
         android:layout_marginRight="@dimen/ko__messenger_gap_between_message_and_end_self">
 
         <include
-            layout="@layout/ko__include_attachment_image"
+            layout="@layout/ko__include_attachment_image_list_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical" />
@@ -29,6 +29,7 @@
             android:layout_width="24dp"
             android:layout_height="30dp"
             android:layout_gravity="right|center_vertical"
+            android:maxHeight="@dimen/ko__messenger_attachment_max_height"
             android:src="@drawable/ko__img_attachment_placeholder_dark" />
 
     </FrameLayout>

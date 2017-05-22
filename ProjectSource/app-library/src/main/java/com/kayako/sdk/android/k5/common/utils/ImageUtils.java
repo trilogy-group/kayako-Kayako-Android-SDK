@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.widget.ImageView;
 
+import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.kayako.sdk.android.k5.R;
@@ -124,21 +125,29 @@ public class ImageUtils {
      * @param imageView
      * @param file
      */
-    public static void loadFileAsAttachmentImage(@NonNull Context context, @NonNull ImageView imageView, @NonNull File file) {
-        Glide.with(context)
-                .load(file)
-                .crossFade()
-                .placeholder(R.drawable.ko__loading_attachment)
+    public static void loadFileAsAttachmentImage(@NonNull Context context, @NonNull ImageView imageView, @NonNull File file, boolean showPlaceholder) {
+
+        DrawableTypeRequest<File> request = Glide.with(context).load(file);
+
+        if (showPlaceholder) {
+            request.placeholder(R.drawable.ko__loading_attachment);
+        }
+
+        request.crossFade()
                 .skipMemoryCache(false)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE) // using source because RESULT messes up when image resizes to fit into imageview with wrap_content
                 .into(imageView);
     }
 
-    public static void loadUrlAsAttachmentImage(@NonNull Context context, @NonNull ImageView imageView, @NonNull String imageUrl) {
-        Glide.with(context)
-                .load(imageUrl)
-                .crossFade()
-                .placeholder(R.drawable.ko__loading_attachment)
+    public static void loadUrlAsAttachmentImage(@NonNull Context context, @NonNull ImageView imageView, @NonNull String imageUrl, boolean showPlaceholder) {
+
+        DrawableTypeRequest<String> request = Glide.with(context).load(imageUrl);
+
+        if (showPlaceholder) {
+            request.placeholder(R.drawable.ko__loading_attachment);
+        }
+
+        request
                 .skipMemoryCache(false)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE) // using source because RESULT messes up when image resizes to fit into imageview with wrap_content
                 .into(imageView);

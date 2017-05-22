@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.Attachment;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentFileType;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentUrlType;
@@ -26,7 +27,7 @@ public class AttachmentHelper {
                 } else {
                     attachmentPlaceholder.setVisibility(View.GONE);
                     thumbnailImageView.setVisibility(View.VISIBLE);
-                    ImageUtils.loadUrlAsAttachmentImage(Kayako.getApplicationContext(), thumbnailImageView, attachmentUrl);
+                    ImageUtils.loadUrlAsAttachmentImage(Kayako.getApplicationContext(), thumbnailImageView, attachmentUrl,true);
                 }
 
                 String attachmentCaption = ((AttachmentUrlType) attachment).getCaption();
@@ -41,7 +42,7 @@ public class AttachmentHelper {
                 } else {
                     attachmentPlaceholder.setVisibility(View.GONE);
                     thumbnailImageView.setVisibility(View.VISIBLE);
-                    ImageUtils.loadFileAsAttachmentImage(Kayako.getApplicationContext(), thumbnailImageView, attachmentFile);
+                    ImageUtils.loadFileAsAttachmentImage(Kayako.getApplicationContext(), thumbnailImageView, attachmentFile,true);
                 }
 
                 String attachmentFileCaption = ((AttachmentFileType) attachment).getCaption();

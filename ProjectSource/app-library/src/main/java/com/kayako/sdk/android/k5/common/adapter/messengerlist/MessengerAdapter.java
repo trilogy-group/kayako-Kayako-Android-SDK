@@ -155,8 +155,8 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
 
                 AttachmentHelper.setUpAttachmentImages(attachmentMessageSelfListItem.getAttachment(), attachmentMessageSelfViewHolder.attachmentPlaceholder, attachmentMessageSelfViewHolder.attachmentThumbnail, attachmentMessageSelfViewHolder.message);
 
-                setAttachmentClickListenerOnView(attachmentMessageSelfViewHolder.attachmentThumbnail, attachmentMessageSelfListItem.getItemType(), attachmentMessageSelfListItem.getId(), attachmentMessageSelfListItem.getData());
-                setAttachmentClickListenerOnView(attachmentMessageSelfViewHolder.attachmentPlaceholder, attachmentMessageSelfListItem.getItemType(), attachmentMessageSelfListItem.getId(), attachmentMessageSelfListItem.getData());
+                setAttachmentClickListenerOnView(attachmentMessageSelfViewHolder.attachmentThumbnail, attachmentMessageSelfListItem.getItemType(), attachmentMessageSelfListItem.getId(), attachmentMessageSelfListItem.getAttachment(), attachmentMessageSelfViewHolder.attachmentThumbnail, attachmentMessageSelfListItem.getData());
+                setAttachmentClickListenerOnView(attachmentMessageSelfViewHolder.attachmentPlaceholder, attachmentMessageSelfListItem.getItemType(), attachmentMessageSelfListItem.getId(), attachmentMessageSelfListItem.getAttachment(), null, attachmentMessageSelfListItem.getData());
 
                 // Covers time and delivery status
                 DeliveryIndicatorHelper.setDeliveryIndicatorView(attachmentMessageSelfListItem.getDeliveryIndicator(), attachmentMessageSelfListItem.getTime(), attachmentMessageSelfViewHolder);
@@ -187,8 +187,8 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 AttachmentHelper.setUpAttachmentImages(attachmentMessageOtherListItem.getAttachment(), attachmentMessageOtherViewHolder.attachmentPlaceholder, attachmentMessageOtherViewHolder.attachmentThumbnail, attachmentMessageOtherViewHolder.message);
 
                 setAvatarClickListenerOnView(attachmentMessageOtherViewHolder.avatar, attachmentMessageOtherListItem.getItemType(), attachmentMessageOtherListItem.getId(), attachmentMessageOtherListItem.getData());
-                setAttachmentClickListenerOnView(attachmentMessageOtherViewHolder.attachmentThumbnail, attachmentMessageOtherListItem.getItemType(), attachmentMessageOtherListItem.getId(), attachmentMessageOtherListItem.getData());
-                setAttachmentClickListenerOnView(attachmentMessageOtherViewHolder.attachmentPlaceholder, attachmentMessageOtherListItem.getItemType(), attachmentMessageOtherListItem.getId(), attachmentMessageOtherListItem.getData());
+                setAttachmentClickListenerOnView(attachmentMessageOtherViewHolder.attachmentThumbnail, attachmentMessageOtherListItem.getItemType(), attachmentMessageOtherListItem.getId(), attachmentMessageOtherListItem.getAttachment(), attachmentMessageOtherViewHolder.attachmentThumbnail, attachmentMessageOtherListItem.getData());
+                setAttachmentClickListenerOnView(attachmentMessageOtherViewHolder.attachmentPlaceholder, attachmentMessageOtherListItem.getItemType(), attachmentMessageOtherListItem.getId(), attachmentMessageOtherListItem.getAttachment(), null, attachmentMessageOtherListItem.getData());
                 break;
 
             case MessengerListType.ATTACHMENT_MESSAGE_CONTINUED_SELF:
@@ -199,8 +199,8 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
 
                 AttachmentHelper.setUpAttachmentImages(attachmentMessageContinuedSelfListItem.getAttachment(), attachmentMessageContinuedSelfViewHolder.attachmentPlaceholder, attachmentMessageContinuedSelfViewHolder.attachmentThumbnail, attachmentMessageContinuedSelfViewHolder.message);
 
-                setAttachmentClickListenerOnView(attachmentMessageContinuedSelfViewHolder.attachmentThumbnail, attachmentMessageContinuedSelfListItem.getItemType(), attachmentMessageContinuedSelfListItem.getId(), attachmentMessageContinuedSelfListItem.getData());
-                setAttachmentClickListenerOnView(attachmentMessageContinuedSelfViewHolder.attachmentPlaceholder, attachmentMessageContinuedSelfListItem.getItemType(), attachmentMessageContinuedSelfListItem.getId(), attachmentMessageContinuedSelfListItem.getData());
+                setAttachmentClickListenerOnView(attachmentMessageContinuedSelfViewHolder.attachmentThumbnail, attachmentMessageContinuedSelfListItem.getItemType(), attachmentMessageContinuedSelfListItem.getId(), attachmentMessageContinuedSelfListItem.getAttachment(), attachmentMessageContinuedSelfViewHolder.attachmentThumbnail, attachmentMessageContinuedSelfListItem.getData());
+                setAttachmentClickListenerOnView(attachmentMessageContinuedSelfViewHolder.attachmentPlaceholder, attachmentMessageContinuedSelfListItem.getItemType(), attachmentMessageContinuedSelfListItem.getId(), attachmentMessageContinuedSelfListItem.getAttachment(), null, attachmentMessageContinuedSelfListItem.getData());
 
                 // Covers time and delivery status
                 DeliveryIndicatorHelper.setDeliveryIndicatorView(attachmentMessageContinuedSelfListItem.getDeliveryIndicator(), attachmentMessageContinuedSelfListItem.getTime(), attachmentMessageContinuedSelfViewHolder);
@@ -221,8 +221,8 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
 
                 AttachmentHelper.setUpAttachmentImages(attachmentMessageContinuedOtherListItem.getAttachment(), attachmentMessageContinuedOtherViewHolder.attachmentPlaceholder, attachmentMessageContinuedOtherViewHolder.attachmentThumbnail, attachmentMessageContinuedOtherViewHolder.message);
 
-                setAttachmentClickListenerOnView(attachmentMessageContinuedOtherViewHolder.attachmentThumbnail, attachmentMessageContinuedOtherListItem.getItemType(), attachmentMessageContinuedOtherListItem.getId(), attachmentMessageContinuedOtherListItem.getData());
-                setAttachmentClickListenerOnView(attachmentMessageContinuedOtherViewHolder.attachmentPlaceholder, attachmentMessageContinuedOtherListItem.getItemType(), attachmentMessageContinuedOtherListItem.getId(), attachmentMessageContinuedOtherListItem.getData());
+                setAttachmentClickListenerOnView(attachmentMessageContinuedOtherViewHolder.attachmentThumbnail, attachmentMessageContinuedOtherListItem.getItemType(), attachmentMessageContinuedOtherListItem.getId(), attachmentMessageContinuedOtherListItem.getAttachment(), attachmentMessageContinuedOtherViewHolder.attachmentThumbnail, attachmentMessageContinuedOtherListItem.getData());
+                setAttachmentClickListenerOnView(attachmentMessageContinuedOtherViewHolder.attachmentPlaceholder, attachmentMessageContinuedOtherListItem.getItemType(), attachmentMessageContinuedOtherListItem.getId(), attachmentMessageContinuedOtherListItem.getAttachment(), null, attachmentMessageContinuedOtherListItem.getData());
                 break;
 
             case MessengerListType.DATE_SEPARATOR:
@@ -408,12 +408,12 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
         }
     }
 
-    protected void setAttachmentClickListenerOnView(View view, final int itemType, final Long id, final Map<String, Object> data) {
+    protected void setAttachmentClickListenerOnView(View view, final int itemType, final Long id, final Attachment attachment, final View attachmentView, final Map<String, Object> data) {
         if (mAttachmentClickListener != null) {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mAttachmentClickListener.onClickAttachment(itemType, id, data);
+                    mAttachmentClickListener.onClickAttachment(itemType, id, attachment, attachmentView, data);
                 }
             });
         }
@@ -446,6 +446,6 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
          * @param messageType
          * @param messageData
          */
-        void onClickAttachment(int messageType, Long id, Map<String, Object> messageData);
+        void onClickAttachment(int messageType, Long id, Attachment attachment, View attachmentView, Map<String, Object> messageData);
     }
 }

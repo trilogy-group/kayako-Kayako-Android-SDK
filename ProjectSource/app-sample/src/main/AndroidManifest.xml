@@ -40,6 +40,7 @@
         <activity
             android:name="com.kayako.sdk.android.k5.activities.KayakoConversationListActivity"
             android:theme="@style/Ko__MessengerTheme" /> <!-- Replace with local style-->
+
         <activity
             android:name="com.kayako.sdk.android.k5.activities.KayakoSelectConversationActivity"
             android:theme="@style/Ko__MessengerTheme" />
@@ -48,6 +49,9 @@
             android:name="com.kayako.sdk.android.k5.activities.KayakoMessengerActivity"
             android:theme="@style/Ko__MessengerTheme" />
 
+        <activity
+            android:name="com.kayako.sdk.android.k5.activities.KayakoAttachmentPreviewActivity"
+            android:theme="@style/Ko__MessengerTheme" />
 
     </application>
 

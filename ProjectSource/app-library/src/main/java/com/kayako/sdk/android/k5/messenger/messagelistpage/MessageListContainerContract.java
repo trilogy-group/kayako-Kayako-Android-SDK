@@ -3,6 +3,7 @@ package com.kayako.sdk.android.k5.messenger.messagelistpage;
 import android.support.annotation.Nullable;
 
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.Attachment;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedback;
 import com.kayako.sdk.android.k5.common.fragments.ListPageState;
 import com.kayako.sdk.android.k5.common.fragments.OnScrollListListener;
@@ -86,7 +87,9 @@ public class MessageListContainerContract {
 
         boolean isNearBottomOfList();
 
-        void setKeyboardVisibility(boolean b);
+        void setKeyboardVisibility(boolean showKeyboard);
+
+        void showAttachmentPreview(String thumnailUrl);
     }
 
     public interface Presenter extends BasePresenter<MessageListContainerContract.View> {
@@ -112,6 +115,8 @@ public class MessageListContainerContract {
         void onScrollList(boolean isScrolling, OnScrollListListener.ScrollDirection direction);
 
         void onListItemClick(int messageType, Long id, Map<String, Object> messageData);
+
+        void onListAttachmentClick(Attachment attachment);
 
         void onLoadMoreItems();
     }

@@ -34,7 +34,9 @@ public class MessageListContract {
 
         void setOnListItemClickListener(MessengerAdapter.OnItemClickListener listener);
 
-        void setOnLoadMoreListener(EndlessRecyclerViewScrollAdapter.OnLoadMoreListener listener);
+        void setOnListAttachmentClickListener(MessengerAdapter.OnAttachmentClickListener listener);
+
+        void setListOnLoadMoreListener(EndlessRecyclerViewScrollAdapter.OnLoadMoreListener listener);
 
         void setHasMoreItemsToLoad(boolean hasMoreItems);
 

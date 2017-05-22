@@ -171,4 +171,5 @@
     <color name="ko__messenger_bot_attachment_background_color">#EDEEEF</color>
     <color name="ko__messenger_conversation_separator_line_color">#ebeef0</color>
 
+    <color name="ko__messenger_attachment_preview_background_color">#000000</color>
 </resources>

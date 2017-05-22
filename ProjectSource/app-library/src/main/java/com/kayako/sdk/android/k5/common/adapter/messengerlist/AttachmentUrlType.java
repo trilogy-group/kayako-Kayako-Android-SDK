@@ -3,6 +3,7 @@ package com.kayako.sdk.android.k5.common.adapter.messengerlist;
 public class AttachmentUrlType extends Attachment {
 
     private String thumbnailUrl;
+    private String originalImageUrl;
 
     private Long id;
     private String caption;
@@ -38,9 +39,10 @@ public class AttachmentUrlType extends Attachment {
      * @param thumbnailType
      * @param downloadUrl
      */
-    public AttachmentUrlType(String thumbnailUrl, String fileName, long fileSize, String thumbnailType, String downloadUrl) {
+    public AttachmentUrlType(String thumbnailUrl, String originalImageUrl, String fileName, long fileSize, String thumbnailType, String downloadUrl) {
         super(TYPE.URL);
         this.thumbnailUrl = thumbnailUrl;
+        this.originalImageUrl = originalImageUrl;
         this.fileName = fileName;
         this.fileSize = fileSize;
         this.thumbnailType = thumbnailType;
@@ -101,5 +103,9 @@ public class AttachmentUrlType extends Attachment {
 
     public void setCaption(String caption) {
         this.caption = caption;
+    }
+
+    public String getOriginalImageUrl() {
+        return originalImageUrl;
     }
 }
