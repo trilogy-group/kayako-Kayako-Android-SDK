@@ -172,4 +172,9 @@
     <color name="ko__messenger_conversation_separator_line_color">#ebeef0</color>
 
     <color name="ko__messenger_attachment_preview_background_color">#000000</color>
+    <color name="ko__messenger_attachment_placeholder_outline_color">#E2E5E5</color>
+    <color name="ko__messenger_attachment_placeholder_background_color">#EDEFEF</color>
+    <color name="ko__messenger_attachment_placeholder_text_background_color">#FFFFFF</color>
+    <color name="ko__messenger_attachment_placeholder_text_color">#2D3138</color>
+
 </resources>

@@ -7,7 +7,6 @@
 
     <solid android:color="@color/ko__messenger_input_field_background_color" />
 
-
     <corners
         android:bottomLeftRadius="0dp"
         android:bottomRightRadius="0dp"

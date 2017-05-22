@@ -33,6 +33,7 @@
     <dimen name="ko__messenger_attachment_margin_vertical">8dp</dimen>
     <dimen name="ko__messenger_attachment_min_height">20dp</dimen>
     <dimen name="ko__messenger_attachment_max_height">100dp</dimen>
+    <dimen name="ko__messenger_attachment_default_width">180dp</dimen>
     <dimen name="ko__messenger_gap_between_attachment_and_other_end">100dp</dimen>
     <dimen name="ko__messenger_channel_size">18dp</dimen>
 
@@ -41,7 +42,6 @@
     <dimen name="ko__conversation_list_item_subject_text_size">16sp</dimen>
     <dimen name="ko__conversation_list_item_name_text_size">16sp</dimen>
     <dimen name="ko__conversation_list_item_time_text_size">12sp</dimen>
-
 
     <dimen name="ko__messenger_input_item_submit_button_padding">8dp</dimen>
     <dimen name="ko__messenger_input_container_stroke_width">1dp</dimen>
@@ -114,5 +114,10 @@
     <dimen name="ko__messenger_input_feedback_rating_next_button_text_size">16sp</dimen>
     <dimen name="ko__email_input_field_submit_button_text_size">16sp</dimen>
     <dimen name="ko__messenger_home_screen_widget_container_default_padding">8dp</dimen>
+
+    <dimen name="ko__messenger_attachment_placeholder_corner">4dp</dimen>
+    <dimen name="ko__attachment_placeholder_icon_margin">8dp</dimen>
+    <dimen name="ko__messenger_attachment_placeholder_outline_size">1dp</dimen>
+    <dimen name="ko__attachment_placeholder_text_padding">8dp</dimen>
 
 </resources>

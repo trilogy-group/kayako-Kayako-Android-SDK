@@ -14,13 +14,13 @@ public class AttachmentMessageOtherViewHolder extends RecyclerView.ViewHolder {
     public TextView time;
     public CircleImageView avatar;
     public CircleImageView channel;
-    public ImageView attachmentPlaceholder;
+    public View attachmentPlaceholder;
     public ImageView attachmentThumbnail;
 
     public AttachmentMessageOtherViewHolder(View itemView) {
         super(itemView);
         message = (TextView) itemView.findViewById(R.id.ko__message);
-        attachmentPlaceholder = (ImageView) itemView.findViewById(R.id.ko__attachment_placeholder);
+        attachmentPlaceholder =  itemView.findViewById(R.id.ko__attachment_placeholder);
         attachmentThumbnail = (ImageView) itemView.findViewById(R.id.ko__attachment_image);
         avatar = (CircleImageView) itemView.findViewById(R.id.ko__avatar);
         channel = (CircleImageView) itemView.findViewById(R.id.ko__channel);

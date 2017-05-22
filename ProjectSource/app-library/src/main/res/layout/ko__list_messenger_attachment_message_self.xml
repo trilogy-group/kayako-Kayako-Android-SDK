@@ -24,13 +24,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical" />
 
-        <ImageView
-            android:id="@+id/ko__attachment_placeholder"
-            android:layout_width="24dp"
-            android:layout_height="30dp"
-            android:layout_gravity="right|center_vertical"
-            android:maxHeight="@dimen/ko__messenger_attachment_max_height"
-            android:src="@drawable/ko__img_attachment_placeholder_dark" />
+        <include
+            layout="@layout/ko__include_attachment_placeholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical" />
 
     </FrameLayout>
 

@@ -11,13 +11,13 @@ public class AttachmentMessageSelfViewHolder extends BaseDeliveryIndicatorViewHo
 
     public TextView message;
     public TextView time;
-    public ImageView attachmentPlaceholder;
+    public View attachmentPlaceholder;
     public ImageView attachmentThumbnail;
 
     public AttachmentMessageSelfViewHolder(View itemView) {
         super(itemView);
         message = (TextView) itemView.findViewById(R.id.ko__message);
-        attachmentPlaceholder = (ImageView) itemView.findViewById(R.id.ko__attachment_placeholder);
+        attachmentPlaceholder = itemView.findViewById(R.id.ko__attachment_placeholder);
         attachmentThumbnail = (ImageView) itemView.findViewById(R.id.ko__attachment_image);
         time = (TextView) itemView.findViewById(R.id.ko__time);
     }
