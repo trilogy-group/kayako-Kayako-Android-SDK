@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
                         .getMessenger()
                         .setUrl(url)
                         .setBrandName(brandName)
-                        .setTitle(title)
+                        .setTitle(title + " \uD83D\uDC4B")
                         .setDescription(description)
                         .setPrimaryColor(primaryColor)
                         .setBackground(BackgroundFactory.getBackground(
