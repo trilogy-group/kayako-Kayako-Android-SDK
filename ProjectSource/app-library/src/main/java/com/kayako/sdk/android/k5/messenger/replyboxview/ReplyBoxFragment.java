@@ -1,5 +1,7 @@
 package com.kayako.sdk.android.k5.messenger.replyboxview;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -72,6 +74,14 @@ public class ReplyBoxFragment extends Fragment implements ReplyBoxContract.View,
 
         TextView creditsByMessage = (TextView) mRoot.findViewById(R.id.ko__reply_box_credits_by);
         creditsByMessage.setText(KayakoCreditsHelper.getPoweredByMessage());
+
+        TextView creditsKayako = (TextView) mRoot.findViewById(R.id.ko__reply_box_credits_kayako);
+        creditsKayako.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openLink(KayakoCreditsHelper.getLink());
+            }
+        });
     }
 
     @Override
@@ -182,6 +192,10 @@ public class ReplyBoxFragment extends Fragment implements ReplyBoxContract.View,
                 }
             }
         });
+    }
 
+    private void openLink(String url) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(browserIntent);
     }
 }

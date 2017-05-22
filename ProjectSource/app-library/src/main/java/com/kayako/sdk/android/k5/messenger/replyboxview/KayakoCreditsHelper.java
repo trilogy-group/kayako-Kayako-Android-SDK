@@ -2,6 +2,7 @@ package com.kayako.sdk.android.k5.messenger.replyboxview;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.core.Kayako;
+import com.kayako.sdk.android.k5.core.MessengerPref;
 
 import java.util.Random;
 
@@ -20,5 +21,14 @@ public class KayakoCreditsHelper {
             default:
                 throw new IllegalStateException("Unhandled case");
         }
+    }
+
+    public static String getLink() {
+        String utm_source = MessengerPref.getInstance().getUrl();
+        String utm_medium = "messenger-android";
+        String utm_content = getPoweredByMessage();
+        String utm_campaign = "product_links";
+
+        return String.format("https://www.kayako.com/?utm_source=%s&utm_medium=%s&utm_content=%s&utm_campaign=%s", utm_source, utm_medium, utm_content, utm_campaign);
     }
 }
