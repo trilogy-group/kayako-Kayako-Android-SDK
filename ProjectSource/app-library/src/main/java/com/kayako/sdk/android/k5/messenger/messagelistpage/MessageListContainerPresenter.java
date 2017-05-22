@@ -119,7 +119,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         if (mOptimisticMessageHelper.isOptimisticMessage(messageData)
                 && mOptimisticMessageHelper.isFailedToSendMessage(messageData)) {
             mOptimisticMessageHelper.markAllAsSending(mOptimisticSendingViewCallback);
-            mAddReplyHelper.resendReplies(mOnAddReplyCallback);
+            mAddReplyHelper.resendReplies();
         }
     }
 
@@ -170,6 +170,8 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             }
 
             mAddReplyHelper.setIsConversationCreated(mConversationHelper.isConversationCreated());
+            mAddReplyHelper.setCallback(mOnAddReplyCallback);
+
             mRealtimeHelper.addRealtimeListeners(onConversationChangeListener, onConversationClientActivityListener, onConversationMessagesChangeListener, mAssignedAgentOnlinePresenceListener);
             reloadPage(true);
         }
@@ -274,8 +276,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         // Covers both adding of new messages and new conversation
         mAddReplyHelper.addNewReply(
                 message,
-                clientId,
-                mOnAddReplyCallback);
+                clientId);
 
         // On sending reply, scroll to bottom of list
         mView.scrollToBottomOfList();
@@ -291,8 +292,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         // Covers both adding of new messages and new conversation
         mAddReplyHelper.addNewReply(
                 fileAttachment,
-                clientId,
-                mOnAddReplyCallback);
+                clientId);
 
         // On sending reply, scroll to bottom of list
         mView.scrollToBottomOfList();
@@ -654,7 +654,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             onLoadConversation(conversation);
 
             // Ensure task removed from queue and other messages get added
-            mAddReplyHelper.onSuccessfulCreationOfConversation(clientId, mOnAddReplyCallback);
+            mAddReplyHelper.onSuccessfulCreationOfConversation(clientId);
         }
 
         @Override
@@ -668,7 +668,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             }
 
             // Indicate the request failed
-            mAddReplyHelper.onFailedSendingOfConversation(clientId);
+            mAddReplyHelper.onFailedCreationOfConversation(clientId);
 
             // Mark all optimistic views as failed
             mOptimisticMessageHelper.markAllAsFailed(mOptimisticSendingViewCallback);
@@ -731,7 +731,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                 return;
             }
 
-            mAddReplyHelper.onSuccessfulSendingOfMessage(message.getClientId(), mOnAddReplyCallback);
+            mAddReplyHelper.onSuccessfulSendingOfMessage(message.getClientId());
             mMarkReadHelper.disableOriginalLastMessageMarked(); // Should be called before any list rendering is done
 
             if (!mConversationMessagesHelper.exists(message.getId())) { // Because of realtime updates, only reload latest messages if not existing

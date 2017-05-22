@@ -200,8 +200,13 @@ public class MessageListFragment extends MessengerListFragment implements Messag
     }
 
     @Override
+    public void setOnListAttachmentClickListener(MessengerAdapter.OnAttachmentClickListener listener) {
+        super.setOnListAttachmentClickListener(listener);
+    }
+
+    @Override
     public void setOnListItemClickListener(MessengerAdapter.OnItemClickListener listener) {
-        mOnItemClickListener = listener;
+        super.setOnItemClickListener(listener);
     }
 
     @Override
