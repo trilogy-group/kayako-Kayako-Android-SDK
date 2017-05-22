@@ -3,6 +3,7 @@ package com.kayako.sdk.android.k5.messenger.messagelistpage;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.Attachment;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentUrlType;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.AttachmentHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.TypingViewHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.UnsentMessage;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.EmptyListItem;
@@ -22,6 +23,7 @@ import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.AssignedAgent
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ClientIdHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ConversationHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ConversationMessagesHelper;
+import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.FileAttachmentDownloadHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.FileAttachmentHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ListHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.MarkReadHelper;
@@ -77,6 +79,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private FileAttachmentHelper mFileAttachmentHelper = new FileAttachmentHelper();
     private OffboardingHelper mOffboardingHelper = new OffboardingHelper();
     private AssignedAgentToolbarHelper mAssignedAgentToolbarHelper = new AssignedAgentToolbarHelper();
+    private FileAttachmentDownloadHelper mFileAttachmentDownloadHelper = new FileAttachmentDownloadHelper();
 
     public MessageListContainerPresenter(MessageListContainerContract.View view, MessageListContainerContract.Data data) {
         mView = view;
@@ -123,14 +126,17 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     @Override
     public void onListAttachmentClick(Attachment attachment) {
         if (attachment.getType() == Attachment.TYPE.URL) {
-            String imageUrl = ((AttachmentUrlType) attachment).getOriginalImageUrl();
-            if (imageUrl != null) {
+            AttachmentUrlType attachmentUrlType = ((AttachmentUrlType) attachment);
+            AttachmentHelper.AttachmentFileType type = AttachmentHelper.identifyType(attachmentUrlType.getThumbnailType(), attachmentUrlType.getFileName());
+            String imageUrl = attachmentUrlType.getOriginalImageUrl();
+
+            if (type != null && type == AttachmentHelper.AttachmentFileType.IMAGE && imageUrl != null) {
                 mView.showAttachmentPreview(imageUrl);
             } else {
-                // TODO: Start download
+                mFileAttachmentDownloadHelper.onClickAttachmentToDownload(attachmentUrlType);
             }
         } else {
-            // TODO:
+            // Do nothing if it's a File. (No need to show preview of a file in Sending.... state)
         }
     }
 
@@ -235,6 +241,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         mFileAttachmentHelper = new FileAttachmentHelper();
         mOffboardingHelper = new OffboardingHelper();
         mAssignedAgentToolbarHelper = new AssignedAgentToolbarHelper();
+        mFileAttachmentDownloadHelper = new FileAttachmentDownloadHelper();
     }
 
     private void reloadPage(boolean resetView) {

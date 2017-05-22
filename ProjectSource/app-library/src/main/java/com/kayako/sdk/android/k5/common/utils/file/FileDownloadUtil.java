@@ -138,4 +138,15 @@ public class FileDownloadUtil {
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         return downloadManager.enqueue(request);
     }
+
+    public static long downloadFile(@NonNull Context context, @NonNull DownloadManager downloadManager, String fingerprintId, String urlDownload, String attachmentName, long size) {
+        DownloadManager.Request request = new DownloadManager.Request(
+                Uri.parse(urlDownload));
+        request.addRequestHeader("X-Fingerprint-ID", fingerprintId);
+        request.setTitle(attachmentName);
+        request.setDescription(Formatter.formatFileSize(context, size));
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        return downloadManager.enqueue(request);
+    }
+
 }

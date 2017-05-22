@@ -32,4 +32,5 @@ public class FileAttachmentHelper {
     public void onReset() {
         FileAttachmentUtil.clearSavedAttachments();
     }
+
 }
