@@ -61,32 +61,7 @@ public class AttachmentHelper {
         }
     }
 
-    public static AttachmentFileType identifyType(String type, String fileName) {
-        if (type != null && type.startsWith("image")) {
-            return AttachmentFileType.IMAGE;
-        } else if (type != null && type.startsWith("video")) {
-            return AttachmentFileType.VIDEO;
-        } else if (type != null && type.startsWith("audio")) {
-            return AttachmentFileType.AUDIO;
-        } else {
-            return AttachmentFileType.OTHER;
-        }
-    }
-
-    private static void setUpAttachmentCaption(String caption, TextView captionTextView) {
-        if (TextUtils.isEmpty(caption)) {
-            captionTextView.setVisibility(View.GONE);
-        } else {
-            captionTextView.setVisibility(View.VISIBLE);
-            captionTextView.setText(Html.fromHtml(caption));
-        }
-    }
-
-    private static void configureAttachmentImage(ImageView imageView, String imageUrl) {
-        ImageUtils.loadUrlAsAttachmentImage(Kayako.getApplicationContext(), imageView, imageUrl, true);
-    }
-
-    private static void configureAttachmentPlaceholder(View placeholderView, AttachmentFileType fileType, String fileName) {
+    public static void configureAttachmentPlaceholder(View placeholderView, AttachmentFileType fileType, String fileName) {
         ImageView iconView = (ImageView) placeholderView.findViewById(R.id.ko__attachment_placeholder_icon);
         TextView textView = (TextView) placeholderView.findViewById(R.id.ko__attachment_placeholder_text);
 
@@ -119,6 +94,31 @@ public class AttachmentHelper {
                     break;
             }
         }
+    }
+
+    public static AttachmentFileType identifyType(String type, String fileName) {
+        if (type != null && type.startsWith("image")) {
+            return AttachmentFileType.IMAGE;
+        } else if (type != null && type.startsWith("video")) {
+            return AttachmentFileType.VIDEO;
+        } else if (type != null && type.startsWith("audio")) {
+            return AttachmentFileType.AUDIO;
+        } else {
+            return AttachmentFileType.OTHER;
+        }
+    }
+
+    private static void setUpAttachmentCaption(String caption, TextView captionTextView) {
+        if (TextUtils.isEmpty(caption)) {
+            captionTextView.setVisibility(View.GONE);
+        } else {
+            captionTextView.setVisibility(View.VISIBLE);
+            captionTextView.setText(Html.fromHtml(caption));
+        }
+    }
+
+    private static void configureAttachmentImage(ImageView imageView, String imageUrl) {
+        ImageUtils.loadUrlAsAttachmentImage(Kayako.getApplicationContext(), imageView, imageUrl, true);
     }
 
     public enum AttachmentFileType {
