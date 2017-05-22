@@ -88,6 +88,7 @@
                 android:gravity="center">
 
                 <com.kayako.sdk.android.k5.common.view.RegularTextView
+                    android:id="@+id/ko__reply_box_credits_by"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -97,6 +98,7 @@
                     android:textSize="@dimen/ko__messenger_reply_box_footer" />
 
                 <com.kayako.sdk.android.k5.common.view.BoldTextView
+                    android:id="@+id/ko__reply_box_credits_kayako"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="2dp"

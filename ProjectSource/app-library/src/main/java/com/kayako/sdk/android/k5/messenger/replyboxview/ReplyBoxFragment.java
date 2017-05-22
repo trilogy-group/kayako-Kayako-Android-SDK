@@ -69,6 +69,9 @@ public class ReplyBoxFragment extends Fragment implements ReplyBoxContract.View,
                 mPresenter.onClickAddAttachment();
             }
         });
+
+        TextView creditsByMessage = (TextView) mRoot.findViewById(R.id.ko__reply_box_credits_by);
+        creditsByMessage.setText(KayakoCreditsHelper.getPoweredByMessage());
     }
 
     @Override
