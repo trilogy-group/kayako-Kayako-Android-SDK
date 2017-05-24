@@ -22,6 +22,7 @@ import com.kayako.sdk.android.k5.core.KayakoLogHelper;
 import com.kayako.sdk.android.k5.core.MessengerBuilder;
 import com.kayako.sdk.android.k5.messenger.style.BackgroundFactory;
 import com.kayako.sdk.android.k5.messenger.style.ForegroundFactory;
+import com.kayako.sdk.utils.LogUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -266,6 +267,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showDebugLogs() {
         // For debugging:
+        LogUtils.setShowLogs(true);
         KayakoLogHelper.addLogListener(new KayakoLogHelper.PrintLogListener() {
             @Override
             public void printDebugLogs(String tag, String message) {

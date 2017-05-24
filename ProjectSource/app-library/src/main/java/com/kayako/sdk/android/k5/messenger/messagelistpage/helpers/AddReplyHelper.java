@@ -106,7 +106,6 @@ public class AddReplyHelper {
     }
 
     public void onFailedSendingOfMessage(String clientId) {
-
         if (mAddMessageHelper.getLastSentReplyClientId() != null && mAddMessageHelper.getLastSentReplyClientId().equals(clientId)) {
             mAddMessageHelper.onFailedToSendReply(clientId);
         } else if (mAddAttachmentHelper.getLastSentReplyClientId() != null && mAddAttachmentHelper.getLastSentReplyClientId().equals(clientId)) {
