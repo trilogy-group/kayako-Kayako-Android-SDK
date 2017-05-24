@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                 android.R.layout.simple_spinner_dropdown_item,
                 getForegroundOptionsAsList()
         ));
-
+        spinnerMessengerForeground.setSelection(1); // select first option by default
 
         final EditText editTextMessengerUrl = (EditText) findViewById(R.id.edittext_messenger_url);
         if (Store.getInstance().getMessengerUrl() != null) {
