@@ -76,7 +76,6 @@ public class ImageUtils {
             Glide.with(context)
                     .load(avatarUrl)
                     .placeholder(R.drawable.ko__bot_avatar)
-                    .crossFade()
                     .centerCrop()
                     .skipMemoryCache(false) // false because avatars are repeatedly used in message listing, case listing, etc - when true, it shows placeholders
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
