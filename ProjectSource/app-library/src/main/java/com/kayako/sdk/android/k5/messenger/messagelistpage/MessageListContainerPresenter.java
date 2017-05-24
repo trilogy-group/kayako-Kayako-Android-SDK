@@ -695,6 +695,9 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             // Remove optimisitc sending items - to be done before display list
             mOptimisticMessageHelper.removeOptimisticMessagesThatIsSuccessfullySentAndDisplayed(messageList);
 
+            // Once messages have been loaded, mark the last message as delivered
+            mMarkReadHelper.markLastMessageAsDelivered();
+
             // Display list once necessary changes to list data are made above
             displayList();
 
@@ -704,9 +707,10 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             }
 
             // Once messages have been loaded AND displayed in view, mark the last message as read
-            markLastMessageAsRead(
+            mMarkReadHelper.markLastMessageAsRead(
                     messageList,
-                    mConversationHelper.getConversationId());
+                    mConversationHelper.getConversationId(),
+                    mMarkReadCallback);
         }
 
         @Override
@@ -903,6 +907,22 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         }
     };
 
+    private MarkReadHelper.MarkReadCallback mMarkReadCallback = new MarkReadHelper.MarkReadCallback() {
+        @Override
+        public void markDelivered(long conversationId, long postId) {
+            mData.markMessageAsDelivered(conversationId,
+                    postId,
+                    onMarkMessageAsReadListener);
+        }
+
+        @Override
+        public void markRead(long conversationId, long postId) {
+            mData.markMessageAsRead(conversationId,
+                    postId,
+                    onMarkMessageAsReadListener);
+        }
+    };
+
     ////// API CALLING METHODS //////
 
     private void reloadLatestMessages() {
@@ -975,29 +995,6 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                 ),
                 clientId,
                 onPostMessageListener);
-    }
-
-    private boolean markLastMessageAsRead(final List<Message> messages, final Long conversationId) {
-        // Call this method to mark the last message as read by the current customer. It involves making an API request.
-
-        // If the argument is null, skip
-        if (messages == null || messages.size() == 0 || conversationId == null) {
-            return false;
-        }
-
-        final Long messageIdToBeMarkedRead = mMarkReadHelper.extractLastMessageId(messages);
-        if (mMarkReadHelper.shouldMarkMessageAsRead(messageIdToBeMarkedRead)) {
-            mMarkReadHelper.setLastMessageBeingMarkedRead(messageIdToBeMarkedRead);
-
-            // Call API to mark message read
-            mData.markMessageAsRead(conversationId,
-                    messageIdToBeMarkedRead,
-                    onMarkMessageAsReadListener
-            );
-            return true;
-        } else {
-            return false;
-        }
     }
 
     private void getConversationRating(long conversationId) {

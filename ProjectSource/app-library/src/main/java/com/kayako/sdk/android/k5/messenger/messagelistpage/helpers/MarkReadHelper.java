@@ -73,22 +73,6 @@ public class MarkReadHelper {
         mLastMessageMarkedReadSuccessfully.set(lastMessageMarkedReadSuccessfully);
     }
 
-    public Long extractLastMessageId(List<Message> messageList) {
-        if (messageList == null || messageList.size() == 0) {
-            return null;
-        }
-
-        /*
-        There's a lot of order reversing going on in the code which may cause issues in this snippet
-        Therefore, to be absolutely certain the last element (greatest id) is selected, messages at the extremes are collected and the largest id is returned.
-        This is based on the assumption that the items are sorted (which it should be!)
-         */
-        Message firstMessage = messageList.get(0);
-        Message lastMessage = messageList.get(messageList.size() - 1);
-
-        return firstMessage.getId() > lastMessage.getId() ? firstMessage.getId() : lastMessage.getId();
-    }
-
     public boolean shouldMarkMessageAsRead(Long lastMessageToBeMarkedRead) {
         if (lastMessageToBeMarkedRead == null) {
             return false;
@@ -107,5 +91,54 @@ public class MarkReadHelper {
 
         return true;
     }
+
+    public void markLastMessageAsDelivered() {
+        // TODO: Ask Harminder when he wants a message to be marked delivered?
+        // TODO: Does marking a message as delivered override it's seen status?
+    }
+
+    public boolean markLastMessageAsRead(final List<Message> messages, final Long conversationId, MarkReadCallback listener) {
+        // Call this method to mark the last message as read by the current customer. It involves making an API request.
+
+        // If the argument is null, skip
+        if (messages == null || messages.size() == 0 || conversationId == null) {
+            return false;
+        }
+
+        final Long messageIdToBeMarkedRead = extractLastMessageId(messages);
+        if (shouldMarkMessageAsRead(messageIdToBeMarkedRead)) {
+            setLastMessageBeingMarkedRead(messageIdToBeMarkedRead);
+
+            // Call API to mark message read
+            listener.markRead(conversationId, messageIdToBeMarkedRead);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private Long extractLastMessageId(List<Message> messageList) {
+        if (messageList == null || messageList.size() == 0) {
+            return null;
+        }
+
+        /*
+        There's a lot of order reversing going on in the code which may cause issues in this snippet
+        Therefore, to be absolutely certain the last element (greatest id) is selected, messages at the extremes are collected and the largest id is returned.
+        This is based on the assumption that the items are sorted (which it should be!)
+         */
+        Message firstMessage = messageList.get(0);
+        Message lastMessage = messageList.get(messageList.size() - 1);
+
+        return firstMessage.getId() > lastMessage.getId() ? firstMessage.getId() : lastMessage.getId();
+    }
+
+
+    public interface MarkReadCallback {
+        void markDelivered(long conversationId, long postId);
+
+        void markRead(long conversationId, long postId);
+    }
+
 
 }

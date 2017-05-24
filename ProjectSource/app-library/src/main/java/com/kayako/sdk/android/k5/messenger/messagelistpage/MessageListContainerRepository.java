@@ -176,37 +176,46 @@ public class MessageListContainerRepository implements MessageListContainerContr
     }
 
     @Override
-    public void markMessageAsRead(long conversationId, final long messageId, final MessageListContainerContract.OnMarkMessageAsReadListener onLoadConversationListener) {
+    public void markMessageAsRead(long conversationId, final long messageId, final MessageListContainerContract.OnMarkMessageAsReadListener onMarkMessageAsReadListener) {
+        markMessage(PutMessageBodyParams.MessageStatus.SEEN, conversationId, messageId, onMarkMessageAsReadListener);
+    }
+
+    @Override
+    public void markMessageAsDelivered(long conversationId, long postId, MessageListContainerContract.OnMarkMessageAsReadListener onMarkMessageAsReadListener) {
+        markMessage(PutMessageBodyParams.MessageStatus.DELIVERED, conversationId, postId, onMarkMessageAsReadListener);
+    }
+
+    public void markMessage(PutMessageBodyParams.MessageStatus status, long conversationId, final long messageId, final MessageListContainerContract.OnMarkMessageAsReadListener onMarkMessageAsReadListener) {
         final Handler handler = new Handler(); // Needed to ensure that the callbacks run on the UI Thread
         mMessenger.putMessage(
                 conversationId,
                 messageId,
-                new PutMessageBodyParams(PutMessageBodyParams.MessageStatus.SEEN),
+                new PutMessageBodyParams(status),
                 new EmptyCallback() {
                     @Override
                     public void onSuccess() {
-                        if (onLoadConversationListener == null) {
+                        if (onMarkMessageAsReadListener == null) {
                             return;
                         }
 
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                onLoadConversationListener.onSuccess(messageId);
+                                onMarkMessageAsReadListener.onSuccess(messageId);
                             }
                         });
                     }
 
                     @Override
                     public void onFailure(final KayakoException exception) {
-                        if (onLoadConversationListener == null) {
+                        if (onMarkMessageAsReadListener == null) {
                             return;
                         }
 
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                onLoadConversationListener.onFailure(exception.getMessage());
+                                onMarkMessageAsReadListener.onFailure(exception.getMessage());
                             }
                         });
 
@@ -313,5 +322,6 @@ public class MessageListContainerRepository implements MessageListContainerContr
                         });
                     }
                 });
+
     }
 }

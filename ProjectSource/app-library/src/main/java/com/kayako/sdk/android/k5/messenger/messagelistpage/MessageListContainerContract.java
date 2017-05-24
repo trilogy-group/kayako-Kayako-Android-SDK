@@ -43,6 +43,8 @@ public class MessageListContainerContract {
         void addConversationRating(long conversationId, PostRatingBodyParams postRatingBodyParams, OnUpdateRatingListener onUpdateRatingListener);
 
         void updateConversationRating(long conversationId, long ratingId, PutRatingBodyParams putRatingBodyParams, OnUpdateRatingListener onUpdateRatingListener);
+
+        void markMessageAsDelivered(long conversationId, long postId, OnMarkMessageAsReadListener onMarkMessageAsReadListener);
     }
 
     public interface View extends BaseView {
