@@ -69,8 +69,9 @@
 
                 <ImageButton
                     android:id="@+id/ko__reply_box_attach_button"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:padding="4dp"
                     android:background="?android:attr/selectableItemBackground"
                     android:scaleType="centerInside"
                     android:src="@drawable/ko__ic_attachment_button" />
@@ -96,7 +97,6 @@
                     android:textColor="@color/ko__messenger_reply_box_credits_text_colour"
 
                     android:textSize="@dimen/ko__messenger_reply_box_footer" />
-
                 <com.kayako.sdk.android.k5.common.view.BoldTextView
                     android:id="@+id/ko__reply_box_credits_kayako"
                     android:layout_width="wrap_content"

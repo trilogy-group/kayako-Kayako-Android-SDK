@@ -15,7 +15,7 @@
         android:layout_height="80dp"
         android:layout_gravity="center"
         android:layout_margin="@dimen/ko__attachment_placeholder_icon_margin"
-        android:src="@drawable/ic__ko__attachment_generic" />
+        android:src="@drawable/ko__ic_attachment_generic" />
 
     <com.kayako.sdk.android.k5.common.view.BoldTextView
         android:id="@+id/ko__attachment_placeholder_text"

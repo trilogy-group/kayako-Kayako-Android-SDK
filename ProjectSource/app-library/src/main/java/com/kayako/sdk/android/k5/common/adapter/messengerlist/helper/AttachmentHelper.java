@@ -11,7 +11,6 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.Attachment;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentUrlType;
 import com.kayako.sdk.android.k5.common.utils.ImageUtils;
 import com.kayako.sdk.android.k5.core.Kayako;
-import com.kayako.sdk.android.k5.kre.helpers.presence.PresenceUser;
 
 import java.io.File;
 
@@ -73,7 +72,7 @@ public class AttachmentHelper {
         }
 
         if (fileType == null) {
-            iconView.setImageResource(R.drawable.ic__ko__attachment_generic);
+            iconView.setImageResource(R.drawable.ko__ic_attachment_generic);
         } else {
             switch (fileType) {
                 case IMAGE:
@@ -81,16 +80,16 @@ public class AttachmentHelper {
                     // Handled differently from the rest
 
                 case VIDEO:
-                    iconView.setImageResource(R.drawable.ic__ko__attachment_video);
+                    iconView.setImageResource(R.drawable.ko__ic_attachment_video);
                     break;
 
                 case AUDIO:
-                    iconView.setImageResource(R.drawable.ic__ko__attachment_audio);
+                    iconView.setImageResource(R.drawable.ko__ic_attachment_audio);
                     break;
 
                 case OTHER:
                 default:
-                    iconView.setImageResource(R.drawable.ic__ko__attachment_generic);
+                    iconView.setImageResource(R.drawable.ko__ic_attachment_generic);
                     break;
             }
         }
