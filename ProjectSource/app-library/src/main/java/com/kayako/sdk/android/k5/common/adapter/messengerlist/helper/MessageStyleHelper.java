@@ -60,17 +60,28 @@ public class MessageStyleHelper {
         messageView.setPadding(0, 4, 0, 4); // Remove padding
     }
 
+    // TODO: Find a perfect regex that recognizes all emojis
 
+    // Testing area: http://regexr.com/3buf8
     // Source: http://stackoverflow.com/questions/28366172/check-if-letter-is-emoji
-    private static final String EMOJI_REGEX = "([\\u20a0-\\u32ff\\ud83c\\udc00-\\ud83d\\udeff\\udbb9\\udce5-\\udbb9\\udcee])"; // "(?:\\[\\\\0x2700-\\\\0x27bf]|(?:\\\\0xd83c\\[\\\\0xdde6-\\\\0xddff]){2}|\\[\\\\0xd800-\\\\0xdbff]\\[\\\\0xdc00-\\\\0xdfff]|\\[\\\\0x0023-\\\\0x0039]\\\\0xfe0f?\\\\0x20e3|\\\\0x3299|\\\\0x3297|\\\\0x303d|\\\\0x3030|\\\\0x24c2|\\\\0xd83c\\[\\\\0xdd70-\\\\0xdd71]|\\\\0xd83c\\[\\\\0xdd7e-\\\\0xdd7f]|\\\\0xd83c\\\\0xdd8e|\\\\0xd83c\\[\\\\0xdd91-\\\\0xdd9a]|\\\\0xd83c\\[\\\\0xdde6-\\\\0xddff]|\\[\\\\0xd83c\\[\\\\0xde01-\\\\0xde02]|\\\\0xd83c\\\\0xde1a|\\\\0xd83c\\\\0xde2f|\\[\\\\0xd83c\\[\\\\0xde32-\\\\0xde3a]|\\[\\\\0xd83c\\[\\\\0xde50-\\\\0xde51]|\\\\0x203c|\\\\0x2049|\\[\\\\0x25aa-\\\\0x25ab]|\\\\0x25b6|\\\\0x25c0|\\[\\\\0x25fb-\\\\0x25fe]|\\\\0x00a9|\\\\0x00ae|\\\\0x2122|\\\\0x2139|\\\\0xd83c\\\\0xdc04|\\[\\\\0x2600-\\\\0x26FF]|\\\\0x2b05|\\\\0x2b06|\\\\0x2b07|\\\\0x2b1b|\\\\0x2b1c|\\\\0x2b50|\\\\0x2b55|\\\\0x231a|\\\\0x231b|\\\\0x2328|\\\\0x23cf|\\[\\\\0x23e9-\\\\0x23f3]|\\[\\\\0x23f8-\\\\0x23fa]|\\\\0xd83c\\\\0xdccf|\\\\0x2934|\\\\0x2935|\\[\\\\0x2190-\\\\0x21ff])";
+    // NOT ALL EMOJIs RECOGNIZED
+     private static final String EMOJI_REGEX = "([\\u20a0-\\u32ff\\ud83c\\udc00-\\ud83d\\udeff\\udbb9\\udce5-\\udbb9\\udcee])"; // Doesn't cover all the emotes like flags
+
+    // Source: https://medium.com/reactnative/emojis-in-javascript-f693d0eb79fb (The lodash library version)
+    // ERROR, but COVERS EVERYTHING: private static final String EMOJI_REGEX = "(?:[\\u2700-\\u27bf]|(?:\\ud83c[\\udde6-\\uddff]){2}|[\\ud800-\\udbff][\\udc00-\\udfff])[\\ufe0e\\ufe0f]?(?:[\\u0300-\\u036f\\ufe20-\\ufe23\\u20d0-\\u20f0]|\\ud83c[\\udffb-\\udfff])?(?:\\u200d(?:[^\\ud800-\\udfff]|(?:\\ud83c[\\udde6-\\uddff]){2}|[\\ud800-\\udbff][\\udc00-\\udfff])[\\ufe0e\\ufe0f]?(?:[\\u0300-\\u036f\\ufe20-\\ufe23\\u20d0-\\u20f0]|\\ud83c[\\udffb-\\udfff])?)*";
 
     private static boolean isEmote(String message) {
-        if (message == null
-                || message.trim().split(" ").length == 0) { // should be a single word
+        if (message == null) {
+            return false;
+        }
+        boolean hasAlphanumericContent = Pattern.compile("[a-zA-Z0-9]").matcher(message).find();
+        boolean isOneWord = message.trim().split(" ").length == 0;
+        if (isOneWord || hasAlphanumericContent) {
             return false;
         }
 
-        Matcher matcher = Pattern.compile(EMOJI_REGEX).matcher(message.trim()); // trim spaces to allow emotes with spaces before and after it
+        Matcher matcher = Pattern.compile(EMOJI_REGEX, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE)
+                .matcher(message.trim()); // trim spaces to allow emotes with spaces before and after it
         int count = 0;
         while (matcher.find()) {
             count++;
