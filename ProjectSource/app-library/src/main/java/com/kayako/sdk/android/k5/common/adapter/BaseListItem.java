@@ -6,7 +6,6 @@ package com.kayako.sdk.android.k5.common.adapter;
 public abstract class BaseListItem implements ContentComparable {
 
     private int listItemType;
-    private long listId;
 
     public BaseListItem(int type) {
         listItemType = type;
@@ -16,21 +15,11 @@ public abstract class BaseListItem implements ContentComparable {
         return listItemType;
     }
 
-    public long getListId() {
-        return listId;
-    }
-
-    public void setListId(long listId) {
-        this.listId = listId;
-    }
-
     @Override
     public boolean equals(Object o) {
         try {
             BaseListItem other = (BaseListItem) o;
-
             return this.getItemType() == other.getItemType()
-                    && this.getListId() == other.getListId()
                     && this.getContents().equals(other.getContents());
 
         } catch (Exception e) {
@@ -40,7 +29,11 @@ public abstract class BaseListItem implements ContentComparable {
 
     @Override
     public int hashCode() {
-        return getContents().hashCode();
+        if (getContents() != null) {
+            return getContents().hashCode();
+        } else {
+            return super.hashCode();
+        }
     }
 }
 

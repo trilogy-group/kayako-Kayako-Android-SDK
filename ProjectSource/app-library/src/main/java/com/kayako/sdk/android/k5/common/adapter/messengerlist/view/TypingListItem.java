@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.kayako.sdk.android.k5.common.adapter.BaseDataListItem;
+import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.ChannelDecoration;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerListType;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.DiffUtilsHelper;
@@ -11,12 +12,12 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.DiffUtilsHe
 import java.util.HashMap;
 import java.util.Map;
 
-public class TypingListItem extends BaseDataListItem {
+public class TypingListItem extends BaseListItem {
 
     private String avatarUrl;
 
-    public TypingListItem(@Nullable Long id, @NonNull String avatarUrl, @Nullable Map<String, Object> data) {
-        super(MessengerListType.TYPING_FOOTER, id, data);
+    public TypingListItem(@NonNull String avatarUrl) {
+        super(MessengerListType.TYPING_FOOTER);
 
         this.avatarUrl = avatarUrl;
     }

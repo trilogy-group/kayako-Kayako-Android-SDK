@@ -2,6 +2,8 @@ package com.kayako.sdk.android.k5.common.adapter.messengerlist.helper;
 
 import android.support.v7.util.DiffUtil;
 
+import com.kayako.sdk.android.k5.common.adapter.BaseDataListItem;
+import com.kayako.sdk.android.k5.common.adapter.BaseIdentityListItem;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 
 import java.util.List;
@@ -29,13 +31,11 @@ public class DiffUtilsCallback extends DiffUtil.Callback {
 
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-        return mOldItems.get(oldItemPosition).getListId() == mNewItems.get(newItemPosition).getListId()
-                && mOldItems.get(oldItemPosition).getItemType() == mNewItems.get(newItemPosition).getItemType();
+        return DiffUtilsHelper.areItemsSame(mOldItems.get(oldItemPosition), mNewItems.get(newItemPosition));
     }
 
     @Override
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-        return mOldItems.get(oldItemPosition).getContents() != null
-                && mOldItems.get(oldItemPosition).getContents().equals(mNewItems.get(newItemPosition).getContents());
+        return DiffUtilsHelper.areContentsSame(mOldItems.get(oldItemPosition), mNewItems.get(newItemPosition));
     }
 }

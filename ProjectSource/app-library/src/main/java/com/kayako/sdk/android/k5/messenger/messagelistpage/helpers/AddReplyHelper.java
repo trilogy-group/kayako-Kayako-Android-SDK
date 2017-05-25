@@ -110,7 +110,8 @@ public class AddReplyHelper {
             mAddMessageHelper.onFailedToSendReply(clientId);
         } else if (mAddAttachmentHelper.getLastSentReplyClientId() != null && mAddAttachmentHelper.getLastSentReplyClientId().equals(clientId)) {
             mAddAttachmentHelper.onFailedToSendReply(clientId);
-        } else {
+        }
+        else {
             throw new IllegalStateException("Invalid State. Last sent client id does not match!");
         }
     }

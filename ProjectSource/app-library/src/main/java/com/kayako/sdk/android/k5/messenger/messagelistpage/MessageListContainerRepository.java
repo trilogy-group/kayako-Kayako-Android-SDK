@@ -4,6 +4,8 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.kayako.sdk.android.k5.common.utils.NetworkUtils;
+import com.kayako.sdk.android.k5.core.Kayako;
 import com.kayako.sdk.auth.FingerprintAuth;
 import com.kayako.sdk.base.callback.EmptyCallback;
 import com.kayako.sdk.base.callback.ItemCallback;
@@ -27,6 +29,7 @@ import java.util.List;
 
 public class MessageListContainerRepository implements MessageListContainerContract.Data {
 
+    private static final long DELAY_BEFORE_NO_NETWORK_NOTICE = 1000;
     private Messenger mMessenger;
 
     public MessageListContainerRepository(String helpCenterUrl, FingerprintAuth fingerpritnAuth) {
@@ -40,6 +43,17 @@ public class MessageListContainerRepository implements MessageListContainerContr
         }
 
         final Handler handler = new Handler();
+
+        if (!NetworkUtils.isConnectedToNetwork(Kayako.getApplicationContext())) {
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    callback.onFailure(clientId);
+                }
+            }, DELAY_BEFORE_NO_NETWORK_NOTICE);
+            return;
+        }
+
         mMessenger.postMessage(conversationId, postMessageBodyParams, new ItemCallback<Message>() {
             @Override
             public void onSuccess(final Message item) {
@@ -67,6 +81,17 @@ public class MessageListContainerRepository implements MessageListContainerContr
     @Override
     public void getMessages(final MessageListContainerContract.OnLoadMessagesListener listener, long conversationId, final int offset, int limit) {
         final Handler handler = new Handler(); // Needed to ensure that the callbacks run on the UI Thread
+
+        if (!NetworkUtils.isConnectedToNetwork(Kayako.getApplicationContext())) {
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    listener.onFailure(null);
+                }
+            }, DELAY_BEFORE_NO_NETWORK_NOTICE);
+            return;
+        }
+
         mMessenger.getMessages(conversationId, offset, limit, new ListCallback<Message>() {
             @Override
             public void onSuccess(final List<Message> items) {
@@ -108,6 +133,18 @@ public class MessageListContainerRepository implements MessageListContainerContr
     @Override
     public void startNewConversation(final PostConversationBodyParams bodyParams, final MessageListContainerContract.PostConversationCallback postConversationCallback) {
         final Handler handler = new Handler(); // Needed to ensure that the callbacks run on the UI Thread
+
+        if (!NetworkUtils.isConnectedToNetwork(Kayako.getApplicationContext())) {
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    postConversationCallback.onFailure(bodyParams.getClientId(), null);
+                }
+            }, DELAY_BEFORE_NO_NETWORK_NOTICE);
+            return;
+        }
+
+
         mMessenger.postConversation(bodyParams, new ItemCallback<Conversation>() {
             @Override
             public void onSuccess(final Conversation item) {
@@ -142,6 +179,17 @@ public class MessageListContainerRepository implements MessageListContainerContr
     @Override
     public void getConversation(long conversationId, final MessageListContainerContract.OnLoadConversationListener onLoadConversationListener) {
         final Handler handler = new Handler(); // Needed to ensure that the callbacks run on the UI Thread
+
+        if (!NetworkUtils.isConnectedToNetwork(Kayako.getApplicationContext())) {
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    onLoadConversationListener.onFailure(null);
+                }
+            }, DELAY_BEFORE_NO_NETWORK_NOTICE);
+            return;
+        }
+
         mMessenger.getConversation(conversationId, new ItemCallback<Conversation>() {
             @Override
             public void onSuccess(final Conversation item) {
@@ -187,6 +235,17 @@ public class MessageListContainerRepository implements MessageListContainerContr
 
     public void markMessage(PutMessageBodyParams.MessageStatus status, long conversationId, final long messageId, final MessageListContainerContract.OnMarkMessageAsReadListener onMarkMessageAsReadListener) {
         final Handler handler = new Handler(); // Needed to ensure that the callbacks run on the UI Thread
+
+        if (!NetworkUtils.isConnectedToNetwork(Kayako.getApplicationContext())) {
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    onMarkMessageAsReadListener.onFailure(null);
+                }
+            }, DELAY_BEFORE_NO_NETWORK_NOTICE);
+            return;
+        }
+
         mMessenger.putMessage(
                 conversationId,
                 messageId,
@@ -226,6 +285,17 @@ public class MessageListContainerRepository implements MessageListContainerContr
     @Override
     public void getConversationRatings(long conversationId, final MessageListContainerContract.OnLoadRatingsListener onLoadRatingsListener) {
         final Handler handler = new Handler(); // Needed to ensure that the callbacks run on the UI Thread
+
+        if (!NetworkUtils.isConnectedToNetwork(Kayako.getApplicationContext())) {
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    onLoadRatingsListener.onFailure(null);
+                }
+            }, DELAY_BEFORE_NO_NETWORK_NOTICE);
+            return;
+        }
+
         mMessenger
                 .getRatingList(
                         conversationId,
@@ -261,6 +331,17 @@ public class MessageListContainerRepository implements MessageListContainerContr
     @Override
     public void addConversationRating(long conversationId, final PostRatingBodyParams postRatingBodyParams, final MessageListContainerContract.OnUpdateRatingListener onUpdateRatingListener) {
         final Handler handler = new Handler(); // Needed to ensure that the callbacks run on the UI Thread
+
+        if (!NetworkUtils.isConnectedToNetwork(Kayako.getApplicationContext())) {
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    onUpdateRatingListener.onFailure(postRatingBodyParams.getScore(), postRatingBodyParams.getComment(), null);
+                }
+            }, DELAY_BEFORE_NO_NETWORK_NOTICE);
+            return;
+        }
+
         mMessenger.postRating(
                 conversationId,
                 postRatingBodyParams,
@@ -293,6 +374,17 @@ public class MessageListContainerRepository implements MessageListContainerContr
     @Override
     public void updateConversationRating(long conversationId, long ratingId, final PutRatingBodyParams putRatingBodyParams, final MessageListContainerContract.OnUpdateRatingListener onUpdateRatingListener) {
         final Handler handler = new Handler(); // Needed to ensure that the callbacks run on the UI Thread
+
+        if (!NetworkUtils.isConnectedToNetwork(Kayako.getApplicationContext())) {
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    onUpdateRatingListener.onFailure(putRatingBodyParams.getScore(), putRatingBodyParams.getComment(), null);
+                }
+            }, DELAY_BEFORE_NO_NETWORK_NOTICE);
+            return;
+        }
+
         mMessenger.putRating(
                 conversationId,
                 ratingId,

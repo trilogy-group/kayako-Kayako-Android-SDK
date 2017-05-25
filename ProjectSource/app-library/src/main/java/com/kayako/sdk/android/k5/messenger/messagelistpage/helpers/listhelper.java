@@ -5,6 +5,7 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.Attachment;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentUrlType;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.DataItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.DataItemHelper;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.DiffUtilsHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.UserDecorationHelper;
 import com.kayako.sdk.android.k5.common.fragments.ListPageState;
 import com.kayako.sdk.android.k5.common.utils.file.FileStorageUtil;
@@ -41,7 +42,26 @@ public class ListHelper {
             return true; // EMPTY <-> NOT-EMPTY
         }
 
-        return !newItems.equals(mLastDisplayedItems);
+        if (newItems.size() != mLastDisplayedItems.size()) {
+            return true; // New items (checked by size)
+        }
+
+        for (BaseListItem newItem : newItems) {
+            boolean isFoundAndEqual = false;
+
+            for (BaseListItem oldItem : mLastDisplayedItems) {
+                if (DiffUtilsHelper.areItemsSame(newItem, oldItem)) {
+                    isFoundAndEqual = true;
+                    break;
+                }
+            }
+
+            if (!isFoundAndEqual) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public List<BaseListItem> getMessageAsListItemViews(List<Message> messages, long lastOriginalMessageMarkedRead, long userId) {

@@ -1,18 +1,19 @@
 package com.kayako.sdk.android.k5.common.adapter;
 
+import android.support.annotation.Nullable;
+
 import java.util.Map;
 
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
-public abstract class BaseDataListItem extends BaseListItem {
+public abstract class BaseDataListItem extends BaseIdentityListItem {
 
-    private Long id;
+    @Nullable
     private Map<String, Object> data;
 
     public BaseDataListItem(int type, Long id, Map<String, Object> data) {
-        super(type);
-        this.id = id;
+        super(type, id);
         this.data = data;
     }
 
@@ -22,29 +23,5 @@ public abstract class BaseDataListItem extends BaseListItem {
 
     public void setData(Map<String, Object> data) {
         this.data = data;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-
-        if (o == null || getClass() != o.getClass()) return false;
-
-        BaseDataListItem that = (BaseDataListItem) o;
-
-        return id != null ? id.equals(that.id) : that.id == null;
-    }
-
-    @Override
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
     }
 }

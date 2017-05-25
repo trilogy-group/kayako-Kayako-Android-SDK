@@ -34,7 +34,7 @@ public class TypingViewHelper {
     public List<BaseListItem> getTypingViews() {
         if (isAgentTyping.get() && lastAgentTyping != null) {
             List<BaseListItem> viewItems = new ArrayList<>();
-            viewItems.add(new TypingListItem(null, lastAgentTyping.getAvatar(), null));
+            viewItems.add(new TypingListItem(lastAgentTyping.getAvatar()));
             return viewItems;
         } else {
             return Collections.EMPTY_LIST;

@@ -42,13 +42,13 @@ public class OptimisticSendingHelper {
         }
     }
 
-    public void markAllAsFailed() {
+    public synchronized void markAllAsFailed() {
         for (int i = 0; i < unsentMessageList.size(); i++) {
             markAsFailed(unsentMessageList.get(i));
         }
     }
 
-    public void markAllAsSending() {
+    public synchronized void markAllAsSending() {
         for (int i = 0; i < unsentMessageList.size(); i++) {
             markAsSending(unsentMessageList.get(i));
         }
@@ -70,7 +70,7 @@ public class OptimisticSendingHelper {
         return (ClientDeliveryStatus) messageDataOfBaseListItem.get(MAP_KEY_CLIENT_DELIVERY_INDICATOR_TYPE);
     }
 
-    private synchronized void markAsFailed(UnsentMessage unsentMessage) {
+    private void markAsFailed(UnsentMessage unsentMessage) {
         int position = findOptimisticMessage(unsentMessage.getClientId());
 
         unsentMessageList.remove(position);
@@ -80,7 +80,7 @@ public class OptimisticSendingHelper {
         );
     }
 
-    public void markAsSending(UnsentMessage unsentMessage) {
+    private void markAsSending(UnsentMessage unsentMessage) {
         int position = findOptimisticMessage(unsentMessage.getClientId());
 
         unsentMessageList.remove(position);

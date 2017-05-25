@@ -303,15 +303,6 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         public void onRefreshListView() {
             displayList();
         }
-
-        @Override
-        public void onResendReply(UnsentMessage unsentMessage) {
-            if (unsentMessage.getAttachment() == null) {
-                onSendMessageReply(unsentMessage.getMessage());
-            } else {
-                onSendAttachmentReply(unsentMessage.getAttachment());
-            }
-        }
     };
 
     private AddReplyHelper.OnAddReplyCallback mOnAddReplyCallback = new AddReplyHelper.OnAddReplyCallback() {
