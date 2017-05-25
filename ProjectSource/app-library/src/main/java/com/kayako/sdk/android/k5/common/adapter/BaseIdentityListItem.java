@@ -4,12 +4,18 @@ import android.support.annotation.Nullable;
 
 public abstract class BaseIdentityListItem extends BaseListItem {
 
-    @Nullable private Long id;
+    @Nullable
+    private Long id;
 
     public BaseIdentityListItem(int type, Long id) {
         super(type);
         this.id = id;
     }
+
+    public BaseIdentityListItem(int type) {
+        super(type);
+    }
+
 
     public Long getId() {
         return id;
