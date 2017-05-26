@@ -3,10 +3,9 @@ package com.kayako.sdk.android.k5.common.adapter;
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
-public abstract class BaseListItem {
+public abstract class BaseListItem implements ContentComparable {
 
     private int listItemType;
-    private long listId;
 
     public BaseListItem(int type) {
         listItemType = type;
@@ -16,11 +15,25 @@ public abstract class BaseListItem {
         return listItemType;
     }
 
-    public long getListId() {
-        return listId;
+    @Override
+    public boolean equals(Object o) {
+        try {
+            BaseListItem other = (BaseListItem) o;
+            return this.getItemType() == other.getItemType()
+                    && this.getContents().equals(other.getContents());
+
+        } catch (Exception e) {
+            return false;
+        }
     }
 
-    public void setListId(long listId) {
-        this.listId = listId;
+    @Override
+    public int hashCode() {
+        if (getContents() != null) {
+            return getContents().hashCode();
+        } else {
+            return super.hashCode();
+        }
     }
 }
+

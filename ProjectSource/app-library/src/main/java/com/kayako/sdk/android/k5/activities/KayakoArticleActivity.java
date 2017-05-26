@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.kayako.sdk.android.k5.R;
-import com.kayako.sdk.android.k5.articlepage.ArticleContainerFragment;
+import com.kayako.sdk.android.k5.helpcenter.articlepage.ArticleContainerFragment;
 import com.kayako.sdk.helpcenter.articles.Article;
 
 public class KayakoArticleActivity extends AppCompatActivity {

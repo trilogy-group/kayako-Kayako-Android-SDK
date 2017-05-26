@@ -8,6 +8,7 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.Attachment;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.ChannelDecoration;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerListType;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class AttachmentMessageOtherListItem extends BaseDataListItem {
@@ -56,4 +57,19 @@ public class AttachmentMessageOtherListItem extends BaseDataListItem {
     public void setChannel(ChannelDecoration channel) {
         this.channel = channel;
     }
+
+    @Override
+    public Map<String, String> getContents() {
+        Map<String, String> map = new HashMap<>();
+        map.put("avatarUrl", String.valueOf(avatarUrl));
+        map.put("time", String.valueOf(time));
+        if (attachment != null) {
+            map.putAll(attachment.getContents());
+        }
+        if (channel != null) {
+            map.putAll(channel.getContents());
+        }
+        return map;
+    }
+
 }

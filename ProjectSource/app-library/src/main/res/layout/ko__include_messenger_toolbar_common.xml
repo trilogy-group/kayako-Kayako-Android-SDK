@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="48dp"
+    android:orientation="horizontal"
+    android:paddingBottom="8dp"
+    android:paddingTop="8dp">
+
+    <FrameLayout
+        android:layout_width="@dimen/ko__messenger_toolbar_back_button_layout_size"
+        android:layout_height="wrap_content"
+        tools:background="#000"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/ko__messenger_toolbar_back_button"
+            android:layout_width="@dimen/ko__messenger_toolbar_back_button_size"
+            android:layout_height="@dimen/ko__messenger_toolbar_back_button_size"
+            android:layout_gravity="left|center_vertical"
+            android:background="?android:selectableItemBackground"
+            android:padding="@dimen/ko__messenger_toolbar_back_button_padding"
+            android:scaleType="centerInside"
+            android:src="@drawable/ko__ic_messenger_back"
+            android:transitionName="ko__messenger_toolbar_back_button" />
+
+
+        <include
+            layout="@layout/ko__include_unread_message_counter"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="right|center_vertical" />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="4dp">
+
+        <com.kayako.sdk.android.k5.common.view.BoldTextView
+            android:id="@+id/ko__messenger_toolbar_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textSize="16sp"
+            android:transitionName="ko__messenger_toolbar_title"
+            tools:text="Kayako Team" />
+
+        <com.kayako.sdk.android.k5.common.view.RegularTextView
+            android:id="@+id/ko__messenger_toolbar_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textSize="12sp"
+            android:transitionName="ko__messenger_toolbar_subtitle"
+            tools:text="We usually reply in an hr" />
+    </LinearLayout>
+
+
+    <Space
+        android:layout_width="@dimen/ko__messenger_toolbar_avatars_layout_size"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

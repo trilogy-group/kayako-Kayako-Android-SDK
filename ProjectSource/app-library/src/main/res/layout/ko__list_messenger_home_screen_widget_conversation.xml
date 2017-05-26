@@ -1,0 +1,125 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:elevation="4dp"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:selectableItemBackground"
+        android:gravity="center"
+        android:minHeight="@dimen/ko__messenger_home_screen_widget_recent_cases__conversation_list_item_minimum_height"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/ko__messenger_home_screen_widget_recent_cases__conversation_list_item_padding_vertical"
+        android:paddingLeft="@dimen/ko__messenger_home_screen_widget_recent_cases__conversation_list_item_padding_horizontal"
+        android:paddingRight="@dimen/ko__messenger_home_screen_widget_recent_cases__conversation_list_item_padding_horizontal"
+        android:paddingTop="@dimen/ko__messenger_home_screen_widget_recent_cases__conversation_list_item_padding_vertical">
+
+        <com.kayako.sdk.android.k5.common.view.CircleImageView
+            android:id="@+id/ko__avatar"
+            android:layout_width="@dimen/ko__messenger_home_screen_widget_recent_cases__conversation_list_item_avatar_size"
+            android:layout_height="@dimen/ko__messenger_home_screen_widget_recent_cases__conversation_list_item_avatar_size"
+            android:layout_gravity="center"
+            tools:src="@color/ko__conversation_item_avatar_default_background_color" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/ko__messenger_home_screen_widget_recent_cases__conversation_list_item_gap_between_avatar_and_messages"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.kayako.sdk.android.k5.common.view.BoldTextView
+                    android:id="@+id/ko__name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical|left"
+                    android:maxLines="1"
+                    android:textColor="@color/ko__conversation_item_name_text_color"
+                    android:textSize="@dimen/ko__messenger_home_screen_widget_recent_cases__conversation_list_item_name_text_size"
+                    tools:text="Himanshu Likhyani" />
+
+                <LinearLayout
+                    android:id="@+id/ko__info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignBottom="@+id/ko__name"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignTop="@+id/ko__name"
+                    android:gravity="center">
+
+                    <com.kayako.sdk.android.k5.common.view.RegularTextView
+                        android:id="@+id/ko__time"
+                        fontPath="fonts/SourceSansPro-Regular.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:maxLines="1"
+                        android:textColor="#5F6C73"
+                        android:textSize="@dimen/ko__messenger_home_screen_widget_recent_cases__conversation_list_item_time_text_size"
+                        tools:ignore="MissingPrefix"
+                        tools:text="3h" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ko__subject_line_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="20dp"
+                android:orientation="horizontal">
+
+                <include
+                    layout="@layout/ko__include_typing_loader"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp" />
+
+
+                <LinearLayout
+                    android:id="@+id/ko__subject_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.kayako.sdk.android.k5.common.view.RegularTextView
+                        android:id="@+id/ko__subject"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical|left"
+                        android:maxLines="1"
+                        android:textColor="@color/ko__conversation_item_subject_text_color"
+                        android:textSize="@dimen/ko__messenger_home_screen_widget_recent_cases__conversation_list_item_subject_text_size"
+                        tools:text="blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah" />
+
+                    <include
+                        layout="@layout/ko__include_unread_message_counter"
+                        android:layout_width="20dp"
+                        android:layout_height="20sp"
+                        android:layout_marginLeft="4dp"
+                        android:gravity="center_vertical|left"
+                        android:textSize="8sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <include
+        layout="@layout/ko__include_separator"
+        android:id="@+id/ko__recent_conversation_list_separator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="bottom" />
+
+</FrameLayout>

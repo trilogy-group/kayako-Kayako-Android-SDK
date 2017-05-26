@@ -4,6 +4,11 @@ import android.support.annotation.Nullable;
 
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerListType;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.DiffUtilsCallback;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.DiffUtilsHelper;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class UnreadSeparatorListItem extends BaseListItem {
 
@@ -28,5 +33,12 @@ public class UnreadSeparatorListItem extends BaseListItem {
 
     public String getText() {
         return text;
+    }
+
+    @Override
+    public Map<String, String> getContents() {
+        Map<String, String> map = new HashMap<>();
+        map.put("text", String.valueOf(text));
+        return map;
     }
 }

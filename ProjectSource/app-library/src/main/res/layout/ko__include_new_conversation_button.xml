@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal|bottom"
+    android:layout_margin="16dp"
+    android:elevation="2dp">
+
+    <LinearLayout
+        android:id="@+id/ko__new_conversation_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:minHeight="40dp"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:background="@drawable/ko__button_new_conversation"
+        android:paddingRight="20dp"
+        android:weightSum="1">
+
+        <com.kayako.sdk.android.k5.common.view.BoldTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@null"
+            android:gravity="center"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="@string/ko__messenger_label_new_conversation"
+            android:textAllCaps="false"
+            android:textColor="@color/ko__messenger_new_conversation_text_colour"
+            android:textSize="16sp" />
+
+        <Space
+            android:layout_width="8dp"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center"
+            android:scaleType="centerInside"
+            android:src="@drawable/ko__ic_new_conversation" />
+
+    </LinearLayout>
+</FrameLayout>

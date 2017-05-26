@@ -1,0 +1,7 @@
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dot_separator"
+    android:layout_width="12dp"
+    android:layout_height="12dp"
+    android:layout_above="@+id/ko__subject"
+    android:scaleType="centerInside"
+    android:src="@drawable/ko__dot_separator" />

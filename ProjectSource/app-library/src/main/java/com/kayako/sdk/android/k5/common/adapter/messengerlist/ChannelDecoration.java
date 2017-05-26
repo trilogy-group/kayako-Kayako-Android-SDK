@@ -1,6 +1,11 @@
 package com.kayako.sdk.android.k5.common.adapter.messengerlist;
 
-public class ChannelDecoration {
+import com.kayako.sdk.android.k5.common.adapter.ContentComparable;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class ChannelDecoration implements ContentComparable {
 
     private int sourceDrawable;
     private boolean isNote;
@@ -37,5 +42,14 @@ public class ChannelDecoration {
 
     public void setNote(boolean note) {
         isNote = note;
+    }
+
+    @Override
+    public Map<String, String> getContents() {
+        Map<String, String> map = new HashMap<>();
+        map.put("sourceDrawable", String.valueOf(sourceDrawable));
+        map.put("isNote", String.valueOf(isNote));
+        map.put("name", String.valueOf(name));
+        return map;
     }
 }

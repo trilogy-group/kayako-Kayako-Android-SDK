@@ -69,17 +69,126 @@
     </color>
 
     <!-- Messenger -->
-    <color name="ko__messenger_speech_bubble_self_background_color">#F1703F</color>
+    <color name="ko__default_dark_text_color">#2D3138</color>
+    <color name="ko__messenger_speech_bubble_self_background_color">
+        @color/ko__messenger_primary_color
+    </color>
+    <color name="ko__messenger_speech_bubble_self_optimistic_sending_background_color">
+        @color/ko__messenger_primary_color_transparent_70
+    </color>
+    <!-- TODO: Should be primary messenger color-->
+
     <color name="ko__messenger_speech_bubble_self_text_color">#fff</color>
 
     <color name="ko__messenger_speech_bubble_other_background_color">#EDEEEF</color>
-    <color name="ko__messenger_speech_bubble_other_text_color">#000</color>
+    <color name="ko__messenger_speech_bubble_other_text_color">#2D3138</color>
 
-    <color name="ko__messenger_date_separator_line_color">#3C808080</color>
-    <color name="ko__messenger_date_separator_text_color">#808080</color>
+    <color name="ko__messenger_date_separator_text_color">#A1AAAF</color>
+    <color name="ko__messenger_delivery_indicator_time_text_color">#A1AAAF</color>
 
-    <color name="ko__messenger_unread_separator_line_color">#F1703F</color>
-    <color name="ko__messenger_unread_separator_text_color">#F1703F</color>
+    <color name="ko__messenger_unread_separator_line_color">@color/ko__messenger_primary_color
+    </color>
+    <color name="ko__messenger_unread_separator_text_color">@color/ko__messenger_primary_color
+    </color>
 
+    <!-- Conversation -->
+    <color name="ko_conversation_item_dot_separator_color">#D1D5D7</color>
+    <color name="ko__conversation_item_subject_text_color">#5F6C73</color>
+    <color name="ko__conversation_item_preview_text_color">#838D94</color>
+    <color name="ko__conversation_item_default_text_color">#A1AAAF</color>
+    <color name="ko__conversation_item_avatar_default_background_color">#808080</color>
+    <color name="ko__conversation_item_name_text_color">#2d3138</color>
+
+    <color name="conversation_item_status_blue">#4EAFCB</color>
+    <color name="conversation_item_status_yellow">#E0AF2A</color>
+    <color name="conversation_item_status_green">#4EAC5E</color>
+    <color name="conversation_item_status_gray">#A1AAAF</color>
+
+    <color name="ko__messenger_input_container_stroke_color">#EDEEEF</color>
+    <color name="ko__messenger_input_field_red_background_color">#FCEEEB</color>
+    <color name="ko__messenger_input_field_red_hint_text_color">#DB3F24</color>
+
+    <color name="ko__messenger_input_field_background_color">
+        @color/ko__messenger_input_field_white_background_color
+    </color><!--#EFF8FA</color>-->
+    <color name="ko__messenger_input_field_blue_hint_text_color">
+        @color/ko__messenger_input_field_white_hint_text_color
+    </color><!--#5F6C73</color>-->
+
+    <color name="ko__messenger_input_field_white_background_color">#FFFFFF</color>
+    <color name="ko__messenger_input_field_white_hint_text_color">#838D94</color>
+    <color name="ko__messenger_completed_field_green_background_color">#DCEEDF</color>
+    <color name="ko__messenger_completed_field_green_text_color">#2D3138</color>
+
+    <color name="ko__messenger_new_conversation_background_colour">
+        @color/ko__messenger_primary_color
+    </color>
+    <color name="ko__messenger_new_conversation_background_colour_selected">
+        @color/ko__messenger_primary_color_transparent_95
+    </color>
+
+    <color name="ko__messenger_new_conversation_text_colour">#FFFFFF</color>
+    <color name="ko__messenger_reply_box_send_button_background_colour">
+        @color/ko__messenger_primary_color
+    </color>
+    <color name="ko__messenger_reply_box_send_button_background_colour_selected">
+        @color/ko__messenger_primary_color_transparent_95
+    </color>
+    <color name="ko__messenger_reply_box_send_button_background_colour_disabled">#A1AAAF</color>
+    <color name="ko__messenger_reply_box_background_colour">#F7F8F9</color>
+    <color name="ko__messenger_reply_box_hint_text_colour">#A1AAAF</color>
+    <color name="ko__messenger_reply_box_text_colour">#2D3138</color>
+    <color name="ko__messenger_reply_box_credits_text_colour">#A1AAAF</color>
+    <color name="ko__messenger_reply_box_credits_kayako_text_colour">#838D94</color>
+
+    <color name="ko__messenger_floating_background_color">@android:color/transparent</color>
+    <color name="ko__messenger_floating_foreground_color">#FFF</color>
+
+    <color name="ko__messenger_default_background_color">#40364D</color>
+    <color name="ko__messenger_default_dark_text_color">#2D3138</color>
+    <color name="ko__messenger_default_light_text_color">#fff</color>
+    <color name="ko__messenger_default_dark_view_background_color">#000</color>
+    <color name="ko__messenger_default_light_view_background_color">#fff</color>
+
+    <color name="ko__messenger_home_screen_widget_header_background_color">#F2FFFFFF</color>
+    <color name="ko__messenger_home_screen_widget_content_background_color">#D9FFFFFF</color>
+
+    <!-- TODO Shift to code? THen make this default -->
+    <color name="ko__messenger_primary_color">#F1703F</color>
+    <color name="ko__messenger_primary_color_transparent_70">#46F1703F</color>
+    <color name="ko__messenger_primary_color_transparent_95">#5FF1703F</color>
+    <!--TODO: Transparent version of ko__messenger_primary_color - figure out how to handle this too -->
+
+    <color name="ko__messenger_home_screen_widget_header_action_button_text_color">#2D3138</color>
+
+    <color name="ko__messenger_input_field_green">#4EAC5E</color>
+
+    <color name="ko__messenger_unread_message_counter_background_color">#E86048</color>
+    <color name="ko__messenger_unread_message_counter_text_color">#FFFFFF</color>
+    <color name="ko__messenger_input_feedback_rating_default_text_color">#5F6C73</color>
+    <color name="ko__messenger_input_feedback_rating_selected_good_text_color">
+        @color/ko__messenger_input_field_green
+    </color>
+    <color name="ko__messenger_input_feedback_rating_selected_bad_text_color">
+        #DB3F24
+    </color>
+    <color name="ko__messenger_input_feedback_rating_selected_background_color">#094EAFCB</color>
+    <color name="ko__messenger_input_feedback_rating_next_button_text_color">
+        @color/ko__messenger_input_field_green
+    </color>
+    <color name="ko__email_input_field_submit_button_text_color">
+        @color/ko__messenger_input_field_green
+    </color>
+
+    <color name="ko__messenger_bot_avatar_background_color">#EDEEEF</color>
+    <color name="ko__messenger_placeholder_avatar_background_color">#5FEDEEEF</color>
+    <color name="ko__messenger_bot_attachment_background_color">#EDEEEF</color>
+    <color name="ko__messenger_conversation_separator_line_color">#ebeef0</color>
+
+    <color name="ko__messenger_attachment_preview_background_color">#000000</color>
+    <color name="ko__messenger_attachment_placeholder_outline_color">#E2E5E5</color>
+    <color name="ko__messenger_attachment_placeholder_background_color">#EDEFEF</color>
+    <color name="ko__messenger_attachment_placeholder_text_background_color">#FFFFFF</color>
+    <color name="ko__messenger_attachment_placeholder_text_color">#2D3138</color>
 
 </resources>

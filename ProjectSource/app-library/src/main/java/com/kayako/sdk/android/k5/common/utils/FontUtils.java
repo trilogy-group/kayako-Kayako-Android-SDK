@@ -16,7 +16,8 @@ public class FontUtils {
     public enum FontStyle {
         LIGHT,
         REGULAR,
-        SEMIBOLD
+        SEMIBOLD,
+        ITALICS
     }
 
     public static void applyFont(Context context, TextView view, FontStyle fontStyle) {
@@ -47,9 +48,11 @@ public class FontUtils {
             case LIGHT:
                 return "fonts/SourceSansPro-Light.otf";
             case SEMIBOLD:
-                return "SourceSansPro-Semibold.otf";
+                return "fonts/SourceSansPro-Semibold.otf";
+            case ITALICS:
+                return "fonts/SourceSansPro-It.otf";
             default:
-                return "SourceSansPro-Regular.otf";
+                return "fonts/SourceSansPro-Regular.otf";
         }
     }
 

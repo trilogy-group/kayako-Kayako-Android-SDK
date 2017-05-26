@@ -8,8 +8,8 @@
     android:paddingRight="@dimen/ko__messenger_list_item_margin"
     android:paddingTop="@dimen/ko__messenger_list_item_continued_margin_top">
 
-    <TextView
-        android:id="@+id/message"
+    <com.kayako.sdk.android.k5.common.view.RegularTextView
+        android:id="@+id/ko__message"
         style="@style/Ko__ChatBubbleStyleOther"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,15 +21,12 @@
         android:gravity="start|center_vertical"
         tools:text="Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah" />
 
-    <TextView
-        android:id="@+id/time"
-        style="@style/Ko__ChatBubbleDateStyle"
+    <include
+        layout="@layout/ko__include_messenger_delivery_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/message"
-        android:layout_below="@+id/message"
-        android:layout_marginTop="@dimen/ko__messenger_gap_between_time_and_message"
-        tools:text="12:30 PM" />
-
+        android:layout_alignLeft="@+id/ko__message"
+        android:layout_below="@+id/ko__message"
+        android:layout_marginTop="@dimen/ko__messenger_gap_between_time_and_message" />
 
 </RelativeLayout>

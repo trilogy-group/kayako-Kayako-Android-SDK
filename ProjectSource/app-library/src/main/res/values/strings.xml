@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:xliff="http://schemas.android.com/tools">
     <string name="ko__title_above_search_bar">How can we help you?</string>
     <string name="ko__title_help_center">Help</string>
     <string name="ko__label_search_hint">Search here...</string>
@@ -6,16 +6,80 @@
     <string name="ko__label_retry">Retry</string>
     <string name="ko__label_empty_view_title">Whoops!</string>
     <string name="ko__label_empty_view_description">Looks like there\'s nothing to show</string>
-    <string name="ko__label_error_view_title">Uh Oh.</string>
-    <string name="ko__label_error_view_description">Something went wrong. Please try again later.</string>
+    <string name="ko__label_error_view_title">Uh Oh</string>
+    <string name="ko__label_error_view_description">Something went wrong. Please try again later</string>
 
     <string name="ko__msg_error_type_at_least_three_characters_to_search">Please type at least 3 characters to search!</string>
-    <string name="ko__msg_error_unable_to_load_more_items">Something went wrong. Unable to load more items.</string>
-    <string name="ko__msg_error_unable_to_article">Something went wrong. Unable to load Articles.</string>
+    <string name="ko__msg_error_unable_to_load_more_items">Something went wrong. Unable to load more items</string>
+    <string name="ko__msg_error_unable_to_article">Something went wrong. Unable to load Articles</string>
 
     <string name="ko__action_contact">Contact</string>
     <string name="ko__action_search">Search</string>
     <string name="ko__action_ok">Ok</string>
     <string name="ko__msg_unread_message">new messages</string>
+    <string name="ko__messenger_input_email_message_instruction">We need your <b>email address</b> to start the conversation</string> <!-- Extra space is an emote -->
+    <string name="ko__messenger_input_email_message_hint_error">Oops, email address seems invalid. Try again?</string>
+    <string name="ko__messenger_input_email_edittext_hint">you@youremail.com</string>
+    <string name="ko__messenger_input_email_message_hint_default">Your Email</string>
+    <string name="ko__email_input_field_msg_you_will_be_notified">Thanks! As soon as someone is available, you\'ll get a notification here or via email</string>
+    <string name="ko__email_input_field_submit_button_text">@string/ko__label_submit</string>
+    <string name="ko__label_submit">Submit</string>
+    <string name="ko__messenger_label_new_conversation">Start a conversation</string>
+    <string name="ko__messenger_reply_box_hint">Type something…</string>
+
+    <string name="ko__messenger_toolbar_default_title">Support</string>
+
+    <string name="ko__messenger_toolbar_subtitle_average_reply_time_in_a_few_minutes">Usually replies in a few minutes</string>
+    <string name="ko__messenger_toolbar_subtitle_average_reply_time_in_ten_minutes">Usually replies in under 10 minutes</string>
+    <string name="ko__messenger_toolbar_subtitle_average_reply_time_in_twenty_minutes">Usually replies in under 20 minutes</string>
+    <string name="ko__messenger_toolbar_subtitle_average_reply_time_in_thirty_minutes">Usually replies in under 30 minutes</string>
+    <string name="ko__messenger_toolbar_subtitle_average_reply_time_in_an_hour">Usually replies within an hour</string>
+    <string name="ko__messenger_toolbar_subtitle_average_reply_time_in_few_hours">Usually replies within a few hours</string>
+    <string name="ko__messenger_toolbar_subtitle_average_reply_time_in_a_day">Typically responds in a day</string>
+
+    <string name="ko__messenger_toolbar_subtitle_assigned_agent_active">Active</string>
+    <string name="ko__messenger_toolbar_subtitle_assigned_agent_active_in_x_minutes">Active in the last <xliff:g example="45" id="number_of_minutes">%1$d</xliff:g> minutes</string>
+    <string name="ko__messenger_toolbar_subtitle_assigned_agent_active_in_one_hour">Active in the last hour</string>
+    <string name="ko__messenger_toolbar_subtitle_assigned_agent_active_in_x_hours">Active <xliff:g example="3" id="number_of_hours">%1$d</xliff:g> hours ago</string>
+    <string name="ko__messenger_toolbar_subtitle_assigned_agent_active_in_one_day">Active in the last day</string>
+    <string name="ko__messenger_toolbar_subtitle_assigned_agent_active_in_x_days">Active <xliff:g example="3" id="number_of_days">%1$d</xliff:g> days ago</string>
+
+
+    <string name="ko__messenger_toolbar_avatar_caption_text_one_agent"><xliff:g example="John" id="name">%1$s</xliff:g> is online</string>
+    <string name="ko__messenger_toolbar_avatar_caption_text_two_agent"><xliff:g example="John" id="name">%1$s</xliff:g> and <xliff:g example="Jim" id="name2">%2$s</xliff:g> are online</string>
+    <string name="ko__messenger_toolbar_avatar_caption_text_three_agent"><xliff:g example="John" id="name">%1$s</xliff:g>, <xliff:g example="Jim" id="name2">%2$s</xliff:g> and <xliff:g example="Tina" id="name3">%3$s</xliff:g> are online</string>
+
+    <string name="ko__messenger_home_screen_widget_presence_title">We are here to help</string>
+    <string name="ko__messenger_home_screen_widget_recent_cases_title">Recent conversations</string>
+    <string name="ko__messenger_home_screen_widget_recent_cases_action_button_label">View all →</string>
+
+    <string name="ko__messenger_delivery_indicators_sent">Sent</string>
+    <string name="ko__messenger_delivery_indicators_delivered">Not seen yet</string>
+    <string name="ko__messenger_delivery_indicators_seen">Seen</string>
+    <string name="ko__messenger_delivery_indicators_sending">Sending…</string>
+    <string name="ko__messenger_delivery_indicators_rejected">Unable to send</string>
+    <string name="ko__messenger_delivery_indicators_failed_to_send">Unable to send. Click here to resend</string>
+
+    <string name="ko__attachment_msg_download_failed">Attachment download failed: </string>
+    <string name="ko__attachment_msg_download_paused">Attachment download is paused: </string>
+    <string name="ko__attachment_msg_download_pending">Attachment download is pending: </string>
+    <string name="ko__attachment_msg_download_running">Attachment is downloading… </string>
+    <string name="ko__attachment_msg_download_successful">Attachment download is successful</string>
+    <string name="ko__attachment_msg_unable_to_open_file">Unable to open file</string>
+    <string name="ko__attachment_msg_no_handler_for_file_type">No handler for this type of file</string>
+    <string name="ko__attachment_msg_unable_to_attach_file">Unable to attach file!</string>
+    <string name="ko__messenger_input_feedback_rating_good_text">Good</string>
+    <string name="ko__messenger_input_feedback_rating_bad_text">Bad</string>
+    <string name="ko__messenger_input_feedback_rating_next_button_text">Next</string>
+    <string name="ko__messenger_input_feedback_rating_instruction_message">How did we do?</string>
+    <string name="ko__messenger_input_feedback_comment_message_hint_default">Your feedback</string>
+    <string name="ko__messenger_input_feedback_comment_message_hint_error">Oops, you haven\'t typed anything. Please enter your feedback and click submit</string>
+    <string name="ko__messenger_input_feedback_comment_message_submitted">Feedback sent</string>
+    <string name="ko__messenger_toolbar_title_conversations">Conversations</string>
+    <string name="ko__messenger_credits_messenger_by">Messenger by </string>
+    <string name="ko__messenger_credits_live_chat_by">Live chat by </string>
+    <string name="ko__messenger_credits_kayako">Kayako</string>
+    <string name="ko__messenger_attachment_placeholder_untitled">Untitled</string>
+    <string name="ko__messenger_msg_failed_to_send_reply">Unable to add reply. Please try again later</string>
 
 </resources>

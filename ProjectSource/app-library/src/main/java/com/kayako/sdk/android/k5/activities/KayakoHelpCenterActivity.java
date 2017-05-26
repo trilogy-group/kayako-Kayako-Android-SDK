@@ -6,13 +6,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.LinearLayout;
 
 import com.kayako.sdk.android.k5.R;
-import com.kayako.sdk.android.k5.articlelistpage.ArticleListContainerFragment;
+import com.kayako.sdk.android.k5.helpcenter.articlelistpage.ArticleListContainerFragment;
 import com.kayako.sdk.android.k5.common.fragments.ActivityNavigationResourceCallback;
-import com.kayako.sdk.android.k5.sectionbycategorypage.SectionByCategoryContainerFragment;
-import com.kayako.sdk.helpcenter.base.Resource;
+import com.kayako.sdk.android.k5.helpcenter.sectionbycategorypage.SectionByCategoryContainerFragment;
+import com.kayako.sdk.base.parser.Resource;
 import com.kayako.sdk.helpcenter.section.Section;
 
 public class KayakoHelpCenterActivity extends AppCompatActivity implements ActivityNavigationResourceCallback {

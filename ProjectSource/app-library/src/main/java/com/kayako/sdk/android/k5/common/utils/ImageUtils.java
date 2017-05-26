@@ -1,16 +1,20 @@
 package com.kayako.sdk.android.k5.common.utils;
 
 import android.content.Context;
-import android.support.annotation.ColorInt;
-import android.support.annotation.DrawableRes;
+import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.widget.ImageView;
 
+import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.signature.StringSignature;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.ChannelDecoration;
 import com.kayako.sdk.android.k5.common.view.CircleImageView;
 import com.kayako.sdk.android.k5.common.view.CropCircleTransformation;
+import com.kayako.sdk.android.k5.core.Kayako;
+
+import java.io.File;
 
 public class ImageUtils {
 
@@ -25,9 +29,12 @@ public class ImageUtils {
         if (avatarUrl != null) {
             Glide.with(context)
                     .load(avatarUrl)
+                    .dontAnimate()
+                    .placeholder(R.drawable.ko__placeholder_avatar)
                     .bitmapTransform(new CropCircleTransformation(context))
-                    .placeholder(R.color.ko__avatar_image_background)
-                    .signature(new StringSignature(avatarUrl))
+                    .centerCrop()
+                    .skipMemoryCache(false) // false because avatars are repeatedly used in message listing, case listing, etc - when true, it shows placeholders
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(avatarView);
         } else {
             Glide.with(context)
@@ -39,7 +46,8 @@ public class ImageUtils {
 
     /**
      * Set public image url imageView and specify default placeholder resource
-     *  @param context
+     *
+     * @param context
      * @param imageView
      * @param imageUrl
      * @param placeholderDrawable
@@ -48,8 +56,11 @@ public class ImageUtils {
         if (imageUrl != null) {
             Glide.with(context)
                     .load(imageUrl)
-                    .signature(new StringSignature(imageUrl))
+                    .dontAnimate()
                     .placeholder(placeholderDrawable)
+                    .centerCrop()
+                    .skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
                     .into(imageView);
         } else {
             Glide.with(context)
@@ -69,14 +80,33 @@ public class ImageUtils {
         if (avatarUrl != null) {
             Glide.with(context)
                     .load(avatarUrl)
-                    .placeholder(R.color.ko__avatar_image_background)
-                    .signature(new StringSignature(avatarUrl))
+                    .dontAnimate()
+                    .placeholder(R.drawable.ko__placeholder_avatar)
+                    .centerCrop()
+                    .skipMemoryCache(false) // false because avatars are repeatedly used in message listing, case listing, etc - when true, it shows placeholders
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(avatarView);
         } else {
             Glide.with(context)
-                    .load(R.color.ko__avatar_image_background)
+                    .load(R.drawable.ko__placeholder_avatar)
                     .into(avatarView);
         }
+    }
+
+    /**
+     * Set local drawable to imageview
+     *
+     * @param context
+     * @param avatarView
+     * @param avatarResId
+     */
+    public static void setAvatarImage(Context context, ImageView avatarView, int avatarResId) {
+        Glide.with(context)
+                .load(avatarResId)
+                .centerCrop()
+                .skipMemoryCache(false) // false because avatars are repeatedly used in message listing, case listing, etc - when true, it shows placeholders
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(avatarView);
     }
 
     /**
@@ -93,5 +123,58 @@ public class ImageUtils {
             imageView.setImageResource(drawableResourceId);
         }
     }
+
+    /**
+     * Set image from file resource
+     *
+     * @param imageView
+     * @param file
+     */
+    public static void loadFileAsAttachmentImage(@NonNull Context context, @NonNull ImageView imageView, @NonNull File file, boolean showPlaceholder) {
+
+        DrawableTypeRequest<File> request = Glide.with(context).load(file);
+
+        if (showPlaceholder) {
+            request.placeholder(R.drawable.ko__loading_attachment);
+        }
+
+        request.crossFade()
+                .skipMemoryCache(false)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE) // using source because RESULT messes up when image resizes to fit into imageview with wrap_content
+                .into(imageView);
+    }
+
+    public static void loadUrlAsAttachmentImage(@NonNull Context context, @NonNull ImageView imageView, @NonNull String imageUrl, boolean showPlaceholder) {
+
+        DrawableTypeRequest<String> request = Glide.with(context).load(imageUrl);
+
+        if (showPlaceholder) {
+            request.placeholder(R.drawable.ko__loading_attachment);
+        }
+
+        request
+                .skipMemoryCache(false)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE) // using source because RESULT messes up when image resizes to fit into imageview with wrap_content
+                .into(imageView);
+    }
+
+
+    private static AsyncTask clearDiskCacheTask;
+
+    public static void clearCache() {
+        Glide.get(Kayako.getApplicationContext()).clearMemory();
+
+        if (clearDiskCacheTask == null
+                || clearDiskCacheTask.isCancelled() || clearDiskCacheTask.getStatus() != AsyncTask.Status.RUNNING) { // Prevent multiple calls
+            clearDiskCacheTask = new AsyncTask<Void, Void, Void>() {
+                @Override
+                protected Void doInBackground(Void... params) {
+                    Glide.get(Kayako.getApplicationContext()).clearDiskCache();
+                    return null;
+                }
+            }.execute();
+        }
+    }
+
 
 }

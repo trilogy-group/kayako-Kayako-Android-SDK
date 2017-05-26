@@ -5,24 +5,25 @@ import android.support.annotation.Nullable;
 
 import com.kayako.sdk.android.k5.common.adapter.BaseDataListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.Attachment;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.ChannelDecoration;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.DeliveryIndicator;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerListType;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class AttachmentMessageSelfListItem extends BaseDataListItem {
 
-    private String avatarUrl;
     private long time;
-    private ChannelDecoration channel;
     private Attachment attachment;
+    private DeliveryIndicator deliveryIndicator;
+    private boolean fadeBackground;
 
-    public AttachmentMessageSelfListItem(@Nullable Long id,@NonNull String avatarUrl, @Nullable ChannelDecoration channel, @NonNull Attachment attachment, @Nullable long time, @Nullable Map<String, Object> data) {
-        super(MessengerListType.ATTACHMENT_MESSAGE_SELF, id,data);
+    public AttachmentMessageSelfListItem(@Nullable Long id, @Nullable DeliveryIndicator deliveryIndicator, boolean fadeBackground, @NonNull Attachment attachment, @Nullable long time, @Nullable Map<String, Object> data) {
+        super(MessengerListType.ATTACHMENT_MESSAGE_SELF, id, data);
         this.attachment = attachment;
         this.time = time;
-        this.avatarUrl = avatarUrl;
-        this.channel = channel;
+        this.deliveryIndicator = deliveryIndicator;
+        this.fadeBackground = fadeBackground;
     }
 
     public Attachment getAttachment() {
@@ -41,19 +42,26 @@ public class AttachmentMessageSelfListItem extends BaseDataListItem {
         this.time = time;
     }
 
-    public String getAvatarUrl() {
-        return avatarUrl;
+    public DeliveryIndicator getDeliveryIndicator() {
+        return deliveryIndicator;
     }
 
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
+    public boolean isFadeBackground() {
+        return fadeBackground;
     }
 
-    public ChannelDecoration getChannel() {
-        return channel;
+    @Override
+    public Map<String, String> getContents() {
+        Map<String, String> map = new HashMap<>();
+        map.put("time", String.valueOf(time));
+        map.put("fadeBackground", String.valueOf(fadeBackground));
+        if (attachment != null) {
+            map.putAll(attachment.getContents());
+        }
+        if (deliveryIndicator != null) {
+            map.putAll(deliveryIndicator.getContents());
+        }
+        return map;
     }
 
-    public void setChannel(ChannelDecoration channel) {
-        this.channel = channel;
-    }
 }

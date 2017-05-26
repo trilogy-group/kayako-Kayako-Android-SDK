@@ -1,32 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
-    android:orientation="horizontal"
-    android:paddingBottom="@dimen/ko__messenger_list_item_separator_margin_bottom"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/ko__messenger_list_item_unread_separator_margin_bottom"
     android:paddingLeft="@dimen/ko__messenger_list_item_margin"
     android:paddingRight="@dimen/ko__messenger_list_item_margin"
-    android:paddingTop="@dimen/ko__messenger_list_item_separator_margin_top">
+    android:paddingTop="@dimen/ko__messenger_list_item_unread_separator_margin_top">
 
-    <View
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:layout_margin="8dp"
-        android:layout_weight="1"
-        android:background="@color/ko__messenger_unread_separator_line_color" />
-
-    <TextView
+    <com.kayako.sdk.android.k5.common.view.RegularTextView
         android:id="@+id/ko__unread_label"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="start"
-        android:maxLines="1"
+        android:gravity="center_vertical|right"
         android:text="@string/ko__msg_unread_message"
         android:textColor="@color/ko__messenger_unread_separator_text_color"
-        android:textSize="16sp"
-        tools:text="Unread" />
+        android:textSize="@dimen/ko__messenger_list_item_time_text_size" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/ko__messenger_unread_separator_line_color" />
 
 </LinearLayout>

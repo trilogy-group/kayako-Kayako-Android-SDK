@@ -1,0 +1,60 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/email_field_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ko__speech_bubble_input_field_rounded_top_background"
+        android:orientation="vertical">
+
+        <com.kayako.sdk.android.k5.common.view.RegularTextView
+            android:id="@+id/ko__email_input_field_message_hint"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/ko__messenger_input_field_blue_hint_text_color"
+            android:textSize="12sp" />
+
+        <com.kayako.sdk.android.k5.common.view.RegularEditText
+            android:id="@+id/ko__email_input_field_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="6dp"
+            android:background="@null"
+            android:ellipsize="end"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="@string/ko__messenger_input_email_edittext_hint"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:paddingBottom="16dp"
+            android:paddingTop="8dp"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/ko__messenger_speech_bubble_other_background_color" />
+
+    <com.kayako.sdk.android.k5.common.view.BoldButton
+        android:id="@+id/ko__email_input_field_submit_button"
+        android:textAllCaps="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:gravity="center"
+        android:padding="@dimen/ko__messenger_input_item_submit_button_padding"
+        android:textColor="@color/ko__email_input_field_submit_button_text_color"
+        android:textSize="@dimen/ko__email_input_field_submit_button_text_size"
+        android:text="@string/ko__email_input_field_submit_button_text" />
+
+</LinearLayout>

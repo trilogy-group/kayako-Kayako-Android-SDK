@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ko__delivery_indicator_row"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <com.kayako.sdk.android.k5.common.view.RegularTextView
+        android:id="@+id/ko__delivery_status"
+        style="@style/Ko__ChatBubbleDateStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:text="Seen" />
+
+    <include
+        layout="@layout/ko__include_dot_separator"
+        android:layout_width="4dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+    <com.kayako.sdk.android.k5.common.view.RegularTextView
+        android:id="@+id/ko__time"
+        style="@style/Ko__ChatBubbleDateStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:text="12:30 PM"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/ko__delivery_status_image"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_gravity="center"
+        android:scaleType="centerInside"
+        android:visibility="gone"
+        tools:src="@drawable/ko__delivery_indicator_seen" />
+
+</LinearLayout>

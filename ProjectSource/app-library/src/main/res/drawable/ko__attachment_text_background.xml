@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <stroke
+        android:width="@dimen/ko__messenger_attachment_placeholder_outline_size"
+        android:color="@color/ko__messenger_attachment_placeholder_outline_color" />
+
+    <solid android:color="@color/ko__messenger_attachment_placeholder_text_background_color" />
+
+    <corners
+        android:bottomLeftRadius="@dimen/ko__messenger_attachment_placeholder_corner"
+        android:bottomRightRadius="@dimen/ko__messenger_attachment_placeholder_corner"
+        android:topLeftRadius="0dp"
+        android:topRightRadius="0dp" />
+
+</shape>

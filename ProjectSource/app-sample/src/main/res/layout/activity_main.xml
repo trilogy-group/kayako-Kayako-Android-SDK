@@ -1,65 +1,153 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/ko__activity_vertical_margin"
-    android:paddingTop="@dimen/ko__activity_vertical_margin"
-    tools:context="com.kayako.sample.MainActivity">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingLeft="@dimen/ko__activity_horizontal_margin"
-        android:paddingRight="@dimen/ko__activity_horizontal_margin">
+        android:paddingBottom="@dimen/ko__activity_vertical_margin"
+        android:paddingTop="@dimen/ko__activity_vertical_margin"
+        tools:context="com.kayako.sample.MainActivity">
 
-        <EditText
-            android:id="@+id/edittext"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@null"
-            android:padding="8dp"
-            android:text="https://support.kayako.com" />
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/ko__activity_horizontal_margin"
+            android:paddingRight="@dimen/ko__activity_horizontal_margin">
 
-        <include layout="@layout/separator" />
+            <EditText
+                android:id="@+id/edittext_helpcenter_url"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:padding="8dp"
+                android:text="https://support.kayako.com" />
 
-        <Spinner
-            android:id="@+id/spinner"
+            <include layout="@layout/separator" />
+
+            <Spinner
+                android:id="@+id/spinner_locale"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <include layout="@layout/separator" />
+
+            <Button
+                android:id="@+id/button_helpcenter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:text="@string/open_kayako_help_center" />
+
+
+        </LinearLayout>
+
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="10px"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/colorPrimary" />
 
-        <include layout="@layout/separator" />
-
-        <Button
-            android:id="@+id/button"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="8dp"
-            android:text="@string/open_kayako_help_center" />
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/ko__activity_horizontal_margin"
+            android:paddingRight="@dimen/ko__activity_horizontal_margin">
+
+            <EditText
+                android:id="@+id/edittext_brand_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:padding="8dp"
+                android:text="Kayako Team" />
+
+            <include layout="@layout/separator" />
+
+            <EditText
+                android:id="@+id/edittext_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:padding="8dp"
+                android:text="Howdy" />
+
+            <include layout="@layout/separator" />
+
+
+            <EditText
+                android:id="@+id/edittext_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:padding="8dp"
+                android:text="You can always reach us here to get the help!" />
+
+            <include layout="@layout/separator" />
+
+            <EditText
+                android:id="@+id/edittext_messenger_url"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:padding="8dp"
+                android:text="https://kayako-mobile-testing.kayako.com" />
+
+            <include layout="@layout/separator" />
+
+            <Spinner
+                android:id="@+id/spinner_messenger_background"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <include layout="@layout/separator" />
+
+            <Spinner
+                android:id="@+id/spinner_messenger_foreground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!--TESTING: Hiding Primary Color field - TODO: Decide if set via code or xml -->
+
+            <include
+                layout="@layout/separator"
+                android:visibility="gone" />
+
+            <EditText
+                android:id="@+id/edittext_primary_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="Primary Color"
+                android:maxLines="1"
+                android:padding="8dp"
+                android:text="#F1703F"
+                android:visibility="gone" />
+
+            <include layout="@layout/separator" />
+
+            <Button
+                android:id="@+id/button_messenger"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/open_messenger" />
+
+            <Button
+                android:id="@+id/button_clear_all"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/clear_all" />
+
+        </LinearLayout>
+
+
     </LinearLayout>
-
-    <View xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="10px"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="16dp"
-        android:background="@color/colorPrimary" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="@dimen/ko__activity_horizontal_margin"
-        android:paddingRight="@dimen/ko__activity_horizontal_margin">
-
-        <Button
-            android:id="@+id/button_messenger"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/open_messenger" />
-
-    </LinearLayout>
-</LinearLayout>
+</ScrollView>

@@ -1,44 +1,21 @@
 package com.kayako.sdk.android.k5.common.fragments;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 
-import com.kayako.sdk.android.k5.BuildConfig;
-import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseDataListItem;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.loadmorelist.EndlessRecyclerViewScrollAdapter;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.Attachment;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.UserDecoration;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageContinuedOtherListItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageContinuedSelfListItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageOtherListItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageSelfListItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.ChannelDecoration;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.DataItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.DataItemHelper;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.DateSeparatorListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerAdapter;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.EmptyListItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageContinuedOtherListItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageContinuedSelfListItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageOtherListItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageSelfListItem;
-import com.kayako.sdk.android.k5.common.utils.ViewUtils;
 import com.kayako.sdk.android.k5.common.viewhelpers.CustomStateViewHelper;
 import com.kayako.sdk.android.k5.common.viewhelpers.DefaultStateViewHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Neil Mathew <neil.mathew@kayako.com>
@@ -46,8 +23,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class MessengerListFragment extends BaseListFragment {
 
     private MessengerAdapter mMessengerAdapter;
-
-    private static final boolean SHOW_SAMPLE_DATA = true;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,10 +37,12 @@ public class MessengerListFragment extends BaseListFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        /* TESTING:
         if (SHOW_SAMPLE_DATA) {
             testSample1();
             testSample2();
         }
+        */
     }
 
     /**
@@ -115,7 +92,7 @@ public class MessengerListFragment extends BaseListFragment {
         mMessengerAdapter.setOnAvatarClickListener(listener);
     }
 
-    public void setOnAttachmentClickListener(MessengerAdapter.OnAttachmentClickListener listener) {
+    public void setOnListAttachmentClickListener(MessengerAdapter.OnAttachmentClickListener listener) {
         mMessengerAdapter.setOnAttachmentClickListener(listener);
     }
 
@@ -146,7 +123,7 @@ public class MessengerListFragment extends BaseListFragment {
 
     @Override
     public void scrollToBeginningOfList() {
-        super.scrollToBeginningOfList();
+        super.scrollToEndOfList();
     }
 
     @Override
@@ -282,6 +259,13 @@ public class MessengerListFragment extends BaseListFragment {
         return positions;
     }
 
+    public boolean isNearEndOfList() {
+        int lastPosition = 0; // new messages are added at the top
+        int lastVisibleItemPosition = findLastVisibleItemPosition();
+
+        return Math.abs(lastVisibleItemPosition - lastPosition) < 4;
+    }
+
     /**
      * scroll to bottom ONLY if the user is currently viewing the last few posts)
      */
@@ -295,7 +279,8 @@ public class MessengerListFragment extends BaseListFragment {
     }
 
 ////////////////////////////////////////////// TEST IMPLEMENTATION //////////////////////////////////////////////
-
+    /*
+    private static final boolean SHOW_SAMPLE_DATA = false;
     private AtomicInteger testTaskCounter = new AtomicInteger(0);
     private AtomicInteger testMaxLoadMoreAttempts = new AtomicInteger(3);
 
@@ -320,43 +305,43 @@ public class MessengerListFragment extends BaseListFragment {
     private void testSample1() {
         List<BaseListItem> items = new ArrayList<>();
         items.add(new SimpleMessageOtherListItem(0L, "Hey there. You look lost. Can I help?", test_avatarUrl_other, test_channelDefault, 1477751012000L, null));
-        items.add(new SimpleMessageSelfListItem(0L, "Yeah, I'm trying to buy a coffee machine. Don't know where to start...", test_avatarUrl_self, test_channelDefault, 1477751012000L, null));
+        items.add(new SimpleMessageSelfListItem(0L, "Yeah, I'm trying to buy a coffee machine. Don't know where to start...", test_avatarUrl_self, test_channelDefault, 1477751012000L, null, null));
         items.add(new SimpleMessageOtherListItem(0L, "We sell Solar Panels, not coffee machines", test_avatarUrl_other, test_channelDefault, 0, null));
         items.add(new SimpleMessageContinuedOtherListItem(0L, "Though I personally love Brewfictus coffee machines.", 0, null));
         items.add(new SimpleMessageContinuedOtherListItem(0L, "How about searching there?", 1477751013000L, null));
-        items.add(new SimpleMessageSelfListItem(0L, "Eeep!", test_avatarUrl_self, test_channelDefault, 0, null));
-        items.add(new SimpleMessageContinuedSelfListItem(0L, "Thanks", 1477751013000L, null));
+        items.add(new SimpleMessageSelfListItem(0L, "Eeep!", test_avatarUrl_self, test_channelDefault, 0, null, null));
+        items.add(new SimpleMessageContinuedSelfListItem(0L, "Thanks", 1477751013000L, null, null));
 
         // Test Attachments by Other
         items.add(new SimpleMessageOtherListItem(0L, "Wait. Could you show me how your solar panels look?", test_avatarUrl_other, test_channelDefault, 0, null));
         items.add(new AttachmentMessageOtherListItem(0L, test_avatarUrl_other, test_channelDefault, new Attachment(0L, "http://cdn2.bigcommerce.com/n-d57o0b/tvhc2xod/product_images/uploaded_images/solar-panels.jpg?t=1416860323", "Solarpanels.png"), 0, null));
-        items.add(new SimpleMessageSelfListItem(0L, "Good, right?", test_avatarUrl_self, test_channelDefault, 1477763213000L, null));
+        items.add(new SimpleMessageSelfListItem(0L, "Good, right?", test_avatarUrl_self, test_channelDefault, 1477763213000L, null, null));
         items.add(new AttachmentMessageContinuedOtherListItem(0L, new Attachment(0L, "https://www.solarworld-usa.com/~/media/www/images/products/modules/off-grid.jpg?la=en", "Solarpanels.png"), 0, null));
         items.add(new AttachmentMessageContinuedOtherListItem(0L, new Attachment(0L, "https://www.solarworld-usa.com/~/media/www/images/products/modules/off-grid.jpg?la=en", "Solarpanels.png"), 0, null));
 
         // Test Attachments by Self
-        items.add(new SimpleMessageSelfListItem(0L, "Let me just send back everything you sent me.", test_avatarUrl_self, test_channelDefault, 0, null));
-        items.add(new AttachmentMessageSelfListItem(0L, test_avatarUrl_self, test_channelDefault, new Attachment(0L, "http://cdn2.bigcommerce.com/n-d57o0b/tvhc2xod/product_images/uploaded_images/solar-panels.jpg?t=1416860323", "Solarpanels.png"), 0, null));
-        items.add(new SimpleMessageContinuedSelfListItem(0L, "Does that help? Here's another one", 0, null));
-        items.add(new AttachmentMessageContinuedSelfListItem(0L, new Attachment(0L, "https://www.solarworld-usa.com/~/media/www/images/products/modules/off-grid.jpg?la=en", "Solarpanels.png"), 0, null));
-        items.add(new AttachmentMessageContinuedSelfListItem(0L, new Attachment(0L, "https://www.solarworld-usa.com/~/media/www/images/products/modules/off-grid.jpg?la=en", "Solarpanels.png"), 0, null));
+        items.add(new SimpleMessageSelfListItem(0L, "Let me just send back everything you sent me.", test_avatarUrl_self, test_channelDefault, 0, null, null));
+        items.add(new AttachmentMessageSelfListItem(0L, test_avatarUrl_self, test_channelDefault, null, new Attachment(0L, "http://cdn2.bigcommerce.com/n-d57o0b/tvhc2xod/product_images/uploaded_images/solar-panels.jpg?t=1416860323", "Solarpanels.png"), 0, null));
+        items.add(new SimpleMessageContinuedSelfListItem(0L, "Does that help? Here's another one", 0, null, null));
+        items.add(new AttachmentMessageContinuedSelfListItem(0L, new Attachment(0L, "https://www.solarworld-usa.com/~/media/www/images/products/modules/off-grid.jpg?la=en", "Solarpanels.png"), 0, null, null));
+        items.add(new AttachmentMessageContinuedSelfListItem(0L, new Attachment(0L, "https://www.solarworld-usa.com/~/media/www/images/products/modules/off-grid.jpg?la=en", "Solarpanels.png"), 0, null, null));
 
         // Test image without label
-        items.add(new AttachmentMessageSelfListItem(0L, test_avatarUrl_self, test_channelDefault, new Attachment(0L, "http://cdn2.bigcommerce.com/n-d57o0b/tvhc2xod/product_images/uploaded_images/solar-panels.jpg?t=1416860323", null), 0, null));
+        items.add(new AttachmentMessageSelfListItem(0L, test_avatarUrl_self, test_channelDefault, null, new Attachment(0L, "http://cdn2.bigcommerce.com/n-d57o0b/tvhc2xod/product_images/uploaded_images/solar-panels.jpg?t=1416860323", null), 0, null));
 
         // Test time
         items.add(new DateSeparatorListItem(System.currentTimeMillis())); // now
-        items.add(new SimpleMessageSelfListItem(0L, "Eeep!", test_avatarUrl_self, test_channelDefault, 0, null));
-        items.add(new SimpleMessageSelfListItem(0L, "Eeep!", test_avatarUrl_self, test_channelDefault, 1477763213000L, null));
+        items.add(new SimpleMessageSelfListItem(0L, "Eeep!", test_avatarUrl_self, test_channelDefault, 0, null, null));
+        items.add(new SimpleMessageSelfListItem(0L, "Eeep!", test_avatarUrl_self, test_channelDefault, 1477763213000L, null, null));
         items.add(new DateSeparatorListItem(1456842212000L)); // Tue, 01 Mar 2016 14:23:32 GMT
-        items.add(new SimpleMessageSelfListItem(0L, "Eeep!", test_avatarUrl_self, test_channelDefault, 1477763213000L, null));
+        items.add(new SimpleMessageSelfListItem(0L, "Eeep!", test_avatarUrl_self, test_channelDefault, 1477763213000L, null, null));
         items.add(new DateSeparatorListItem(1477751012000L)); // Sat, 29 Oct 2016 14:23:32 GMT
-        items.add(new SimpleMessageSelfListItem(0L, "Eeep!", test_avatarUrl_self, test_channelDefault, 0, null));
+        items.add(new SimpleMessageSelfListItem(0L, "Eeep!", test_avatarUrl_self, test_channelDefault, 0, null, null));
         items.add(new EmptyListItem());
 
         // Test min-wdith of Chat Bubble
         items.add(new SimpleMessageOtherListItem(0L, "!", test_avatarUrl_other, test_channelDefault, 1479763213000L, null));
-        items.add(new SimpleMessageSelfListItem(0L, "?", test_avatarUrl_self, test_channelDefault, 1479766213000L, null));
+        items.add(new SimpleMessageSelfListItem(0L, "?", test_avatarUrl_self, test_channelDefault, 1479766213000L, null, null));
 
         // Test all channels
         items.add(new SimpleMessageOtherListItem(0L, "Facebook!", test_avatarUrl_other, test_channelFacebook, 1479763213000L, null));
@@ -383,7 +368,7 @@ public class MessengerListFragment extends BaseListFragment {
 
         });
 
-        setOnAttachmentClickListener(new MessengerAdapter.OnAttachmentClickListener() {
+        setOnListAttachmentClickListener(new MessengerAdapter.OnAttachmentClickListener() {
             @Override
             public void onClickAttachment(int messageType, Long id, Map<String, Object> messageData) {
                 ViewUtils.showToastMessage(getContext(), "Attachment " + messageType, Toast.LENGTH_SHORT);
@@ -440,9 +425,9 @@ public class MessengerListFragment extends BaseListFragment {
                         // ADD NEW ITEMS AT END
                         List<BaseListItem> items = new ArrayList();
                         String suffix = String.format("[%s]", testMaxLoadMoreAttempts);
-                        items.add(new SimpleMessageSelfListItem(0L, "More " + suffix, test_avatarUrl_self, test_channelFacebook, 0, null));
+                        items.add(new SimpleMessageSelfListItem(0L, "More " + suffix, test_avatarUrl_self, test_channelFacebook, 0, null, null));
                         for (int i = 2; i <= 20; i++) {
-                            items.add(new SimpleMessageContinuedSelfListItem(0L, "More " + suffix + " " + i, 0, null));
+                            items.add(new SimpleMessageContinuedSelfListItem(0L, "More " + suffix + " " + i, 0, null, null));
                         }
                         addItemsToBeginningOfList(items); // TODO: Remove hideLoadMoreProgress call in addItemsToEndOfList?
 
@@ -467,7 +452,7 @@ public class MessengerListFragment extends BaseListFragment {
             @Override
             public void performAfterWait() {
                 List<BaseListItem> items = new ArrayList();
-                items.add(new SimpleMessageSelfListItem(0L, "Blah Blah!", test_avatarUrl_self, test_channelFacebook, 0, null));
+                items.add(new SimpleMessageSelfListItem(0L, "Blah Blah!", test_avatarUrl_self, test_channelFacebook, 0, null, null));
                 addItemsToEndOfList(items);
 
                 List<BaseListItem> items2 = new ArrayList();
@@ -485,19 +470,19 @@ public class MessengerListFragment extends BaseListFragment {
             @Override
             public void performAfterWait() {
                 List<DataItem> dataItems = new ArrayList<>();
-                dataItems.add(new DataItem(0L, null, new UserDecoration(test_avatarUrl_self, 0L, true), test_channelFacebook, "Whassup?", 1499763213000L, null, true));
-                dataItems.add(new DataItem(1L, null, new UserDecoration(test_avatarUrl_other, 2L, false), test_channelHelpCenter, "Hello", 1499763213000L, null, true));
-                dataItems.add(new DataItem(2L, null, new UserDecoration(test_avatarUrl_self, 0L, true), test_channelFacebook, "Whassup?", 1499763314000L, null, true));
-                dataItems.add(new DataItem(3L, null, new UserDecoration(test_avatarUrl_other, 2L, false), test_channelHelpCenter, "Why,", 1499763315000L, null, true));
-                dataItems.add(new DataItem(4L, null, new UserDecoration(test_avatarUrl_other, 2L, false), test_channelHelpCenter, "Hedsafadsfallo", 1499773315000L, null, true));
-                dataItems.add(new DataItem(5L, null, new UserDecoration(test_avatarUrl_other, 2L, false), test_channelHelpCenter, "Hesdfasllo", 1499783315000L, null, false));
-                dataItems.add(new DataItem(7L, null, new UserDecoration(test_avatarUrl_self, 0L, true), test_channelHelpCenter, "Hel213q dswzwexq wqdlo", 1499793315000L, null, false));
-                dataItems.add(new DataItem(9L, null, new UserDecoration(test_avatarUrl_self, 0L, true), test_channelHelpCenter, "Hel213q ds d asd sawzwexq wqdlo", 1499803315000L, null, false));
-                dataItems.add(new DataItem(12L, null, new UserDecoration(test_avatarUrl_other, 2L, false), test_channelHelpCenter, "He sa dsa dasdallo", 1499963315000L, null, false));
-                dataItems.add(new DataItem(16L, null, new UserDecoration(test_avatarUrl_other, 2L, false), test_channelHelpCenter, "He sa2 dsa dasdallo", 1499963325000L, null, false));
-                dataItems.add(new DataItem(18L, null, new UserDecoration(test_avatarUrl_self, 0L, true), test_channelHelpCenter, "He sa3 dsa dasdallo", 1499963335000L, null, false));
-                dataItems.add(new DataItem(21L, null, new UserDecoration(test_avatarUrl_other, 2L, false), test_channelHelpCenter, "He saddsdass llo", 1500063315000L, null, false));
-                dataItems.add(new DataItem(26L, null, new UserDecoration(test_avatarUrl_other, 2L, false), test_channelHelpCenter, "He asdas dasdasdasd  s llo", 1511163315000L, null, false));
+                dataItems.add(new DataItem(0L, null, new UserDecoration(test_avatarUrl_self, 0L, true), test_channelFacebook, null, "Whassup?", 1499763213000L, null, true));
+                dataItems.add(new DataItem(1L, null, new UserDecoration(test_avatarUrl_other, 2L, false), test_channelHelpCenter, null, "Hello", 1499763213000L, null, true));
+                dataItems.add(new DataItem(2L, null, new UserDecoration(test_avatarUrl_self, 0L, true), test_channelFacebook, null, "Whassup?", 1499763314000L, null, true));
+                dataItems.add(new DataItem(3L, null, new UserDecoration(test_avatarUrl_other, 2L, false), test_channelHelpCenter, null, "Why,", 1499763315000L, null, true));
+                dataItems.add(new DataItem(4L, null, new UserDecoration(test_avatarUrl_other, 2L, false), test_channelHelpCenter, null, "Hedsafadsfallo", 1499773315000L, null, true));
+                dataItems.add(new DataItem(5L, null, new UserDecoration(test_avatarUrl_other, 2L, false), test_channelHelpCenter, null, "Hesdfasllo", 1499783315000L, null, false));
+                dataItems.add(new DataItem(7L, null, new UserDecoration(test_avatarUrl_self, 0L, true), test_channelHelpCenter, null, "Hel213q dswzwexq wqdlo", 1499793315000L, null, false));
+                dataItems.add(new DataItem(9L, null, new UserDecoration(test_avatarUrl_self, 0L, true), test_channelHelpCenter, null, "Hel213q ds d asd sawzwexq wqdlo", 1499803315000L, null, false));
+                dataItems.add(new DataItem(12L, null, new UserDecoration(test_avatarUrl_other, 2L, false), test_channelHelpCenter, null, "He sa dsa dasdallo", 1499963315000L, null, false));
+                dataItems.add(new DataItem(16L, null, new UserDecoration(test_avatarUrl_other, 2L, false), test_channelHelpCenter, null, "He sa2 dsa dasdallo", 1499963325000L, null, false));
+                dataItems.add(new DataItem(18L, null, new UserDecoration(test_avatarUrl_self, 0L, true), test_channelHelpCenter, null, "He sa3 dsa dasdallo", 1499963335000L, null, false));
+                dataItems.add(new DataItem(21L, null, new UserDecoration(test_avatarUrl_other, 2L, false), test_channelHelpCenter, null, "He saddsdass llo", 1500063315000L, null, false));
+                dataItems.add(new DataItem(26L, null, new UserDecoration(test_avatarUrl_other, 2L, false), test_channelHelpCenter, null, "He asdas dasdasdasd  s llo", 1511163315000L, null, false));
                 addItemsToEndOfList(DataItemHelper.getInstance().convertDataItemToListItems(dataItems));
 
                 scrollToNewMessagesIfNearby();
@@ -536,5 +521,6 @@ public class MessengerListFragment extends BaseListFragment {
     private interface TestCallback {
         void performAfterWait();
     }
+    */
 
 }

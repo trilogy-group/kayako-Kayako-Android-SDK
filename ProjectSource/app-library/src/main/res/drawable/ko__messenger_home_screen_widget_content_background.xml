@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/ko__messenger_home_screen_widget_content_background_color" />
+
+    <corners
+        android:bottomLeftRadius="@dimen/ko__messenger_home_screen_widget_content_corner_bottom"
+        android:bottomRightRadius="@dimen/ko__messenger_home_screen_widget_content_corner_bottom"
+        android:topLeftRadius="@dimen/ko__messenger_home_screen_widget_content_corner_top"
+        android:topRightRadius="@dimen/ko__messenger_home_screen_widget_content_corner_top" />
+</shape>

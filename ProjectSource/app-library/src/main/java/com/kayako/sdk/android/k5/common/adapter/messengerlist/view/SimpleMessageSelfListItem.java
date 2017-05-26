@@ -5,24 +5,29 @@ import android.support.annotation.Nullable;
 
 import com.kayako.sdk.android.k5.common.adapter.BaseDataListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.ChannelDecoration;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.DeliveryIndicator;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerListType;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.DiffUtilsHelper;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class SimpleMessageSelfListItem extends BaseDataListItem {
 
-    private String message;
-    private String avatarUrl;
-    private long time;
-    private ChannelDecoration channel;
+    // Same arguments as SimpleMessageContinuedSelfListItem but padding is different
 
-    public SimpleMessageSelfListItem(@Nullable Long id, @NonNull String message, @NonNull String avatarUrl, @Nullable ChannelDecoration channel, @Nullable long time, @Nullable Map<String, Object> data) {
+    private String message;
+    private long time;
+    private DeliveryIndicator deliveryIndicator;
+    private boolean fadeBackground;
+
+    public SimpleMessageSelfListItem(@Nullable Long id, @NonNull String message, @Nullable long time, @Nullable DeliveryIndicator deliveryIndicator, boolean fadeBackground, @Nullable Map<String, Object> data) {
         super(MessengerListType.SIMPLE_MESSAGE_SELF, id, data);
 
         this.message = message;
-        this.avatarUrl = avatarUrl;
         this.time = time;
-        this.channel = channel;
+        this.deliveryIndicator = deliveryIndicator;
+        this.fadeBackground = fadeBackground;
     }
 
     public String getMessage() {
@@ -33,13 +38,6 @@ public class SimpleMessageSelfListItem extends BaseDataListItem {
         this.message = message;
     }
 
-    public String getAvatarUrl() {
-        return avatarUrl;
-    }
-
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
-    }
 
     public long getTime() {
         return time;
@@ -49,11 +47,23 @@ public class SimpleMessageSelfListItem extends BaseDataListItem {
         this.time = time;
     }
 
-    public ChannelDecoration getChannel() {
-        return channel;
+    public DeliveryIndicator getDeliveryIndicator() {
+        return deliveryIndicator;
     }
 
-    public void setChannel(ChannelDecoration channel) {
-        this.channel = channel;
+    public boolean isFadeBackground() {
+        return fadeBackground;
+    }
+
+    @Override
+    public Map<String, String> getContents() {
+        Map<String, String> map = new HashMap<>();
+        map.put("message", String.valueOf(message));
+        map.put("time", String.valueOf(time));
+        map.put("fadeBackground", String.valueOf(fadeBackground));
+        if (deliveryIndicator != null) {
+            map.putAll(deliveryIndicator.getContents());
+        }
+        return map;
     }
 }

@@ -1,0 +1,120 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ko__messenger_input_feedback_rating_field_layout"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:background="@drawable/ko__speech_bubble_input_field_rounded_top_background"
+    android:orientation="horizontal">
+
+    <ViewSwitcher
+        android:id="@+id/ko__messenger_input_feedback_rating_field_good_view_switcher"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/ko__messenger_input_feedback_rating_field_good_view_default"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="@dimen/ko__messenger_input_feedback_rating_image_size"
+                android:layout_height="@dimen/ko__messenger_input_feedback_rating_image_size"
+                android:src="@drawable/ko__img_happy_default" />
+
+            <com.kayako.sdk.android.k5.common.view.RegularTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ko__messenger_input_feedback_rating_gap_between_image_and_text"
+                android:text="@string/ko__messenger_input_feedback_rating_good_text"
+                android:textColor="@color/ko__messenger_input_feedback_rating_default_text_color"
+                android:textSize="@dimen/ko__messenger_input_feedback_rating_text_size" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ko__messenger_input_feedback_rating_field_good_view_selected"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/ko__messenger_input_feedback_rating_selected_background_color"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="@dimen/ko__messenger_input_feedback_rating_image_size"
+                android:layout_height="@dimen/ko__messenger_input_feedback_rating_image_size"
+                android:src="@drawable/ko__img_happy_selected" />
+
+            <com.kayako.sdk.android.k5.common.view.RegularTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ko__messenger_input_feedback_rating_gap_between_image_and_text"
+                android:text="@string/ko__messenger_input_feedback_rating_good_text"
+                android:textColor="@color/ko__messenger_input_feedback_rating_selected_good_text_color"
+                android:textSize="@dimen/ko__messenger_input_feedback_rating_text_size" />
+
+        </LinearLayout>
+
+    </ViewSwitcher>
+
+    <include
+        layout="@layout/ko__include_separator"
+        android:layout_width="1px"
+        android:layout_height="match_parent" />
+
+    <ViewSwitcher
+        android:id="@+id/ko__messenger_input_feedback_rating_field_bad_view_switcher"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/ko__messenger_input_feedback_rating_field_bad_view_default"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="@dimen/ko__messenger_input_feedback_rating_image_size"
+                android:layout_height="@dimen/ko__messenger_input_feedback_rating_image_size"
+                android:src="@drawable/ko__img_sad_default" />
+
+            <com.kayako.sdk.android.k5.common.view.RegularTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ko__messenger_input_feedback_rating_gap_between_image_and_text"
+                android:text="@string/ko__messenger_input_feedback_rating_bad_text"
+                android:textColor="@color/ko__messenger_input_feedback_rating_default_text_color"
+                android:textSize="@dimen/ko__messenger_input_feedback_rating_text_size" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ko__messenger_input_feedback_rating_field_bad_view_selected"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/ko__messenger_input_feedback_rating_selected_background_color"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="@dimen/ko__messenger_input_feedback_rating_image_size"
+                android:layout_height="@dimen/ko__messenger_input_feedback_rating_image_size"
+                android:src="@drawable/ko__img_sad_selected" />
+
+            <com.kayako.sdk.android.k5.common.view.RegularTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ko__messenger_input_feedback_rating_gap_between_image_and_text"
+                android:text="@string/ko__messenger_input_feedback_rating_bad_text"
+                android:textColor="@color/ko__messenger_input_feedback_rating_selected_bad_text_color"
+                android:textSize="@dimen/ko__messenger_input_feedback_rating_text_size" />
+
+        </LinearLayout>
+
+    </ViewSwitcher>
+
+</LinearLayout>

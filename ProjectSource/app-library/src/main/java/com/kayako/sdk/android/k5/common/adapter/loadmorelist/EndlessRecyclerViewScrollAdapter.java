@@ -1,5 +1,6 @@
 package com.kayako.sdk.android.k5.common.adapter.loadmorelist;
 
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.list.ListType;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.DiffUtilsCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,22 +36,21 @@ public abstract class EndlessRecyclerViewScrollAdapter extends RecyclerView.Adap
             newData = new ArrayList<>();
         }
 
+        final DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffUtilsCallback(mValues, newData), false);
         mValues.clear();
-        notifyItemRangeRemoved(0, mValues.size());
         mValues = newData;
-        notifyItemRangeInserted(0, mValues.size());
+        result.dispatchUpdatesTo(this);
     }
 
     public void replaceAllData(List<BaseListItem> newData) {
         if (newData == null) {
             newData = new ArrayList<>();
         }
-        mValues = newData;
-        notifyDataSetChanged();
-        // Careful with this line - the wrong value causes crashes.
-        // Ensure there is no animation. Added because setData caused a flash while new info was added.
-    }
 
+        final DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffUtilsCallback(mValues, newData), false);
+        mValues = newData;
+        result.dispatchUpdatesTo(this);
+    }
 
     public void addLoadMoreData(List<BaseListItem> moreData) {
         int originalSize = mValues.size();

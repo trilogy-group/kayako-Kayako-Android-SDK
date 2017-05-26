@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/ko__messenger_reply_box_background_colour"
+    android:elevation="2dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/reply_box_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/ko__include_separator" />
+
+        <LinearLayout
+            android:id="@+id/reply_box_message_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="8dp">
+
+            <EditText
+                android:id="@+id/reply_box_edittext"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:ellipsize="end"
+                android:gravity="center_vertical|start"
+                android:hint="@string/ko__messenger_reply_box_hint"
+                android:imeOptions="actionSend"
+                android:maxLines="4"
+                android:minHeight="40dp"
+                android:scrollIndicators="end"
+                android:scrollbarAlwaysDrawVerticalTrack="true"
+                android:scrollbars="vertical"
+                android:textColor="@color/ko__messenger_reply_box_text_colour"
+                android:textColorHint="@color/ko__messenger_reply_box_hint_text_colour"
+                android:textSize="16sp"
+                tools:text="LOONG MESSAGE. IT GOES ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON AND ON....">
+
+                <requestFocus />
+            </EditText>
+
+
+            <include layout="@layout/ko__include_send_button" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/reply_box_options_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="4dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <ImageButton
+                    android:id="@+id/ko__reply_box_attach_button"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:padding="4dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ko__ic_attachment_button" />
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <com.kayako.sdk.android.k5.common.view.RegularTextView
+                    android:id="@+id/ko__reply_box_credits_by"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/ko__messenger_credits_messenger_by"
+                    android:textColor="@color/ko__messenger_reply_box_credits_text_colour"
+
+                    android:textSize="@dimen/ko__messenger_reply_box_footer" />
+                <com.kayako.sdk.android.k5.common.view.BoldTextView
+                    android:id="@+id/ko__reply_box_credits_kayako"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="2dp"
+                    android:gravity="center"
+                    android:text="@string/ko__messenger_credits_kayako"
+                    android:textColor="@color/ko__messenger_reply_box_credits_kayako_text_colour"
+                    android:textSize="@dimen/ko__messenger_reply_box_footer"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

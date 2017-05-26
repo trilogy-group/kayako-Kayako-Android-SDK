@@ -8,14 +8,27 @@ android {
         applicationId "com.kayako.sample"
         minSdkVersion 16
         targetSdkVersion 24
+        // multiDexEnabled true
         versionCode 1
         versionName "1.0"
     }
     buildTypes {
+        debug {
+            debuggable true
+        }
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    // Added to support Android Joda Time Library & phoenix java client
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/LICENSE.txt'
     }
 }
 
@@ -24,8 +37,11 @@ repositories {
     maven {
         url "http://dl.bintray.com/kayako-support/kayako-devkits"
     }
-}
 
+    // Added to use quick builds by jitpack.io
+    maven { url 'https://jitpack.io' }
+
+}
 
 dependencies {
     // Add the following dependencies to get the Support SDK to work
@@ -38,8 +54,9 @@ dependencies {
     compile 'com.google.code.gson:gson:2.4'
     compile 'com.github.bumptech.glide:glide:3.7.0'
 
-    compile project(path: ':app-library') // use local library project (instead of one hosted on bintray)
-    compile 'com.kayako:kayako:0.0.3'
-
     testCompile 'junit:junit:4.12'
+
+    // use local library project (instead of one hosted on bintray)
+    compile project(path: ':app-library')
+
 }

@@ -13,6 +13,26 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
+    <style name="Ko__MessengerTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- TODO: Change primary colors for messenger -->
+        <item name="colorPrimary">@color/ko__colorPrimary</item>
+        <item name="colorPrimaryDark">@color/ko__colorPrimaryDark</item>
+        <item name="colorAccent">@color/ko__messenger_primary_color
+        </item> <!-- NOTE: All progress indicators, scroll end effect will use this color -->
+
+        <!-- Added to remove toolbar -->
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+
+        <!--Added to make background transparent-->
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:colorBackgroundCacheHint">
+            @color/ko__messenger_floating_background_color
+        </item>
+        <item name="android:windowBackground">@color/ko__messenger_floating_background_color</item>
+    </style>
+
     <style name="Ko__ButtonStyle">
         <item name="android:background">@drawable/ko__retry_button_background</item>
         <item name="android:textColor">@color/ko__white</item>
@@ -27,21 +47,61 @@
     </style>
 
     <style name="Ko__ChatBubbleStyle">
+        <item name="android:autoLink">all</item>
         <item name="android:minWidth">@dimen/ko__messenger_chat_bubble_min_width</item>
     </style>
+
+    <!-- MessageStyleHelper should also be updated as the following Chat Bubble Styles get updated-->
 
     <style name="Ko__ChatBubbleStyleOther" parent="Ko__ChatBubbleStyle">
         <item name="android:background">@drawable/ko__speech_bubble_other</item>
         <item name="android:textColor">@color/ko__messenger_speech_bubble_other_text_color</item>
+        <item name="android:textSize">@dimen/ko__messenger_speech_bubble_message_text_size</item>
+        <item name="android:textColorLink">@color/ko__messenger_speech_bubble_other_text_color
+        </item>
     </style>
 
     <style name="Ko__ChatBubbleStyleSelf" parent="Ko__ChatBubbleStyle">
         <item name="android:background">@drawable/ko__speech_bubble_self</item>
         <item name="android:textColor">@color/ko__messenger_speech_bubble_self_text_color</item>
+        <item name="android:textSize">@dimen/ko__messenger_speech_bubble_message_text_size</item>
+        <item name="android:textColorLink">@color/ko__messenger_speech_bubble_self_text_color</item>
     </style>
 
+    <style name="Ko__ChatBubbleStyleSelf_OptimisticSending" parent="Ko__ChatBubbleStyleSelf">
+        <item name="android:background">@drawable/ko__speech_bubble_self_optimistic_sending</item>
+        <item name="android:textColorLink">@color/ko__messenger_speech_bubble_self_text_color</item>
+    </style>
+
+
     <style name="Ko__ChatBubbleDateStyle">
-        <item name="android:textSize">10sp</item>
+        <item name="android:textSize">@dimen/ko__messenger_list_item_time_text_size</item>
+        <item name="android:textColor">@color/ko__messenger_delivery_indicator_time_text_color
+        </item>
         <item name="android:layout_margin">@dimen/ko__messenger_list_item_time_margin</item>
+    </style>
+
+
+    <style name="Ko__ChatBubbleInputComponentStyle" parent="Ko__ChatBubbleStyle">
+        <item name="android:background">@drawable/ko__speech_bubble_other</item>
+        <item name="android:textColor">@color/ko__messenger_speech_bubble_other_text_color</item>
+    </style>
+
+    <style name="Ko__MessengerFloatingViewBackgroundLayer">
+        <item name="android:background">@null</item>
+        <item name="android:fitsSystemWindows">false</item>
+    </style>
+
+    <style name="Ko__MessengerFloatingViewForegroundLayer">
+        <item name="android:background">@color/ko__messenger_floating_foreground_color</item>
+    </style>
+
+    <style name="Ko__MessengerFloatingViewClickableSpace">
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="Ko__AttachmentContainerChatBubbleStyle">
+        <!-- do not add image heights here - morphs image badly -->
+        <item name="android:layout_marginTop">@dimen/ko__messenger_attachment_margin_vertical</item>
     </style>
 </resources>

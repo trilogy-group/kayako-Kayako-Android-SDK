@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+
+    <solid android:color="@color/ko__messenger_unread_message_counter_background_color" />
+
+    <size
+        android:width="@dimen/ko__messenger_unread_counter_max_width"
+        android:height="@dimen/ko__messenger_unread_counter_max_height" />
+
+</shape>

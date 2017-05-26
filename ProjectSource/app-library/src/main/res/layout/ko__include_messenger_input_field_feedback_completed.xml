@@ -1,0 +1,76 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="4dp"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/ko__messenger_input_feedback_rating_good"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="@dimen/ko__messenger_input_feedback_rating_image_size"
+                android:layout_height="@dimen/ko__messenger_input_feedback_rating_image_size"
+                android:src="@drawable/ko__img_happy_selected" />
+
+            <com.kayako.sdk.android.k5.common.view.RegularTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ko__messenger_input_feedback_rating_gap_between_image_and_text"
+                android:text="@string/ko__messenger_input_feedback_rating_good_text"
+                android:textColor="@color/ko__messenger_input_feedback_rating_selected_good_text_color"
+                android:textSize="@dimen/ko__messenger_input_feedback_rating_text_size" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ko__messenger_input_feedback_rating_bad"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="@dimen/ko__messenger_input_feedback_rating_image_size"
+                android:layout_height="@dimen/ko__messenger_input_feedback_rating_image_size"
+                android:src="@drawable/ko__img_sad_selected" />
+
+            <com.kayako.sdk.android.k5.common.view.RegularTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ko__messenger_input_feedback_rating_gap_between_image_and_text"
+                android:text="@string/ko__messenger_input_feedback_rating_bad_text"
+                android:textColor="@color/ko__messenger_input_feedback_rating_selected_bad_text_color"
+                android:textSize="@dimen/ko__messenger_input_feedback_rating_text_size" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <com.kayako.sdk.android.k5.common.view.ItalicsTextView
+        android:id="@+id/ko__messenger_input_comment_rating_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|left"
+        android:layout_weight="1"
+        android:ellipsize="none"
+        android:gravity="center_vertical|left"
+        android:paddingLeft="16dp"
+        android:textSize="@dimen/ko__messenger_input_field_feedback_completed_text_size"
+        android:textStyle="italic"
+        tools:text="You see, in this world there's two kinds of people, my friend: Those with loaded guns and those who dig. You dig." />
+
+</LinearLayout>
