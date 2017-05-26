@@ -70,8 +70,12 @@
 
     <!-- Messenger -->
     <color name="ko__default_dark_text_color">#2D3138</color>
-    <color name="ko__messenger_speech_bubble_self_background_color">@color/ko__messenger_primary_color</color>
-    <color name="ko__messenger_speech_bubble_self_optimistic_sending_background_color">@color/ko__messenger_primary_color_transparent_70</color>
+    <color name="ko__messenger_speech_bubble_self_background_color">
+        @color/ko__messenger_primary_color
+    </color>
+    <color name="ko__messenger_speech_bubble_self_optimistic_sending_background_color">
+        @color/ko__messenger_primary_color_transparent_70
+    </color>
     <!-- TODO: Should be primary messenger color-->
 
     <color name="ko__messenger_speech_bubble_self_text_color">#fff</color>
@@ -81,9 +85,11 @@
 
     <color name="ko__messenger_date_separator_text_color">#A1AAAF</color>
     <color name="ko__messenger_delivery_indicator_time_text_color">#A1AAAF</color>
-    
-    <color name="ko__messenger_unread_separator_line_color">@color/ko__messenger_primary_color</color>
-    <color name="ko__messenger_unread_separator_text_color">@color/ko__messenger_primary_color</color>
+
+    <color name="ko__messenger_unread_separator_line_color">@color/ko__messenger_primary_color
+    </color>
+    <color name="ko__messenger_unread_separator_text_color">@color/ko__messenger_primary_color
+    </color>
 
     <!-- Conversation -->
     <color name="ko_conversation_item_dot_separator_color">#D1D5D7</color>
@@ -114,12 +120,20 @@
     <color name="ko__messenger_completed_field_green_background_color">#DCEEDF</color>
     <color name="ko__messenger_completed_field_green_text_color">#2D3138</color>
 
-    <color name="ko__messenger_new_conversation_background_colour">@color/ko__messenger_primary_color</color>
-    <color name="ko__messenger_new_conversation_background_colour_selected">@color/ko__messenger_primary_color_transparent_95</color>
+    <color name="ko__messenger_new_conversation_background_colour">
+        @color/ko__messenger_primary_color
+    </color>
+    <color name="ko__messenger_new_conversation_background_colour_selected">
+        @color/ko__messenger_primary_color_transparent_95
+    </color>
 
     <color name="ko__messenger_new_conversation_text_colour">#FFFFFF</color>
-    <color name="ko__messenger_reply_box_send_button_background_colour">@color/ko__messenger_primary_color</color>
-    <color name="ko__messenger_reply_box_send_button_background_colour_selected">@color/ko__messenger_primary_color_transparent_95</color>
+    <color name="ko__messenger_reply_box_send_button_background_colour">
+        @color/ko__messenger_primary_color
+    </color>
+    <color name="ko__messenger_reply_box_send_button_background_colour_selected">
+        @color/ko__messenger_primary_color_transparent_95
+    </color>
     <color name="ko__messenger_reply_box_send_button_background_colour_disabled">#A1AAAF</color>
     <color name="ko__messenger_reply_box_background_colour">#F7F8F9</color>
     <color name="ko__messenger_reply_box_hint_text_colour">#A1AAAF</color>
@@ -167,6 +181,7 @@
     </color>
 
     <color name="ko__messenger_bot_avatar_background_color">#EDEEEF</color>
+    <color name="ko__messenger_placeholder_avatar_background_color">#5FEDEEEF</color>
     <color name="ko__messenger_bot_attachment_background_color">#EDEEEF</color>
     <color name="ko__messenger_conversation_separator_line_color">#ebeef0</color>
 

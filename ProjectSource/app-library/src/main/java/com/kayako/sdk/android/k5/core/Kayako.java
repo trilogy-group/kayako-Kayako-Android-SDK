@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.webkit.URLUtil;
 
+import com.bumptech.glide.Glide;
 import com.kayako.sdk.android.k5.activities.KayakoHelpCenterActivity;
+import com.kayako.sdk.android.k5.common.utils.ImageUtils;
 import com.kayako.sdk.android.k5.messenger.data.MessengerRepoFactory;
 
 import java.lang.ref.WeakReference;
@@ -38,6 +40,7 @@ public class Kayako {
         MessengerUserPref.getInstance().clearAll();
 
         MessengerRepoFactory.reset();
+        ImageUtils.clearCache();
     }
 
     public static Kayako getInstance() {

@@ -1,6 +1,7 @@
 package com.kayako.sdk.android.k5.common.utils;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.widget.ImageView;
 
@@ -11,6 +12,7 @@ import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.ChannelDecoration;
 import com.kayako.sdk.android.k5.common.view.CircleImageView;
 import com.kayako.sdk.android.k5.common.view.CropCircleTransformation;
+import com.kayako.sdk.android.k5.core.Kayako;
 
 import java.io.File;
 
@@ -28,7 +30,7 @@ public class ImageUtils {
             Glide.with(context)
                     .load(avatarUrl)
                     .dontAnimate()
-                    .placeholder(R.drawable.ko__bot_avatar)
+                    .placeholder(R.drawable.ko__placeholder_avatar)
                     .bitmapTransform(new CropCircleTransformation(context))
                     .centerCrop()
                     .skipMemoryCache(false) // false because avatars are repeatedly used in message listing, case listing, etc - when true, it shows placeholders
@@ -79,14 +81,14 @@ public class ImageUtils {
             Glide.with(context)
                     .load(avatarUrl)
                     .dontAnimate()
-                    .placeholder(R.drawable.ko__bot_avatar)
+                    .placeholder(R.drawable.ko__placeholder_avatar)
                     .centerCrop()
                     .skipMemoryCache(false) // false because avatars are repeatedly used in message listing, case listing, etc - when true, it shows placeholders
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(avatarView);
         } else {
             Glide.with(context)
-                    .load(R.drawable.ko__bot_avatar)
+                    .load(R.drawable.ko__placeholder_avatar)
                     .into(avatarView);
         }
     }
@@ -155,5 +157,24 @@ public class ImageUtils {
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE) // using source because RESULT messes up when image resizes to fit into imageview with wrap_content
                 .into(imageView);
     }
+
+
+    private static AsyncTask clearDiskCacheTask;
+
+    public static void clearCache() {
+        Glide.get(Kayako.getApplicationContext()).clearMemory();
+
+        if (clearDiskCacheTask == null
+                || clearDiskCacheTask.isCancelled() || clearDiskCacheTask.getStatus() != AsyncTask.Status.RUNNING) { // Prevent multiple calls
+            clearDiskCacheTask = new AsyncTask<Void, Void, Void>() {
+                @Override
+                protected Void doInBackground(Void... params) {
+                    Glide.get(Kayako.getApplicationContext()).clearDiskCache();
+                    return null;
+                }
+            }.execute();
+        }
+    }
+
 
 }
