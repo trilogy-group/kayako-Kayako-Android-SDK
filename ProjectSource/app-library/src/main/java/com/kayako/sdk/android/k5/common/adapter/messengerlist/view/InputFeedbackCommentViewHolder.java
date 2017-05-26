@@ -19,6 +19,7 @@ public class InputFeedbackCommentViewHolder extends InputFieldViewHolder {
 
     public InputFeedbackCommentViewHolder(View itemView) {
         super(itemView, R.layout.ko__include_messenger_input_field_feedback_comment);
+
         ratingView = new InputFeedbackRatingViewHolder(itemView, R.layout.ko__include_messenger_input_field_feedback_comment);
 
         commentEditText = (EditText) itemView.findViewById(R.id.ko__feedback_input_field_edittext);

@@ -50,7 +50,7 @@ public class InputFieldFeedbackRatingHelper {
         }
     }
 
-    public static void setSelectRatingListener(final InputFeedbackRatingViewHolder viewHolder, final InputFeedback.OnSelectRatingListener onSelectRatingListener){
+    public static void setSelectRatingListener(final InputFeedbackRatingViewHolder viewHolder, final InputFeedback.OnSelectRatingListener onSelectRatingListener) {
         viewHolder.badRatingViewSwitcher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,15 +72,15 @@ public class InputFieldFeedbackRatingHelper {
     }
 
     private static void setSelectedRatingState(final InputFeedbackRatingViewHolder viewHolder, final InputFeedbackRatingListItem listItem) {
-        InputFieldHelper.configureInputField(viewHolder, BotMessageHelper.getBotDrawableForSystemMessage(), listItem.getInstructionMessage());
+        InputFieldHelper.configureInputField(viewHolder, listItem.getInstructionMessage());
         InputFieldHelper.enableSubmittedLayout(viewHolder, listItem.getSubmittedValue());
     }
 
     private static void setSelectRatingState(final InputFeedbackRatingViewHolder viewHolder, final InputFeedbackRatingListItem listItem) {
-        InputFieldHelper.configureInputField(viewHolder, BotMessageHelper.getBotDrawableForSystemMessage(), listItem.getInstructionMessage());
-        InputFieldHelper.enableInputLayout(viewHolder);
+        InputFieldHelper.configureInputField(viewHolder, listItem.getInstructionMessage());
+        InputFieldHelper.enableInputLayoutWithoutButton(viewHolder);
 
-        setSelectRatingListener(viewHolder,listItem.getOnSelectRatingListener());
+        setSelectRatingListener(viewHolder, listItem.getOnSelectRatingListener());
     }
 
     /**

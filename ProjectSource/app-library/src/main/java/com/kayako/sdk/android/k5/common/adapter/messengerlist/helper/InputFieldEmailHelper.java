@@ -21,21 +21,21 @@ public class InputFieldEmailHelper {
     private static void setErrorFieldState(InputEmailViewHolder viewHolder) {
         Context context = Kayako.getApplicationContext();
 
-        InputFieldCommonStateHelper.setErrorFieldState(context, viewHolder.emailFieldLayout, viewHolder.messageHint);
+        InputFieldCommonStateHelper.setErrorFieldState(context, viewHolder.emailFieldLayout, viewHolder.messageHint, true);
         viewHolder.messageHint.setText(Html.fromHtml(context.getString(R.string.ko__messenger_input_email_message_hint_error)));
         viewHolder.submitButton.setText(context.getResources().getString(R.string.ko__label_submit));
     }
 
     private static void setFocusedFieldState(InputEmailViewHolder viewHolder) {
         Context context = Kayako.getApplicationContext();
-        InputFieldCommonStateHelper.setFocusedFieldState(context, viewHolder.emailFieldLayout, viewHolder.messageHint);
+        InputFieldCommonStateHelper.setFocusedFieldState(context, viewHolder.emailFieldLayout, viewHolder.messageHint, true);
         viewHolder.messageHint.setText(Html.fromHtml(context.getString(R.string.ko__messenger_input_email_message_hint_default)));
         viewHolder.submitButton.setText(context.getResources().getString(R.string.ko__label_submit));
     }
 
     private static void setUnfocusedFieldState(InputEmailViewHolder viewHolder) {
         Context context = Kayako.getApplicationContext();
-        InputFieldCommonStateHelper.setUnfocusedFieldState(context, viewHolder.emailFieldLayout, viewHolder.messageHint);
+        InputFieldCommonStateHelper.setUnfocusedFieldState(context, viewHolder.emailFieldLayout, viewHolder.messageHint, true);
         viewHolder.messageHint.setText(Html.fromHtml(context.getString(R.string.ko__messenger_input_email_message_hint_default)));
         viewHolder.submitButton.setText(context.getResources().getString(R.string.ko__label_submit));
     }
@@ -60,13 +60,13 @@ public class InputFieldEmailHelper {
     }
 
     public static void configureInputEmailField(final InputEmailViewHolder viewHolder, final InputEmailListItem listItem) {
-        InputFieldHelper.configureInputField(viewHolder, BotMessageHelper.getBotDrawableForSystemMessage(), R.string.ko__messenger_input_email_message_instruction);
+        InputFieldHelper.configureInputField(viewHolder, R.string.ko__messenger_input_email_message_instruction);
 
         // Set up Input field
         if (listItem.hasSubmittedValue()) {
             InputFieldHelper.enableSubmittedLayout(viewHolder, listItem.getSubmittedValue());
         } else {
-            InputFieldHelper.enableInputLayout(viewHolder);
+            InputFieldHelper.enableInputLayoutWithButton(viewHolder);
 
             // Set up email field
             setFocusedFieldState(viewHolder);

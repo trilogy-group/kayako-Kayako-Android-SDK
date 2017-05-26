@@ -6,6 +6,7 @@ import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedback;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedbackCommentListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedbackCompletedListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedbackRatingListItem;
 import com.kayako.sdk.android.k5.core.Kayako;
 import com.kayako.sdk.messenger.rating.Rating;
@@ -171,7 +172,7 @@ public class OffboardingHelper {
 
         } else {
             List<BaseListItem> list = new ArrayList<>();
-            list.addAll(getOffboardingItemsOnRatingSubmission(convert(currentRatingSubmittedViaUI)));
+            list.addAll(getOffboardingItemsOnCommentSubmission(currentRatingSubmittedViaUI, currentFeedbackSubmittedViaUI));
             return list;
         }
     }
@@ -208,9 +209,10 @@ public class OffboardingHelper {
 
     private List<BaseListItem> getOffboardingItemsOnCommentSubmission(Rating.SCORE rating, String feedback) {
         List<BaseListItem> listItems = new ArrayList<>();
-        listItems.add(new InputFeedbackCommentListItem(
+        listItems.add(new InputFeedbackCompletedListItem(
                 getCommentInstructionMessage(rating),
-                Kayako.getApplicationContext().getString(R.string.ko__messenger_input_feedback_comment_message_submitted)));
+                convert(rating),
+                feedback));
         return listItems;
     }
 

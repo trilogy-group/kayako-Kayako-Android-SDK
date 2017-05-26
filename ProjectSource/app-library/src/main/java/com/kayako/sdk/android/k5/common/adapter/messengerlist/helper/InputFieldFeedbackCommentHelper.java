@@ -19,21 +19,22 @@ public class InputFieldFeedbackCommentHelper {
     private static void setErrorFieldState(InputFeedbackCommentViewHolder viewHolder) {
         Context context = Kayako.getApplicationContext();
 
-        InputFieldCommonStateHelper.setErrorFieldState(context, viewHolder.feedbackFieldLayout, viewHolder.messageHint);
+        InputFieldCommonStateHelper.setErrorFieldState(context, viewHolder.feedbackFieldLayout, viewHolder.messageHint, false);
         viewHolder.messageHint.setText(Html.fromHtml(context.getString(R.string.ko__messenger_input_feedback_comment_message_hint_error)));
         viewHolder.submitButton.setText(context.getResources().getString(R.string.ko__label_submit));
     }
 
     private static void setFocusedFieldState(InputFeedbackCommentViewHolder viewHolder) {
         Context context = Kayako.getApplicationContext();
-        InputFieldCommonStateHelper.setFocusedFieldState(context, viewHolder.feedbackFieldLayout, viewHolder.messageHint);
+        InputFieldCommonStateHelper.setFocusedFieldState(context, viewHolder.feedbackFieldLayout, viewHolder.messageHint, false);
+
         viewHolder.messageHint.setText(Html.fromHtml(context.getString(R.string.ko__messenger_input_feedback_comment_message_hint_default)));
         viewHolder.submitButton.setText(context.getResources().getString(R.string.ko__label_submit));
     }
 
     private static void setUnfocusedFieldState(InputFeedbackCommentViewHolder viewHolder) {
         Context context = Kayako.getApplicationContext();
-        InputFieldCommonStateHelper.setUnfocusedFieldState(context, viewHolder.feedbackFieldLayout, viewHolder.messageHint);
+        InputFieldCommonStateHelper.setUnfocusedFieldState(context, viewHolder.feedbackFieldLayout, viewHolder.messageHint, false);
         viewHolder.messageHint.setText(Html.fromHtml(context.getString(R.string.ko__messenger_input_feedback_comment_message_hint_default)));
         viewHolder.submitButton.setText(context.getResources().getString(R.string.ko__label_submit));
     }
@@ -59,13 +60,13 @@ public class InputFieldFeedbackCommentHelper {
 
 
     public static void configureInputFeedbackField(final InputFeedbackCommentViewHolder viewHolder, final InputFeedbackCommentListItem listItem) {
-        InputFieldHelper.configureInputField(viewHolder, BotMessageHelper.getBotDrawableForSystemMessage(), listItem.getInstructionMessage());
+        InputFieldHelper.configureInputField(viewHolder, listItem.getInstructionMessage());
 
         // Set up Input field
         if (listItem.hasSubmittedValue()) {
             InputFieldHelper.enableSubmittedLayout(viewHolder, listItem.getSubmittedValue());
         } else {
-            InputFieldHelper.enableInputLayout(viewHolder);
+            InputFieldHelper.enableInputLayoutWithButton(viewHolder);
 
             // Set up Rating View
             InputFieldFeedbackRatingHelper.setRatingView(listItem.getRating(), viewHolder.ratingView);

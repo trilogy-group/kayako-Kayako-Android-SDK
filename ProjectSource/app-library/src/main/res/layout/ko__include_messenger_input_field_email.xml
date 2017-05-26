@@ -7,7 +7,7 @@
         android:id="@+id/email_field_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/ko__speech_bubble_input_field_background"
+        android:background="@drawable/ko__speech_bubble_input_field_rounded_top_background"
         android:orientation="vertical">
 
         <com.kayako.sdk.android.k5.common.view.RegularTextView

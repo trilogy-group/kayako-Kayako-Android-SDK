@@ -14,6 +14,7 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.BotMessageH
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.DeliveryIndicatorHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.InputFieldEmailHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.InputFieldFeedbackCommentHelper;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.InputFieldFeedbackCompletedHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.InputFieldFeedbackRatingHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.MessageStyleHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.AttachmentMessageContinuedOtherListItem;
@@ -33,6 +34,8 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputEmailLis
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputEmailViewHolder;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedbackCommentListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedbackCommentViewHolder;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedbackCompletedListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedbackCompletedViewHolder;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedbackRatingListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedbackRatingViewHolder;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageContinuedOtherListItem;
@@ -282,6 +285,13 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 InputFieldFeedbackCommentHelper.configureInputFeedbackField(inputFeedbackCommentViewHolder, inputFeedbackCommentListItem);
                 break;
 
+            case MessengerListType.INPUT_FIELD_FEEDBACK_COMPLETED:
+                final InputFeedbackCompletedViewHolder inputFeedbackCompletedViewHolder = (InputFeedbackCompletedViewHolder) viewHolder;
+                final InputFeedbackCompletedListItem inputFeedbackCompletedListItem = (InputFeedbackCompletedListItem) getData().get(position);
+
+                InputFieldFeedbackCompletedHelper.configureInputFeedbackCompletedField(inputFeedbackCompletedViewHolder, inputFeedbackCompletedListItem);
+                break;
+
             case MessengerListType.TYPING_FOOTER:
                 final TypingViewHolder typingViewHolder = (TypingViewHolder) viewHolder;
                 final TypingListItem typingListItem = (TypingListItem) getData().get(position);
@@ -362,6 +372,10 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
             case MessengerListType.INPUT_FIELD_FEEDBACK_COMMENT:
                 View inputFeedbackCommentView = LayoutInflater.from(parent.getContext()).inflate(R.layout.ko__list_messenger_input_field, parent, false);
                 return new InputFeedbackCommentViewHolder(inputFeedbackCommentView);
+
+            case MessengerListType.INPUT_FIELD_FEEDBACK_COMPLETED:
+                View inputFeedbackCompleted = LayoutInflater.from(parent.getContext()).inflate(R.layout.ko__list_messenger_input_field, parent, false);
+                return new InputFeedbackCompletedViewHolder(inputFeedbackCompleted);
 
             case MessengerListType.TYPING_FOOTER:
                 View typingView = LayoutInflater.from(parent.getContext()).inflate(R.layout.ko__list_messenger_typing, parent, false);

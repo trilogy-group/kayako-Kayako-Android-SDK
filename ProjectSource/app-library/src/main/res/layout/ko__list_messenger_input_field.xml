@@ -37,7 +37,7 @@
             android:id="@+id/input_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/ko__speech_bubble_input_container_background"
+            android:background="@drawable/ko__speech_bubble_input_container_rounded_top_background"
             android:orientation="vertical"
             tools:visibility="gone" />
 

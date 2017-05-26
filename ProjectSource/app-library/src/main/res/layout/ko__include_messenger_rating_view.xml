@@ -1,9 +1,9 @@
-<LinearLayout android:id="@+id/ko__messenger_input_feedback_rating_field_layout"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ko__messenger_input_feedback_rating_field_layout"
     android:layout_width="match_parent"
     android:layout_height="150dp"
-    android:background="@drawable/ko__speech_bubble_input_field_background"
-    android:orientation="horizontal"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:background="@drawable/ko__speech_bubble_input_field_rounded_top_background"
+    android:orientation="horizontal">
 
     <ViewSwitcher
         android:id="@+id/ko__messenger_input_feedback_rating_field_good_view_switcher"
@@ -32,6 +32,7 @@
                 android:textSize="@dimen/ko__messenger_input_feedback_rating_text_size" />
 
         </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/ko__messenger_input_feedback_rating_field_good_view_selected"
