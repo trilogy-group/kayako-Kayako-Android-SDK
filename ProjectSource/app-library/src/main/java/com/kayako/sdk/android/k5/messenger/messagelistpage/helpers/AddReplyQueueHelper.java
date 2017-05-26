@@ -4,11 +4,12 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.UnsentMessa
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class AddReplyQueueHelper implements AddReplyQueueInterface {
 
     private Queue<UnsentMessage> queue = new ConcurrentLinkedQueue<UnsentMessage>();
-    private String clientIdOfLastReplySending; // This represents the reply just sent - conversation to be created or message to be added
+    private AtomicReference<String> clientIdOfLastReplySending = new AtomicReference<>(null); // This represents the reply just sent - conversation to be created or message to be added
 
     @Override
     public void addNewReply(UnsentMessage unsentMessage, String clientId, AddReplyListener callback) {
@@ -18,13 +19,14 @@ public class AddReplyQueueHelper implements AddReplyQueueInterface {
 
     @Override
     public void onSuccessfulSendingOfReply(String clientId, AddReplyListener callback) {
-        if (clientIdOfLastReplySending == null) {
+        if (clientIdOfLastReplySending.get() == null) {
             throw new IllegalStateException("onSuccessfulSendingOfReply() should never be called BEFORE the first call to addNewReply()");
 
-        } else if (clientIdOfLastReplySending.equals(clientId)) {
+        } else if (clientIdOfLastReplySending.get().equals(clientId)) {
             queue.remove(); // Removes only on successful sending of last reply
-            sendNext(callback); // Once removed, send the next pending reply
+            resetLastSendingClientId(clientId);
 
+            sendNext(callback); // Once removed, send the next pending reply
         } else {
             throw new IllegalStateException("Messages are not sent in a serial order! Something has gone wrong!");
         }
@@ -36,10 +38,7 @@ public class AddReplyQueueHelper implements AddReplyQueueInterface {
             throw new IllegalArgumentException("Can't be null");
         }
 
-        if (clientIdOfLastReplySending != null // skip if already null
-                && clientIdOfLastReplySending.equals(clientId)) {
-            clientIdOfLastReplySending = null;
-        }
+        resetLastSendingClientId(clientId);
     }
 
     @Override
@@ -51,22 +50,31 @@ public class AddReplyQueueHelper implements AddReplyQueueInterface {
         if (queue.size() > 0) {
             UnsentMessage unsentMessage = queue.peek();
 
-            if (clientIdOfLastReplySending != null // skip if not available
-                    && clientIdOfLastReplySending.equals(unsentMessage.getClientId())) { // If the last reply has not been sent yet, then ignore making a new request and wait for it to be successful
+            if (clientIdOfLastReplySending.get() != null // skip if not available
+                    && clientIdOfLastReplySending.get().equals(unsentMessage.getClientId())) { // If the last reply has not been sent yet, then ignore making a new request and wait for it to be successful
                 // The new reply would already be added and will get its chance later once its preceding elements are sent!
                 // However, the oldest reply that fails to send may delay or halt all the new replies added - SAD but necessary for New Conversation > New Message + messages in order flow
                 return;
             }
 
-            callback.onAddReply(unsentMessage);
+            clientIdOfLastReplySending.set(unsentMessage.getClientId());
 
-            clientIdOfLastReplySending = unsentMessage.getClientId();
+            callback.onAddReply(unsentMessage); // callback should be done LAST (Order is important)
         }
     }
 
     @Override
     public String getLastSentReplyClientId() {
-        return clientIdOfLastReplySending;
+        return clientIdOfLastReplySending.get();
+    }
+
+    private void resetLastSendingClientId(String clientId) {
+        if (clientIdOfLastReplySending.get() != null // skip if already null
+                && clientIdOfLastReplySending.get().equals(clientId)) {
+            clientIdOfLastReplySending.set(null);
+        } else {
+            throw new IllegalStateException("Can not reset unless the lastClientId matches - ensuring order of messages being processed");
+        }
     }
 
 }

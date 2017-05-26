@@ -3,6 +3,7 @@ package com.kayako.sdk.android.k5.messenger.messagelistpage.helpers;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.ClientDeliveryStatus;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.UnsentMessage;
 import com.kayako.sdk.android.k5.common.utils.file.FileAttachment;
+import com.kayako.sdk.android.k5.core.KayakoLogHelper;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -89,11 +90,13 @@ public class AddReplyHelper {
         } else if (mAddAttachmentHelper.getLastSentReplyClientId() != null && mAddAttachmentHelper.getLastSentReplyClientId().equals(clientId)) {
             mAddAttachmentHelper.onSuccessfulSendingOfReply(clientId, addReplyListener);
         } else {
-            throw new IllegalStateException("Invalid State. Last sent client id does not match!");
+            throwInvalidClientIdStateException();
         }
     }
 
     public void onFailedCreationOfConversation(String clientId) {
+        KayakoLogHelper.e("onFailedCreationOfConversation", clientId);
+
         mValidateOneNewConversationCounter.set(0);
 
         if (mAddMessageHelper.getLastSentReplyClientId() != null && mAddMessageHelper.getLastSentReplyClientId().equals(clientId)) {
@@ -101,19 +104,28 @@ public class AddReplyHelper {
         } else if (mAddAttachmentHelper.getLastSentReplyClientId() != null && mAddAttachmentHelper.getLastSentReplyClientId().equals(clientId)) {
             mAddAttachmentHelper.onFailedToSendReply(clientId);
         } else {
-            throw new IllegalStateException("Invalid State. Last sent client id does not match!");
+            throwInvalidClientIdStateException();
         }
     }
 
     public void onFailedSendingOfMessage(String clientId) {
+        KayakoLogHelper.e("onFailedSendingOfMessage", clientId);
         if (mAddMessageHelper.getLastSentReplyClientId() != null && mAddMessageHelper.getLastSentReplyClientId().equals(clientId)) {
             mAddMessageHelper.onFailedToSendReply(clientId);
         } else if (mAddAttachmentHelper.getLastSentReplyClientId() != null && mAddAttachmentHelper.getLastSentReplyClientId().equals(clientId)) {
             mAddAttachmentHelper.onFailedToSendReply(clientId);
+        } else {
+            throwInvalidClientIdStateException();
         }
-        else {
-            throw new IllegalStateException("Invalid State. Last sent client id does not match!");
-        }
+    }
+
+    private void throwInvalidClientIdStateException() {
+        // If a clientId is received which is not known by any of the Queue Helpers, then an invalid state has occured and an exception should be thrown
+        // throw new IllegalStateException("Invalid State. Last sent client id does not match!");
+
+        // However, the failed to send callbacks happen multiple times for the same clientId. Which means, although the clientId was processed correctly by the QueueHelpers, when the same clientId is received again, it fails
+        // Therefore, if such behaviour can happen, an exception should not be thrown and the illegal state should be silently logged
+        KayakoLogHelper.e(getClass().getName(), ("Invalid State. Last sent client id does not match!"));
     }
 
     private AddReplyQueueInterface.AddReplyListener addReplyListener = new AddReplyQueueInterface.AddReplyListener() {

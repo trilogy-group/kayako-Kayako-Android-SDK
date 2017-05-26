@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class ClientIdHelper {
 
-    private final String PREFIX = "android-%s-%s";
+    private final String PREFIX = "android-%s-%s-%s";
     private final String UUID_FOR_THIS_SESSION = UUID.randomUUID().toString();
     private AtomicInteger counter = new AtomicInteger(0);
 
@@ -19,7 +19,11 @@ public class ClientIdHelper {
     /**
      * @return a unique client id to use for messages
      */
-    public String generateClientId() {
-        return String.format(PREFIX, UUID_FOR_THIS_SESSION, counter.incrementAndGet());
+    public String generateClientId(MessageType messageType) {
+        return String.format(PREFIX, UUID_FOR_THIS_SESSION, messageType.name(), counter.incrementAndGet());
+    }
+
+    public enum MessageType {
+        MESSAGE, ATTACHMENT
     }
 }

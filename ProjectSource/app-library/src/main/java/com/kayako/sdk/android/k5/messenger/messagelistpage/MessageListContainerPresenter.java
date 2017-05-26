@@ -269,7 +269,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     }
 
     private void onSendMessageReply(String message) {
-        String clientId = mClientIdHelper.generateClientId(); // GENERATE Client Id
+        String clientId = mClientIdHelper.generateClientId(ClientIdHelper.MessageType.MESSAGE); // GENERATE Client Id
 
         mOptimisticMessageHelper.addOptimisitcMessageView(message, clientId, mOptimisticSendingViewCallback);
 
@@ -283,7 +283,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     }
 
     private void onSendAttachmentReply(FileAttachment fileAttachment) {
-        String clientId = mClientIdHelper.generateClientId(); // GENERATE Client Id
+        String clientId = mClientIdHelper.generateClientId(ClientIdHelper.MessageType.ATTACHMENT); // GENERATE Client Id
 
         mOptimisticMessageHelper.addOptimisitcMessageView(fileAttachment, clientId, mOptimisticSendingViewCallback);
 
