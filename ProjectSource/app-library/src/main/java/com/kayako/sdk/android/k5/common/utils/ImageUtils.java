@@ -27,6 +27,8 @@ public class ImageUtils {
         if (avatarUrl != null) {
             Glide.with(context)
                     .load(avatarUrl)
+                    .dontAnimate()
+                    .placeholder(R.drawable.ko__bot_avatar)
                     .bitmapTransform(new CropCircleTransformation(context))
                     .centerCrop()
                     .skipMemoryCache(false) // false because avatars are repeatedly used in message listing, case listing, etc - when true, it shows placeholders
@@ -52,6 +54,7 @@ public class ImageUtils {
         if (imageUrl != null) {
             Glide.with(context)
                     .load(imageUrl)
+                    .dontAnimate()
                     .placeholder(placeholderDrawable)
                     .centerCrop()
                     .skipMemoryCache(true)
@@ -75,6 +78,7 @@ public class ImageUtils {
         if (avatarUrl != null) {
             Glide.with(context)
                     .load(avatarUrl)
+                    .dontAnimate()
                     .placeholder(R.drawable.ko__bot_avatar)
                     .centerCrop()
                     .skipMemoryCache(false) // false because avatars are repeatedly used in message listing, case listing, etc - when true, it shows placeholders
