@@ -34,8 +34,7 @@ public class InputFieldHelper {
         if (instructionMessageString == null) {
             throw new IllegalArgumentException("instructionMessageString can not be null");
         }
-        Context context = Kayako.getApplicationContext();
-        ImageUtils.setAvatarImage(context, viewHolder.avatar, avatarDrawableId);
+
         viewHolder.messageInstruction.setText(Html.fromHtml(instructionMessageString));
     }
 

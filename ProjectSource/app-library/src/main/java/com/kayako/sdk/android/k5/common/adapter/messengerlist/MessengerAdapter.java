@@ -250,7 +250,6 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 BotMessageViewHolder botMessageViewHolder = (BotMessageViewHolder) viewHolder;
 
                 botMessageViewHolder.message.setText(Html.fromHtml(botMessageListItem.getMessage()));
-                ImageUtils.setAvatarImage(Kayako.getApplicationContext(), botMessageViewHolder.avatar, BotMessageHelper.getBotDrawableForSystemMessage());
 
                 if (botMessageListItem.getTime() == 0) {
                     botMessageViewHolder.time.setVisibility(View.GONE);
@@ -260,7 +259,6 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 }
 
                 // No Item Click Listener
-                // No Avatar Click Listener
                 break;
 
             case MessengerListType.INPUT_FIELD_EMAIL:
@@ -350,7 +348,7 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
 
             case MessengerListType.BOT_MESSAGE: // Note: Bot message shares the same layout as SIMPLE_MESSAGE_OTHER
                 View botMessageView = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.ko__list_messenger_simple_message_other, parent, false);
+                        .inflate(R.layout.ko__list_messenger_bot_message_other, parent, false);
                 return new BotMessageViewHolder(botMessageView);
 
             case MessengerListType.INPUT_FIELD_EMAIL:

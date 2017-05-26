@@ -13,10 +13,10 @@
         style="@style/Ko__ChatBubbleStyleOther"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="@dimen/ko__messenger_gap_between_avatar_and_message"
         android:layout_marginRight="@dimen/ko__messenger_gap_between_message_and_end"
-        android:layout_toRightOf="@+id/ko__avatar"
         android:gravity="start|center_vertical"
         tools:text="We need your email address to start the conversation" />
 
@@ -68,14 +68,5 @@
         </LinearLayout>
 
     </FrameLayout>
-
-    <com.kayako.sdk.android.k5.common.view.CircleImageView
-        android:id="@+id/ko__avatar"
-        android:layout_width="@dimen/ko__messenger_avatar_size"
-        android:layout_height="@dimen/ko__messenger_avatar_size"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        tools:src="#808080" />
 
 </RelativeLayout>

@@ -17,14 +17,12 @@ public class InputFieldViewHolder extends RecyclerView.ViewHolder {
 
     public TextView messageInstruction;
     public TextView submittedAnswer;
-    public CircleImageView avatar;
 
     public InputFieldViewHolder(View itemView, @LayoutRes int inputLayoutId) {
         super(itemView);
 
         messageInstruction = (TextView) itemView.findViewById(R.id.message_instruction);
         submittedAnswer = (TextView) itemView.findViewById(R.id.submitted_value);
-        avatar = (CircleImageView) itemView.findViewById(R.id.ko__avatar);
 
         inputLayout = (LinearLayout) itemView.findViewById(R.id.input_layout);
         submittedLayout = (LinearLayout) itemView.findViewById(R.id.submitted_layout);
