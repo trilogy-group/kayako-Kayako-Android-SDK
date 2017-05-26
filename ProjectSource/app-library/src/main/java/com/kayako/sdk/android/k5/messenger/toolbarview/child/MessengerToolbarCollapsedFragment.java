@@ -38,8 +38,11 @@ public class MessengerToolbarCollapsedFragment extends BaseToolbarFragment imple
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (mListener != null) {
-                            mListener.onCollapseOrExpand();
+                        // Only allow expanding for the Last Active Agents mode
+                        if (mMessengerToolbarType != null && mMessengerToolbarType == MessengerToolbarContract.MessengerToolbarType.LAST_ACTIVE_AGENTS) {
+                            if (mListener != null) {
+                                mListener.onCollapseOrExpand();
+                            }
                         }
                     }
                 },

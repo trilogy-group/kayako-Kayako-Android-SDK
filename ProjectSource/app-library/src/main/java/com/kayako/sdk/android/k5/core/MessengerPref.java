@@ -14,7 +14,6 @@ public class MessengerPref {
 
     private static MessengerPref sInstance;
     private static SharedPreferences sPrefs;
-    private String title;
 
     private MessengerPref(Context context) {
         context = context.getApplicationContext();

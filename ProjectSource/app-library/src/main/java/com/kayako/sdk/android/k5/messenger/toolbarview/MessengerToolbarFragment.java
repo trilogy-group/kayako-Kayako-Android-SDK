@@ -10,8 +10,12 @@ import android.transition.AutoTransition;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.TranslateAnimation;
+import android.widget.LinearLayout;
 
 import com.kayako.sdk.android.k5.R;
+import com.kayako.sdk.android.k5.core.KayakoLogHelper;
+import com.kayako.sdk.android.k5.core.MessengerPref;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.AssignedAgentData;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.LastActiveAgentsData;
 import com.kayako.sdk.android.k5.messenger.style.MessengerTemplateHelper;
@@ -27,17 +31,21 @@ import com.kayako.sdk.android.k5.messenger.toolbarview.child.MessengerToolbarExp
  */
 public class MessengerToolbarFragment extends Fragment implements MessengerToolbarContract.ConfigureView {
 
+    private static final String FRAGMENT_TAG = "KayakoToolbarFragmentTag";
+
     private View mRoot;
     private ViewGroup mContainer;
-    private Fragment mLastAddedChildFragment;
 
+    private Fragment mLastAddedChildFragment;
     private MessengerToolbarContract.MessengerToolbarType mToolbarType;
     private boolean mIsExpanded;
     private AssignedAgentData mAssignedAgentData;
     private LastActiveAgentsData mLastActiveAgentsData;
-    private String mTitle;
 
+    private String mTitle;
     private MessengerToolbarContract.Presenter mPresenter;
+
+    private boolean showAnimations = true;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,13 +90,14 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
             throw new IllegalStateException("The necessary fields are not initialized!");
         }
 
-        // TODO: If nothing has changed, prevent re-generation of child fragment
-
-        Fragment childFragment = generateChildFragment();
-
-        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction().replace(R.id.ko__messenger_child_toolbar_container, childFragment);
-        setupSharedTransitions(mLastAddedChildFragment, childFragment, fragmentTransaction);
-        fragmentTransaction.commitNowAllowingStateLoss(); // ** NEEDS TO BE SYNCHRONOUS FOR CURRENT DESIGN
+        /**
+         * Weird Issue in Android Support Library that causes the following crash (happens only on the Agent App - not sure why)
+         * - java.lang.NullPointerException: Attempt to invoke virtual method 'boolean java.lang.String.equals(java.lang.Object)' on a null object reference at android.support.v4.app.FragmentTransitionCompat21.setNameOverridesOptimized(FragmentTransitionCompat21.java:339)
+         * - java.lang.IndexOutOfBoundsException: Index: 3, Size: 3 at java.util.ArrayList.get(ArrayList.java:411) at android.support.v4.app.FragmentTransitionCompat21.setNameOverridesOptimized(FragmentTransitionCompat21.java:330)
+         *
+         * Crash avoided when shared transitions are not added. Therefore, reluctantly, disabling animations for now
+         */
+        Fragment childFragment = commitTransactionWithoutAnimation();
 
         // Child fragments must be configured ONLY once it's added to activity
         configureChildFragment(childFragment);
@@ -125,6 +134,31 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
                 throw new IllegalStateException("Unhandled type!");
         }
 
+        return childFragment;
+    }
+
+    private Fragment commitTransactionWithoutAnimation() {
+        Fragment childFragment = generateChildFragment();
+        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction().replace(R.id.ko__messenger_child_toolbar_container, childFragment, FRAGMENT_TAG);
+        fragmentTransaction.commitNowAllowingStateLoss(); // ** NEEDS TO BE SYNCHRONOUS FOR CURRENT DESIGN
+        return childFragment;
+    }
+
+    private void removeAddedTransactedFragment() {
+        Fragment previouoslyTransanctedFragment = getChildFragmentManager().findFragmentByTag(FRAGMENT_TAG);
+        if (previouoslyTransanctedFragment != null) {
+            getChildFragmentManager().beginTransaction().remove(previouoslyTransanctedFragment).commitAllowingStateLoss();
+        }
+
+        ViewGroup viewGroup = (ViewGroup) mRoot.findViewById(R.id.ko__messenger_child_toolbar_container);
+        viewGroup.removeAllViews();
+    }
+
+    private Fragment commitTransactionWithAnimation() {
+        Fragment childFragment = generateChildFragment();
+        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction().replace(R.id.ko__messenger_child_toolbar_container, childFragment, FRAGMENT_TAG);
+        setupSharedTransitions(mLastAddedChildFragment, childFragment, fragmentTransaction);
+        fragmentTransaction.commitNowAllowingStateLoss(); // ** NEEDS TO BE SYNCHRONOUS FOR CURRENT DESIGN
         return childFragment;
     }
 
