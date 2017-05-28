@@ -14,6 +14,27 @@ public class ClientForegroundViewing extends PushData {
         this.is_foreground = is_foreground;
         this.last_active_at = last_active_at;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        // DO NOT COMPARE the lastActiveAt - check used in KreSubscription to prevent the same TriggerTask from executing
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ClientForegroundViewing that = (ClientForegroundViewing) o;
+
+        if (is_viewing != that.is_viewing) return false;
+        return is_foreground == that.is_foreground;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (is_viewing ? 1 : 0);
+        result = 31 * result + (is_foreground ? 1 : 0);
+        return result;
+    }
 }
 
 
