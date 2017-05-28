@@ -28,17 +28,19 @@ public abstract class BaseIdentityListItem extends BaseListItem {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
 
-        BaseDataListItem that = (BaseDataListItem) o;
+        BaseIdentityListItem that = (BaseIdentityListItem) o;
 
-        return id != null ? id.equals(that.getId()) : that.getId() == null;
+        return id != null ? id.equals(that.id) : that.id == null;
+
     }
 
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        int result = super.hashCode();
+        result = 31 * result + (id != null ? id.hashCode() : 0);
+        return result;
     }
-
 }
