@@ -309,6 +309,8 @@ public class KreSubscription extends KreConnection {
                     && mTriggerTask.getPayload() != null && mTriggerTask.getPayload().equals(t)
                     && (currentTime - mTriggerTask.getExecutedAt() < FIVE_SECONDS)) {
                 KayakoLogHelper.e(getClass().getName(), "Skipping Trigger Task... Same as last one FIVE_SECONDS ago");
+                KayakoLogHelper.e(getClass().getName(), mTriggerTask.getEvent());
+                KayakoLogHelper.e(getClass().getName(), mTriggerTask.getPayload().toString());
                 return;
             }
 
