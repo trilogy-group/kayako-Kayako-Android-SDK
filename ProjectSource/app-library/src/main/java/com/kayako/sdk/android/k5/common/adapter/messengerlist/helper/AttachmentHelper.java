@@ -10,6 +10,8 @@ import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.Attachment;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentUrlType;
 import com.kayako.sdk.android.k5.common.utils.ImageUtils;
+import com.kayako.sdk.android.k5.common.utils.file.FileAttachmentUtil;
+import com.kayako.sdk.android.k5.common.utils.file.FileStorageUtil;
 import com.kayako.sdk.android.k5.core.Kayako;
 
 import java.io.File;
@@ -19,7 +21,6 @@ public class AttachmentHelper {
     public static void setUpAttachmentImages(Attachment attachment, View attachmentPlaceholder, ImageView thumbnailImageView, TextView captionTextView) {
         switch (attachment.getType()) {
             case URL:
-
                 AttachmentUrlType attachmentUrlType = ((AttachmentUrlType) attachment);
                 AttachmentFileType type = identifyType(attachmentUrlType.getThumbnailType(), ((AttachmentUrlType) attachment).getFileName());
 
@@ -42,17 +43,33 @@ public class AttachmentHelper {
 
             case FILE:
                 File attachmentFile = ((com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentFileType) attachment).getThumbnailFile();
-                if (attachmentFile == null) {
-                    attachmentPlaceholder.setVisibility(View.VISIBLE);
-                    thumbnailImageView.setVisibility(View.GONE);
-                } else {
-                    attachmentPlaceholder.setVisibility(View.GONE);
-                    thumbnailImageView.setVisibility(View.VISIBLE);
-                    ImageUtils.loadFileAsAttachmentImage(Kayako.getApplicationContext(), thumbnailImageView, attachmentFile, true);
-                }
+                try {
+                    // If file is unavailable, show blank placeholder
+                    if (attachmentFile == null) {
+                        attachmentPlaceholder.setVisibility(View.VISIBLE);
+                        thumbnailImageView.setVisibility(View.GONE);
+                        break;
+                    }
 
-                String attachmentFileCaption = ((com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentFileType) attachment).getCaption();
-                setUpAttachmentCaption(attachmentFileCaption, captionTextView);
+                    // Else, show appropriate placeholder
+                    AttachmentFileType type2 = identifyType(FileStorageUtil.getMimeType(attachmentFile), attachmentFile.getName());
+                    if (type2 != null && type2 == AttachmentFileType.IMAGE) {
+                        attachmentPlaceholder.setVisibility(View.GONE);
+                        thumbnailImageView.setVisibility(View.VISIBLE);
+
+                        ImageUtils.loadFileAsAttachmentImage(attachmentPlaceholder.getContext(), thumbnailImageView, attachmentFile, true);
+                    } else {
+                        attachmentPlaceholder.setVisibility(View.VISIBLE);
+                        thumbnailImageView.setVisibility(View.GONE);
+
+                        configureAttachmentPlaceholder(attachmentPlaceholder, type2, attachmentFile.getName());
+                    }
+
+                } finally {
+                    // Ensure caption is always shown
+                    String attachmentFileCaption = ((com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentFileType) attachment).getCaption();
+                    setUpAttachmentCaption(attachmentFileCaption, captionTextView);
+                }
                 break;
 
             default:

@@ -138,7 +138,8 @@ public class ImageUtils {
             request.placeholder(R.drawable.ko__loading_attachment);
         }
 
-        request.crossFade()
+        request
+                .dontAnimate()
                 .skipMemoryCache(false)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE) // using source because RESULT messes up when image resizes to fit into imageview with wrap_content
                 .into(imageView);
@@ -153,6 +154,7 @@ public class ImageUtils {
         }
 
         request
+                .dontAnimate()
                 .skipMemoryCache(false)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE) // using source because RESULT messes up when image resizes to fit into imageview with wrap_content
                 .into(imageView);
