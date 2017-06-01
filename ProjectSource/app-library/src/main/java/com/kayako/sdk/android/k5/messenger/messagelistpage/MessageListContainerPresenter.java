@@ -455,6 +455,16 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                 mConversationHelper.isConversationCreated()
         );
 
+        // Configure Reply Box Hint Message
+        mView.setReplyBoxHintMessage(
+                mReplyBoxHelper.getReplyBoxHintMessage(
+                        !mConversationHelper.isConversationCreated(),
+                        MessengerPref.getInstance().getBrandName(),
+                        mConversationHelper.getConversation() != null && mConversationHelper.getConversation().getLastAgentReplier() != null
+                                ? mConversationHelper.getConversation().getLastAgentReplier().getFullName()
+                                : null
+                ));
+
         ReplyBoxViewHelper.ReplyBoxViewState lastState = mReplyBoxHelper.getLastSetReplyBoxViewState();
         if (lastState != null && lastState == stateToApply) {
             return; // do not configure visibility of reply box if there is no change
@@ -679,7 +689,6 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
             boolean scrollToBottom = !mConversationMessagesHelper.hasLoadedMessagesBefore() // scroll to bottom if messages are being loaded for the first time
                     || mView.isNearBottomOfList(); // scroll to bottom whenever user is near the end
-            // TODO: Another option is to check if keyboard is open, and scroll if true
 
             mConversationMessagesHelper.onLoadNextMessages(messageList, offset);
 

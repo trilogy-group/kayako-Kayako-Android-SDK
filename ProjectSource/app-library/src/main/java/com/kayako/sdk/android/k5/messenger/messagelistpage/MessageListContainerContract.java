@@ -69,6 +69,8 @@ public class MessageListContainerContract {
 
         void focusOnReplyBox();
 
+        void setReplyBoxHintMessage(String hintMessage);
+
         void collapseToolbar();
 
         void expandToolbar();

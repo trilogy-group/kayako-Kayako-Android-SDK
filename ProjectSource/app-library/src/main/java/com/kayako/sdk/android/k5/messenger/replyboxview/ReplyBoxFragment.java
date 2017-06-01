@@ -106,12 +106,30 @@ public class ReplyBoxFragment extends Fragment implements ReplyBoxContract.View,
 
     @Override
     public void setReplyBoxText(String message) {
+        if (!hasPageLoaded()) {
+            return;
+        }
+
         EditText replyBoxText = (EditText) mRoot.findViewById(R.id.reply_box_edittext);
         replyBoxText.setText(message);
     }
 
     @Override
+    public void setReplyBoxHintText(String hintMessage) {
+        if (!hasPageLoaded()) {
+            return;
+        }
+
+        EditText replyBoxText = (EditText) mRoot.findViewById(R.id.reply_box_edittext);
+        replyBoxText.setHint(hintMessage);
+    }
+
+    @Override
     public void hideReplyBox() {
+        if (!hasPageLoaded()) {
+            return;
+        }
+
         View view = mRoot.findViewById(R.id.reply_box_layout);
         view.setVisibility(View.GONE);
 
@@ -121,6 +139,10 @@ public class ReplyBoxFragment extends Fragment implements ReplyBoxContract.View,
 
     @Override
     public void showReplyBox() {
+        if (!hasPageLoaded()) {
+            return;
+        }
+
         View view = mRoot.findViewById(R.id.reply_box_layout);
         view.setVisibility(View.VISIBLE);
     }
@@ -152,12 +174,20 @@ public class ReplyBoxFragment extends Fragment implements ReplyBoxContract.View,
 
     @Override
     public void enableSendButton() {
+        if (!hasPageLoaded()) {
+            return;
+        }
+
         ImageButton button = (ImageButton) mRoot.findViewById(R.id.ko__reply_box_send_button);
         button.setEnabled(true);
     }
 
     @Override
     public void disableSendButton() {
+        if (!hasPageLoaded()) {
+            return;
+        }
+
         ImageButton button = (ImageButton) mRoot.findViewById(R.id.ko__reply_box_send_button);
         button.setEnabled(false);
     }

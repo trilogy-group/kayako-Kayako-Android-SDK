@@ -10,7 +10,7 @@ public class ReplyBoxContract {
 
         String getReplyBoxText();
 
-        void setReplyBoxText(String message); // TODO: Attachments later?
+        void setReplyBoxText(String message);
 
         void enableSendButton();
 
@@ -37,6 +37,8 @@ public class ReplyBoxContract {
         void setReplyBoxListener(ReplyBoxListener listener);
 
         void setReplyBoxText(String message);
+
+        void setReplyBoxHintText(String hintMessage);
 
         void hideReplyBox();
 

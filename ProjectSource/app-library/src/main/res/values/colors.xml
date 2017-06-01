@@ -135,7 +135,7 @@
         @color/ko__messenger_primary_color_transparent_95
     </color>
     <color name="ko__messenger_reply_box_send_button_background_colour_disabled">#A1AAAF</color>
-    <color name="ko__messenger_reply_box_background_colour">#F7F8F9</color>
+    <color name="ko__messenger_reply_box_background_colour">#fff</color>
     <color name="ko__messenger_reply_box_hint_text_colour">#A1AAAF</color>
     <color name="ko__messenger_reply_box_text_colour">#2D3138</color>
     <color name="ko__messenger_reply_box_credits_text_colour">#A1AAAF</color>

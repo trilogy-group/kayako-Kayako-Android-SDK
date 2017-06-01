@@ -263,6 +263,15 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
     }
 
     @Override
+    public void setReplyBoxHintMessage(String hintMessage) {
+        if (!hasPageLoaded()) {
+            return;
+        }
+
+        mReplyBoxView.setReplyBoxHintText(hintMessage);
+    }
+
+    @Override
     public void collapseToolbar() {
         if (!hasPageLoaded()) {
             return;
