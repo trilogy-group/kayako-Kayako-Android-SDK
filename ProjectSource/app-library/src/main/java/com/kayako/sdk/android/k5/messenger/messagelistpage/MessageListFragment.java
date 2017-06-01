@@ -96,11 +96,10 @@ public class MessageListFragment extends MessengerListFragment implements Messag
                 super.setLoadMoreListener(mLoadMoreListener);
             }
 
-            super.scrollToNewMessagesIfNearby();
-
             mIsListAlreadyInitialized = true;
         }
 
+        super.scrollToNewMessagesIfNearby();
         showListViewAndHideOthers();
     }
 
