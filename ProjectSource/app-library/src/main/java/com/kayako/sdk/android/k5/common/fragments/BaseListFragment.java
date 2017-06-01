@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -36,6 +37,8 @@ public abstract class BaseListFragment extends Fragment {
     private CustomStateViewHelper mCustomStateViewHelper;
     private OnListPageStateChangeListener mListPageChangeStateListener;
     private OnScrollListListener mOnScrollListListener;
+
+    private boolean mHasUserTouchedRecyclerView;
 
     @Override
     final public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -162,6 +165,14 @@ public abstract class BaseListFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true); // assuming the layout size of recyclerview does not change
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setLayoutManager(layoutManager);
+
+        mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                mHasUserTouchedRecyclerView = true;
+                return false; // Keep false, true will block recyclerview from scrolling
+            }
+        });
     }
 
     protected void addItemsToEndOfList(List<BaseListItem> items) {
@@ -192,7 +203,13 @@ public abstract class BaseListFragment extends Fragment {
     protected void scrollToEndOfList() {
         assert mAdapter.getData().size() > 0;
 
-        mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount());
+        // Handler added because without it, scrolling doesn't ALWAYS work
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount());
+            }
+        });
     }
 
     /**
@@ -201,14 +218,26 @@ public abstract class BaseListFragment extends Fragment {
     protected void scrollToBeginningOfList() {
         assert mAdapter.getData().size() > 0;
 
-        mRecyclerView.smoothScrollToPosition(0);
+        // Handler added because without it, scrolling doesn't ALWAYS work
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                mRecyclerView.smoothScrollToPosition(0);
+            }
+        });
     }
 
     /**
      * Smooth scroll to any position
      */
-    protected void scrollToPosition(int position) {
-        mRecyclerView.smoothScrollToPosition(position);
+    protected void scrollToPosition(final int position) {
+        // Handler added because without it, scrolling doesn't ALWAYS work
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                mRecyclerView.smoothScrollToPosition(position);
+            }
+        });
     }
 
     protected int findFirstVisibleItemPosition() {
@@ -315,7 +344,7 @@ public abstract class BaseListFragment extends Fragment {
         mListPageChangeStateListener = listPageChangeStateListener;
     }
 
-    protected OnListPageStateChangeListener getOnListPageChangeStateListener(){
+    protected OnListPageStateChangeListener getOnListPageChangeStateListener() {
         return mListPageChangeStateListener;
     }
 
@@ -357,4 +386,9 @@ public abstract class BaseListFragment extends Fragment {
     public void removeScrollListListener(OnScrollListListener onScrollListener) {
         mOnScrollListListener = null;
     }
+
+    public boolean hasUserTouchedRecyclerView() {
+        return mHasUserTouchedRecyclerView;
+    }
+
 }

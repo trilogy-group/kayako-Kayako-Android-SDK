@@ -236,6 +236,15 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
     }
 
     @Override
+    public boolean hasUserInteractedWithList() {
+        if (!hasPageLoaded()) {
+            return false;
+        }
+
+        return mMessageListView.hasUserInteractedWithList();
+    }
+
+    @Override
     public void hideReplyBox() {
         if (!hasPageLoaded()) {
             return;
@@ -371,7 +380,6 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
         return mMessageListView.isNearBottomOfList();
     }
 
-
     @Override
     public void setKeyboardVisibility(boolean b) {
         if (!hasPageLoaded()) {
@@ -389,5 +397,6 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
 
         KayakoAttachmentPreviewActivity.startActivityForPreview(getActivity(), this, mLastAttachmentListItemViewClicked, imageUrl, REQUEST_CODE_VIEW_UPLOADED_ATTACHMENT);
     }
+
 
 }

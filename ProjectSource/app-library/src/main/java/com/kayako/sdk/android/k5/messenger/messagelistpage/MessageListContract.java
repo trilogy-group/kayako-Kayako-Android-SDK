@@ -47,6 +47,8 @@ public class MessageListContract {
         void scrollToBottomOfList();
 
         boolean isNearBottomOfList();
+
+        boolean hasUserInteractedWithList();
     }
 
     public interface OnErrorListener {

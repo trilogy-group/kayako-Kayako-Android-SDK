@@ -63,6 +63,8 @@ public class MessageListContainerContract {
 
         void showLoadingViewInMessageListingView();
 
+        boolean hasUserInteractedWithList();
+
         void hideReplyBox();
 
         void showReplyBox();

@@ -687,8 +687,10 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                 mView.hideLoadMoreView();
             }
 
-            boolean scrollToBottom = !mConversationMessagesHelper.hasLoadedMessagesBefore() // scroll to bottom if messages are being loaded for the first time
-                    || mView.isNearBottomOfList(); // scroll to bottom whenever user is near the end
+            boolean scrollToBottom =
+                    !mView.hasUserInteractedWithList() // if the user has not interacted with the list (scrolled)
+                            || !mConversationMessagesHelper.hasLoadedMessagesBefore() // scroll to bottom if messages are being loaded for the first time
+                            || mView.isNearBottomOfList(); // scroll to bottom whenever user is near the end
 
             mConversationMessagesHelper.onLoadNextMessages(messageList, offset);
 
