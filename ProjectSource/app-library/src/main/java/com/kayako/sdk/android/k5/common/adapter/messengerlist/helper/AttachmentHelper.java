@@ -134,7 +134,7 @@ public class AttachmentHelper {
     }
 
     private static void configureAttachmentImage(ImageView imageView, String imageUrl) {
-        ImageUtils.loadUrlAsAttachmentImage(Kayako.getApplicationContext(), imageView, imageUrl, true);
+        ImageUtils.loadUrlAsAttachmentImage(Kayako.getApplicationContext(), imageView, imageUrl, true, true,null);
     }
 
     public enum AttachmentFileType {

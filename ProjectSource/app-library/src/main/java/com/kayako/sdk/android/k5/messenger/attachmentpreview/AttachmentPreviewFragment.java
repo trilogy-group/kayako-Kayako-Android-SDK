@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.activities.KayakoAttachmentPreviewActivity;
@@ -59,7 +60,29 @@ public class AttachmentPreviewFragment extends Fragment {
             imageView.setVisibility(View.VISIBLE);
             attachmentPlaceholder.setVisibility(View.GONE);
 
-            ImageUtils.loadUrlAsAttachmentImage(getContext(), imageView, imageUrl, false);
+
+            mRoot.findViewById(R.id.ko__attachment_loader).setVisibility(View.VISIBLE);
+            ImageUtils.loadUrlAsAttachmentImage(getContext(), imageView, imageUrl, false, false, new ImageUtils.OnImageLoadedListener() {
+                @Override
+                public void onImageLoaded() {
+                    if (getActivity() == null || !isAdded()) {
+                        return;
+                    }
+
+                    mRoot.findViewById(R.id.ko__attachment_loader).setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onImageFailedToLoad() {
+                    if (getActivity() == null || !isAdded()) {
+                        return;
+                    }
+
+                    getActivity().onBackPressed(); // not finish() to retain animation
+
+                    Toast.makeText(getContext(), R.string.ko__messenger_attachment_preview_failed_to_load, Toast.LENGTH_SHORT).show();
+                }
+            });
         } else if (filePath != null) { // Load Preview via local FILE
 
             FileAttachment fileAttachment = FileAttachmentUtil.generateFileAttachment("preview", new File(filePath));

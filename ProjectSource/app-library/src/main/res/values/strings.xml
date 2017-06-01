@@ -85,5 +85,6 @@
     <string name="ko__messenger_credits_kayako">Kayako</string>
     <string name="ko__messenger_attachment_placeholder_untitled">Untitled</string>
     <string name="ko__messenger_msg_failed_to_send_reply">Unable to add reply. Please try again later</string>
+    <string name="ko__messenger_attachment_preview_failed_to_load">Unable to load image!</string>
 
 </resources>
