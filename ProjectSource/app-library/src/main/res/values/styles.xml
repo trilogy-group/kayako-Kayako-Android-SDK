@@ -68,19 +68,12 @@
         <item name="android:textColorLink">@color/ko__messenger_speech_bubble_self_text_color</item>
     </style>
 
-    <style name="Ko__ChatBubbleStyleSelf_OptimisticSending" parent="Ko__ChatBubbleStyleSelf">
-        <item name="android:background">@drawable/ko__speech_bubble_self_optimistic_sending</item>
-        <item name="android:textColorLink">@color/ko__messenger_speech_bubble_self_text_color</item>
-    </style>
-
-
     <style name="Ko__ChatBubbleDateStyle">
         <item name="android:textSize">@dimen/ko__messenger_list_item_time_text_size</item>
         <item name="android:textColor">@color/ko__messenger_delivery_indicator_time_text_color
         </item>
         <item name="android:layout_margin">@dimen/ko__messenger_list_item_time_margin</item>
     </style>
-
 
     <style name="Ko__ChatBubbleInputComponentStyle" parent="Ko__ChatBubbleStyle">
         <item name="android:background">@drawable/ko__speech_bubble_other</item>

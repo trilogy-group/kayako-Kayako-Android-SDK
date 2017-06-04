@@ -39,11 +39,12 @@ public class MessageStyleHelper {
         messageView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 
         messageView.setTextColor(Kayako.getApplicationContext().getResources().getColor(R.color.ko__messenger_speech_bubble_self_text_color));
+        messageView.setBackgroundResource(R.drawable.ko__speech_bubble_self);
 
         if (isFadedBackground) {
-            messageView.setBackgroundResource(R.drawable.ko__speech_bubble_self_optimistic_sending);
+            messageView.setAlpha(0.3f); // 70% opacity = 30% transparency
         } else {
-            messageView.setBackgroundResource(R.drawable.ko__speech_bubble_self);
+            messageView.setAlpha(1f);
         }
     }
 
@@ -65,7 +66,7 @@ public class MessageStyleHelper {
     // Testing area: http://regexr.com/3buf8
     // Source: http://stackoverflow.com/questions/28366172/check-if-letter-is-emoji
     // NOT ALL EMOJIs RECOGNIZED
-     private static final String EMOJI_REGEX = "([\\u20a0-\\u32ff\\ud83c\\udc00-\\ud83d\\udeff\\udbb9\\udce5-\\udbb9\\udcee])"; // Doesn't cover all the emotes like flags
+    private static final String EMOJI_REGEX = "([\\u20a0-\\u32ff\\ud83c\\udc00-\\ud83d\\udeff\\udbb9\\udce5-\\udbb9\\udcee])"; // Doesn't cover all the emotes like flags
 
     // Source: https://medium.com/reactnative/emojis-in-javascript-f693d0eb79fb (The lodash library version)
     // ERROR, but COVERS EVERYTHING: private static final String EMOJI_REGEX = "(?:[\\u2700-\\u27bf]|(?:\\ud83c[\\udde6-\\uddff]){2}|[\\ud800-\\udbff][\\udc00-\\udfff])[\\ufe0e\\ufe0f]?(?:[\\u0300-\\u036f\\ufe20-\\ufe23\\u20d0-\\u20f0]|\\ud83c[\\udffb-\\udfff])?(?:\\u200d(?:[^\\ud800-\\udfff]|(?:\\ud83c[\\udde6-\\uddff]){2}|[\\ud800-\\udbff][\\udc00-\\udfff])[\\ufe0e\\ufe0f]?(?:[\\u0300-\\u036f\\ufe20-\\ufe23\\u20d0-\\u20f0]|\\ud83c[\\udffb-\\udfff])?)*";
