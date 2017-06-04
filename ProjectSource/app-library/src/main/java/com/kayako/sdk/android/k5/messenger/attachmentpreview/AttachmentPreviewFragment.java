@@ -92,7 +92,7 @@ public class AttachmentPreviewFragment extends Fragment {
                 imageView.setVisibility(View.VISIBLE);
                 attachmentPlaceholder.setVisibility(View.GONE);
 
-                ImageUtils.loadFileAsAttachmentImage(getContext(), imageView, new File(filePath), false);
+                ImageUtils.loadFileAsAttachmentImage(getContext(), imageView, new File(filePath), false, false);
 
             } else { // Load other file
                 imageView.setVisibility(View.GONE);

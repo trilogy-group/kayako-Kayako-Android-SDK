@@ -134,12 +134,18 @@ public class ImageUtils {
      * @param imageView
      * @param file
      */
-    public static void loadFileAsAttachmentImage(@NonNull Context context, @NonNull ImageView imageView, @NonNull File file, boolean showPlaceholder) {
+    public static void loadFileAsAttachmentImage(@NonNull Context context, @NonNull ImageView imageView, @NonNull File file, boolean showPlaceholder, boolean configureSize) {
 
         DrawableTypeRequest<File> request = Glide.with(context).load(file);
 
         if (showPlaceholder) {
             request.placeholder(R.drawable.ko__loading_attachment);
+        }
+
+        if (configureSize) {
+            request
+                    .override(500, 150)
+                    .fitCenter();
         }
 
         request

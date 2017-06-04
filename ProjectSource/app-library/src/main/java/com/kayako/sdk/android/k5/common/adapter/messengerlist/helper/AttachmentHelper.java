@@ -57,7 +57,7 @@ public class AttachmentHelper {
                         attachmentPlaceholder.setVisibility(View.GONE);
                         thumbnailImageView.setVisibility(View.VISIBLE);
 
-                        ImageUtils.loadFileAsAttachmentImage(attachmentPlaceholder.getContext(), thumbnailImageView, attachmentFile, true);
+                        ImageUtils.loadFileAsAttachmentImage(attachmentPlaceholder.getContext(), thumbnailImageView, attachmentFile, true, true);
                     } else {
                         attachmentPlaceholder.setVisibility(View.VISIBLE);
                         thumbnailImageView.setVisibility(View.GONE);
@@ -134,7 +134,7 @@ public class AttachmentHelper {
     }
 
     private static void configureAttachmentImage(ImageView imageView, String imageUrl) {
-        ImageUtils.loadUrlAsAttachmentImage(Kayako.getApplicationContext(), imageView, imageUrl, true, true,null);
+        ImageUtils.loadUrlAsAttachmentImage(Kayako.getApplicationContext(), imageView, imageUrl, true, true, null);
     }
 
     public enum AttachmentFileType {
