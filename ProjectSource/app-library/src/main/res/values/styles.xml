@@ -14,11 +14,9 @@
     </style>
 
     <style name="Ko__MessengerTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- TODO: Change primary colors for messenger -->
         <item name="colorPrimary">@color/ko__colorPrimary</item>
         <item name="colorPrimaryDark">@color/ko__colorPrimaryDark</item>
-        <item name="colorAccent">@color/ko__messenger_primary_color
-        </item> <!-- NOTE: All progress indicators, scroll end effect will use this color -->
+        <item name="colorAccent">@color/ko__colorAccent</item> <!-- NOTE: Primary Messenger Color AND all progress indicators, scroll end effect will use this color -->
 
         <!-- Added to remove toolbar -->
         <item name="android:windowActionBar">false</item>

@@ -3,9 +3,9 @@
     <!-- Default Material Colors -->
     <color name="colorPrimary">#9B9B9B</color>
     <color name="colorPrimaryDark">#7C7C7C</color>
-    <color name="colorAccent">#3AA6C5</color>
+    <color name="colorAccent">#F1703F</color>
 
-    <!-- Primary Material Colors -->
+    <!-- Primary Material Colors - Kayako Helpcenter -->
     <color name="ko__colorPrimary">@color/colorPrimary</color>
     <color name="ko__colorPrimaryDark">@color/colorPrimaryDark</color>
     <color name="ko__colorAccent">@color/colorAccent</color>
@@ -69,13 +69,16 @@
     </color>
 
     <!-- Messenger -->
+
+    <!-- NOTE: This color needs to be overriden when opening Messenger (Default: #F1703F) -->
+    <color name="ko__messenger_primary_color">@color/ko__colorAccent</color>
+
     <color name="ko__default_dark_text_color">#2D3138</color>
     <color name="ko__messenger_speech_bubble_self_background_color">
         @color/ko__messenger_primary_color
     </color>
 
     <color name="ko__messenger_speech_bubble_self_text_color">#fff</color>
-
     <color name="ko__messenger_speech_bubble_other_background_color">#EDEEEF</color>
     <color name="ko__messenger_speech_bubble_other_text_color">#2D3138</color>
 
@@ -143,8 +146,6 @@
     <color name="ko__messenger_home_screen_widget_header_background_color">#F2FFFFFF</color>
     <color name="ko__messenger_home_screen_widget_content_background_color">#D9FFFFFF</color>
 
-    <!-- TODO Shift to code? THen make this default -->
-    <color name="ko__messenger_primary_color">#F1703F</color>
     <color name="ko__messenger_selected_button_background_color">#5F000000</color>
 
     <color name="ko__messenger_home_screen_widget_header_action_button_text_color">#2D3138</color>
