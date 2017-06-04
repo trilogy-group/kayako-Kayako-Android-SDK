@@ -1,6 +1,7 @@
 package com.kayako.sdk.android.k5.messenger.style;
 
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kayako.sdk.android.k5.R;
@@ -100,5 +101,13 @@ public class MessengerTemplateHelper {
 
     public static Foreground getSelectedForeground() {
         return MessengerStylePref.getInstance().getForeground();
+    }
+
+    public static void applyBackButtonColor(ImageView backButtonIcon) {
+        if (getSelectedBackground().isDarkBackground()) {
+            backButtonIcon.setImageResource(R.drawable.ko__ic_messenger_back_light);
+        } else {
+            backButtonIcon.setImageResource(R.drawable.ko__ic_messenger_back_dark);
+        }
     }
 }
