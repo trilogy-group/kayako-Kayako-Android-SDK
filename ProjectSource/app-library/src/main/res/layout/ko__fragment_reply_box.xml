@@ -22,6 +22,7 @@
             android:orientation="horizontal"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
+            android:gravity="center_vertical"
             android:paddingTop="8dp">
 
             <EditText
