@@ -58,9 +58,23 @@ public class KrePresenceJsonHelperTest {
         // This check only ensures that the user id is the same (equals overriden)
         Assert.assertEquals(expected, actual);
 
-        Assert.assertEquals(expected.getActivityData(), actual.getActivityData());
+        Assert.assertNotEquals(expected.getActivityData(), actual.getActivityData()); // NOT EQUAL because Typing was not mentioned before (null), but now it's mentioned (false)
         Assert.assertEquals(expected.getUserData().getAvatar(), actual.getUserData().getAvatar());
         Assert.assertEquals(expected.getUserData().getFullName(), actual.getUserData().getFullName());
+    }
+
+    /**
+     * Added to test because of changes made to KRE. Now, Active User info is gathered from the meta tag, not the id.
+     *
+     * @param id
+     * @return
+     */
+    private String getUserMeta(long id) {
+        return "\"user\": {\n" +
+                "\"id\": " + id + ",\n" +
+                "\"full_name\": \"Neil Mathew\",\n" +
+                "\"avatar\": \"https://kayako-mobile-testing.kayako.com/avatar/get/9e3180e4-6967-5f62-93df-185beae50f93?1487796405\"\n" +
+                "}";
     }
 
     @Test
@@ -68,17 +82,20 @@ public class KrePresenceJsonHelperTest {
         String json = "{\n" +
                 "  \"12\": {\n" +
                 "    \"metas\": [{\n" +
-                "      \"phx_ref\": \"s1Rz69LvStU=\"\n" +
+                "      \"phx_ref\": \"s1Rz69LvStU=\",\n" +
+                getUserMeta(12) +
                 "    }]\n" +
                 "  },\n" +
                 "  \"10\": {\n" +
                 "    \"metas\": [{\n" +
-                "      \"phx_ref\": \"oJCFiF1ORLo=\"\n" +
+                "      \"phx_ref\": \"oJCFiF1ORLo=\",\n" +
+                getUserMeta(10) +
                 "    }]\n" +
                 "  },\n" +
                 "  \"1\": {\n" +
                 "    \"metas\": [{\n" +
-                "      \"phx_ref\": \"x4PY6XrBegk=\"\n" +
+                "      \"phx_ref\": \"x4PY6XrBegk=\",\n" +
+                getUserMeta(1) +
                 "    }]\n" +
                 "  }\n" +
                 "}";
