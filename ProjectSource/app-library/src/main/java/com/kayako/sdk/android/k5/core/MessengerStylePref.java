@@ -14,7 +14,6 @@ public class MessengerStylePref extends JsonStore {
 
     final static private String KEY_FOREGROUND = "key_foreground";
     final static private String KEY_BACKGROUND = "key_background";
-    final static private String KEY_PRIMARY_COLOR = "key_primary_color";
 
     private static MessengerStylePref sInstance;
 
@@ -57,13 +56,5 @@ public class MessengerStylePref extends JsonStore {
         } else {
             return JsonStoreHelper.getOriginalClassRepresentation(json, Background.class);
         }
-    }
-
-    public void setPrimaryColor(String hexColor) {
-        saveItem(KEY_PRIMARY_COLOR, hexColor);
-    }
-
-    public String getPrimaryColor() {
-        return retrieveItem(KEY_PRIMARY_COLOR);
     }
 }
