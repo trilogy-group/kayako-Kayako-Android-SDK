@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="sampleapp.myapplication">
 
+    <!---->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
     <application
         android:name=".MySampleApplication"
         android:icon="@mipmap/ic_launcher"
@@ -17,6 +21,7 @@
         </activity>
 
         <!-- Add the following activities - Kayako -->
+        <!-- Helpcenter Activities -->
         <activity
             android:name="com.kayako.sdk.android.k5.activities.KayakoHelpCenterActivity"
             android:theme="@style/HelpCenterTheme" />
@@ -28,6 +33,23 @@
         <activity
             android:name="com.kayako.sdk.android.k5.activities.KayakoArticleActivity"
             android:theme="@style/HelpCenterTheme" />
+
+        <!-- Messenger Activities -->
+        <activity
+            android:name="com.kayako.sdk.android.k5.activities.KayakoConversationListActivity"
+            android:theme="@style/MessengerTheme" />
+
+        <activity
+            android:name="com.kayako.sdk.android.k5.activities.KayakoSelectConversationActivity"
+            android:theme="@style/MessengerTheme" />
+
+        <activity
+            android:name="com.kayako.sdk.android.k5.activities.KayakoMessengerActivity"
+            android:theme="@style/MessengerTheme" />
+
+        <activity
+            android:name="com.kayako.sdk.android.k5.activities.KayakoAttachmentPreviewActivity"
+            android:theme="@style/MessengerTheme" />
 
     </application>
 
