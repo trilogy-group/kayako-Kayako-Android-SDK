@@ -22,10 +22,6 @@ import com.kayako.sdk.android.k5.core.KayakoLogHelper;
 import com.kayako.sdk.android.k5.core.MessengerBuilder;
 import com.kayako.sdk.android.k5.messenger.style.BackgroundFactory;
 import com.kayako.sdk.android.k5.messenger.style.ForegroundFactory;
-import com.kayako.sdk.base.callback.ListCallback;
-import com.kayako.sdk.error.KayakoException;
-import com.kayako.sdk.helpcenter.HelpCenter;
-import com.kayako.sdk.helpcenter.category.Category;
 import com.kayako.sdk.utils.LogUtils;
 
 import java.util.ArrayList;
