@@ -3,11 +3,15 @@ package com.kayako.sdk.android.k5.common.utils;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
 import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.ChannelDecoration;
 import com.kayako.sdk.android.k5.common.view.CircleImageView;
@@ -130,7 +134,7 @@ public class ImageUtils {
      * @param imageView
      * @param file
      */
-    public static void loadFileAsAttachmentImage(@NonNull Context context, @NonNull ImageView imageView, @NonNull File file, boolean showPlaceholder) {
+    public static void loadFileAsAttachmentImage(@NonNull Context context, @NonNull ImageView imageView, @NonNull File file, boolean showPlaceholder, boolean configureSize) {
 
         DrawableTypeRequest<File> request = Glide.with(context).load(file);
 
@@ -138,13 +142,20 @@ public class ImageUtils {
             request.placeholder(R.drawable.ko__loading_attachment);
         }
 
-        request.crossFade()
+        if (configureSize) {
+            request
+                    .override(500, 150)
+                    .fitCenter();
+        }
+
+        request
+                .dontAnimate()
                 .skipMemoryCache(false)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE) // using source because RESULT messes up when image resizes to fit into imageview with wrap_content
                 .into(imageView);
     }
 
-    public static void loadUrlAsAttachmentImage(@NonNull Context context, @NonNull ImageView imageView, @NonNull String imageUrl, boolean showPlaceholder) {
+    public static void loadUrlAsAttachmentImage(@NonNull Context context, @NonNull ImageView imageView, @NonNull String imageUrl, boolean showPlaceholder, boolean configureSize, @Nullable final OnImageLoadedListener listener) {
 
         DrawableTypeRequest<String> request = Glide.with(context).load(imageUrl);
 
@@ -152,7 +163,32 @@ public class ImageUtils {
             request.placeholder(R.drawable.ko__loading_attachment);
         }
 
+        if (configureSize) {
+            request
+                    .override(500, 150)
+                    .fitCenter();
+        }
+
         request
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        if (listener != null) {
+                            listener.onImageFailedToLoad();
+                        }
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        if (listener != null) {
+                            listener.onImageLoaded();
+                        }
+
+                        return false;
+                    }
+                })
+                .dontAnimate()
                 .skipMemoryCache(false)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE) // using source because RESULT messes up when image resizes to fit into imageview with wrap_content
                 .into(imageView);
@@ -176,5 +212,10 @@ public class ImageUtils {
         }
     }
 
+    public interface OnImageLoadedListener {
+        void onImageLoaded();
+
+        void onImageFailedToLoad();
+    }
 
 }

@@ -36,9 +36,11 @@ public class KreSubscription extends KreConnection {
 
     private static final String TAG = "KreSubscription";
     private static final String EVENT_OK = "ok";
+    private static final long FIVE_SECONDS = 5 * 1000;
 
     private String mCurrentChannel;
 
+    private final Object mRunTriggerMethodKey = new Object();
     private final Object mTriggerKey = new Object();
     private final Object mListenerKey = new Object();
     private AtomicReference<Channel> mChannel = new AtomicReference<Channel>();
@@ -46,7 +48,7 @@ public class KreSubscription extends KreConnection {
     private List<OnSubscriptionListener> mOnSubscriptionListeners = new ArrayList<>();
 
     private AsyncTask mUnSubscribeTask;
-    private AsyncTask mTriggerTask;
+    private TriggerTask mTriggerTask;
 
     private String mTagWithName; // to track what the KreSubscription is being used for
 
@@ -296,15 +298,47 @@ public class KreSubscription extends KreConnection {
     }
 
     private <T extends PushData> void runTriggerTask(final String event, final T t) {
-        mTriggerTask = new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void[] params) {
-                performTrigger(event, t);
-                return null;
+        synchronized (mRunTriggerMethodKey) { // Ensure conditions are checked in a synchronized manner
+            final long currentTime = System.currentTimeMillis();
+
+            // Skip if the new trigger task does the same job as the previous one sent within the same 30 seconds
+            // This check has been added to minimize the chances of the RejectedExecutionException from happening
+            if (mTriggerTask != null
+                    && mTriggerTask.getStatus() == AsyncTask.Status.RUNNING && !mTriggerTask.isCancelled()
+                    && mTriggerTask.getEvent() != null && mTriggerTask.getEvent().equals(event)
+                    && mTriggerTask.getPayload() != null && mTriggerTask.getPayload().equals(t)
+                    && (currentTime - mTriggerTask.getExecutedAt() < FIVE_SECONDS)) {
+                KayakoLogHelper.e(getClass().getName(), "Skipping Trigger Task... Same as last one FIVE_SECONDS ago");
+                KayakoLogHelper.e(getClass().getName(), mTriggerTask.getEvent());
+                KayakoLogHelper.e(getClass().getName(), mTriggerTask.getPayload().toString());
+                return;
             }
 
+            mTriggerTask = new TriggerTask<T>() {
+                @Override
+                protected Object doInBackground(Object[] params) {
+                    performTrigger(event, t);
+                    return null;
+                }
 
-        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                @Override
+                public String getEvent() {
+                    return event;
+                }
+
+                @Override
+                public T getPayload() {
+                    return t;
+                }
+
+                @Override
+                public long getExecutedAt() {
+                    return currentTime;
+                }
+            };
+
+            mTriggerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
     }
 
     ////// OTHER METHODS ////////
@@ -364,6 +398,14 @@ public class KreSubscription extends KreConnection {
         if (listener != null) {
             listener.onUnsubscription();
         }
+    }
+
+    private abstract class TriggerTask<T extends PushData> extends AsyncTask {
+        public abstract String getEvent();
+
+        public abstract T getPayload();
+
+        public abstract long getExecutedAt();
     }
 
     public interface OnErrorListener {

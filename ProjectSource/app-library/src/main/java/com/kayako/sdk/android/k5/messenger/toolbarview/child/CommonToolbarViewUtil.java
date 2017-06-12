@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kayako.sdk.android.k5.R;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.MessageStyleHelper;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.AssignedAgentData;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.ConversationStarterHelper;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.LastActiveAgentsData;
@@ -121,11 +122,13 @@ public class CommonToolbarViewUtil {
     public static void customizeColorsToMatchMessengerStyle(View mRoot) {
         MessengerTemplateHelper.applyTextColor(((TextView) mRoot.findViewById(R.id.ko__messenger_toolbar_subtitle)));
         MessengerTemplateHelper.applyTextColor(((TextView) mRoot.findViewById(R.id.ko__messenger_toolbar_title)));
+        MessengerTemplateHelper.applyBackButtonColor((ImageView) mRoot.findViewById(R.id.ko__messenger_toolbar_back_button));
     }
 
     public static void customizeColorsToMatchMessengerStyleForExpandedToolbar(View mRoot) {
         MessengerTemplateHelper.applyTextColor(((TextView) mRoot.findViewById(R.id.ko__messenger_toolbar_avatar_caption_text)));
         MessengerTemplateHelper.applyBackgroundColor(mRoot.findViewById(R.id.ko__messenger_toolbar_avatar_separator));
+        MessengerTemplateHelper.applyBackButtonColor((ImageView) mRoot.findViewById(R.id.ko__messenger_toolbar_back_button));
     }
 
 }

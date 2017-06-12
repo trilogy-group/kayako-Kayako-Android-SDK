@@ -22,7 +22,7 @@
             android:background="?android:selectableItemBackground"
             android:padding="@dimen/ko__messenger_toolbar_back_button_padding"
             android:scaleType="centerInside"
-            android:src="@drawable/ko__ic_messenger_back"
+            android:src="@drawable/ko__ic_messenger_back_light"
             android:transitionName="ko__messenger_toolbar_back_button" />
 
 

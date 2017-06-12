@@ -63,11 +63,15 @@ public class MessageListContainerContract {
 
         void showLoadingViewInMessageListingView();
 
+        boolean hasUserInteractedWithList();
+
         void hideReplyBox();
 
         void showReplyBox();
 
         void focusOnReplyBox();
+
+        void setReplyBoxHintMessage(String hintMessage);
 
         void collapseToolbar();
 

@@ -3,6 +3,7 @@ package com.kayako.sdk.android.k5.messenger.messagelistpage;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.kayako.sdk.android.k5.R;
@@ -37,6 +38,13 @@ public class MessageListFragment extends MessengerListFragment implements Messag
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setPageStateListener();
+
+        mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return false;
+            }
+        });
     }
 
     @Override
@@ -95,9 +103,11 @@ public class MessageListFragment extends MessengerListFragment implements Messag
             if (mLoadMoreListener != null) {
                 super.setLoadMoreListener(mLoadMoreListener);
             }
+
             mIsListAlreadyInitialized = true;
         }
 
+        super.scrollToNewMessagesIfNearby();
         showListViewAndHideOthers();
     }
 
@@ -145,6 +155,15 @@ public class MessageListFragment extends MessengerListFragment implements Messag
         }
 
         return super.isNearEndOfList();
+    }
+
+    @Override
+    public boolean hasUserInteractedWithList() {
+        if (!hasPageLoaded()) {
+            return false;
+        }
+
+        return super.hasUserTouchedRecyclerView();
     }
 
 

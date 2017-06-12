@@ -3,7 +3,7 @@
     android:shape="oval">
 
     <solid
-        android:color="@color/ko__messenger_reply_box_send_button_background_colour_selected" />
+        android:color="@color/ko__messenger_selected_button_background_color" />
 
     <size
         android:width="40dp"

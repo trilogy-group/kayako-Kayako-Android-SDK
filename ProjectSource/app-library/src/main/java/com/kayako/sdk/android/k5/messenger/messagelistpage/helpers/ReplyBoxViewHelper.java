@@ -1,8 +1,11 @@
 package com.kayako.sdk.android.k5.messenger.messagelistpage.helpers;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.fragments.ListPageState;
+import com.kayako.sdk.android.k5.core.Kayako;
 
 /**
  * All logic for showing and hiding reply box should be in this class
@@ -59,6 +62,33 @@ public class ReplyBoxViewHelper {
         } else {
             return ReplyBoxViewState.HIDDEN;
         }
+    }
+
+    public String getReplyBoxHintMessage(boolean isNewConversation, @NonNull String brandName, @Nullable String agentName) {
+        if (brandName == null || brandName.length() == 0) {
+            throw new IllegalArgumentException("Invalid State - can't be null");
+        }
+
+        if (isNewConversation) {
+            return Kayako.getApplicationContext().getString(R.string.ko__messenger_reply_box_hint_new_conversation);
+
+        } else if (agentName != null) {
+            return String.format(
+                    Kayako.getApplicationContext().getString(R.string.ko__messenger_reply_box_hint_to_agent),
+                    getFirstName(agentName));
+            
+        } else {
+            return String.format(Kayako.getApplicationContext().getString(R.string.ko__messenger_reply_box_hint_to_brand), brandName);
+        }
+    }
+
+    private String getFirstName(String agentName) {
+        if (agentName == null || agentName.length() == 0) {
+            throw new IllegalArgumentException("Invalid State - can't be null");
+        }
+
+        String[] words = agentName.split(" ");
+        return words[0];
     }
 
     public enum ReplyBoxViewState {

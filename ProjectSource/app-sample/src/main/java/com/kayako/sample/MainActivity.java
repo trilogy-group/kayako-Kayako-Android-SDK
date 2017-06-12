@@ -145,9 +145,8 @@ public class MainActivity extends AppCompatActivity {
                         .getMessenger()
                         .setUrl(url)
                         .setBrandName(brandName)
-                        .setTitle(title + " \uD83D\uDC4B")
+                        .setTitle(title)
                         .setDescription(description)
-                        .setPrimaryColor(primaryColor)
                         .setBackground(BackgroundFactory.getBackground(
                                 Arrays.asList(BackgroundFactory.BackgroundOption.values()).get(spinnerMessengerBackground.getSelectedItemPosition())
                         ))

@@ -101,7 +101,7 @@
     <dimen name="ko__messenger_home_screen_widget_recent_cases__conversation_list_item_time_text_size">
         10sp
     </dimen>
-    <dimen name="ko__messenger_unread_counter_max_width">26dp</dimen>
+    <dimen name="ko__messenger_unread_counter_max_width">24dp</dimen>
     <dimen name="ko__messenger_unread_counter_max_height">24dp</dimen>
     <dimen name="ko__messenger_home_screen_widget_recent_cases__conversation_list_item_padding_vertical">
         8dp
