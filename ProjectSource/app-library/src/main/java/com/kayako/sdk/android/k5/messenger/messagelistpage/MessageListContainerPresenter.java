@@ -401,6 +401,11 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         // footer items
         allListItems.addAll(mTypingViewHelper.getTypingViews());
 
+        // Conversation Status Message
+        if (mConversationHelper.isConversationCreated()) {
+            allListItems.addAll(mListHelper.getConversationStatusMessages(mConversationHelper.getConversation()));
+        }
+
         // Offloading items
         allListItems.addAll(getOffboardingListItemViews());
 

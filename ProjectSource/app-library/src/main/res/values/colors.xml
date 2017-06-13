@@ -83,6 +83,7 @@
     <color name="ko__messenger_speech_bubble_other_text_color">#2D3138</color>
 
     <color name="ko__messenger_date_separator_text_color">#A1AAAF</color>
+    <color name="ko__messenger_system_message_text_color">#A1AAAF</color>
     <color name="ko__messenger_delivery_indicator_time_text_color">#A1AAAF</color>
 
     <color name="ko__messenger_unread_separator_line_color">@color/ko__messenger_primary_color

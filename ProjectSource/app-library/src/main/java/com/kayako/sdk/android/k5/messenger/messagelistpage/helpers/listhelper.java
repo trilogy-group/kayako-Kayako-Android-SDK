@@ -1,5 +1,6 @@
 package com.kayako.sdk.android.k5.messenger.messagelistpage.helpers;
 
+import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.Attachment;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentUrlType;
@@ -7,13 +8,18 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.DataItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.DataItemHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.DiffUtilsHelper;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.UserDecorationHelper;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SystemMessageListItem;
 import com.kayako.sdk.android.k5.common.fragments.ListPageState;
 import com.kayako.sdk.android.k5.common.utils.file.FileStorageUtil;
+import com.kayako.sdk.android.k5.core.Kayako;
 import com.kayako.sdk.android.k5.core.MessengerPref;
 import com.kayako.sdk.messenger.attachment.Thumbnail;
+import com.kayako.sdk.messenger.conversation.Conversation;
+import com.kayako.sdk.messenger.conversation.fields.status.Status;
 import com.kayako.sdk.messenger.message.Message;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -67,6 +73,21 @@ public class ListHelper {
     public List<BaseListItem> getMessageAsListItemViews(List<Message> messages, long lastOriginalMessageMarkedRead, long userId) {
         List<DataItem> dataItems = convertMessagesToDataItems(messages, lastOriginalMessageMarkedRead, userId);
         return DataItemHelper.getInstance().convertDataItemToListItems(dataItems);
+    }
+
+    public List<BaseListItem> getConversationStatusMessages(Conversation conversation) {
+        List<BaseListItem> list = new ArrayList<>();
+
+        if (conversation != null && conversation.getStatus() != null && conversation.getStatus().getType() != null) {
+
+            // Necessary to explain to user why there is no reply box
+            if (conversation.getStatus().getType() == Status.Type.CLOSED) {
+                // Using string 'This conversation has been completed' for a CLOSED status because it's easier to understand for customer - although not technically correct
+                list.add(new SystemMessageListItem(Kayako.getApplicationContext().getString(R.string.ko__messenger_system_msg_conversation_is_closed)));
+            }
+        }
+
+        return list;
     }
 
     private List<DataItem> convertMessagesToDataItems(List<Message> messageList, long lastOriginalMessageMarkedRead, long userId) {

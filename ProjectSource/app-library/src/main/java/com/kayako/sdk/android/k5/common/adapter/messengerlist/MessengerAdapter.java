@@ -46,6 +46,8 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessage
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageOtherViewHolder;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageSelfListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SimpleMessageSelfViewHolder;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SystemMessageListItem;
+import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.SystemMessageViewHolder;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.TypingListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.TypingViewHolder;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.UnreadSeparatorListItem;
@@ -264,6 +266,16 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 // No Item Click Listener
                 break;
 
+            case MessengerListType.SYSTEM_MESSAGE:
+                SystemMessageListItem systemMessageListItem = (SystemMessageListItem) getData().get(position);
+                SystemMessageViewHolder systemMessageViewHolder = (SystemMessageViewHolder) viewHolder;
+
+                systemMessageViewHolder.message.setText(Html.fromHtml(systemMessageListItem.getMessage()));
+
+                // No Item Click Listener
+                break;
+
+
             case MessengerListType.INPUT_FIELD_EMAIL:
                 final InputEmailViewHolder inputEmailViewHolder = (InputEmailViewHolder) viewHolder;
                 final InputEmailListItem inputEmailListItem = (InputEmailListItem) getData().get(position);
@@ -360,6 +372,12 @@ public class MessengerAdapter extends EndlessRecyclerViewScrollAdapter {
                 View botMessageView = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.ko__list_messenger_bot_message_other, parent, false);
                 return new BotMessageViewHolder(botMessageView);
+
+            case MessengerListType.SYSTEM_MESSAGE: // Note: Used to indicate the user the conversation is closed or complete
+                View systemMessageView = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.ko__list_messenger_system_message, parent, false);
+                return new SystemMessageViewHolder(systemMessageView);
+
 
             case MessengerListType.INPUT_FIELD_EMAIL:
                 View inputEmailView = LayoutInflater.from(parent.getContext()).inflate(R.layout.ko__list_messenger_input_field, parent, false);
