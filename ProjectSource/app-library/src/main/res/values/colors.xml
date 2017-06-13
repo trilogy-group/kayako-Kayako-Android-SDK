@@ -151,17 +151,24 @@
     <color name="ko__messenger_home_screen_widget_header_action_button_text_color">#2D3138</color>
 
     <color name="ko__messenger_input_field_green">#4EAC5E</color>
+    <color name="ko__messenger_input_field_red">#DB3F24</color>
 
     <color name="ko__messenger_unread_message_counter_background_color">#E86048</color>
     <color name="ko__messenger_unread_message_counter_text_color">#FFFFFF</color>
+
     <color name="ko__messenger_input_feedback_rating_default_text_color">#5F6C73</color>
     <color name="ko__messenger_input_feedback_rating_selected_good_text_color">
+        #FFFFFF
+    </color>
+    <color name="ko__messenger_input_feedback_rating_selected_good_background_color">
         @color/ko__messenger_input_field_green
     </color>
     <color name="ko__messenger_input_feedback_rating_selected_bad_text_color">
-        #DB3F24
+        #FFFFFF
     </color>
-    <color name="ko__messenger_input_feedback_rating_selected_background_color">#094EAFCB</color>
+    <color name="ko__messenger_input_feedback_rating_selected_bad_background_color">
+        @color/ko__messenger_input_field_red
+    </color>
     <color name="ko__messenger_input_feedback_rating_next_button_text_color">
         @color/ko__messenger_input_field_green
     </color>

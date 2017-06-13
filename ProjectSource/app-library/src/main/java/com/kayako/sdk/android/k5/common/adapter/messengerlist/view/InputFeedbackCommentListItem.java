@@ -56,9 +56,11 @@ public class InputFeedbackCommentListItem extends InputFieldlListItem {
     public Map<String, String> getContents() {
         Map<String, String> map = new HashMap<>();
         map.put("instructionMessage", String.valueOf(instructionMessage));
-        map.put("rating", String.valueOf(rating));
+        // map.put("rating", String.valueOf(rating)); commented to prevent unnecessary animation when user changes the rating on recyclerview
         map.put("hasSubmittedValue", String.valueOf(hasSubmittedValue()));
-        map.put("getSubmittedValue", String.valueOf(getSubmittedValue()));
+        if (hasSubmittedValue()) {
+            map.put("getSubmittedValue", String.valueOf(getSubmittedValue()));
+        }
         return map;
     }
 

@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ko__messenger_input_feedback_rating_field_layout"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_height="100dp"
     android:background="@drawable/ko__speech_bubble_input_field_rounded_top_background"
     android:orientation="horizontal">
 
@@ -38,7 +38,7 @@
             android:id="@+id/ko__messenger_input_feedback_rating_field_good_view_selected"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/ko__messenger_input_feedback_rating_selected_background_color"
+            android:background="@drawable/ko__speech_bubble_input_field_feedback_selected_good"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -47,7 +47,7 @@
                 android:layout_height="@dimen/ko__messenger_input_feedback_rating_image_size"
                 android:src="@drawable/ko__img_happy_selected" />
 
-            <com.kayako.sdk.android.k5.common.view.RegularTextView
+            <com.kayako.sdk.android.k5.common.view.BoldTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/ko__messenger_input_feedback_rating_gap_between_image_and_text"
@@ -96,7 +96,7 @@
             android:id="@+id/ko__messenger_input_feedback_rating_field_bad_view_selected"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/ko__messenger_input_feedback_rating_selected_background_color"
+            android:background="@drawable/ko__speech_bubble_input_field_feedback_selected_bad"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -105,7 +105,7 @@
                 android:layout_height="@dimen/ko__messenger_input_feedback_rating_image_size"
                 android:src="@drawable/ko__img_sad_selected" />
 
-            <com.kayako.sdk.android.k5.common.view.RegularTextView
+            <com.kayako.sdk.android.k5.common.view.BoldTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/ko__messenger_input_feedback_rating_gap_between_image_and_text"
