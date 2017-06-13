@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -158,12 +159,16 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
 
     @Override
     public void showToastMessage(int stringResId) {
-        Toast.makeText(getContext(), stringResId, Toast.LENGTH_SHORT).show();
+        Toast toast = Toast.makeText(getContext(), stringResId, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 
     @Override
     public void showToastMessage(String errorMessage) {
-        Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+        Toast toast = Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 
     @Override

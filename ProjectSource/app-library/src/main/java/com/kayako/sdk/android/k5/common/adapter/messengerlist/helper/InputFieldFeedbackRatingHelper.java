@@ -81,6 +81,15 @@ public class InputFieldFeedbackRatingHelper {
         InputFieldHelper.enableInputLayoutWithoutButton(viewHolder);
 
         setSelectRatingListener(viewHolder, listItem.getOnSelectRatingListener());
+
+        // Manually set viewholder state to be unset
+        if (viewHolder.badRatingViewSwitcher.getCurrentView() == viewHolder.selectedBadRatingView) {
+            viewHolder.badRatingViewSwitcher.showNext();
+        }
+
+        if (viewHolder.goodRatingViewSwitcher.getCurrentView() == viewHolder.selectedGoodRatingView) {
+            viewHolder.goodRatingViewSwitcher.showNext();
+        }
     }
 
     /**

@@ -332,15 +332,6 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         }
 
         @Override
-        public void onLoadRatings() {
-            if (mConversationHelper.isConversationCreated()) {
-                getConversationRating(mConversationHelper.getConversationId());
-            } else {
-                throw new IllegalStateException("This method should never be called before the conversation is created!");
-            }
-        }
-
-        @Override
         public void onHideKeyboard() {
             mView.setKeyboardVisibility(false);
         }
@@ -371,6 +362,12 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                 throw new IllegalStateException("This method should never be called before the conversation is created!");
             }
         }
+
+        @Override
+        public void onShowMessage(int stringResId) {
+            mView.showToastMessage(stringResId);
+        }
+
     };
 
     ////// VIEW MODIFYING METHODS //////
@@ -441,7 +438,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                 mReplyBoxHelper.getReplyBoxVisibility(
                         !mConversationHelper.isConversationCreated(),
                         mMessengerPrefHelper.getEmail() != null,
-                        mConversationHelper.isConversationClosed() || mConversationHelper.isConversationCompleted(),
+                        mConversationHelper.isConversationClosed(),
                         mListHelper.getListPageState());
 
         // Assertions
@@ -531,7 +528,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
     private List<BaseListItem> getOffboardingListItemViews() {
         if (mConversationHelper.getConversation() != null) {
-            final boolean isCompleted = mConversationHelper.isConversationClosed() || mConversationHelper.isConversationCompleted();
+            final boolean isCompleted = mConversationHelper.isConversationCompleted();
 
             final String nameOfAgent = mConversationHelper.getConversation().getLastAgentReplier() == null
                     ? MessengerPref.getInstance().getBrandName()
@@ -607,7 +604,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
         // Load rating when conversation is loaded for the first time
         mOffboardingHelper.onLoadConversation(
-                mConversationHelper.isConversationClosed() || mConversationHelper.isConversationCompleted(),
+                mConversationHelper.isConversationCompleted(),
                 mOffboardingHelperViewCallback);
 
         // Since reply box visibility depends on conversation status - refresh reply box every time conversation is loaded
@@ -854,24 +851,6 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         }
     };
 
-    private MessageListContainerContract.OnLoadRatingsListener onLoadRatingsListener = new MessageListContainerContract.OnLoadRatingsListener() {
-        @Override
-        public void onSuccess(List<Rating> ratings) {
-            if (!mView.hasPageLoaded()) { // Ensure callbacks after activity/fragment closed doesn't cause crashes
-                return;
-            }
-
-            mOffboardingHelper.onLoadRatings(ratings, mOffboardingHelperViewCallback);
-        }
-
-        @Override
-        public void onFailure(String message) {
-            if (!mView.hasPageLoaded()) { // Ensure callbacks after activity/fragment closed doesn't cause crashes
-                return;
-            }
-        }
-    };
-
     private MessageListContainerContract.OnUpdateRatingListener onUpdateRatingListener = new MessageListContainerContract.OnUpdateRatingListener() {
         @Override
         public void onSuccess(Rating rating) {
@@ -997,10 +976,6 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                 ),
                 clientId,
                 onPostMessageListener);
-    }
-
-    private void getConversationRating(long conversationId) {
-        mData.getConversationRatings(conversationId, onLoadRatingsListener);
     }
 
     private void addConversationRating(long conversationId, Rating.SCORE score, String message) {
