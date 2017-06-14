@@ -25,19 +25,21 @@ public class ConversationStore {
     private Messenger mMessenger;
 
     private ConversationStore() {
-        mConversations.setSortComparator(new Comparator() {
+        mConversations.setSortComparator(new Comparator<Conversation>() {
             @Override
-            public int compare(Object lhs, Object rhs) {
-                long leftUpdatedTime = ((Conversation) lhs).getUpdatedAt();
-                long rightUpdatedTime = ((Conversation) rhs).getUpdatedAt();
+            public int compare(Conversation lhs, Conversation rhs) {
+                long leftUpdatedTime = lhs.getUpdatedAt();
+                long rightUpdatedTime = rhs.getUpdatedAt();
 
+                // descending order of time
                 if (leftUpdatedTime == rightUpdatedTime) {
                     return 0;
                 } else if (leftUpdatedTime < rightUpdatedTime) {
-                    return -1;
-                } else {
                     return 1;
+                } else {
+                    return -1;
                 }
+
             }
         });
 
@@ -96,21 +98,14 @@ public class ConversationStore {
         });
     }
 
-    public void getConversations(int offset, int limit, final ConversationListLoaderCallback callback) {
+    public void getConversations(final int offset, final int limit, final ConversationListLoaderCallback callback) {
         final Handler handler = new Handler();
 
         if (mConversations.getSize() > 0 && offset == 0) {
-            List<Conversation> conversationList = mConversations.getList();
-
-            if (conversationList.size() > limit) {
-                conversationList = conversationList.subList(0, limit);
-            }
-
-            final List<Conversation> finalConversationList = conversationList;
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    callback.onLoadConversations(finalConversationList);
+                    callback.onLoadConversations(getSortedConversations(offset, limit));
                 }
             });
         }
@@ -126,7 +121,7 @@ public class ConversationStore {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        callback.onLoadConversations(items);
+                        callback.onLoadConversations(getSortedConversations(offset, limit));
                     }
                 });
             }
@@ -180,6 +175,16 @@ public class ConversationStore {
 
     public void clear() {
         mConversations = new UniqueSortedUpdatableResourceList<>();
+    }
+
+    private List<Conversation> getSortedConversations(int offset, int limit) {
+        List<Conversation> conversations = getCachedConversations();
+
+        if (conversations.size() > limit && offset < conversations.size() && offset <= limit) {
+            return conversations.subList(offset, limit);
+        } else {
+            return conversations;
+        }
     }
 
     private void addElement(Conversation item) {

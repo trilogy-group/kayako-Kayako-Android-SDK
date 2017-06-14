@@ -87,5 +87,6 @@
     <string name="ko__messenger_msg_failed_to_send_reply">Unable to add reply. Please try again later</string>
     <string name="ko__messenger_attachment_preview_failed_to_load">Unable to load image!</string>
     <string name="ko__messenger_system_msg_conversation_is_closed">This conversation has been completed</string>
+    <string name="ko__messenger_msg_failed_to_load_messages">Failed to load more!</string>
 
 </resources>

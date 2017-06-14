@@ -8,6 +8,7 @@ import com.kayako.sdk.android.k5.core.MessengerPref;
 import com.kayako.sdk.messenger.conversation.Conversation;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.BotMessageHelper.getDefaultDrawableForConversation;
@@ -28,6 +29,18 @@ public class ConversationViewModelHelper {
     private UniqueSortedUpdatableResourceList<ConversationViewModel> conversations = new UniqueSortedUpdatableResourceList<>();
 
     public ConversationViewModelHelper() {
+        conversations.setSortComparator(new Comparator<ConversationViewModel>() {
+            @Override
+            public int compare(ConversationViewModel lhs, ConversationViewModel rhs) {
+                if (lhs.getTimeInMilleseconds().equals(rhs.getTimeInMilleseconds())) {
+                    return 0;
+                } else if (lhs.getTimeInMilleseconds() < rhs.getTimeInMilleseconds()) {
+                    return -1;
+                } else {
+                    return 1;
+                }
+            }
+        });
     }
 
     public void addOrUpdateElement(@NonNull Conversation conversation, @Nullable ClientTypingActivity clientTypingActivity) {

@@ -62,7 +62,7 @@ public class UniqueSortedUpdatableResourceList<T> implements IUniqueResourceList
     @Override
     public void setSortComparator(Comparator<T> comparator) {
         if (comparator == null) {
-            this.comparator = DEFAULT_ID_COMPARATOR;
+            this.comparator = null;
         } else {
             this.comparator = comparator;
         }

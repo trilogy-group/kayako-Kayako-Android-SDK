@@ -28,7 +28,7 @@ public class ConversationListContract {
 
         void openMessageListPage(Long id, int requestCode);
 
-        void showMessage(String message);
+        void showMessage(int stringResId);
 
         void setListHasMoreItems(boolean hasMore);
 
@@ -44,6 +44,8 @@ public class ConversationListContract {
         void initPage();
 
         void closePage();
+
+        void onResume();
 
         void onLoadMoreItems();
 

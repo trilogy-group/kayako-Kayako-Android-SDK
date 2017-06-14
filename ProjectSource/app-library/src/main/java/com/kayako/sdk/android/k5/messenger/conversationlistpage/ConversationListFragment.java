@@ -31,9 +31,6 @@ public class ConversationListFragment extends BaseListFragment implements Conver
     private ConversationListAdapter mConversationListAdapter;
     private boolean mIsListInitialized;
 
-    // TODO: Receive fingerprintId
-    // TODO: Redesign the Views - placeholders for loading
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +66,12 @@ public class ConversationListFragment extends BaseListFragment implements Conver
     public void onDestroyView() {
         super.onDestroyView();
         mPresenter.closePage();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPresenter.onResume();
     }
 
     private boolean hasPageLoaded() {
@@ -187,14 +190,14 @@ public class ConversationListFragment extends BaseListFragment implements Conver
     }
 
     @Override
-    public void showMessage(String message) {
+    public void showMessage(int stringResId) {
         if (!hasPageLoaded()) {
             return;
         }
 
         Context context = Kayako.getApplicationContext();
         if (context != null) {
-            Toast.makeText(Kayako.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+            Toast.makeText(Kayako.getApplicationContext(), stringResId, Toast.LENGTH_SHORT).show();
         }
     }
 
