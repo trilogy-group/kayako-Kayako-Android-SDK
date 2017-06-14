@@ -126,9 +126,6 @@ public class ConversationListPresenter implements ConversationListContract.Prese
 
                     configureIfMoreItemsAvailable(conversations.size());
                     mOffset = offset + conversations.size();
-
-                    // Track for Unread Indicators
-                    UnreadCounterRepository.addOrUpdateConversations(conversations);
                 }
             }
 
@@ -219,9 +216,6 @@ public class ConversationListPresenter implements ConversationListContract.Prese
         if (isUpdated) {
             refreshListView();
         }
-
-        // Track for Unread Indicators
-        UnreadCounterRepository.addOrUpdateConversation(conversation);
     }
 
     @Override

@@ -1,17 +1,12 @@
 package com.kayako.sdk.android.k5.messenger.conversationlistpage;
 
-import com.kayako.sdk.android.k5.core.MessengerPref;
-import com.kayako.sdk.auth.FingerprintAuth;
-
 public class ConversationListFactory {
 
     private static ConversationListContract.Data mData;
     private static ConversationListContract.Presenter mPresenter;
 
     public static ConversationListContract.Presenter getPresenter(ConversationListContract.View view) {
-        // TODO: ArticleListFactory takes into consideration that multiple Helpcenters are possible - should messenger too?
-        // Reset mData every time - especially important if helpCenterUrl changes, etc
-        mData = getDataSource(MessengerPref.getInstance().getUrl(), MessengerPref.getInstance().getFingerprintId());
+        mData = getDataSource();
 
         if (mPresenter == null) {
             return mPresenter = new ConversationListPresenter(view, mData);
@@ -22,8 +17,8 @@ public class ConversationListFactory {
         }
     }
 
-    public static ConversationListContract.Data getDataSource(String helpDeskUrl, String fingerprintId) { // TODO: Parameters
-        return new ConversationListRepository(helpDeskUrl, fingerprintId != null ? new FingerprintAuth(fingerprintId) : null);
+    public static ConversationListContract.Data getDataSource() {
+        return new ConversationListRepository();
     }
 
 }

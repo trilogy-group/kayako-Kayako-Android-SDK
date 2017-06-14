@@ -1,12 +1,11 @@
 package com.kayako.sdk.android.k5.messenger.homescreenpage;
 
-import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.utils.FailsafePollingHelper;
 import com.kayako.sdk.android.k5.core.KayakoLogHelper;
 import com.kayako.sdk.android.k5.core.MessengerPref;
 import com.kayako.sdk.android.k5.messenger.data.MessengerRepoFactory;
-import com.kayako.sdk.android.k5.messenger.data.conversation.unreadcounter.UnreadCounterRepository;
+import com.kayako.sdk.android.k5.messenger.data.conversation.ConversationStore;
 import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.ClientTypingActivity;
 import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.ConversationViewModel;
 import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.ConversationViewModelHelper;
@@ -71,22 +70,18 @@ public class HomeScreenListPresenter implements HomeScreenListContract.Presenter
 
     private void loadConversationStarter() {
         MessengerRepoFactory.getConversationStarterRepository().getConversationStarter(mOnLoadConversationStarterListener);
+        ConversationStore.getInstance().getConversations(0, 3, mOnLoadConversationListListener);
     }
 
-    private List<ConversationViewModel> generateConversationViewModels(ConversationStarter conversationStarter) {
-        if (conversationStarter == null) {
-            throw new IllegalStateException("This method should never be called until conversation starter is loaded and assigned to mConversationStarter");
-        }
-
-        if (conversationStarter.getActiveConversations() == null || conversationStarter.getActiveConversations().size() == 0) {
+    private List<ConversationViewModel> generateConversationViewModels(List<Conversation> conversations) {
+        if (conversations == null || conversations.size() == 0) {
             throw new IllegalArgumentException("No conversations to show! Can not generate this widget!");
         }
 
         // Update the Recent Conversations and remove and unsubscribe from unused conversation
-        RecentConversationHelper.updateRecentConversations(mConversationViewModelHelper, conversationStarter, null);
+        RecentConversationHelper.updateRecentConversations(mConversationViewModelHelper, conversations, null);
 
         // Register for realtime updates on case
-        List<Conversation> conversations = conversationStarter.getActiveConversations();
         for (Conversation conversation : conversations) {
             RealtimeConversationHelper.trackChange(conversation.getRealtimeChannel(), conversation.getId(), this);
             RealtimeConversationHelper.trackClientActivity(conversation.getRealtimeChannel(), conversation.getId(), this);
@@ -146,20 +141,6 @@ public class HomeScreenListPresenter implements HomeScreenListContract.Presenter
                     KayakoLogHelper.printStackTrace(HomeScreenListPresenter.class.getName(), e);
                 }
 
-                // If successful, generate the Recent Cases Widget
-                try {
-
-                    // Track for Unread Indicators
-                    if (conversationStarter.getActiveConversations() != null) {
-                        UnreadCounterRepository.addOrUpdateConversations(conversationStarter.getActiveConversations());
-                    }
-
-                    generateConversationViewModels(conversationStarter);
-                    refreshRecentConversationsWidget();
-                } catch (IllegalArgumentException e) {
-                    KayakoLogHelper.printStackTrace(HomeScreenListPresenter.class.getName(), e);
-                }
-
                 setupList();
             }
         }
@@ -167,7 +148,26 @@ public class HomeScreenListPresenter implements HomeScreenListContract.Presenter
         @Override
         public void onFailure(KayakoException exception) {
             setupList(); // show list without loaded content then
-            // TODO: show toast message indicating an error?!
+        }
+    };
+
+    private ConversationStore.ConversationListLoaderCallback mOnLoadConversationListListener = new ConversationStore.ConversationListLoaderCallback() {
+        @Override
+        public void onLoadConversations(List<Conversation> conversationList) {
+            // If successful, generate the Recent Cases Widget
+            try {
+                generateConversationViewModels(conversationList);
+                refreshRecentConversationsWidget();
+            } catch (IllegalArgumentException e) {
+                KayakoLogHelper.printStackTrace(HomeScreenListPresenter.class.getName(), e);
+            }
+
+            setupList();
+        }
+
+        @Override
+        public void onFailure(KayakoException e) {
+            setupList(); // show list without loaded content then
         }
     };
 
@@ -183,9 +183,6 @@ public class HomeScreenListPresenter implements HomeScreenListContract.Presenter
             refreshRecentConversationsWidget();
             setupList();
         }
-
-        // Track for Unread Indicators
-        UnreadCounterRepository.addOrUpdateConversation(conversation);
     }
 
     @Override

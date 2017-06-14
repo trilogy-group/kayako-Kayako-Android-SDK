@@ -9,6 +9,8 @@ import com.bumptech.glide.Glide;
 import com.kayako.sdk.android.k5.activities.KayakoHelpCenterActivity;
 import com.kayako.sdk.android.k5.common.utils.ImageUtils;
 import com.kayako.sdk.android.k5.messenger.data.MessengerRepoFactory;
+import com.kayako.sdk.android.k5.messenger.data.conversation.ConversationStore;
+import com.kayako.sdk.android.k5.messenger.data.conversation.unreadcounter.UnreadCounterRepository;
 
 import java.lang.ref.WeakReference;
 import java.util.Locale;
@@ -40,6 +42,9 @@ public class Kayako {
         MessengerUserPref.getInstance().clearAll();
 
         MessengerRepoFactory.reset();
+        UnreadCounterRepository.clear();
+        ConversationStore.getInstance().clear();
+
         ImageUtils.clearCache();
     }
 

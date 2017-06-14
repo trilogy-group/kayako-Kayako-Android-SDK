@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.kayako.sdk.android.k5.messenger.conversationlistpage.ConversationListContract.Data;
+import com.kayako.sdk.android.k5.messenger.data.conversation.ConversationStore;
 import com.kayako.sdk.auth.FingerprintAuth;
 import com.kayako.sdk.base.callback.ListCallback;
 import com.kayako.sdk.error.KayakoException;
@@ -15,40 +16,43 @@ import java.util.List;
 
 public class ConversationListRepository implements Data {
 
-    private Messenger messenger;
-
-    public ConversationListRepository(@NonNull String helpDeskUrl, @Nullable FingerprintAuth fingerprintAuth) {
-        if (fingerprintAuth == null) {
-            messenger = new Messenger(helpDeskUrl);
-        } else {
-            messenger = new Messenger(helpDeskUrl, fingerprintAuth);
-        }
+    public ConversationListRepository() {
     }
 
     @Override
     public void getConversationList(final ConversationListContract.OnLoadConversationsListener callback, final int offset, final int limit) {
         final Handler handler = new Handler();
-        messenger.getConversationList(offset, limit, new ListCallback<Conversation>() {
-            @Override
-            public void onSuccess(final List<Conversation> items) { // TODO: Null check for listeners?
-                handler.post(new Runnable() {
+        ConversationStore.getInstance().getConversations(
+                offset,
+                limit,
+                new ConversationStore.ConversationListLoaderCallback() {
                     @Override
-                    public void run() {
-                        callback.onSuccess(items);
+                    public void onLoadConversations(final List<Conversation> items) {
+                        if (callback == null) {
+                            return;
+                        }
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                callback.onSuccess(items);
+                            }
+                        });
                     }
-                });
-            }
 
-            @Override
-            public void onFailure(KayakoException exception) {
-                handler.post(new Runnable() {
                     @Override
-                    public void run() {
-                        callback.onFailure();
+                    public void onFailure(KayakoException exception) {
+                        if (callback == null) {
+                            return;
+                        }
+
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                callback.onFailure();
+                            }
+                        });
                     }
-                });
-            }
-        });
-        // TODO: Handle offset and limits to test pagination
+                }
+        );
     }
 }

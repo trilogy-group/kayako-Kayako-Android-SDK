@@ -1,17 +1,14 @@
 package com.kayako.sdk.android.k5.messenger.messagelistpage;
 
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.kayako.sdk.android.k5.common.utils.NetworkUtils;
 import com.kayako.sdk.android.k5.core.Kayako;
+import com.kayako.sdk.android.k5.messenger.data.conversation.ConversationStore;
 import com.kayako.sdk.auth.FingerprintAuth;
 import com.kayako.sdk.base.callback.EmptyCallback;
 import com.kayako.sdk.base.callback.ItemCallback;
 import com.kayako.sdk.base.callback.ListCallback;
-import com.kayako.sdk.base.parser.Resource;
-import com.kayako.sdk.base.requester.AttachmentFile;
 import com.kayako.sdk.error.KayakoException;
 import com.kayako.sdk.error.ResponseMessages;
 import com.kayako.sdk.error.response.Notification;
@@ -144,36 +141,38 @@ public class MessageListContainerRepository implements MessageListContainerContr
             return;
         }
 
-
-        mMessenger.postConversation(bodyParams, new ItemCallback<Conversation>() {
-            @Override
-            public void onSuccess(final Conversation item) {
-                handler.post(new Runnable() {
+        ConversationStore.getInstance().postConversation(
+                bodyParams,
+                new ConversationStore.ConversationLoaderCallback() {
                     @Override
-                    public void run() {
-                        if (postConversationCallback == null) {
-                            return;
-                        }
+                    public void onLoadConversation(final Conversation item) {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (postConversationCallback == null) {
+                                    return;
+                                }
 
-                        postConversationCallback.onSuccess(bodyParams.getClientId(), item);
+                                postConversationCallback.onSuccess(bodyParams.getClientId(), item);
+                            }
+                        });
                     }
-                });
-            }
 
-            @Override
-            public void onFailure(final KayakoException exception) {
-                handler.post(new Runnable() {
                     @Override
-                    public void run() {
-                        if (postConversationCallback == null) {
-                            return;
-                        }
+                    public void onFailure(final KayakoException exception) {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (postConversationCallback == null) {
+                                    return;
+                                }
 
-                        postConversationCallback.onFailure(bodyParams.getClientId(), exception.getMessage()); // TODO: Add a method to extract the latest NOTIFICATION
+                                postConversationCallback.onFailure(bodyParams.getClientId(), exception.getMessage()); // TODO: Add a method to extract the latest NOTIFICATION
+                            }
+                        });
                     }
-                });
-            }
-        });
+                }
+        );
     }
 
     @Override
@@ -190,37 +189,40 @@ public class MessageListContainerRepository implements MessageListContainerContr
             return;
         }
 
-        mMessenger.getConversation(conversationId, new ItemCallback<Conversation>() {
-            @Override
-            public void onSuccess(final Conversation item) {
-                if (onLoadConversationListener == null) {
-                    return;
-                }
-
-                handler.post(new Runnable() {
+        ConversationStore.getInstance().getConversation(
+                conversationId,
+                new ConversationStore.ConversationLoaderCallback() {
                     @Override
-                    public void run() {
-                        onLoadConversationListener.onSuccess(item);
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(final KayakoException exception) {
-                if (onLoadConversationListener == null) {
-                    return;
-                }
-
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (exception != null) {
-                            onLoadConversationListener.onFailure(exception.getMessage());
+                    public void onLoadConversation(final Conversation conversation) {
+                        if (onLoadConversationListener == null) {
+                            return;
                         }
+
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                onLoadConversationListener.onSuccess(conversation);
+                            }
+                        });
                     }
-                });
-            }
-        });
+
+                    @Override
+                    public void onFailure(final KayakoException exception) {
+                        if (onLoadConversationListener == null) {
+                            return;
+                        }
+
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (exception != null) {
+                                    onLoadConversationListener.onFailure(exception.getMessage());
+                                }
+                            }
+                        });
+                    }
+                }
+        );
     }
 
     @Override

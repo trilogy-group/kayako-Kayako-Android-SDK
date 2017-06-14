@@ -2,7 +2,6 @@ package com.kayako.sdk.android.k5.common.adapter.messengerlist.helper;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -14,7 +13,7 @@ import java.util.Map;
  * 1. Sorted (by identifier)
  * 2. No Duplicates (of same identifer)
  * 3. Elements with new values should replace elements with old values (Elements of same identifier)
- *
+ * <p>
  * Plus Points:
  * 1. Allows random access
  * 2. Allows custom sorting of the resources via Comparator (default sorting by Long-type ids)
@@ -24,7 +23,7 @@ import java.util.Map;
  */
 public class UniqueSortedUpdatableResourceList<T> implements IUniqueResourceList<T> {
 
-    private static final Comparator DEFAULT_COMPARATOR = new Comparator<Long>() {
+    private static final Comparator DEFAULT_ID_COMPARATOR = new Comparator<Long>() {
         @Override
         public int compare(Long lhs, Long rhs) {
             return lhs.compareTo(rhs);
@@ -32,7 +31,7 @@ public class UniqueSortedUpdatableResourceList<T> implements IUniqueResourceList
     };
 
     private Map<Long, T> mapResources = new HashMap<>();
-    private Comparator comparator = DEFAULT_COMPARATOR;
+    private Comparator<T> comparator = null;
 
     public synchronized boolean addElement(long id, T t) {
         // (2) No duplicates since map ensures a single value for a single identifier
@@ -61,9 +60,9 @@ public class UniqueSortedUpdatableResourceList<T> implements IUniqueResourceList
     }
 
     @Override
-    public void setSortComparator(Comparator comparator) {
+    public void setSortComparator(Comparator<T> comparator) {
         if (comparator == null) {
-            this.comparator = DEFAULT_COMPARATOR;
+            this.comparator = DEFAULT_ID_COMPARATOR;
         } else {
             this.comparator = comparator;
         }
@@ -77,13 +76,23 @@ public class UniqueSortedUpdatableResourceList<T> implements IUniqueResourceList
     @Override
     public synchronized List<T> getList() {
         // (1) sort list by identifiers
-        List<Long> keys = new ArrayList<Long>(mapResources.keySet());
-        Collections.sort(keys, comparator);
+        if (comparator == null) {
+            List<Long> keys = new ArrayList<Long>(mapResources.keySet());
+            Collections.sort(keys, DEFAULT_ID_COMPARATOR);
 
-        List<T> values = new ArrayList<>();
-        for (Long key : keys) {
-            values.add(mapResources.get(key));
+            List<T> values = new ArrayList<>();
+            for (Long key : keys) {
+                values.add(mapResources.get(key));
+            }
+            return values;
+        } else {
+            List<T> values = new ArrayList<>();
+            for (Long key : mapResources.keySet()) {
+                values.add(mapResources.get(key));
+            }
+
+            Collections.sort(values, comparator);
+            return values;
         }
-        return values;
     }
 }

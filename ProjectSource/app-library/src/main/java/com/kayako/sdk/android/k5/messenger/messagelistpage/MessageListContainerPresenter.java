@@ -614,8 +614,6 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
         // Since reply box visibility depends on conversation status - refresh reply box every time conversation is loaded
         configureReplyBoxViewState();
-
-        UnreadCounterRepository.addOrUpdateConversation(conversation); // Track for Unread Indicators
     }
 
     private MessageListContainerContract.OnLoadConversationListener onLoadConversationListener = new MessageListContainerContract.OnLoadConversationListener() {

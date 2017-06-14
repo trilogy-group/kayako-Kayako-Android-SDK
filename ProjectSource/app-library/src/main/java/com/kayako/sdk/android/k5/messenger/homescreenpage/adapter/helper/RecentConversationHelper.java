@@ -15,9 +15,7 @@ public class RecentConversationHelper {
     private RecentConversationHelper() {
     }
 
-    public static void updateRecentConversations(ConversationViewModelHelper conversationViewModelHelper, ConversationStarter conversationStarter, @Nullable OnRemoveUnusedConversationListener onRemoveUnusedConversationListener) {
-        List<Conversation> conversationList = conversationStarter.getActiveConversations();
-
+    public static void updateRecentConversations(ConversationViewModelHelper conversationViewModelHelper, List<Conversation> conversationList, @Nullable OnRemoveUnusedConversationListener onRemoveUnusedConversationListener) {
         if (conversationList == null || conversationList.size() == 0) {
             return;
         }
