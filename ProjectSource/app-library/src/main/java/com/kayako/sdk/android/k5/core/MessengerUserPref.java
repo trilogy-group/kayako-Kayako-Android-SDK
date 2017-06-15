@@ -38,7 +38,7 @@ public class MessengerUserPref {
     }
 
     public void setFullName(String fullName) {
-        sPrefs.edit().putString(KEY_FULL_NAME, fullName).commit();
+        sPrefs.edit().putString(KEY_FULL_NAME, fullName).apply();
     }
 
     public String getAvatar() {
@@ -46,7 +46,7 @@ public class MessengerUserPref {
     }
 
     public void setAvatar(String avatarUrl) {
-        sPrefs.edit().putString(KEY_AVATAR, avatarUrl).commit();
+        sPrefs.edit().putString(KEY_AVATAR, avatarUrl).apply();
     }
 
     public Long getUserId() {
@@ -59,7 +59,7 @@ public class MessengerUserPref {
     }
 
     public void setUserId(long userId) {
-        sPrefs.edit().putLong(KEY_CURRENT_USER_ID, userId).commit();
+        sPrefs.edit().putLong(KEY_CURRENT_USER_ID, userId).apply();
     }
 
     public String getPresenceChannel() {
@@ -67,7 +67,7 @@ public class MessengerUserPref {
     }
 
     public void setPresenceChannel(String presenceChannel) {
-        sPrefs.edit().putString(KEY_PRESENCE_CHANNEL, presenceChannel).commit();
+        sPrefs.edit().putString(KEY_PRESENCE_CHANNEL, presenceChannel).apply();
     }
 
 

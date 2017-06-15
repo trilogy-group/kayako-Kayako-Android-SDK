@@ -94,7 +94,6 @@ public class ConversationListContainerFragment extends Fragment implements Conve
 
         View button = mRoot.findViewById(R.id.ko__new_conversation_button);
         button.setVisibility(View.GONE);
-        // TODO: Animations?
     }
 
     @Override
@@ -105,7 +104,6 @@ public class ConversationListContainerFragment extends Fragment implements Conve
 
         View button = mRoot.findViewById(R.id.ko__new_conversation_button);
         button.setVisibility(View.VISIBLE);
-        // TODO: Animations?
     }
 
     @Override

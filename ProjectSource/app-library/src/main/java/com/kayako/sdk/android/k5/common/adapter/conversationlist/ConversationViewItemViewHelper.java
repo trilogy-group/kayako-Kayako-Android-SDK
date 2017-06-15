@@ -32,7 +32,7 @@ public class ConversationViewItemViewHelper {
     }
 
     public static void setFormattedTime(TextView timeView, long timeInMilliseconds) {
-        timeView.setText(DateTimeUtils.formatShortDateTime(System.currentTimeMillis(), timeInMilliseconds));
+        timeView.setText(DateTimeUtils.formatMessengerDateTime(System.currentTimeMillis(), timeInMilliseconds));
     }
 
     public static void setTypingIndicator(ImageView typingLoader, View subjectLine, boolean isTyping) {

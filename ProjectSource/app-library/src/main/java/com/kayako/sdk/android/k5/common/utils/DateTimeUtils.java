@@ -24,6 +24,43 @@ public class DateTimeUtils {
         return simpleDateFormat.format(new Date(timeInMillseconds));
     }
 
+    /**
+     * Format date in the following manner:
+     * <p>
+     * 0 to 44 seconds: "Just now"
+     * 45 to 89 seconds: "1m ago"
+     * 90 seconds to 44 minutes: "2m ago" ... "44m ago"
+     * 45 to 89 minutes: "1h ago"
+     * 90 minutes to 21 hours: "2h ago" ... "21h ago"
+     * 22 to 35 hours: "1d ago"
+     * 36 hours to 132 hours: "2d ago" ... "5d ago"
+     * dd/mm/yyyy
+     */
+    public static String formatMessengerDateTime(long now, long timeInMilliseconds) {
+        long difference = now - timeInMilliseconds;
+        if (difference <= 44 * oneSec) {
+            return "Just now";
+        } else if (difference <= 89 * oneSec || difference / oneMinute == 0) {
+            return "1m ago";
+        } else if (difference <= 44 * oneMinute) {
+            long minutes = difference / oneMinute;
+            return String.format(Locale.US, "%dm ago", minutes);
+        } else if (difference <= 89 * oneMinute || difference / oneHour == 0) {
+            return "1h ago";
+        } else if (difference <= 21 * oneHour) {
+            long hours = difference / oneHour;
+            return String.format(Locale.US, "%dh ago", hours);
+        } else if (difference <= 35 * oneHour || difference / oneDay == 0) {
+            return "1d ago";
+        } else if (difference <= 132 * oneHour) {
+            long days = difference / oneDay;
+            return String.format(Locale.US, "%dd ago", days);
+        } else {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+            return simpleDateFormat.format(new Date(timeInMilliseconds));
+        }
+    }
+
     public static String formatShortDateTime(long now, long timeInMilliseconds) {
         long difference = now - timeInMilliseconds;
 

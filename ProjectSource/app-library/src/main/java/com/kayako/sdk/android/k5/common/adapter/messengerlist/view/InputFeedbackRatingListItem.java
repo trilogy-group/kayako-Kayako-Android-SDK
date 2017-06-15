@@ -44,7 +44,9 @@ public class InputFeedbackRatingListItem extends InputFieldlListItem {
         Map<String, String> map = new HashMap<>();
         map.put("instructionMessage", String.valueOf(instructionMessage));
         map.put("hasSubmittedValue", String.valueOf(hasSubmittedValue()));
-        map.put("getSubmittedValue", String.valueOf(getSubmittedValue()));
+        if (hasSubmittedValue()) {
+            map.put("getSubmittedValue", String.valueOf(getSubmittedValue()));
+        }
         return map;
     }
 

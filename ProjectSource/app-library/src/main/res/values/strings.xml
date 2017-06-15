@@ -49,9 +49,9 @@
     <string name="ko__messenger_toolbar_subtitle_assigned_agent_active_in_x_days">Active <xliff:g example="3" id="number_of_days">%1$d</xliff:g> days ago</string>
 
 
-    <string name="ko__messenger_toolbar_avatar_caption_text_one_agent"><xliff:g example="John" id="name">%1$s</xliff:g> is online</string>
-    <string name="ko__messenger_toolbar_avatar_caption_text_two_agent"><xliff:g example="John" id="name">%1$s</xliff:g> and <xliff:g example="Jim" id="name2">%2$s</xliff:g> are online</string>
-    <string name="ko__messenger_toolbar_avatar_caption_text_three_agent"><xliff:g example="John" id="name">%1$s</xliff:g>, <xliff:g example="Jim" id="name2">%2$s</xliff:g> and <xliff:g example="Tina" id="name3">%3$s</xliff:g> are online</string>
+    <string name="ko__messenger_toolbar_avatar_caption_text_one_agent"><xliff:g example="John" id="name">%1$s</xliff:g> was online recently</string>
+    <string name="ko__messenger_toolbar_avatar_caption_text_two_agent"><xliff:g example="John" id="name">%1$s</xliff:g> and <xliff:g example="Jim" id="name2">%2$s</xliff:g> were online recently</string>
+    <string name="ko__messenger_toolbar_avatar_caption_text_three_agent"><xliff:g example="John" id="name">%1$s</xliff:g>, <xliff:g example="Jim" id="name2">%2$s</xliff:g> and <xliff:g example="Tina" id="name3">%3$s</xliff:g> were online recently</string>
 
     <string name="ko__messenger_home_screen_widget_presence_title">We are here to help</string>
     <string name="ko__messenger_home_screen_widget_recent_cases_title">Recent conversations</string>
@@ -78,7 +78,7 @@
     <string name="ko__messenger_input_feedback_rating_instruction_message">How did we do?</string>
     <string name="ko__messenger_input_feedback_comment_message_hint_default">Your feedback</string>
     <string name="ko__messenger_input_feedback_comment_message_hint_error">Oops, you haven\'t typed anything. Please enter your feedback and click submit</string>
-    <string name="ko__messenger_input_feedback_comment_message_submitted">Feedback sent</string>
+    <string name="ko__messenger_input_feedback_comment_message_submitted">Thanks, we\'ve received your feedback</string>
     <string name="ko__messenger_toolbar_title_conversations">Conversations</string>
     <string name="ko__messenger_credits_messenger_by">Messenger by </string>
     <string name="ko__messenger_credits_live_chat_by">Live chat by </string>
@@ -86,5 +86,7 @@
     <string name="ko__messenger_attachment_placeholder_untitled">Untitled</string>
     <string name="ko__messenger_msg_failed_to_send_reply">Unable to add reply. Please try again later</string>
     <string name="ko__messenger_attachment_preview_failed_to_load">Unable to load image!</string>
+    <string name="ko__messenger_system_msg_conversation_is_closed">This conversation has been completed</string>
+    <string name="ko__messenger_msg_failed_to_load_messages">Failed to load more!</string>
 
 </resources>

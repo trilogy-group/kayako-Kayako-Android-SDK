@@ -76,9 +76,7 @@ public class DataItemHelper {
             }
 
             // Add Date Separators wherever applicable
-            if (previousDataItem != null) {
-                addDateSeparators(viewItems, currentDataItem, previousDataItem);
-            }
+            addDateSeparators(viewItems, currentDataItem, previousDataItem); // also shown at top of every conversation listing
 
             // Add Unread Separator wherever applicable
             if (previousDataItem != null) { // Prevent it from showing before first message

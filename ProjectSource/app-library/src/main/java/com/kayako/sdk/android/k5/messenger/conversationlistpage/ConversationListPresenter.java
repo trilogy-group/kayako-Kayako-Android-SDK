@@ -1,5 +1,6 @@
 package com.kayako.sdk.android.k5.messenger.conversationlistpage;
 
+import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.conversationlist.ConversationListItem;
 import com.kayako.sdk.android.k5.common.utils.FailsafePollingHelper;
@@ -29,9 +30,6 @@ public class ConversationListPresenter implements ConversationListContract.Prese
     private ConversationViewModelHelper mConversationViewModelHelper = new ConversationViewModelHelper();
     private FailsafePollingHelper mFailsafePollingHelper = new FailsafePollingHelper();
 
-    // TODO: Refactor conversation list to retain list of realtimeconversation and re-render whole list everytime
-    // TODO: Scroll to the top of the list when there's a new item - gets hidden and user assumes there're no new conversations
-
     public ConversationListPresenter(ConversationListContract.View mView, ConversationListContract.Data mData) {
         this.mData = mData;
         this.mView = mView;
@@ -54,8 +52,6 @@ public class ConversationListPresenter implements ConversationListContract.Prese
         if (fingerprintId == null) {
             MessengerPref.getInstance().setFingerprintId(FingerprintUtils.generateUUIDv4());
         }
-        // TODO: For testing
-        //.setFingerprintId("d0bc691c-62c5-468c-a4a5-3b096684dc96");
 
         mView.showLoadingView();
         // loadConversations will be started in onResume()
@@ -76,6 +72,11 @@ public class ConversationListPresenter implements ConversationListContract.Prese
         RealtimeConversationHelper.untrack((OnConversationClientActivityListener) this);
 
         mFailsafePollingHelper.stopPolling();
+    }
+
+    @Override
+    public void onResume() {
+        loadConversations(0);
     }
 
     private void reloadPage() {
@@ -126,9 +127,6 @@ public class ConversationListPresenter implements ConversationListContract.Prese
 
                     configureIfMoreItemsAvailable(conversations.size());
                     mOffset = offset + conversations.size();
-
-                    // Track for Unread Indicators
-                    UnreadCounterRepository.addOrUpdateConversations(conversations);
                 }
             }
 
@@ -139,7 +137,7 @@ public class ConversationListPresenter implements ConversationListContract.Prese
                         mView.showErrorView();
                     } else {
                         mView.configureLoadMoreView(false);
-                        mView.showMessage("Failed to load more!"); // TODO
+                        mView.showMessage(R.string.ko__messenger_msg_failed_to_load_messages);
                     }
                 }
             }
@@ -219,9 +217,6 @@ public class ConversationListPresenter implements ConversationListContract.Prese
         if (isUpdated) {
             refreshListView();
         }
-
-        // Track for Unread Indicators
-        UnreadCounterRepository.addOrUpdateConversation(conversation);
     }
 
     @Override

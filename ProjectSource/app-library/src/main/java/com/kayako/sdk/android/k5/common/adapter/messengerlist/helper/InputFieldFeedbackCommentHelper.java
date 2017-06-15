@@ -99,6 +99,11 @@ public class InputFieldFeedbackCommentHelper {
                     }
                 }
             });
+
+            // Clear any retained previous view state
+            if (!TextUtils.isEmpty(viewHolder.commentEditText.getText())) {
+                viewHolder.commentEditText.setText(null);
+            }
         }
     }
 }

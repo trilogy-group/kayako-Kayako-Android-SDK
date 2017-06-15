@@ -15,5 +15,5 @@ public interface IUniqueResourceList<T> {
 
     void removeElement(long id);
 
-    void setSortComparator(Comparator comparator);
+    void setSortComparator(Comparator<T> comparator);
 }

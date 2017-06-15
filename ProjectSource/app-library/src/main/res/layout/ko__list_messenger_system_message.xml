@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/ko__messenger_list_item_separator_margin_bottom"
+    android:paddingLeft="@dimen/ko__messenger_list_item_margin"
+    android:paddingRight="@dimen/ko__messenger_list_item_margin"
+    android:paddingTop="@dimen/ko__messenger_list_item_separator_margin_top">
+
+
+    <com.kayako.sdk.android.k5.common.view.RegularTextView
+        android:id="@+id/ko__message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textColor="@color/ko__messenger_system_message_text_color"
+        android:textSize="14sp"
+        tools:text="This conversation is closed" />
+
+</LinearLayout>

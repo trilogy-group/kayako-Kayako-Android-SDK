@@ -6,7 +6,6 @@ import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedback;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedbackCommentListItem;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedbackCompletedListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedbackRatingListItem;
 import com.kayako.sdk.android.k5.core.Kayako;
 import com.kayako.sdk.messenger.rating.Rating;
@@ -17,29 +16,16 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * All logic involving offboarding items that ask for feedback
- * <p>
- * NOTE:
- * - A conversation can have multiple ratings.
- * - Select the latest rating to update the feedback
- * <p>
- * Currently:
- * - This code is made in such a way that only one rating per customer is allowed for a conversation8
  */
 public class OffboardingHelper {
 
-    // TODO: Should we sort in order of when the rating was applied or always leave at the end of a conversation?
-    // TODO: Uncomment and add callback to update the message view - "Submitting rating..."? - making responsive ui for user v/s showing users only what's loaded on the backend
-
     public OffboardingHelper() {
     }
-
-    // State after sending via API are saved here
-    private AtomicReference<Rating> latestRatingOfConversation = new AtomicReference<>();
-    private AtomicBoolean hasRatingsBeenLoadedViaApi = new AtomicBoolean(false);
 
     // Interactions and switching between different Feedback views are done based on in-memory values (not api state)
     private Rating.SCORE currentRatingSubmittedViaUI;
@@ -49,43 +35,23 @@ public class OffboardingHelper {
     private Queue<UnsentRating> updateRatingQueue = new ConcurrentLinkedQueue<>();
     private AtomicReference<UnsentRating> lastRatingBeingSent = new AtomicReference<>();
 
-    private AtomicBoolean isConversationOriginallyCompleted = new AtomicBoolean(false);
+    private Boolean mWasConversationOriginallyCompleted = null;
+    private AtomicBoolean mWasConversationStatusChanged = new AtomicBoolean(false);
+    private AtomicBoolean mIsConversationCompleted = new AtomicBoolean(false);
+    private AtomicLong mIdOfLastRatingAdded = new AtomicLong();
 
     //////////// API CALLBACK METHODS ////////////
-
-    public void onLoadRatings(List<Rating> ratings, OffboardingHelperViewCallback callback) {
-        if (ratings == null) { // ratings.size = 0 is allowed -> no ratings assigned to case but ratings are loaded
-            throw new IllegalStateException("This method should not have been called with invalid arguments");
-        }
-
-        latestRatingOfConversation.set(getLatestRating(ratings));
-
-        // Update current rating if api values are not null
-        // This prevents additional Ratings to be applied if already applied once before
-        if (latestRatingOfConversation.get() != null) {
-            setCurrentRatingViaUIIfNotSetAlready(latestRatingOfConversation.get());
-        }
-
-        // Refresh list view if ratings loaded via API for first time and a rating is available to show
-        if (latestRatingOfConversation.get() != null && !hasRatingsBeenLoadedViaApi.get()) {
-            callback.onRefreshListView(true);
-        }
-
-        // Set ratings have been loaded via API successfully
-        hasRatingsBeenLoadedViaApi.set(true); // Should be at end of method
-    }
 
     public void onUpdateRating(Rating rating, OffboardingHelperViewCallback callback) {
         /*
             This method is called when feedback has been successfully sent via API.
          */
 
+        mIdOfLastRatingAdded.set(rating.getId());
+
         removeFromQueue(callback, rating.getScore(), rating.getComment()); // since successful
         resetRatingSendingState(callback); // no longer sending
         runNextInQueueIfReady(callback);
-
-        latestRatingOfConversation.set(rating);
-        hasRatingsBeenLoadedViaApi.set(true);
 
         callback.onRefreshListView(true);
     }
@@ -99,30 +65,49 @@ public class OffboardingHelper {
         runNextInQueueIfReady(callback);
     }
 
-    public void onLoadConversation(boolean isConversationCompletedOrClosed, OffboardingHelperViewCallback callback) {
+    public void onLoadConversation(boolean isConversationCompleted, OffboardingHelperViewCallback callback) {
         // Both when a new conversation is created and when loading an existing conversation
         // This is done only once a conversation is loaded because to load ratings of a conversation, we need to make sure the conversation exists
 
-        if (isConversationCompletedOrClosed
-                || !hasRatingsBeenLoadedViaApi.get()) { // Load rating via API as long current rating is null
-            callback.onLoadRatings();
-        } else {
-            callback.onRefreshListView(false); // Ensure that during status changes from open -> completed -> open, the feedback is removed
-        }
+        boolean firstLoad = mWasConversationOriginallyCompleted == null;
 
-        // TODO: Handle a situation where a customer may want to rate the conversation multiple times
+        if (firstLoad) {
+            mWasConversationOriginallyCompleted = isConversationCompleted;
+            mIsConversationCompleted.set(isConversationCompleted);
+
+            // DO NOT REFRESH LIST - if a conversation is completed originally, we do NOT show the rating prompt nor a pre-added rating
+
+        } else { // not the first load
+
+            // current status is different from previous status and current status is complete
+            if (mIsConversationCompleted.get() != isConversationCompleted) {
+
+                mWasConversationStatusChanged.set(true);
+                mIsConversationCompleted.set(isConversationCompleted);
+
+                // reset every time there is a conversation status change from completed to another status
+                if (!mIsConversationCompleted.get()) {
+                    resetRatingAddedByUser();
+                }
+
+                callback.onRefreshListView(true); // Ensure that during status changes from open -> completed -> open, the feedback is removed
+            }
+        }
     }
 
-    public List<BaseListItem> getOffboardingListItems(String nameToAddRatingAndFeedbackOf, boolean isConversationClosed, final OffboardingHelperViewCallback callback) {
+    public List<BaseListItem> getOffboardingListItems(String nameToAddRatingAndFeedbackOf,
+                                                      boolean isConversationCompleted, final OffboardingHelperViewCallback callback) {
         if (nameToAddRatingAndFeedbackOf == null || callback == null) {
             throw new IllegalArgumentException("Invalid arguments");
         }
 
-        if (!isConversationClosed ||   // Do not show feedback items if conversation is not closed
-                !hasRatingsBeenLoadedViaApi.get()) { // Do not show feedback items if ratings have not been loaded via API yet (user may have already selected a rating before)
+        if (!isConversationCompleted // Do not show feedback items if conversation is not completed
+                ||
+                (mWasConversationOriginallyCompleted != null
+                        && mWasConversationOriginallyCompleted
+                        && !mWasConversationStatusChanged.get())) { // Do not ask for feedback items if conversation is originally completed and no changes to status have been made since then
             return Collections.EMPTY_LIST;
         }
-
 
         if (currentRatingSubmittedViaUI == null) {
             return getOffboardingItemsToSelectRating(new InputFeedback.OnSelectRatingListener() {
@@ -166,21 +151,28 @@ public class OffboardingHelper {
 
                     callback.onRefreshListView(false);
                     callback.onHideKeyboard();
+                    callback.onShowMessage(R.string.ko__messenger_input_feedback_comment_message_submitted);
                 }
             }));
             return list;
 
         } else {
             List<BaseListItem> list = new ArrayList<>();
-            list.addAll(getOffboardingItemsOnCommentSubmission(currentRatingSubmittedViaUI, currentFeedbackSubmittedViaUI));
-            return list;
+            return list; // Show nothing - once the comment is added, it should disappear
         }
     }
 
     //////////// LIST ITEM METHODS ////////////
 
 
-    private List<BaseListItem> getOffboardingItemsToSelectRating(final InputFeedback.OnSelectRatingListener onSelectRatingListener) {
+    private void resetRatingAddedByUser() {
+        mIdOfLastRatingAdded.set(0);
+        currentRatingSubmittedViaUI = null;
+        currentFeedbackSubmittedViaUI = null;
+    }
+
+    private List<BaseListItem> getOffboardingItemsToSelectRating(
+            final InputFeedback.OnSelectRatingListener onSelectRatingListener) {
         List<BaseListItem> listItems = new ArrayList<>();
         listItems.add(new InputFeedbackRatingListItem(
                 Kayako.getApplicationContext().getString(R.string.ko__messenger_input_feedback_rating_instruction_message),
@@ -189,16 +181,8 @@ public class OffboardingHelper {
         return listItems;
     }
 
-    private List<BaseListItem> getOffboardingItemsOnRatingSubmission(InputFeedback.RATING rating) {
-        List<BaseListItem> listItems = new ArrayList<>();
-        listItems.add(new InputFeedbackRatingListItem(
-                Kayako.getApplicationContext().getString(R.string.ko__messenger_input_feedback_rating_instruction_message),
-                rating.name())
-        );
-        return listItems;
-    }
-
-    private List<BaseListItem> getOffboardingItemsToAddComment(Rating.SCORE rating, InputFeedbackCommentListItem.OnAddFeedbackCommentCallback onAddFeedbackComment) {
+    private List<BaseListItem> getOffboardingItemsToAddComment(Rating.SCORE
+                                                                       rating, InputFeedbackCommentListItem.OnAddFeedbackCommentCallback onAddFeedbackComment) {
         List<BaseListItem> listItems = new ArrayList<>();
         listItems.add(new InputFeedbackCommentListItem(
                 getCommentInstructionMessage(rating),
@@ -207,47 +191,8 @@ public class OffboardingHelper {
         return listItems;
     }
 
-    private List<BaseListItem> getOffboardingItemsOnCommentSubmission(Rating.SCORE rating, String feedback) {
-        List<BaseListItem> listItems = new ArrayList<>();
-        listItems.add(new InputFeedbackCompletedListItem(
-                getCommentInstructionMessage(rating),
-                convert(rating),
-                feedback));
-        return listItems;
-    }
 
     //////////// UTIL METHODS ////////////
-
-    private void setCurrentRatingViaUIIfNotSetAlready(Rating rating) {
-        if (rating == null || rating == null) {
-            throw new IllegalArgumentException("Invalid argument");
-        }
-
-        // DO NOT REPLACE an existing UI submitted value with null value via API
-        // Null Checks are added to safegaurd against inconsitent values b/w api and ui submitted values caused due to the async nature of the 2-step API requests made to add a complete feedback rating & comment
-
-        if (rating.getScore() != null) {
-            currentRatingSubmittedViaUI = rating.getScore();
-        }
-
-        if (rating.getComment() != null) {
-            currentFeedbackSubmittedViaUI = rating.getComment();
-        }
-    }
-
-
-    private Rating getLatestRating(List<Rating> ratings) {
-        Rating latestRating = null;
-        for (Rating rating : ratings) {
-            if (latestRating == null) {
-                latestRating = rating;
-            } else if (latestRating.getCreatedAt() < rating.getCreatedAt()) { // latest has greater epoch in milliseconds
-                latestRating = rating;
-            }
-        }
-
-        return latestRating;
-    }
 
     private InputFeedback.RATING convert(Rating.SCORE score) {
         if (score == Rating.SCORE.BAD) {
@@ -277,12 +222,12 @@ public class OffboardingHelper {
     //////////// QUEUEING CODE ////////////
 
     private void addOrUpdateRating(OffboardingHelperViewCallback callback, Rating.SCORE rating, String feedback) {
-        if (latestRatingOfConversation.get() == null) {
+        if (mIdOfLastRatingAdded.get() == 0) {
             callback.onAddRating(rating, feedback);
         } else if (feedback == null) {
-            callback.onUpdateRating(latestRatingOfConversation.get().getId(), rating);
+            callback.onUpdateRating(mIdOfLastRatingAdded.get(), rating);
         } else {
-            callback.onUpdateFeedback(latestRatingOfConversation.get().getId(), rating, feedback);
+            callback.onUpdateFeedback(mIdOfLastRatingAdded.get(), rating, feedback);
         }
     }
 
@@ -315,14 +260,12 @@ public class OffboardingHelper {
         addOrUpdateRating(callback, unsentRating.getRatingScore(), unsentRating.getFeedback());
     }
 
-    //////////// INTERFACES & PVT CLASSES ////////////
+//////////// INTERFACES & PVT CLASSES ////////////
 
 
     public interface OffboardingHelperViewCallback {
 
         void onRefreshListView(boolean scrollToBottom);
-
-        void onLoadRatings();
 
         void onHideKeyboard();
 
@@ -331,6 +274,8 @@ public class OffboardingHelper {
         void onUpdateRating(long ratingId, Rating.SCORE score);
 
         void onUpdateFeedback(long ratingId, Rating.SCORE score, String message);
+
+        void onShowMessage(int stringResId);
     }
 
     private static class UnsentRating {
