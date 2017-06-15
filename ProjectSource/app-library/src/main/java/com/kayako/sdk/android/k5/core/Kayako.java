@@ -5,11 +5,11 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.webkit.URLUtil;
 
-import com.bumptech.glide.Glide;
 import com.kayako.sdk.android.k5.activities.KayakoHelpCenterActivity;
 import com.kayako.sdk.android.k5.common.utils.ImageUtils;
 import com.kayako.sdk.android.k5.messenger.data.MessengerRepoFactory;
 import com.kayako.sdk.android.k5.messenger.data.conversation.ConversationStore;
+import com.kayako.sdk.android.k5.messenger.data.conversation.unreadcounter.OnUnreadCountChangeListener;
 import com.kayako.sdk.android.k5.messenger.data.conversation.unreadcounter.UnreadCounterRepository;
 
 import java.lang.ref.WeakReference;
@@ -68,6 +68,14 @@ public class Kayako {
 
     public MessengerBuilder getMessenger() {
         return new MessengerBuilder();
+    }
+
+    public void addMessengerUnreadCounterChangeListener(OnUnreadCountChangeListener listener) {
+        UnreadCounterRepository.addListener(listener);
+    }
+
+    public void removeMessengerUnreadCounterChangeListener(OnUnreadCountChangeListener listener) {
+        UnreadCounterRepository.removeListener(listener);
     }
 
     private void setUpHelpCenterCredentials(String helpCenterUrl, Locale defaultLocale) {

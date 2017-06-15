@@ -2,6 +2,7 @@ package com.kayako.sdk.android.k5.messenger.toolbarview;
 
 import com.kayako.sdk.android.k5.core.KayakoLogHelper;
 import com.kayako.sdk.android.k5.core.MessengerPref;
+import com.kayako.sdk.android.k5.messenger.data.conversation.unreadcounter.OnUnreadCountChangeListener;
 import com.kayako.sdk.android.k5.messenger.data.conversation.unreadcounter.UnreadCounterRepository;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.ConversationStarterHelper;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.IConversationStarterRepository;
@@ -82,9 +83,9 @@ public class MessengerToolbarPresenter implements MessengerToolbarContract.Prese
         }
     }
 
-    private final UnreadCounterRepository.OnUnreadCounterChangeListener mOnUnreadCounterChangeListener = new UnreadCounterRepository.OnUnreadCounterChangeListener() {
+    private final OnUnreadCountChangeListener mOnUnreadCounterChangeListener = new OnUnreadCountChangeListener() {
         @Override
-        public void onUnreadCounterChanged(int newUnreadCount) {
+        public void onUnreadCountChanged(int newUnreadCount) {
             if (mShowUnreadCounter) {
                 mView.refreshUnreadCounter(newUnreadCount);
             }

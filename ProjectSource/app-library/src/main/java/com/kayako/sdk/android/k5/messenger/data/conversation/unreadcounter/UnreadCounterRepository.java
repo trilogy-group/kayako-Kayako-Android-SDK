@@ -1,11 +1,7 @@
 package com.kayako.sdk.android.k5.messenger.data.conversation.unreadcounter;
 
-import android.support.annotation.NonNull;
-
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.UniqueSortedUpdatableResourceList;
 import com.kayako.sdk.android.k5.messenger.data.conversation.ConversationStore;
 import com.kayako.sdk.messenger.conversation.Conversation;
-import com.kayako.sdk.messenger.conversation.fields.readmarker.ReadMarker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +19,7 @@ public class UnreadCounterRepository {
     private static int sUnreadCounter;
 
     private static final Object sListenerKey = new Object();
-    private static List<OnUnreadCounterChangeListener> sListeners = new ArrayList<>();
+    private static List<OnUnreadCountChangeListener> sListeners = new ArrayList<>();
 
     private static AtomicLong sCurrentConversationBeingViewedId = new AtomicLong(0);
 
@@ -52,13 +48,13 @@ public class UnreadCounterRepository {
         }
     }
 
-    public static void addListener(OnUnreadCounterChangeListener listener) {
+    public static void addListener(OnUnreadCountChangeListener listener) {
         synchronized (sListenerKey) {
             sListeners.add(listener);
         }
     }
 
-    public static void removeListener(OnUnreadCounterChangeListener listener) {
+    public static void removeListener(OnUnreadCountChangeListener listener) {
         synchronized (sListenerKey) {
             sListeners.remove(listener);
         }
@@ -66,8 +62,8 @@ public class UnreadCounterRepository {
 
     public static void callListeners(final int unreadCount) {
         synchronized (sListenerKey) {
-            for (OnUnreadCounterChangeListener listener : sListeners) {
-                listener.onUnreadCounterChanged(unreadCount);
+            for (OnUnreadCountChangeListener listener : sListeners) {
+                listener.onUnreadCountChanged(unreadCount);
             }
         }
     }
@@ -90,9 +86,4 @@ public class UnreadCounterRepository {
             }
         }
     }
-
-    public interface OnUnreadCounterChangeListener {
-        void onUnreadCounterChanged(int newUnreadCount);
-    }
-
 }
