@@ -14,6 +14,7 @@ import com.kayako.sdk.android.k5.kre.helpers.MinimalClientTypingListener;
 import com.kayako.sdk.android.k5.kre.helpers.RawCaseChangeListener;
 import com.kayako.sdk.android.k5.kre.helpers.RawCasePostChangeListener;
 import com.kayako.sdk.android.k5.kre.helpers.RawUserOnCasePresenceListener;
+import com.kayako.sdk.android.k5.messenger.data.conversation.ConversationStore;
 import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.UserViewModel;
 import com.kayako.sdk.base.callback.ItemCallback;
 import com.kayako.sdk.error.KayakoException;
@@ -116,10 +117,12 @@ public class RealtimeConversationHelper {
                         LoadResourceHelper.loadConversation(conversationId, new ItemCallback<Conversation>() {
                             @Override
                             public void onSuccess(final Conversation conversation) {
+                                // Cache all conversations in the ConversationStore
+                                ConversationStore.getInstance().addConversation(conversation);
+
                                 handler.post(new Runnable() {
                                     @Override
                                     public void run() {
-
                                         for (OnConversationChangeListener onConversationChangeListener : sOnConversationChangeListeners) {
                                             onConversationChangeListener.onChange(conversation);
                                         }

@@ -77,7 +77,7 @@ public class ConversationStore {
         mMessenger.getConversation(conversationId, new ItemCallback<Conversation>() {
             @Override
             public void onSuccess(final Conversation item) {
-                addElement(item);
+                addConversation(item);
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -115,7 +115,7 @@ public class ConversationStore {
             public void onSuccess(final List<Conversation> items) {
 
                 for (Conversation item : items) {
-                    addElement(item);
+                    addConversation(item);
                 }
 
                 handler.post(new Runnable() {
@@ -143,7 +143,7 @@ public class ConversationStore {
         mMessenger.postConversation(bodyParams, new ItemCallback<Conversation>() {
             @Override
             public void onSuccess(final Conversation item) {
-                addElement(item);
+                addConversation(item);
 
                 handler.post(new Runnable() {
                     @Override
@@ -187,7 +187,7 @@ public class ConversationStore {
         }
     }
 
-    private void addElement(Conversation item) {
+    public void addConversation(Conversation item) {
         mConversations.addElement(item.getId(), item);
         UnreadCounterRepository.refreshUnreadCounter();
     }

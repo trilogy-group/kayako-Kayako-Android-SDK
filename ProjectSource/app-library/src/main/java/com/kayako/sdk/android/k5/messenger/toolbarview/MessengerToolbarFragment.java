@@ -2,6 +2,7 @@ package com.kayako.sdk.android.k5.messenger.toolbarview;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -46,6 +47,7 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
     private MessengerToolbarContract.Presenter mPresenter;
 
     private boolean showAnimations = true;
+    private Handler mHandler;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,6 +72,7 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        mHandler = new Handler(); // initialize BEFORE initPage() is called
         mPresenter.initPage();
     }
 
@@ -346,10 +349,16 @@ public class MessengerToolbarFragment extends Fragment implements MessengerToolb
 
     @Override
     public void refreshUnreadCounter(int newUnreadCount) {
-        if (!isViewReady() || mToolbarType == null) {
+        if (!isViewReady() || mToolbarType == null || mHandler == null) {
             return;
         }
 
-        setupToolbar(); // refresh toolbar
+        // Handler used because this method may be called from a background thread
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                setupToolbar(); // refresh toolbar
+            }
+        });
     }
 }
