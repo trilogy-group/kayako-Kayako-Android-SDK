@@ -11,6 +11,8 @@ import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.activities.KayakoSearchArticleActivity;
 
 /**
+ * BaseContainerFragment for Helpcenter Pages
+ *
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
 public abstract class BaseContainerFragment extends Fragment {
