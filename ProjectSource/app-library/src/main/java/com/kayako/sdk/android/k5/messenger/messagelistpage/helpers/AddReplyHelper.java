@@ -78,7 +78,7 @@ public class AddReplyHelper {
         } else if (mAddAttachmentHelper.getLastSentReplyClientId() != null && mAddAttachmentHelper.getLastSentReplyClientId().equals(clientId)) {
             mAddAttachmentHelper.onSuccessfulSendingOfReply(clientId, addReplyListener);
         } else {
-            throw new IllegalStateException("Invalid State. Last sent client id does not match!");
+            throwInvalidClientIdStateException();
         }
     }
 
