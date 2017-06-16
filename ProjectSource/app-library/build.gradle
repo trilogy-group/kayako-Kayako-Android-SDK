@@ -2,7 +2,7 @@ def appName = "Kayko Android SDK"
 
 def appGroupId = "com.kayako.messenger"
 def appArtifactId = "kayako-messenger"
-def appVersion = "1.0.5"
+def appVersion = "1.0.7"
 
 def appBintrayUser = "kayako"
 def appUserOrg = "kayako-support"

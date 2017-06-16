@@ -22,7 +22,6 @@ public class ConversationStore {
     private static ConversationStore mInstance;
 
     private UniqueSortedUpdatableResourceList<Conversation> mConversations = new UniqueSortedUpdatableResourceList<>();
-    private Messenger mMessenger;
 
     private ConversationStore() {
         mConversations.setSortComparator(new Comparator<Conversation>() {
@@ -42,10 +41,17 @@ public class ConversationStore {
 
             }
         });
+    }
 
+    /**
+     * Messenger is newly created because otherwise, it doesn't get cleared from memory when the user clears the cache
+     *
+     * @return
+     */
+    private Messenger getMessenger() {
         String url = MessengerPref.getInstance().getUrl();
         FingerprintAuth fingerprintAuth = new FingerprintAuth(MessengerPref.getInstance().getFingerprintId());
-        mMessenger = new Messenger(url, fingerprintAuth);
+        return new Messenger(url, fingerprintAuth);
     }
 
     public synchronized static ConversationStore getInstance() {
@@ -74,7 +80,7 @@ public class ConversationStore {
             });
         }
 
-        mMessenger.getConversation(conversationId, new ItemCallback<Conversation>() {
+        getMessenger().getConversation(conversationId, new ItemCallback<Conversation>() {
             @Override
             public void onSuccess(final Conversation item) {
                 addConversation(item);
@@ -110,7 +116,7 @@ public class ConversationStore {
             });
         }
 
-        mMessenger.getConversationList(offset, limit, new ListCallback<Conversation>() {
+        getMessenger().getConversationList(offset, limit, new ListCallback<Conversation>() {
             @Override
             public void onSuccess(final List<Conversation> items) {
 
@@ -140,7 +146,8 @@ public class ConversationStore {
 
     public void postConversation(final PostConversationBodyParams bodyParams, final ConversationLoaderCallback callback) {
         final Handler handler = new Handler();
-        mMessenger.postConversation(bodyParams, new ItemCallback<Conversation>() {
+
+        getMessenger().postConversation(bodyParams, new ItemCallback<Conversation>() {
             @Override
             public void onSuccess(final Conversation item) {
                 addConversation(item);

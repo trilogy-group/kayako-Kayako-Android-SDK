@@ -25,6 +25,10 @@ public class MessageStyleHelper {
     private MessageStyleHelper() {
     }
 
+    public static void setMessage(TextView textView, String content) {
+        textView.setText(content); // Format as normal text (not HTML) - otherwise newlines aren't considered
+    }
+
     public static void setMessageStyle(boolean isSelf, boolean isFadedBackground, TextView messageView, @Nullable String message) {
         if (isEmote(message)) {
             setEmoteMessageStyle(messageView);

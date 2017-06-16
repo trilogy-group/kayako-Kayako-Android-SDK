@@ -17,8 +17,8 @@
     <string name="ko__action_search">Search</string>
     <string name="ko__action_ok">Ok</string>
     <string name="ko__msg_unread_message">new messages</string>
-    <string name="ko__messenger_input_email_message_instruction">We need your <b>email address</b> to start the conversation</string> <!-- Extra space is an emote -->
-    <string name="ko__messenger_input_email_message_hint_error">Oops, email address seems invalid. Try again?</string>
+    <string name="ko__messenger_input_email_message_instruction">Please enter your <b>email</b>, so we know how to reach you</string> <!-- Extra space is an emote -->
+    <string name="ko__messenger_input_email_message_hint_error">Sorry, that email looks invalid</string>
     <string name="ko__messenger_input_email_edittext_hint">you@youremail.com</string>
     <string name="ko__messenger_input_email_message_hint_default">Your Email</string>
     <string name="ko__email_input_field_msg_you_will_be_notified">Thanks! As soon as someone is available, you\'ll get a notification here or via email</string>
