@@ -19,7 +19,6 @@ import com.kayako.sdk.messenger.conversation.fields.status.Status;
 import com.kayako.sdk.messenger.message.Message;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
