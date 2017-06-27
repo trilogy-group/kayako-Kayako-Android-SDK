@@ -154,6 +154,10 @@ public class HomeScreenListPresenter implements HomeScreenListContract.Presenter
     private ConversationStore.ConversationListLoaderCallback mOnLoadConversationListListener = new ConversationStore.ConversationListLoaderCallback() {
         @Override
         public void onLoadConversations(List<Conversation> conversationList) {
+            if (conversationList.size() == 0) {
+                return;
+            }
+
             // If successful, generate the Recent Cases Widget
             try {
                 generateConversationViewModels(conversationList);

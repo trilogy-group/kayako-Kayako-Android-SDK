@@ -1,16 +1,12 @@
 package com.kayako.sdk.android.k5.common.adapter.messengerlist.helper;
 
-import android.content.Context;
 import android.support.annotation.Nullable;
-import android.text.Html;
-import android.util.Patterns;
 import android.util.TypedValue;
 import android.widget.TextView;
 
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.core.Kayako;
 
-import java.nio.charset.Charset;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

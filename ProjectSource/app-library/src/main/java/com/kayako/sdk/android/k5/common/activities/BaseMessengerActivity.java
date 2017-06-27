@@ -3,6 +3,7 @@ package com.kayako.sdk.android.k5.common.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -159,7 +160,9 @@ public abstract class BaseMessengerActivity extends AppCompatActivity {
     }
 
     protected void setAnimationDuration() {
-        this.getWindow().setSharedElementEnterTransition(new ChangeBounds().setDuration(200));
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+            this.getWindow().setSharedElementEnterTransition(new ChangeBounds().setDuration(200));
+        }
     }
 
     /**
