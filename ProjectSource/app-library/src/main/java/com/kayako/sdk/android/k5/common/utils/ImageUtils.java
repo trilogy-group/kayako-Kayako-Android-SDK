@@ -22,6 +22,9 @@ import java.io.File;
 
 public class ImageUtils {
 
+    private static final int height = 600;
+    private static final int width = 300;
+
     /**
      * Set public image url to imageView
      *
@@ -144,14 +147,14 @@ public class ImageUtils {
 
         if (configureSize) {
             request
-                    .override(500, 150)
+                    .override(width, height)
                     .fitCenter();
         }
 
         request
                 .dontAnimate()
                 .skipMemoryCache(false)
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE) // using source because RESULT messes up when image resizes to fit into imageview with wrap_content
+                .diskCacheStrategy(DiskCacheStrategy.RESULT) // RESULT messes up when image resizes to fit into imageview with wrap_content
                 .into(imageView);
     }
 
@@ -165,7 +168,7 @@ public class ImageUtils {
 
         if (configureSize) {
             request
-                    .override(500, 150)
+                    .override(width, height)
                     .fitCenter();
         }
 
@@ -190,7 +193,7 @@ public class ImageUtils {
                 })
                 .dontAnimate()
                 .skipMemoryCache(false)
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE) // using source because RESULT messes up when image resizes to fit into imageview with wrap_content
+                .diskCacheStrategy(DiskCacheStrategy.RESULT) //  RESULT messes up when image resizes to fit into imageview with wrap_content
                 .into(imageView);
     }
 

@@ -6,6 +6,5 @@
     android:layout_height="wrap_content"
     android:adjustViewBounds="true"
     android:scaleType="centerInside"
-    android:maxHeight="@dimen/ko__messenger_attachment_max_height"
     android:transitionName="ko__attachment_image_preview"
     tools:src="@drawable/ko__cat_in_box" />
