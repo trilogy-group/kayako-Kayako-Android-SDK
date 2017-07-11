@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:singleLine="true"
+            android:maxLines="1"
             android:textColor="@color/ko__article_author_name_text_color"
             android:textSize="14sp"
             tools:text="Neil Mathew" />
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:ellipsize="end"
-            android:singleLine="true"
+            android:maxLines="1"
             tools:text="Posted 2 years ago"
             android:textColor="@color/ko__article_author_last_updated"
             android:textSize="14sp" />
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:ellipsize="end"
-            android:singleLine="true"
+            android:maxLines="1"
             tools:text="Updated 3 months ago"
             android:textColor="@color/ko__article_author_last_created"
             android:textSize="14sp" />

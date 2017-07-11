@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scrollHorizontally="true"
-            android:singleLine="true"
+            android:maxLines="1"
             android:textSize="14sp"
             android:textColor="@color/ko__article_header_sub_title_color"
             tools:text="Getting Started > Zapier Integration" />

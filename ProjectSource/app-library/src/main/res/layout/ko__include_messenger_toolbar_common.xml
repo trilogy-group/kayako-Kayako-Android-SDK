@@ -51,7 +51,6 @@
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="1"
-            android:singleLine="true"
             android:textSize="16sp"
             android:transitionName="ko__messenger_toolbar_title"
             tools:text="Kayako Team" />
@@ -64,7 +63,6 @@
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="1"
-            android:singleLine="true"
             android:textSize="12sp"
             android:transitionName="ko__messenger_toolbar_subtitle"
             tools:text="We usually reply in an hr" />
