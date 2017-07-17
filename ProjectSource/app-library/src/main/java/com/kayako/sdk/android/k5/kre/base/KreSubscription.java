@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kayako.sdk.android.k5.core.KayakoLogHelper;
 import com.kayako.sdk.android.k5.kre.base.credentials.KreCredentials;
+import com.kayako.sdk.android.k5.kre.data.Payload;
 import com.kayako.sdk.android.k5.kre.data.PushData;
 
 import org.phoenixframework.channels.Channel;
@@ -66,6 +67,17 @@ public class KreSubscription extends KreConnection {
      * @param kreCredentials
      */
     public void subscribe(@NonNull final KreCredentials kreCredentials, @NonNull final String channelName, @NonNull final OnSubscriptionListener onSubscriptionListener) {
+        subscribe(kreCredentials, channelName, onSubscriptionListener, null);
+    }
+
+    /**
+     * @param kreCredentials
+     * @param channelName
+     * @param onSubscriptionListener
+     * @param payloadObject
+     * @param <T>
+     */
+    public <T extends Payload> void subscribe(@NonNull final KreCredentials kreCredentials, @NonNull final String channelName, @NonNull final OnSubscriptionListener onSubscriptionListener, @Nullable final T payloadObject) {
         // KayakoLogHelper.d(TAG, "subscribe");
         synchronized (mListenerKey) { // ensure mOnSubscriptionListeners is handled synchronously
             try {
@@ -77,12 +89,14 @@ public class KreSubscription extends KreConnection {
                     resetVariables(); // reset variables
 
                     onSubscriptionListener.onError("Failed to start new subscription since previous subscription wasn't closed. Open page again to make it work!");
-                    return; // TODO: Stop subscription? If allowed to continue, then unsubscribe task running in background may accidently close the new socket
+                    return; // Stop subscription. If allowed to continue, then unsubscribe task running in background may accidently close the new socket
                 }
 
                 mCurrentChannel = channelName;
                 mOnSubscriptionListeners.add(onSubscriptionListener);
                 KayakoLogHelper.d(mTagWithName, "Add to Subscriptions, Total:" + mOnSubscriptionListeners.size());
+
+                JsonNode jsonPayload = payloadObject == null ? null : convertObjectToJsonNode(payloadObject);
 
                 if (mOnSubscriptionListeners.size() == 1) { // First Subscription
                     super.connect(kreCredentials, channelName, new OnOpenConnectionListener() {
@@ -123,7 +137,7 @@ public class KreSubscription extends KreConnection {
                         public void onError(String message) {
                             callOnErrors(message);
                         }
-                    });
+                    }, jsonPayload);
                 } else {
                     if (mHasSubscribedSuccessfully.get()) {
                         callOnSubscription(onSubscriptionListener);
@@ -343,7 +357,7 @@ public class KreSubscription extends KreConnection {
 
     ////// OTHER METHODS ////////
 
-    public static <T extends PushData> JsonNode convertObjectToJsonNode(@NonNull T t) {
+    public static <T> JsonNode convertObjectToJsonNode(@NonNull T t) {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode node = objectMapper.valueToTree(t);
         return node;
