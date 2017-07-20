@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.kayako.sdk.android.k5.common.utils.NetworkUtils;
 import com.kayako.sdk.android.k5.core.Kayako;
 import com.kayako.sdk.android.k5.core.KayakoLogHelper;
@@ -43,6 +44,21 @@ class KreConnection {
      * @param listener
      */
     protected synchronized void connect(@NonNull KreCredentials kreCredentials, final @NonNull String channelName, @NonNull final OnOpenConnectionListener listener) {
+        connect(kreCredentials, channelName, listener, null);
+    }
+
+    /**
+     * Used to connect and get a kre channel. The kre channel can be subscribed to and listened to for events.
+     * <p>
+     * Also, supports parameter jsonPayload when subscribing to a channel.
+     *
+     * @param kreCredentials
+     * @param channelName
+     * @param listener
+     * @param jsonPayload
+     */
+    protected synchronized void connect(@NonNull KreCredentials kreCredentials, final @NonNull String channelName, @NonNull final OnOpenConnectionListener listener, @Nullable final JsonNode jsonPayload) {
+
         if (!NetworkUtils.isConnectedToNetwork(Kayako.getApplicationContext())) {
             KayakoLogHelper.e(TAG, "No Internet Connection! Not going forward with connect()");
             listener.onError("No Network Connection. Please connect to the Internet.");
@@ -69,7 +85,7 @@ class KreConnection {
                     .onOpen(new ISocketOpenCallback() {
                         @Override
                         public void onOpen() {
-                            Channel channel = mSocket.chan(channelName, null);
+                            Channel channel = mSocket.chan(channelName, jsonPayload);
                             listener.onOpen(channel);
                             mIsConnected.set(true);
                         }
