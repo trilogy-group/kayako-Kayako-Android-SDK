@@ -45,7 +45,21 @@ public class KrePresenceHelper {
     private AtomicBoolean mHasAlreadyBeenCalled_OnUsersAlreadyViewingCase = new AtomicBoolean(false); // ensures that the presence_state event is consumed ONLY once and onUsersAlreadyViewingCase() is called only once
     private final Object eventKey = new Object(); // ensure onDiff, onState, onError, mRawUserOnCasePresenceListener is called one at a time - Need: Ensure UI updates happen one at a time with correct info
 
-    private KrePresencePushDataTypingHelper mKrePresencePushTypingHelper = new KrePresencePushDataTypingHelper(); // to record state and auto-disable Typing after 5 seconds of inactivity
+    // to record state and auto-disable Typing after 5 seconds of inactivity
+    private KrePresencePushDataConservativelyHelper mTriggerTypingConservativelyHelper = new KrePresencePushDataConservativelyHelper(new KrePresencePushDataConservativelyHelper.PerformTriggerOperationCallback() {
+        @Override
+        public void performTriggerOperation(KreSubscription kreSubscription, boolean state) {
+            KrePresencePushDataHelper.triggerTypingEvent(kreSubscription, state);
+        }
+
+    });
+
+    private KrePresencePushDataConservativelyHelper mTriggerUpdatingConservativelyHelper = new KrePresencePushDataConservativelyHelper(new KrePresencePushDataConservativelyHelper.PerformTriggerOperationCallback() {
+        @Override
+        public void performTriggerOperation(KreSubscription kreSubscription, boolean state) {
+            KrePresencePushDataHelper.triggerUpdatingEvent(kreSubscription, state);
+        }
+    });
 
     public KrePresenceHelper(@NonNull final KreSubscription kreSubscription, final boolean hideCurrentUser, final long currentUserId) {
         mKreSubscription = kreSubscription;
@@ -119,11 +133,11 @@ public class KrePresenceHelper {
     }
 
     public void triggerClientUpdatingCaseEvent(boolean isUpdating) {
-        KrePresencePushDataHelper.triggerUpdatingEvent(mKreSubscription, isUpdating);
+        mTriggerUpdatingConservativelyHelper.triggerOperation(mKreSubscription, isUpdating, false);
     }
 
     public void triggerClientTypingCaseEvent(boolean isTyping, boolean autoDisableTyping) {
-        mKrePresencePushTypingHelper.triggerTypingEvent(mKreSubscription, isTyping, autoDisableTyping);
+        mTriggerTypingConservativelyHelper.triggerOperation(mKreSubscription, isTyping, autoDisableTyping);
     }
 
     public void triggerClientForegroundEvent(boolean isViewing, boolean isForeground) {
