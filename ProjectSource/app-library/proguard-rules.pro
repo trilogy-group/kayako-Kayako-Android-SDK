@@ -22,3 +22,11 @@
 # Android
 
 -keep class android.support.v4.** { *; }
+
+# Phoenix client library
+
+-keepnames class org.phoenixframework.channels.** { *; }
+-keep public class org.phoenixframework.channels.** {
+  public *** get*();
+  public void set*(***);
+}
