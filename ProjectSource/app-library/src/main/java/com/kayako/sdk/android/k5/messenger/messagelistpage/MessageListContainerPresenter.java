@@ -26,7 +26,7 @@ import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ConversationH
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ConversationMessagesHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.FileAttachmentDownloadHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.FileAttachmentHelper;
-import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.ListHelper;
+import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.MessengerListHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.MarkReadHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.MessengerPrefHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.OffboardingHelper;
@@ -69,7 +69,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private OnboardingHelper mOnboardingHelper = new OnboardingHelper();
     private ConversationHelper mConversationHelper = new ConversationHelper();
     private ReplyBoxViewHelper mReplyBoxHelper = new ReplyBoxViewHelper();
-    private ListHelper mListHelper = new ListHelper();
+    private MessengerListHelper mMessengerListHelper = new MessengerListHelper();
     private OptimisticSendingViewHelper mOptimisticMessageHelper = new OptimisticSendingViewHelper();
     private ClientIdHelper mClientIdHelper = new ClientIdHelper();
     private ConversationMessagesHelper mConversationMessagesHelper = new ConversationMessagesHelper();
@@ -99,7 +99,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
     @Override
     public void onPageStateChange(ListPageState state) {
-        mListHelper.setListPageState(state);
+        mMessengerListHelper.setListPageState(state);
         configureReplyBoxViewState();
     }
 
@@ -232,7 +232,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         mOnboardingHelper = new OnboardingHelper();
         mConversationHelper = new ConversationHelper();
         mReplyBoxHelper = new ReplyBoxViewHelper();
-        mListHelper = new ListHelper();
+        mMessengerListHelper = new MessengerListHelper();
         mOptimisticMessageHelper = new OptimisticSendingViewHelper();
         mClientIdHelper = new ClientIdHelper();
         mConversationMessagesHelper = new ConversationMessagesHelper();
@@ -388,7 +388,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             }
 
             allListItems.addAll(
-                    mListHelper.getMessageAsListItemViews(
+                    mMessengerListHelper.getMessageAsListItemViews(
                             mConversationMessagesHelper.getMessages(),
                             mMarkReadHelper.getOriginalLastMessageMarkedRead(),
                             userId
@@ -403,7 +403,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
         // Conversation Status Message
         if (mConversationHelper.isConversationCreated()) {
-            allListItems.addAll(mListHelper.getConversationStatusMessages(mConversationHelper.getConversation()));
+            allListItems.addAll(mMessengerListHelper.getConversationStatusMessages(mConversationHelper.getConversation()));
         }
 
         // Offloading items
@@ -417,14 +417,14 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private void displayList() {
         List<BaseListItem> allListItems = generateListItems();
 
-        if (!mListHelper.shouldUpdateViewList(allListItems)) {
+        if (!mMessengerListHelper.shouldUpdateViewList(allListItems)) {
             return; // Don't update list if there are no changes
         }
 
         if (allListItems.size() != 0) {
             mView.setupListInMessageListingView(
                     new ArrayList<>(allListItems)); // Create and send copy because reference is updated (order reversed in view)
-            mListHelper.setLastDisplayedItems(allListItems);
+            mMessengerListHelper.setLastDisplayedItems(allListItems);
 
             if (!mConversationHelper.isConversationCreated()) {
                 mView.setHasMoreItems(false);
@@ -434,7 +434,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
         } else {
             // There should never be an empty state view shown! Leave it blank inviting customer to add stuff.
             mView.setupListInMessageListingView(new ArrayList<>(allListItems)); // Set empty list to show as blank
-            mListHelper.setLastDisplayedItems(allListItems);
+            mMessengerListHelper.setLastDisplayedItems(allListItems);
         }
     }
 
@@ -444,7 +444,7 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                         !mConversationHelper.isConversationCreated(),
                         mMessengerPrefHelper.getEmail() != null,
                         mConversationHelper.isConversationClosed(),
-                        mListHelper.getListPageState());
+                        mMessengerListHelper.getListPageState());
 
         // Assertions
         if (stateToApply == null) {
