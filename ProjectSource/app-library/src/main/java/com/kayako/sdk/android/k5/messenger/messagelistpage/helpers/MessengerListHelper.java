@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * Logic to show onboarding messages, actual api messages, optimistic sending messages and KRE indicator messages
  */
-public class ListHelper {
+public class MessengerListHelper {
 
     private ListPageState mListPageState;
     private List<BaseListItem> mLastDisplayedItems;
