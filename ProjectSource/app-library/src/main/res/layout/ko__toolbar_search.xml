@@ -22,7 +22,7 @@
             android:ellipsize="end"
             android:hint="@string/ko__label_search_hint"
             android:imeOptions="actionSearch|actionGo"
-            android:singleLine="true"
+            android:maxLines="1"
             android:textColor="@color/ko__toolbar_search_text_color"/>
 
     </LinearLayout>

@@ -25,7 +25,6 @@
             android:background="@null"
             android:gravity="center"
             android:maxLines="1"
-            android:singleLine="true"
             android:text="@string/ko__messenger_label_new_conversation"
             android:textAllCaps="false"
             android:textColor="@color/ko__messenger_new_conversation_text_colour"

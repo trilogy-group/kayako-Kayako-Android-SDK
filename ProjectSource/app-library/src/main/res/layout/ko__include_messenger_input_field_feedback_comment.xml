@@ -37,7 +37,7 @@
             android:minLines="4"
             android:paddingBottom="16dp"
             android:paddingTop="8dp"
-            android:singleLine="false"
+            android:maxLines="1"
             android:textSize="16sp"
             tools:text="There are 2 kinds of people. Those who dig. And those holding the gun. There are 2 kinds of people. Those who dig. And those holding the gun." />
 
