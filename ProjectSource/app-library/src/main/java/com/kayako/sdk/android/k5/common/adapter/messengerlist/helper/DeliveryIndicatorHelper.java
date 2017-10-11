@@ -18,7 +18,7 @@ public class DeliveryIndicatorHelper {
 
         switch (clientDeliveryStatus) {
             case SENDING:
-                return new DeliveryIndicator(R.drawable.ko__delivery_indicator_not_sent, R.string.ko__messenger_delivery_indicators_sending, null);
+                return new DeliveryIndicator(R.drawable.ko__delivery_indicator_sending, R.string.ko__messenger_delivery_indicators_sending, null);
 
             case FAILED_TO_SEND:
                 return new DeliveryIndicator(R.drawable.ko__delivery_indicator_failed, R.string.ko__messenger_delivery_indicators_failed_to_send, null);
