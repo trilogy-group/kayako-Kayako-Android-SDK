@@ -27,9 +27,14 @@ public abstract class BaseMessengerActivity extends AppCompatActivity {
     private Fragment mRetainedFragment;
 
     @Override
-    final protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ko__activity_messenger_default);
+
+        /*
+        Do not mark onCreate() as final as later versions of Android may generate code for it causing conflicts when this library is integrated into other projects
+        More Info: https://commonsware.com/blog/2015/10/14/linkageerror-and-your-android-code.html
+        */
 
         // Ensure the screen is always in portrait mode for Messenger - choosing to do this programmatically so that developers can't change the behaviour
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -57,7 +62,7 @@ public abstract class BaseMessengerActivity extends AppCompatActivity {
 
 
     @Override
-    final protected void onStart() {
+    protected void onStart() {
         super.onStart();
         // should be called after setContentView()
         setupFloatingViewFunctionality();
