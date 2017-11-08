@@ -1,6 +1,7 @@
 package com.kayako.sdk.android.k5.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
@@ -24,16 +25,20 @@ public class KayakoAttachmentPreviewActivity extends BaseMessengerActivity {
     public static final int RESULT_SEND = 2;
 
     public static void startActivityForPreview(Activity activity, Fragment fragment, View attachmentView, String imageUrl, String attachmentName, String attachmentDownloadUrl, long attachmentTime, long attachmentFileSize, int requestCode) {
-        Intent intent = new Intent(activity, KayakoAttachmentPreviewActivity.class);
+        Intent intent = getIntentForPreview(activity, imageUrl, attachmentName, attachmentDownloadUrl, attachmentTime, attachmentFileSize);
+        ActivityOptionsCompat activityOptionsCompat = getAttachmentAnimation(activity, attachmentView);
+        fragment.startActivityForResult(intent, requestCode, activityOptionsCompat.toBundle());
+    }
+
+    public static Intent getIntentForPreview(Context context, String imageUrl, String attachmentName, String attachmentDownloadUrl, long attachmentTime, long attachmentFileSize) {
+        Intent intent = new Intent(context, KayakoAttachmentPreviewActivity.class);
         intent.putExtra(ARG_IMAGE_URL, imageUrl);
         intent.putExtra(ARG_SHOW_SEND_BUTTON, false);
         intent.putExtra(ARG_ATTACHMENT_NAME, attachmentName);
         intent.putExtra(ARG_ATTACHMENT_TIME, attachmentTime);
         intent.putExtra(ARG_ATTACHMENT_DOWNLOAD_URL, attachmentDownloadUrl);
         intent.putExtra(ARG_ATTACHMENT_FILE_SIZE, attachmentFileSize);
-
-        ActivityOptionsCompat activityOptionsCompat = getAttachmentAnimation(activity, attachmentView);
-        fragment.startActivityForResult(intent, requestCode, activityOptionsCompat.toBundle());
+        return intent;
     }
 
     public static void startActivityForConfirmation(Activity activity, Fragment fragment, String filePath, int requestCode) {
