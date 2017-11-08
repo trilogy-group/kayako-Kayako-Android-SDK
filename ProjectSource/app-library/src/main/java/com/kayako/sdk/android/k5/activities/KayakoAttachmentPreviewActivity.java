@@ -30,6 +30,11 @@ public class KayakoAttachmentPreviewActivity extends BaseMessengerActivity {
         fragment.startActivityForResult(intent, requestCode, activityOptionsCompat.toBundle());
     }
 
+    public static void startActivityForPreviewWithoutAnimations(Context context, String imageUrl, String attachmentName, String attachmentDownloadUrl, long attachmentTime, long attachmentFileSize) {
+        Intent intent = getIntentForPreview(context, imageUrl, attachmentName, attachmentDownloadUrl, attachmentTime, attachmentFileSize);
+        context.startActivity(intent);
+    }
+
     public static Intent getIntentForPreview(Context context, String imageUrl, String attachmentName, String attachmentDownloadUrl, long attachmentTime, long attachmentFileSize) {
         Intent intent = new Intent(context, KayakoAttachmentPreviewActivity.class);
         intent.putExtra(ARG_IMAGE_URL, imageUrl);
