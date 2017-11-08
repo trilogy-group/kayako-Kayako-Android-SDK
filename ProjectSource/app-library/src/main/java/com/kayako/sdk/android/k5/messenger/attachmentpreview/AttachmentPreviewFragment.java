@@ -18,6 +18,7 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.helper.AttachmentH
 import com.kayako.sdk.android.k5.common.utils.ImageUtils;
 import com.kayako.sdk.android.k5.common.utils.file.FileAttachment;
 import com.kayako.sdk.android.k5.common.utils.file.FileAttachmentUtil;
+import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.FileAttachmentDownloadHelper;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -27,6 +28,8 @@ import java.util.Locale;
 public class AttachmentPreviewFragment extends Fragment implements PopupMenu.OnMenuItemClickListener {
 
     private View mRoot;
+    private FileAttachmentDownloadHelper mFileAttachmentDownloadHelper = new FileAttachmentDownloadHelper();
+    private FileAttachmentDownloadHelper.DownloadAttachment mDownloadAttachment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -133,10 +136,15 @@ public class AttachmentPreviewFragment extends Fragment implements PopupMenu.OnM
         } else {
             sendButton.setVisibility(View.GONE);
 
-            // Show options (currently only supports download attachment url)
+            // Extract values
+            Long time = bundle.containsKey(KayakoAttachmentPreviewActivity.ARG_ATTACHMENT_NAME) ? bundle.getLong(KayakoAttachmentPreviewActivity.ARG_ATTACHMENT_TIME, 0) : null;
+            String name = bundle.containsKey(KayakoAttachmentPreviewActivity.ARG_ATTACHMENT_NAME) ? bundle.getString(KayakoAttachmentPreviewActivity.ARG_ATTACHMENT_NAME, null) : null;
             String downloadUrl = bundle.containsKey(KayakoAttachmentPreviewActivity.ARG_ATTACHMENT_DOWNLOAD_URL) ? bundle.getString(KayakoAttachmentPreviewActivity.ARG_ATTACHMENT_DOWNLOAD_URL, null) : null;
-            if (downloadUrl != null) {
+            Long fileSize = bundle.containsKey(KayakoAttachmentPreviewActivity.ARG_ATTACHMENT_NAME) ? bundle.getLong(KayakoAttachmentPreviewActivity.ARG_ATTACHMENT_TIME, 0) : null;
 
+            // Show options (currently only supports download attachment url)
+            if (downloadUrl != null) {
+                mDownloadAttachment = new FileAttachmentDownloadHelper.DownloadAttachment(name == null ? "attachment" : name, fileSize == null ? 0 : fileSize, downloadUrl);
                 optionsButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -149,7 +157,6 @@ public class AttachmentPreviewFragment extends Fragment implements PopupMenu.OnM
             }
 
             // Show name of attachment
-            String name = bundle.containsKey(KayakoAttachmentPreviewActivity.ARG_ATTACHMENT_NAME) ? bundle.getString(KayakoAttachmentPreviewActivity.ARG_ATTACHMENT_NAME, null) : null;
             if (name != null) {
                 TextView attachmentName = (TextView) mRoot.findViewById(R.id.ko__attachment_name);
                 attachmentName.setText(name);
@@ -159,7 +166,6 @@ public class AttachmentPreviewFragment extends Fragment implements PopupMenu.OnM
             }
 
             // Show creation time of attachment
-            Long time = bundle.containsKey(KayakoAttachmentPreviewActivity.ARG_ATTACHMENT_NAME) ? bundle.getLong(KayakoAttachmentPreviewActivity.ARG_ATTACHMENT_TIME, 0) : null;
             TextView attachmentTime = (TextView) mRoot.findViewById(R.id.ko__attachment_date);
             if (time != null && time != 0) {
                 try {
@@ -187,7 +193,7 @@ public class AttachmentPreviewFragment extends Fragment implements PopupMenu.OnM
     public boolean onMenuItemClick(MenuItem item) {
         int i = item.getItemId();
         if (i == R.id.ko__action_download) {
-            // TODO: Implement Download code using Android Download Manager
+            mFileAttachmentDownloadHelper.onClickAttachmentToDownload(mDownloadAttachment, true);
             return true;
         } else {
             return false;

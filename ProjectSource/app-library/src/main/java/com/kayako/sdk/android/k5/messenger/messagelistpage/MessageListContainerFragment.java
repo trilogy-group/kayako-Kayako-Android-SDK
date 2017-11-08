@@ -395,12 +395,12 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
     }
 
     @Override
-    public void showAttachmentPreview(String imageUrl, String imageName, long time, String downloadUrl) {
+    public void showAttachmentPreview(String imageUrl, String imageName, long time, String downloadUrl, long fileSize) {
         if (!hasPageLoaded()) {
             return;
         }
 
-        KayakoAttachmentPreviewActivity.startActivityForPreview(getActivity(), this, mLastAttachmentListItemViewClicked, imageUrl, imageName, downloadUrl, time, REQUEST_CODE_VIEW_UPLOADED_ATTACHMENT);
+        KayakoAttachmentPreviewActivity.startActivityForPreview(getActivity(), this, mLastAttachmentListItemViewClicked, imageUrl, imageName, downloadUrl, time, fileSize, REQUEST_CODE_VIEW_UPLOADED_ATTACHMENT);
     }
 
 

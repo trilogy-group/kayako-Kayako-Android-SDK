@@ -97,7 +97,7 @@ public class MessageListContainerContract {
 
         void setKeyboardVisibility(boolean showKeyboard);
 
-        void showAttachmentPreview(String imageUrl, String imageName, long time, String downloadUrl);
+        void showAttachmentPreview(String imageUrl, String imageName, long time, String downloadUrl, long fileSize);
     }
 
     public interface Presenter extends BasePresenter<MessageListContainerContract.View> {

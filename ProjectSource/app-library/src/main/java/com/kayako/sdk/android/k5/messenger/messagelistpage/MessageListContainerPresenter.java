@@ -133,11 +133,15 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             String imageName = attachmentUrlType.getFileName();
             long timeCreated = attachmentUrlType.getTimeCreated();
             String downloadUrl = attachmentUrlType.getDownloadUrl();
+            long fileSize = attachmentUrlType.getFileSize();
 
             if (type != null && type == AttachmentHelper.AttachmentFileType.IMAGE && imageUrl != null) {
-                mView.showAttachmentPreview(imageUrl, imageName, timeCreated, downloadUrl);
+                mView.showAttachmentPreview(imageUrl, imageName, timeCreated, downloadUrl, fileSize);
             } else {
-                mFileAttachmentDownloadHelper.onClickAttachmentToDownload(attachmentUrlType);
+                mFileAttachmentDownloadHelper.onClickAttachmentToDownload(
+                        new FileAttachmentDownloadHelper.DownloadAttachment(
+                                attachmentUrlType),
+                        false);
             }
         } else {
             // Do nothing if it's a File. (No need to show preview of a file in Sending.... state)

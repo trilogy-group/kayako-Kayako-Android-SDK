@@ -18,17 +18,19 @@ public class KayakoAttachmentPreviewActivity extends BaseMessengerActivity {
     public static final String ARG_ATTACHMENT_NAME = "attachmentname";
     public static final String ARG_ATTACHMENT_TIME = "attachmenttime";
     public static final String ARG_ATTACHMENT_DOWNLOAD_URL = "attachmentdownloadurl";
+    public static final String ARG_ATTACHMENT_FILE_SIZE = "attachmentfilesize";
 
     public static final int RESULT_EXIT = 1;
     public static final int RESULT_SEND = 2;
 
-    public static void startActivityForPreview(Activity activity, Fragment fragment, View attachmentView, String imageUrl, String attachmentName, String attachmentDownloadUrl, long attachmentTime, int requestCode) {
+    public static void startActivityForPreview(Activity activity, Fragment fragment, View attachmentView, String imageUrl, String attachmentName, String attachmentDownloadUrl, long attachmentTime, long attachmentFileSize, int requestCode) {
         Intent intent = new Intent(activity, KayakoAttachmentPreviewActivity.class);
         intent.putExtra(ARG_IMAGE_URL, imageUrl);
         intent.putExtra(ARG_SHOW_SEND_BUTTON, false);
         intent.putExtra(ARG_ATTACHMENT_NAME, attachmentName);
         intent.putExtra(ARG_ATTACHMENT_TIME, attachmentTime);
         intent.putExtra(ARG_ATTACHMENT_DOWNLOAD_URL, attachmentDownloadUrl);
+        intent.putExtra(ARG_ATTACHMENT_FILE_SIZE, attachmentFileSize);
 
         ActivityOptionsCompat activityOptionsCompat = getAttachmentAnimation(activity, attachmentView);
         fragment.startActivityForResult(intent, requestCode, activityOptionsCompat.toBundle());
