@@ -11,6 +11,7 @@ public class AttachmentUrlType extends Attachment {
     private String fileName;
     private long fileSize;
     private String thumbnailType;
+    private long timeCreated;
     private String downloadUrl;
 
 
@@ -39,13 +40,14 @@ public class AttachmentUrlType extends Attachment {
      * @param thumbnailType
      * @param downloadUrl
      */
-    public AttachmentUrlType(String thumbnailUrl, String originalImageUrl, String fileName, long fileSize, String thumbnailType, String downloadUrl) {
+    public AttachmentUrlType(String thumbnailUrl, String originalImageUrl, String fileName, long fileSize, String thumbnailType, long timeCreated, String downloadUrl) {
         super(TYPE.URL);
         this.thumbnailUrl = thumbnailUrl;
         this.originalImageUrl = originalImageUrl;
         this.fileName = fileName;
         this.fileSize = fileSize;
         this.thumbnailType = thumbnailType;
+        this.timeCreated = timeCreated;
         this.downloadUrl = downloadUrl;
     }
 
@@ -103,6 +105,10 @@ public class AttachmentUrlType extends Attachment {
 
     public void setCaption(String caption) {
         this.caption = caption;
+    }
+
+    public long getTimeCreated() {
+        return timeCreated;
     }
 
     public String getOriginalImageUrl() {

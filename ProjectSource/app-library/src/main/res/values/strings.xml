@@ -15,7 +15,9 @@
 
     <string name="ko__action_contact">Contact</string>
     <string name="ko__action_search">Search</string>
+    <string name="ko__action_download_attachment">Download</string>
     <string name="ko__action_ok">Ok</string>
+
     <string name="ko__msg_unread_message">new messages</string>
     <string name="ko__messenger_input_email_message_instruction">Please enter your <b>email</b>, so we know how to reach you</string> <!-- Extra space is an emote -->
     <string name="ko__messenger_input_email_message_hint_error">Sorry, that email looks invalid</string>

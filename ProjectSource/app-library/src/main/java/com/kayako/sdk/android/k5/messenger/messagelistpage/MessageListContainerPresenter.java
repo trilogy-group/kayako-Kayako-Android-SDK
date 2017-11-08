@@ -130,9 +130,12 @@ public class MessageListContainerPresenter implements MessageListContainerContra
             AttachmentUrlType attachmentUrlType = ((AttachmentUrlType) attachment);
             AttachmentHelper.AttachmentFileType type = AttachmentHelper.identifyType(attachmentUrlType.getThumbnailType(), attachmentUrlType.getFileName());
             String imageUrl = attachmentUrlType.getOriginalImageUrl();
+            String imageName = attachmentUrlType.getFileName();
+            long timeCreated = attachmentUrlType.getTimeCreated();
+            String downloadUrl = attachmentUrlType.getDownloadUrl();
 
             if (type != null && type == AttachmentHelper.AttachmentFileType.IMAGE && imageUrl != null) {
-                mView.showAttachmentPreview(imageUrl);
+                mView.showAttachmentPreview(imageUrl, imageName, timeCreated, downloadUrl);
             } else {
                 mFileAttachmentDownloadHelper.onClickAttachmentToDownload(attachmentUrlType);
             }

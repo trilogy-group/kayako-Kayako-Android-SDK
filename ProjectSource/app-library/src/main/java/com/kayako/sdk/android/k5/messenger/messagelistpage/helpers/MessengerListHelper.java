@@ -137,6 +137,7 @@ public class MessengerListHelper {
                     attachment.getName(),
                     attachment.getSize() == null ? 0 : attachment.getSize(),
                     attachment.getType(),
+                    attachment.getCreatedAt(),
                     appendFingerprintIdToUrl(attachment.getUrlDownload())
             ));
         }
