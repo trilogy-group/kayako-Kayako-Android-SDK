@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 String url = editText.getText().toString();
                 if (validateUrl(url)) {
 
+                    url = url.trim(); // trim whitespaces
                     if (Store.getInstance().getHelpCenterUrl() != null
                             && !Store.getInstance().getHelpCenterUrl().equals(url)) {
                         Kayako.clearCache();
@@ -130,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
 
+                url = url.trim(); // trim whitespaces
                 if (Store.getInstance().getMessengerUrl() != null
                         && !Store.getInstance().getMessengerUrl().equals(url)) {
                     Kayako.clearCache();
