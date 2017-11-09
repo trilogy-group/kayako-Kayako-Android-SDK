@@ -45,6 +45,7 @@ import com.kayako.sdk.messenger.rating.Rating;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -139,8 +140,11 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                 mView.showAttachmentPreview(imageUrl, imageName, timeCreated, downloadUrl, fileSize);
             } else {
                 mFileAttachmentDownloadHelper.onClickAttachmentToDownload(
-                        new FileAttachmentDownloadHelper.DownloadAttachment(
-                                attachmentUrlType),
+                        FileAttachmentDownloadHelper.generateDownloadAttachmentForMessenger(
+                                attachmentUrlType.getFileName(),
+                                attachmentUrlType.getFileSize(),
+                                attachmentUrlType.getDownloadUrl()
+                        ),
                         false);
             }
         } else {

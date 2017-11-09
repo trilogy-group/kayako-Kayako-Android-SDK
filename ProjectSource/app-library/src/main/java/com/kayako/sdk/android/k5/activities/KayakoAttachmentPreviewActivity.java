@@ -21,6 +21,10 @@ public class KayakoAttachmentPreviewActivity extends BaseMessengerActivity {
     public static final String ARG_ATTACHMENT_DOWNLOAD_URL = "attachmentdownloadurl";
     public static final String ARG_ATTACHMENT_FILE_SIZE = "attachmentfilesize";
 
+    public static final String ARG_REQ_SESSION_AUTH = "requiresessionauth";
+    public static final String ARG_AGENT_SESSION_ID = "agentsessionid";
+    public static final String ARG_AGENT_USER_AGENT = "agentuseragent";
+
     public static final int RESULT_EXIT = 1;
     public static final int RESULT_SEND = 2;
 
@@ -30,8 +34,11 @@ public class KayakoAttachmentPreviewActivity extends BaseMessengerActivity {
         fragment.startActivityForResult(intent, requestCode, activityOptionsCompat.toBundle());
     }
 
-    public static void startActivityForPreviewWithoutAnimations(Context context, String imageUrl, String attachmentName, String attachmentDownloadUrl, long attachmentTime, long attachmentFileSize) {
+    public static void startActivityForPreviewForAgentApp(Context context, String imageUrl, String attachmentName, String attachmentDownloadUrl, long attachmentTime, long attachmentFileSize, String sessionId, String userAgent) {
         Intent intent = getIntentForPreview(context, imageUrl, attachmentName, attachmentDownloadUrl, attachmentTime, attachmentFileSize);
+        intent.putExtra(ARG_REQ_SESSION_AUTH, true);
+        intent.putExtra(ARG_AGENT_SESSION_ID, sessionId);
+        intent.putExtra(ARG_AGENT_USER_AGENT, userAgent);
         context.startActivity(intent);
     }
 

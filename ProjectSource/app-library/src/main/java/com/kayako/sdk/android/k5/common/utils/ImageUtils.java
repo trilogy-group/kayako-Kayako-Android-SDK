@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
@@ -17,6 +19,7 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.ChannelDecoration;
 import com.kayako.sdk.android.k5.common.view.CircleImageView;
 import com.kayako.sdk.android.k5.common.view.CropCircleTransformation;
 import com.kayako.sdk.android.k5.core.Kayako;
+import com.kayako.sdk.auth.Auth;
 
 import java.io.File;
 
@@ -158,9 +161,21 @@ public class ImageUtils {
                 .into(imageView);
     }
 
-    public static void loadUrlAsAttachmentImage(@NonNull Context context, @NonNull ImageView imageView, @NonNull String imageUrl, boolean showPlaceholder, boolean configureSize, @Nullable final OnImageLoadedListener listener) {
+    public static void loadUrlAsAttachmentImage(@NonNull Context context, @NonNull ImageView imageView, @NonNull String imageUrl, boolean showPlaceholder, boolean configureSize, @Nullable final Auth auth, @Nullable final OnImageLoadedListener listener) {
 
-        DrawableTypeRequest<String> request = Glide.with(context).load(imageUrl);
+        GlideUrl glideUrl;
+
+        if (auth == null || auth.getHeaders().size() == 0) {
+            glideUrl = new GlideUrl(imageUrl);
+        } else {
+            LazyHeaders.Builder lazyHeaderBuilder = new LazyHeaders.Builder();
+            for (String key : auth.getHeaders().keySet()) {
+                lazyHeaderBuilder.addHeader(key, auth.getHeaders().get(key));
+            }
+            glideUrl = new GlideUrl(imageUrl, lazyHeaderBuilder.build());
+        }
+
+        DrawableTypeRequest<GlideUrl> request = Glide.with(context).load(glideUrl);
 
         if (showPlaceholder) {
             request.placeholder(R.drawable.ko__loading_attachment);
@@ -173,9 +188,9 @@ public class ImageUtils {
         }
 
         request
-                .listener(new RequestListener<String, GlideDrawable>() {
+                .listener(new RequestListener<GlideUrl, GlideDrawable>() {
                     @Override
-                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                    public boolean onException(Exception e, GlideUrl model, Target<GlideDrawable> target, boolean isFirstResource) {
                         if (listener != null) {
                             listener.onImageFailedToLoad();
                         }
@@ -183,11 +198,10 @@ public class ImageUtils {
                     }
 
                     @Override
-                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                    public boolean onResourceReady(GlideDrawable resource, GlideUrl model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                         if (listener != null) {
                             listener.onImageLoaded();
                         }
-
                         return false;
                     }
                 })

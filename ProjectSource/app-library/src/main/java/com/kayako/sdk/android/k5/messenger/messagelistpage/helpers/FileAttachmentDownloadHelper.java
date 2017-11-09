@@ -9,10 +9,10 @@ import android.support.annotation.NonNull;
 import android.widget.Toast;
 
 import com.kayako.sdk.android.k5.R;
-import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentUrlType;
 import com.kayako.sdk.android.k5.common.utils.file.FileDownloadUtil;
 import com.kayako.sdk.android.k5.core.Kayako;
 import com.kayako.sdk.android.k5.core.MessengerPref;
+import com.kayako.sdk.auth.FingerprintAuth;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -59,16 +59,26 @@ public class FileAttachmentDownloadHelper {
 
     private void startDownload(DownloadAttachment attachment) {
         Context context = Kayako.getApplicationContext();
-        String fingerprintId = MessengerPref.getInstance().getFingerprintId();
 
         mDownloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
 
-        long downloadId = FileDownloadUtil.downloadFile(context,
-                mDownloadManager,
-                fingerprintId,
-                attachment.getDownloadUrl(),
-                attachment.getFileName(),
-                attachment.getFileSize());
+        long downloadId;
+        if (attachment.getAuth() == null || attachment.getAuth().getHeaders().size() == 0) {
+            downloadId = FileDownloadUtil.downloadFile(
+                    context,
+                    mDownloadManager,
+                    attachment.getDownloadUrl(),
+                    attachment.getFileName(),
+                    attachment.getFileSize());
+
+        } else {
+            downloadId = FileDownloadUtil.downloadFile(context,
+                    mDownloadManager,
+                    attachment.getAuth().getHeaders(),
+                    attachment.getDownloadUrl(),
+                    attachment.getFileName(),
+                    attachment.getFileSize());
+        }
 
         mDownloadedLinks.add(downloadId);
 
@@ -92,44 +102,14 @@ public class FileAttachmentDownloadHelper {
         context.registerReceiver(receiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
     }
 
-    public static class DownloadAttachment {
-
-        @NonNull
-        private String fileName;
-
-        @NonNull
-        private long fileSize;
-
-        @NonNull
-        private String downloadUrl;
-
-        public DownloadAttachment(@NonNull AttachmentUrlType attachmentUrlType) {
-            this(attachmentUrlType.getFileName(), attachmentUrlType.getFileSize(), attachmentUrlType.getDownloadUrl());
-        }
-
-        public DownloadAttachment(@NonNull String fileName, @NonNull Long fileSize, @NonNull String downloadUrl) {
-            this.fileName = fileName;
-            this.fileSize = fileSize;
-            this.downloadUrl = downloadUrl;
-
-            if (fileName == null || fileSize == null || downloadUrl == null) {
-                throw new IllegalStateException();
-            }
-        }
-
-        @NonNull
-        public String getFileName() {
-            return fileName;
-        }
-
-        @NonNull
-        public long getFileSize() {
-            return fileSize;
-        }
-
-        @NonNull
-        public String getDownloadUrl() {
-            return downloadUrl;
-        }
+    public static DownloadAttachment generateDownloadAttachmentForMessenger(@NonNull String fileName, @NonNull Long fileSize, @NonNull String downloadUrl) {
+        return new DownloadAttachment(
+                fileName,
+                fileSize,
+                downloadUrl,
+                new FingerprintAuth(
+                        MessengerPref.getInstance().getFingerprintId()
+                )
+        );
     }
 }

@@ -9,6 +9,8 @@ import android.text.format.Formatter;
 
 import com.kayako.sdk.android.k5.R;
 
+import java.util.Map;
+
 public class FileDownloadUtil {
 
     /**
@@ -121,28 +123,27 @@ public class FileDownloadUtil {
      *
      * @param context
      * @param downloadManager
-     * @param sessionId
-     * @param userAgent
+     * @param headers
      * @param urlDownload
      * @param attachmentName
      * @param size
      * @return
      */
-    public static long downloadFile(@NonNull Context context, @NonNull DownloadManager downloadManager, String sessionId, String userAgent, String urlDownload, String attachmentName, long size) {
+    public static long downloadFile(@NonNull Context context, @NonNull DownloadManager downloadManager, Map<String, String> headers, String urlDownload, String attachmentName, long size) {
         DownloadManager.Request request = new DownloadManager.Request(
                 Uri.parse(urlDownload));
-        request.addRequestHeader("X-Session-ID", sessionId);
-        request.addRequestHeader("User-Agent", userAgent);
+        for (String key : headers.keySet()) {
+            request.addRequestHeader(key, headers.get(key));
+        }
         request.setTitle(attachmentName);
         request.setDescription(Formatter.formatFileSize(context, size));
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         return downloadManager.enqueue(request);
     }
 
-    public static long downloadFile(@NonNull Context context, @NonNull DownloadManager downloadManager, String fingerprintId, String urlDownload, String attachmentName, long size) {
+    public static long downloadFile(@NonNull Context context, @NonNull DownloadManager downloadManager, String urlDownload, String attachmentName, long size) {
         DownloadManager.Request request = new DownloadManager.Request(
                 Uri.parse(urlDownload));
-        request.addRequestHeader("X-Fingerprint-ID", fingerprintId);
         request.setTitle(attachmentName);
         request.setDescription(Formatter.formatFileSize(context, size));
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
