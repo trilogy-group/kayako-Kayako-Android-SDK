@@ -39,6 +39,7 @@ public class KayakoAttachmentPreviewActivity extends BaseMessengerActivity {
         intent.putExtra(ARG_REQ_SESSION_AUTH, true);
         intent.putExtra(ARG_AGENT_SESSION_ID, sessionId);
         intent.putExtra(ARG_AGENT_USER_AGENT, userAgent);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 
