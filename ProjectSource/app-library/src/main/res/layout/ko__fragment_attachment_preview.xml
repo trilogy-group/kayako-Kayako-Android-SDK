@@ -46,7 +46,6 @@
             android:id="@+id/ko__button_exit"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:background="?android:selectableItemBackgroundBorderless"
             android:src="@drawable/ko__ic_back" />
 
         <Space
@@ -58,7 +57,6 @@
             android:id="@+id/ko__button_options"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:background="?android:selectableItemBackgroundBorderless"
             android:src="@drawable/ko__ic_options" />
 
     </LinearLayout>
