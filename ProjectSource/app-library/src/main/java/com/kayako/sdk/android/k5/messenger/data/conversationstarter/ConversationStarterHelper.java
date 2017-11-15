@@ -58,8 +58,11 @@ public class ConversationStarterHelper {
     }
 
     public static String getAverageResponseTimeCaption(Long averageReplyTimeInMilliseconds) {
-        final long ONE_MINUTE_IN_MILLISECONDS = 60 * 1000;
+        if (averageReplyTimeInMilliseconds == null || averageReplyTimeInMilliseconds <= 0) {
+            return "";  // SHOW NOTHING if value is invalid (may happen when there are no conversations)
+        }
 
+        final long ONE_MINUTE_IN_MILLISECONDS = 60 * 1000;
         long numberOfMinutes = averageReplyTimeInMilliseconds / ONE_MINUTE_IN_MILLISECONDS;
 
         if (numberOfMinutes < 5) {
