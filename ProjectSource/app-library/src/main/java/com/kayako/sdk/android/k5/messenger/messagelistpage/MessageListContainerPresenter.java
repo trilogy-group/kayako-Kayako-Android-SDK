@@ -957,7 +957,10 @@ public class MessageListContainerPresenter implements MessageListContainerContra
     private void createNewConversation(String message, String clientId) {
         // This method should only be called (during onboarding) when a new conversation needs to be made
         mData.startNewConversation(
-                mConversationHelper.getNewConversationBodyParams(mMessengerPrefHelper.getEmail(), message, clientId),
+                mConversationHelper.getNewConversationBodyParams(
+                        mMessengerPrefHelper.getEmail(),
+                        mMessengerPrefHelper.getName(),
+                        message, clientId),
                 postConversationCallback
         );
     }

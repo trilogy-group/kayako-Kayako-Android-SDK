@@ -9,6 +9,7 @@ import com.kayako.sdk.android.k5.core.MessengerUserPref;
 public class MessengerPrefHelper {
 
     private String mEmail;
+    private String mName;
     private Long mCurrentUserId;
     private String mAvatar;
 
@@ -23,6 +24,15 @@ public class MessengerPrefHelper {
         this.mEmail = email;
         MessengerPref.getInstance().setEmailId(email);
     }
+
+    public String getName() {
+        if (mName == null) {
+            mName = MessengerPref.getInstance().getUserName(); // can be null too
+        }
+        return mName;
+    }
+
+    // skipped setName() since it won't be used unless set via MessengerBuilder. It is NOT requested of the user.
 
     public String getAvatar() {
         if (mAvatar == null) {
