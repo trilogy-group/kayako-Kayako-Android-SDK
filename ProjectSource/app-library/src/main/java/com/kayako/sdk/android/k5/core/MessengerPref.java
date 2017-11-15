@@ -11,6 +11,7 @@ public class MessengerPref {
     final private static String KEY_DESCRIPTION = "description";
     final private static String KEY_URL = "url";
     final private static String KEY_EMAIL_ID = "email_id";
+    final private static String KEY_USER_NAME = "user_name";
 
     private static MessengerPref sInstance;
     private static SharedPreferences sPrefs;
@@ -79,6 +80,14 @@ public class MessengerPref {
 
     public void setEmailId(String email) {
         sPrefs.edit().putString(KEY_EMAIL_ID, email).apply();
+    }
+
+    public String getUserName() {
+        return sPrefs.getString(KEY_USER_NAME, null);
+    }
+
+    public void setUserName(String userName) {
+        sPrefs.edit().putString(KEY_USER_NAME, userName).apply();
     }
 
     public void clearAll() {

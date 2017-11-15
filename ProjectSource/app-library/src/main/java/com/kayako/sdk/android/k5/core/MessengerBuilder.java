@@ -27,6 +27,7 @@ public class MessengerBuilder {
     // Optional - Identity
     private String fingerprintId;
     private String userEmail;
+    private String userName;
 
     public MessengerBuilder() {
     }
@@ -88,6 +89,14 @@ public class MessengerBuilder {
         return this;
     }
 
+    public MessengerBuilder setUserName(String userName) {
+        if (userName == null) {
+            throw new IllegalArgumentException("Invalid User Name Provided");
+        }
+        this.userName = userName;
+        return this;
+    }
+
     public MessengerBuilder setBackground(Background background) {
         if (background == null || background.getBackgroundDrawable() == null) {
             throw new IllegalArgumentException("Invalid Background");
@@ -134,6 +143,7 @@ public class MessengerBuilder {
 
         // Optional Fields
         saveIfAvailableUserEmail();
+        saveIfAvailableUserName();
     }
 
     private void saveIfAvailableUserEmail() {
@@ -141,6 +151,13 @@ public class MessengerBuilder {
             MessengerPref.getInstance().setEmailId(userEmail);
         }
     }
+
+    private void saveIfAvailableUserName() {
+        if (userName != null) {
+            MessengerPref.getInstance().setUserName(userName);
+        }
+    }
+
 
     private String getStringFromResourceId(@StringRes int stringResId) {
         try {

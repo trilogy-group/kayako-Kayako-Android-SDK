@@ -55,12 +55,12 @@ public class ConversationHelper {
                 getConversation().getStatus().getType() == Status.Type.CLOSED;
     }
 
-    public PostConversationBodyParams getNewConversationBodyParams(String email, String message, String clientId) {
+    public PostConversationBodyParams getNewConversationBodyParams(String email, String userName, String message, String clientId) {
         if (email == null) {
             throw new AssertionError("If it's a new conversation and email is null, the user should not have had the chance to send a reply!");
         }
 
-        String name = extractName(email);
+        String name = userName == null || userName.length() == 0 ? extractName(email) : userName;
         String subject = extractSubject(message);
 
         return new PostConversationBodyParams(name, email, subject, message, PostConversationBodyParams.SourceType.MESSENGER, clientId);
