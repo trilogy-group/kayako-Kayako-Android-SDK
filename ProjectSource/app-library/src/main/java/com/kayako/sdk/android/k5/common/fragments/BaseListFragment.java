@@ -41,12 +41,22 @@ public abstract class BaseListFragment extends Fragment {
     private boolean mHasUserTouchedRecyclerView;
 
     @Override
-    final public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mRoot = inflater.inflate(R.layout.ko__fragment_list, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.ko__fragment_list, container, false);
+        setupView(view);
+        return view;
+    }
+
+    protected void setupView(View view) {
+        // called when this fragments views can be initialized if the view is modified
+        mRoot = view;
         mRecyclerView = (RecyclerView) mRoot.findViewById(R.id.ko__list);
         mDefaultStateViewHelper = new DefaultStateViewHelper(mRoot);
         mCustomStateViewHelper = new CustomStateViewHelper((LinearLayout) mRoot.findViewById(R.id.ko__custom_state_container));
-        return mRoot;
+
+        if (view == null) {
+            throw new IllegalStateException();
+        }
     }
 
     protected void showListView() {
