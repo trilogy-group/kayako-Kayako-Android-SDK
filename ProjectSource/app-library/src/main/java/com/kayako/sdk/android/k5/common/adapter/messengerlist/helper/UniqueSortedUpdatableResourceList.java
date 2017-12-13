@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * A data structure that has 3 conditions:
@@ -94,5 +95,10 @@ public class UniqueSortedUpdatableResourceList<T> implements IUniqueResourceList
             Collections.sort(values, comparator);
             return values;
         }
+    }
+
+    @Override
+    public synchronized Set<Long> getIds() {
+        return mapResources.keySet();
     }
 }

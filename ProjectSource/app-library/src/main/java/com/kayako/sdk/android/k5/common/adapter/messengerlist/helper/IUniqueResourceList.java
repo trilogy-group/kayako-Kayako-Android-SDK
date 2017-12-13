@@ -2,6 +2,7 @@ package com.kayako.sdk.android.k5.common.adapter.messengerlist.helper;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 public interface IUniqueResourceList<T> {
 
@@ -16,4 +17,6 @@ public interface IUniqueResourceList<T> {
     void removeElement(long id);
 
     void setSortComparator(Comparator<T> comparator);
+
+    Set<Long> getIds();
 }
