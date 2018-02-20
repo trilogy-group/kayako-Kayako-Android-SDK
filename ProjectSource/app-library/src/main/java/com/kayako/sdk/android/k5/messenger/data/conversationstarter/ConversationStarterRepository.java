@@ -42,6 +42,12 @@ public class ConversationStarterRepository implements IConversationStarterReposi
         mMessenger.getConversationStarter(new ItemCallback<ConversationStarter>() {
             @Override
             public void onSuccess(final ConversationStarter item) {
+
+                // Save realtime info
+                if (item != null && item.getRealtimeUrl() != null) {
+                    MessengerPref.getInstance().setRealtimeUrl(item.getRealtimeUrl());
+                }
+
                 synchronized (key) {
                     mConversationStarter = item;
                 }
@@ -54,7 +60,6 @@ public class ConversationStarterRepository implements IConversationStarterReposi
                         }
                     }
                 });
-
             }
 
             @Override

@@ -10,8 +10,8 @@ public class KreSessionCredentials extends KreCredentials {
     @NonNull
     private String userAgent;
 
-    public KreSessionCredentials(@NonNull String sessionId, @NonNull String instanceUrl, @NonNull String userAgent) {
-        super(Type.SESSION, instanceUrl);
+    public KreSessionCredentials(@NonNull String realtimeUrl, @NonNull String sessionId, @NonNull String instanceUrl, @NonNull String userAgent) {
+        super(realtimeUrl, Type.SESSION, instanceUrl);
 
         if (sessionId == null || userAgent == null) {
             throw new IllegalArgumentException("Null values are not allowed");

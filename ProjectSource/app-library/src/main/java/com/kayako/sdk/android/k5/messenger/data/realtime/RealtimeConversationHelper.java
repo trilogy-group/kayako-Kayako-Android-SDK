@@ -2,7 +2,6 @@ package com.kayako.sdk.android.k5.messenger.data.realtime;
 
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.util.LongSparseArray;
 
 import com.kayako.sdk.android.k5.common.activities.MessengerOpenTracker;
 import com.kayako.sdk.android.k5.core.KayakoLogHelper;
@@ -21,7 +20,6 @@ import com.kayako.sdk.error.KayakoException;
 import com.kayako.sdk.messenger.conversation.Conversation;
 import com.kayako.sdk.messenger.message.Message;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -49,7 +47,7 @@ public class RealtimeConversationHelper {
     private static Set<OnConversationUserOnlineListener> sOnConversationUserOnlineListeners = new HashSet<>();
 
     private static final Object mActiveUsersKey = new Object();
-    private static LongSparseArray<Set<Long>> sMapActiveUsers = new LongSparseArray<>();
+    private static Map<Long, Set<Long>> sMapActiveUsers = new HashMap<>(); // Using map over LongSpareArray because to support v14
 
     private RealtimeConversationHelper() {
     }
@@ -95,7 +93,7 @@ public class RealtimeConversationHelper {
 
         // Subscribe for changes
         kreCaseSubscription.subscribe(
-                new KreFingerprintCredentials(kreStarterValues.getInstanceUrl(), kreStarterValues.getFingerprintId()),
+                new KreFingerprintCredentials(kreStarterValues.getRealtimeUrl(), kreStarterValues.getInstanceUrl(), kreStarterValues.getFingerprintId()),
                 conversationPresenceChannelName,
                 false,
                 onSubscriptionListener
@@ -416,7 +414,8 @@ public class RealtimeConversationHelper {
                 throw new IllegalStateException("No yet initialized! Method called too soon!");
             }
 
-            return sMapActiveUsers.get(conversationId, new HashSet<Long>()); // Return empty set that can be added to! Not null!
+            Set<Long> set = sMapActiveUsers.get(conversationId);
+            return set == null ? new HashSet<Long>() : set; // Return empty set that can be added to! Not null!
         }
     }
 }

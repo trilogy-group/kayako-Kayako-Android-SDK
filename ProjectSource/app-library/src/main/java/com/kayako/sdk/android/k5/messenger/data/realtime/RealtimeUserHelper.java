@@ -90,7 +90,7 @@ public class RealtimeUserHelper {
 
         // Subscribe for changes
         kreUserSubscription.subscribe(
-                new KreFingerprintCredentials(kreStarterValues.getInstanceUrl(), kreStarterValues.getFingerprintId()),
+                new KreFingerprintCredentials(kreStarterValues.getRealtimeUrl(), kreStarterValues.getInstanceUrl(), kreStarterValues.getFingerprintId()),
                 userPresenceChannel,
                 userId,
                 onSubscriptionListener

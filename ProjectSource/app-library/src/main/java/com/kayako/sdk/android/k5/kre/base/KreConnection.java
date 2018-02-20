@@ -25,7 +25,8 @@ class KreConnection {
 
     private static final String TAG = "KreConnection";
 
-    private static final String KRE_SOCKET_URL = "wss://kre.kayako.net/socket/websocket";
+    // private static final String KRE_SOCKET_URL = "wss://kre.kayako.net/socket/websocket"; // No longer used, value received via API
+    private static final String KRE_SOCKET_URL_SUFFIX = "/websocket";
     private static final String PARAM_SESSION_ID = "session_id";
     private static final String PARAM_FINGERPRINT_ID = "fingerprint_id";
     private static final String PARAM_INSTANCE = "instance";
@@ -160,12 +161,15 @@ class KreConnection {
         switch (kreCredentials.getType()) {
             case FINGERPRINT:
                 KreFingerprintCredentials kreFingerprintCredentials = (KreFingerprintCredentials) kreCredentials;
-                return generateUrl(kreFingerprintCredentials.getInstanceUrl(),
+                return generateUrl(
+                        kreFingerprintCredentials.getRealtimeUrl(),
+                        kreFingerprintCredentials.getInstanceUrl(),
                         kreFingerprintCredentials.getFingerprintId());
 
             case SESSION:
                 KreSessionCredentials kreSessionCredentials = (KreSessionCredentials) kreCredentials;
-                return generateUrl(kreSessionCredentials.getInstanceUrl(),
+                return generateUrl(kreSessionCredentials.getRealtimeUrl(),
+                        kreSessionCredentials.getInstanceUrl(),
                         kreSessionCredentials.getSessionId(),
                         kreSessionCredentials.getUserAgent());
 
@@ -177,13 +181,14 @@ class KreConnection {
     /**
      * Generate a valid url from sessionId, instance and userAgent
      *
+     * @param socketUrl
      * @param instanceUrl
      * @param sessionId
      * @param userAgent
      * @return
      */
-    private String generateUrl(String instanceUrl, String sessionId, String userAgent) {
-        Uri uri = Uri.parse(KRE_SOCKET_URL)
+    private String generateUrl(String socketUrl, String instanceUrl, String sessionId, String userAgent) {
+        Uri uri = Uri.parse(String.format("%s%s", socketUrl, KRE_SOCKET_URL_SUFFIX))
                 .buildUpon()
                 .appendQueryParameter(PARAM_SESSION_ID, sessionId)
                 .appendQueryParameter(PARAM_USER_AGENT, userAgent)
@@ -196,12 +201,13 @@ class KreConnection {
     /**
      * Generate a valid url from instanceUrl and fingerprintId
      *
+     * @param socketUrl
      * @param instanceUrl
      * @param fingerprintId
      * @return
      */
-    private String generateUrl(String instanceUrl, String fingerprintId) {
-        Uri uri = Uri.parse(KRE_SOCKET_URL)
+    private String generateUrl(String socketUrl, String instanceUrl, String fingerprintId) {
+        Uri uri = Uri.parse(String.format("%s%s", socketUrl, KRE_SOCKET_URL_SUFFIX))
                 .buildUpon()
                 .appendQueryParameter(PARAM_FINGERPRINT_ID, fingerprintId)
                 .appendQueryParameter(PARAM_INSTANCE, extractInstanceFromInstanceUrl(instanceUrl)) // needs instance, not instanceUrl

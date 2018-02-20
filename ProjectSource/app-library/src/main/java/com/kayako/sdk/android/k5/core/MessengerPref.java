@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 public class MessengerPref {
     final private static String PREF_NAME = "kayako_messenger_info";
     final private static String KEY_FINGERPRINT_ID = "fingerprint_id";
+    final private static String KEY_REALTIME_URL = "realtime_url";
     final private static String KEY_BRAND_NAME = "brand_name";
     final private static String KEY_TITLE = "title";
     final private static String KEY_DESCRIPTION = "description";
@@ -72,6 +73,14 @@ public class MessengerPref {
 
     public void setUrl(String url) {
         sPrefs.edit().putString(KEY_URL, url).apply();
+    }
+
+    public String getRealtimeUrl() {
+        return sPrefs.getString(KEY_REALTIME_URL, null);
+    }
+
+    public void setRealtimeUrl(String realtimeUrl) {
+        sPrefs.edit().putString(KEY_REALTIME_URL, realtimeUrl).apply();
     }
 
     public String getEmailId() {
