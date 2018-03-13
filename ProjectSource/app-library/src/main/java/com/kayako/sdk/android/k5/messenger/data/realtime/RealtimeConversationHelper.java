@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 
 import com.kayako.sdk.android.k5.common.activities.MessengerOpenTracker;
 import com.kayako.sdk.android.k5.core.KayakoLogHelper;
+import com.kayako.sdk.android.k5.kre.base.KreConnection;
+import com.kayako.sdk.android.k5.kre.base.KreConnectionFactory;
 import com.kayako.sdk.android.k5.kre.base.KreSubscription;
 import com.kayako.sdk.android.k5.kre.base.credentials.KreFingerprintCredentials;
 import com.kayako.sdk.android.k5.kre.base.kase.KreCaseSubscription;
@@ -49,6 +51,8 @@ public class RealtimeConversationHelper {
     private static final Object mActiveUsersKey = new Object();
     private static Map<Long, Set<Long>> sMapActiveUsers = new HashMap<>(); // Using map over LongSpareArray because to support v14
 
+    private static boolean sIsAgent = false;
+
     private RealtimeConversationHelper() {
     }
 
@@ -83,8 +87,11 @@ public class RealtimeConversationHelper {
             return;
         }
 
+        // KreConnection
+        KreConnection kreConnection = KreConnectionFactory.getConnection(sIsAgent);
+
         // Set up CaseSubscription
-        KreCaseSubscription kreCaseSubscription = new KreCaseSubscription(conversationPresenceChannelName, kreStarterValues.getCurrentUserId());
+        KreCaseSubscription kreCaseSubscription = new KreCaseSubscription(kreConnection, conversationPresenceChannelName, kreStarterValues.getCurrentUserId());
         sMapSubscriptions.put(conversationPresenceChannelName, kreCaseSubscription);
 
         // Set up CaseSubscriptionListener
@@ -418,4 +425,14 @@ public class RealtimeConversationHelper {
             return set == null ? new HashSet<Long>() : set; // Return empty set that can be added to! Not null!
         }
     }
+
+    /**
+     * Set if used in Agent app - ensure separate connections used for Messenger and Agent app
+     *
+     * @param isAgent
+     */
+    public static void setIsAgent(boolean isAgent) {
+        sIsAgent = isAgent;
+    }
+
 }

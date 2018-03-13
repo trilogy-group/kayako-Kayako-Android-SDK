@@ -7,6 +7,8 @@ import com.kayako.sdk.android.k5.common.activities.MessengerOpenTracker;
 import com.kayako.sdk.android.k5.core.KayakoLogHelper;
 import com.kayako.sdk.android.k5.core.MessengerPref;
 import com.kayako.sdk.android.k5.core.MessengerUserPref;
+import com.kayako.sdk.android.k5.kre.base.KreConnection;
+import com.kayako.sdk.android.k5.kre.base.KreConnectionFactory;
 import com.kayako.sdk.android.k5.kre.base.KreSubscription;
 import com.kayako.sdk.android.k5.kre.base.credentials.KreFingerprintCredentials;
 import com.kayako.sdk.android.k5.kre.base.kase.KreCaseSubscription;
@@ -50,6 +52,8 @@ public class RealtimeUserHelper {
     private static final Object sListenerKey = new Object();
     private static List<UserPresenceListener> sOnlinePresenceListeners = new ArrayList();
 
+    private static boolean sIsAgent = false;
+
     // Close Realtime subscriptions on Messenger close
     private static MessengerOpenTracker.OnCloseMessengerListener sOnCloseMessengerListener = new MessengerOpenTracker.OnCloseMessengerListener() {
         @Override
@@ -80,8 +84,11 @@ public class RealtimeUserHelper {
             return;
         }
 
+        // KreConnection
+        KreConnection kreConnection = KreConnectionFactory.getConnection(sIsAgent);
+
         // Set up CaseSubscription
-        KreUserSubscription kreUserSubscription = new KreUserSubscription(userPresenceChannel);
+        KreUserSubscription kreUserSubscription = new KreUserSubscription(kreConnection, userPresenceChannel);
         sMapSubscriptions.put(userPresenceChannel, kreUserSubscription);
 
         // Set up CaseSubscriptionListener
@@ -192,6 +199,14 @@ public class RealtimeUserHelper {
         synchronized (sListenerKey) {
             sOnlinePresenceListeners.remove(listener);
         }
+    }
+
+    /**
+     * Set if used in Agent app - ensure separate connections used for Messenger and Agent app
+     * @param isAgent
+     */
+    public static void setIsAgent(boolean isAgent) {
+        sIsAgent = isAgent;
     }
 
     public interface UserPresenceListener {

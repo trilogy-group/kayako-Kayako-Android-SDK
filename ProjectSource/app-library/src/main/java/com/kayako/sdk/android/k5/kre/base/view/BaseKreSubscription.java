@@ -3,6 +3,7 @@ package com.kayako.sdk.android.k5.kre.base.view;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.kayako.sdk.android.k5.kre.base.KreConnection;
 import com.kayako.sdk.android.k5.kre.base.KreSubscription;
 import com.kayako.sdk.android.k5.kre.base.credentials.KreCredentials;
 import com.kayako.sdk.android.k5.kre.data.Payload;
@@ -16,8 +17,12 @@ public abstract class BaseKreSubscription {
     private KreSubscription.OnSubscriptionListener mMainListener;
     private List<KreSubscription.OnSubscriptionListener> mChildListeners = new ArrayList<>();
 
-    public BaseKreSubscription(String name) {
-        mKreSubscription = new KreSubscription(name);
+    public BaseKreSubscription(KreConnection kreConnection, String name) {
+        if (kreConnection == null) {
+            throw new IllegalArgumentException();
+        }
+
+        mKreSubscription = new KreSubscription(kreConnection, name);
 
         if (getMainListener() == null) { // check after mKreSubscription gets initialized
             throw new IllegalStateException();

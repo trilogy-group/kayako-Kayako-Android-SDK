@@ -30,4 +30,24 @@ public class KreSessionCredentials extends KreCredentials {
     public String getUserAgent() {
         return userAgent;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        KreSessionCredentials that = (KreSessionCredentials) o;
+
+        if (!sessionId.equals(that.sessionId)) return false;
+        return userAgent.equals(that.userAgent);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + sessionId.hashCode();
+        result = 31 * result + userAgent.hashCode();
+        return result;
+    }
 }

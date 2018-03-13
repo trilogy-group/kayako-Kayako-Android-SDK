@@ -1,5 +1,7 @@
 package com.kayako.sdk.android.k5.kre.base.view;
 
+import com.kayako.sdk.android.k5.kre.base.KreConnection;
+import com.kayako.sdk.android.k5.kre.base.KreConnectionFactory;
 import com.kayako.sdk.android.k5.kre.base.KreSubscription;
 import com.kayako.sdk.android.k5.kre.data.ViewCountChange;
 import com.kayako.sdk.android.k5.kre.helpers.KreChangeHelper;
@@ -12,8 +14,8 @@ public class KreViewCountSubscription extends BaseKreSubscription {
 
     private Set<RawChangeListener<ViewCountChange>> mRawChangeListeners = new HashSet<>();
 
-    public KreViewCountSubscription(String name) {
-        super(name);
+    public KreViewCountSubscription(KreConnection kreConnection, String name) {
+        super(kreConnection, name);
     }
 
     @Override
