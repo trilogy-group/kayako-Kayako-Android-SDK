@@ -3,6 +3,7 @@ package com.kayako.sdk.android.k5.messenger.messagelistpage;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -346,7 +347,9 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
             return;
         }
 
-        FileAttachmentUtil.openFileChooserActivityFromFragment(this, REQUEST_CODE_ADD_ATTACHMENT);
+        if (FileAttachmentUtil.checkFileAccessPermissions(getActivity())) {
+            FileAttachmentUtil.openFileChooserActivityFromFragment(this, REQUEST_CODE_ADD_ATTACHMENT);
+        }
     }
 
     @Override
@@ -403,5 +406,9 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
         KayakoAttachmentPreviewActivity.startActivityForPreview(getActivity(), this, mLastAttachmentListItemViewClicked, imageUrl, imageName, downloadUrl, time, fileSize, REQUEST_CODE_VIEW_UPLOADED_ATTACHMENT);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
+    }
 }

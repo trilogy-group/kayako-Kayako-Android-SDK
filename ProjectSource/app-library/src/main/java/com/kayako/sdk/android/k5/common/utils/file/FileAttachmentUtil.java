@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
 import com.kayako.sdk.android.k5.R;
+import com.kayako.sdk.android.k5.common.utils.ViewUtils;
 import com.kayako.sdk.android.k5.core.Kayako;
 import com.kayako.sdk.android.k5.core.KayakoLogHelper;
 
@@ -61,6 +62,14 @@ public class FileAttachmentUtil {
         fragment.startActivityForResult(intentBrowseFiles, requestCode);
     }
 
+    public static boolean checkFileAccessPermissions(Activity activity) {
+        if (!FileAccessPermissions.isPermitted(activity)) {
+            ViewUtils.showToastMessage(activity, activity.getResources().getString(R.string.ko__permission_request_to_access_attachments), Toast.LENGTH_SHORT);
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     /**
      * Open File Picker from activity
