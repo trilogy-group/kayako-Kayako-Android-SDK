@@ -37,7 +37,7 @@ public class KreConnection {
     private Socket mSocket;
     private AtomicBoolean mIsConnected = new AtomicBoolean();
 
-    private KreCredentials mKreCredentials;
+    private boolean mReconnectStatus = true;
 
     /**
      * Used to connect and get a kre channel. The kre channel can be subscribed to and listened to for events.
@@ -60,14 +60,13 @@ public class KreConnection {
      * @param listener
      * @param jsonPayload
      */
-    public synchronized void connect(@NonNull KreCredentials kreCredentials, final @NonNull String channelName, @NonNull final OnOpenConnectionListener listener, @Nullable final JsonNode jsonPayload) {
+    public synchronized void connect(@NonNull final KreCredentials kreCredentials, final @NonNull String channelName, @NonNull final OnOpenConnectionListener listener, @Nullable final JsonNode jsonPayload) {
         if (!NetworkUtils.isConnectedToNetwork(Kayako.getApplicationContext())) {
             KayakoLogHelper.e(TAG, "No Internet Connection! Not going forward with connect()");
             listener.onError("No Network Connection. Please connect to the Internet.");
             return;
         }
 
-        mKreCredentials = kreCredentials;
         String url = generateUrlFromKreCredentials(kreCredentials);
 
         try {
@@ -146,12 +145,13 @@ public class KreConnection {
 
     public void configureReconnectOnFailure(boolean reconnect) {
         try {
-            if (mSocket != null) {
+            if (mSocket != null && mReconnectStatus != reconnect) {
                 mSocket.reconectOnFailure(reconnect);
                 if (reconnect && !mSocket.isConnected()) {
                     KayakoLogHelper.e(TAG, "Reconnecting on configureReconnectOnFailure(true)");
                     mSocket.connect();
                 }
+                mReconnectStatus = reconnect;
             }
         } catch (Exception e) {
             KayakoLogHelper.logException(TAG, e);
