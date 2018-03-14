@@ -37,8 +37,6 @@ public class KreConnection {
     private Socket mSocket;
     private AtomicBoolean mIsConnected = new AtomicBoolean();
 
-    private boolean mReconnectStatus = true;
-
     /**
      * Used to connect and get a kre channel. The kre channel can be subscribed to and listened to for events.
      *
@@ -145,13 +143,9 @@ public class KreConnection {
 
     public void configureReconnectOnFailure(boolean reconnect) {
         try {
-            if (mSocket != null && mReconnectStatus != reconnect) {
+            if (mSocket != null) {
                 mSocket.reconectOnFailure(reconnect);
-                if (reconnect && !mSocket.isConnected()) {
-                    KayakoLogHelper.e(TAG, "Reconnecting on configureReconnectOnFailure(true)");
-                    mSocket.connect();
-                }
-                mReconnectStatus = reconnect;
+                KayakoLogHelper.e(TAG, String.format("configureReconnectOnFailure(%s)", reconnect));
             }
         } catch (Exception e) {
             KayakoLogHelper.logException(TAG, e);

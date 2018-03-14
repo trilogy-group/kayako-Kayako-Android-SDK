@@ -154,7 +154,7 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.8.0'
 
     compile 'com.kayako:kayako:1.0.+'
-    compile 'com.kayako.kre:kre-client:0.2.+'
+    compile 'com.kayako.kre:kre-client:0.2.15'
 
     // TODO: Comment when production ready
     // compile fileTree(dir: 'libs', include: ['*.jar'])
