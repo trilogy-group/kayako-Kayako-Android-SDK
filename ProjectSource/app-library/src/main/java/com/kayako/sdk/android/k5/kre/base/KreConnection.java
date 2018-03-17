@@ -41,11 +41,11 @@ public class KreConnection extends SocketConnection {
             throw new IllegalArgumentException();
         }
 
+        mListeners.add(openConnectionListener);
         if (isConnected() && mSocket != null) {
             Channel channel = mSocket.chan(channelName, jsonPayload);
             openConnectionListener.onOpen(channel);
         } else {
-            mListeners.add(openConnectionListener);
             if (mMainListener == null) {
                 super.connect(kreCredentials, mMainListener = new OnOpenSocketConnectionListener() {
                     @Override
