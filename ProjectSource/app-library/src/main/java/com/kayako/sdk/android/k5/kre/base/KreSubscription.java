@@ -53,7 +53,7 @@ public class KreSubscription {
 
     private String mTagWithName; // to track what the KreSubscription is being used for
     private KreConnection mKreConnection;
-    private boolean connected;
+    private KreConnection.OnOpenConnectionListener mKreConnectionListener;
 
     public KreSubscription(KreConnection kreConnection, @Nullable String name) {
         if (kreConnection == null) {
@@ -107,7 +107,7 @@ public class KreSubscription {
                 JsonNode jsonPayload = payloadObject == null ? null : convertObjectToJsonNode(payloadObject);
 
                 if (mOnSubscriptionListeners.size() == 1) { // First Subscription
-                    mKreConnection.connect(kreCredentials, channelName, new KreConnection.OnOpenConnectionListener() {
+                    mKreConnection.connect(kreCredentials, channelName, mKreConnectionListener = new KreConnection.OnOpenConnectionListener() {
                         @Override
                         public void onOpen(Channel channel) {
                             // KayakoLogHelper.d(TAG, "onOpenConnection");
@@ -275,7 +275,7 @@ public class KreSubscription {
         }
 
         // Disconnect Socket connection
-        mKreConnection.disconnect(null);
+        mKreConnection.disconnect(mKreConnectionListener);
     }
 
     private void resetVariables() {
