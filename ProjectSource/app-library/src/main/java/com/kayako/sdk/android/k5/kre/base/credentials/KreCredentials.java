@@ -42,4 +42,24 @@ public class KreCredentials {
     public String getRealtimeUrl() {
         return realtimeUrl;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        KreCredentials that = (KreCredentials) o;
+
+        if (!realtimeUrl.equals(that.realtimeUrl)) return false;
+        if (type != that.type) return false;
+        return instanceUrl.equals(that.instanceUrl);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = realtimeUrl.hashCode();
+        result = 31 * result + type.hashCode();
+        result = 31 * result + instanceUrl.hashCode();
+        return result;
+    }
 }

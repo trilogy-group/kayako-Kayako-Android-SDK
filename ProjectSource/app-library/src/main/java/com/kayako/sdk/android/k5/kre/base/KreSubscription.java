@@ -33,7 +33,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * This does not fix the following problems:
  * - Mutliple calls to listenFor for the same event may cause ConcurrentModificationExceptions and inconsistentency when receicing events
  */
-public class KreSubscription extends KreConnection {
+public class KreSubscription {
 
     private static final String TAG = "KreSubscription";
     private static final String EVENT_OK = "ok";
@@ -52,8 +52,16 @@ public class KreSubscription extends KreConnection {
     private TriggerTask mTriggerTask;
 
     private String mTagWithName; // to track what the KreSubscription is being used for
+    private KreConnection mKreConnection;
+    private KreConnection.OnOpenConnectionListener mKreConnectionListener;
 
-    public KreSubscription(@Nullable String name) {
+    public KreSubscription(KreConnection kreConnection, @Nullable String name) {
+        if (kreConnection == null) {
+            throw new IllegalArgumentException();
+        }
+
+        mKreConnection = kreConnection;
+
         if (name != null) {
             mTagWithName = String.format("%s-%s", TAG, name);
         } else {
@@ -99,7 +107,7 @@ public class KreSubscription extends KreConnection {
                 JsonNode jsonPayload = payloadObject == null ? null : convertObjectToJsonNode(payloadObject);
 
                 if (mOnSubscriptionListeners.size() == 1) { // First Subscription
-                    super.connect(kreCredentials, channelName, new OnOpenConnectionListener() {
+                    mKreConnection.connect(kreCredentials, channelName, mKreConnectionListener = new KreConnection.OnOpenConnectionListener() {
                         @Override
                         public void onOpen(Channel channel) {
                             // KayakoLogHelper.d(TAG, "onOpenConnection");
@@ -238,7 +246,7 @@ public class KreSubscription extends KreConnection {
 
     private <T extends PushData> void performTrigger(@NonNull String eventName, @NonNull T t) {
         try {
-            if (isConnected() && mChannel.get().getSocket().isConnected()) {
+            if (mKreConnection.isConnected() && mChannel.get().getSocket().isConnected()) {
                 KayakoLogHelper.d(mTagWithName, "Trigger Event: " + eventName);
                 KayakoLogHelper.d(mTagWithName, "Trigger JsonPayload: " + t.toString());
 
@@ -267,7 +275,7 @@ public class KreSubscription extends KreConnection {
         }
 
         // Disconnect Socket connection
-        disconnect(null);
+        mKreConnection.disconnect(mKreConnectionListener);
     }
 
     private void resetVariables() {
@@ -412,6 +420,14 @@ public class KreSubscription extends KreConnection {
         if (listener != null) {
             listener.onUnsubscription();
         }
+    }
+
+    public boolean isConnected() {
+        return mKreConnection.isConnected();
+    }
+
+    public void configureReconnectOnFailure(boolean reconnect) {
+        mKreConnection.configureReconnectOnFailure(reconnect);
     }
 
     private abstract class TriggerTask<T extends PushData> extends AsyncTask {

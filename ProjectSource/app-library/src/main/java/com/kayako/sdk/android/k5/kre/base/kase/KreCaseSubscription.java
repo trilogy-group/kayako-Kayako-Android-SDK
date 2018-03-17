@@ -2,6 +2,8 @@ package com.kayako.sdk.android.k5.kre.base.kase;
 
 import android.support.annotation.NonNull;
 
+import com.kayako.sdk.android.k5.kre.base.KreConnection;
+import com.kayako.sdk.android.k5.kre.base.KreConnectionFactory;
 import com.kayako.sdk.android.k5.kre.base.KreSubscription;
 import com.kayako.sdk.android.k5.kre.base.credentials.KreCredentials;
 import com.kayako.sdk.android.k5.kre.data.Change;
@@ -50,8 +52,11 @@ public class KreCaseSubscription {
     private List<RawUserOnCasePresenceListener> mUserPresenceListeners = new ArrayList<>();
     private List<RawCasePostChangeListener> mRawCasePostChangeListeners = new ArrayList<>();
 
-    public KreCaseSubscription(@NonNull String name, long currentUserId) {
-        mKreSubscription = new KreSubscription(name);
+    public KreCaseSubscription(@NonNull KreConnection kreConnection, @NonNull String name, long currentUserId) {
+        if (kreConnection == null) {
+            throw new IllegalArgumentException();
+        }
+        mKreSubscription = new KreSubscription(kreConnection, name);
         mKrePresenceHelper = new KrePresenceHelper(mKreSubscription, true, currentUserId);
     }
 
@@ -336,6 +341,10 @@ public class KreCaseSubscription {
             mKreSubscription.unSubscribe(onSubscriptionListener);
             mChildListeners.remove(onSubscriptionListener);
         }
+    }
+
+    public void configureReconnection(boolean allowReconnectionsOnFailure) {
+        mKreSubscription.configureReconnectOnFailure(allowReconnectionsOnFailure);
     }
 
     private void resetVariables() {
