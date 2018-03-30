@@ -4,17 +4,29 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.kayako.sdk.android.k5.core.KayakoLogHelper;
 import com.kayako.sdk.android.k5.kre.base.credentials.KreCredentials;
 
 import org.phoenixframework.channels.Channel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class KreConnection extends SocketConnection {
 
+    private static final String TAG = "KreConnection";
+
     private OnOpenSocketConnectionListener mMainListener;
-    private List<OnOpenConnectionListener> mListeners = new ArrayList<>();
+
+    private Set<OnOpenConnectionListener> mListeners = new HashSet<>();
+    private Map<OnOpenConnectionListener, String> mChannelMap = new HashMap<>();
+
+    private AtomicBoolean mIsConnecting = new AtomicBoolean();
 
     /**
      * Used to connect and get a kre channel. The kre channel can be subscribed to and listened to for events.
@@ -36,34 +48,48 @@ public class KreConnection extends SocketConnection {
      * @param openConnectionListener
      * @param jsonPayload
      */
-    public synchronized void connect(@NonNull final KreCredentials kreCredentials, final @NonNull String channelName, @NonNull final KreConnection.OnOpenConnectionListener openConnectionListener, @Nullable final JsonNode jsonPayload) {
+    public synchronized void connect(@NonNull final KreCredentials kreCredentials, @NonNull String channelName, @NonNull final KreConnection.OnOpenConnectionListener openConnectionListener, @Nullable final JsonNode jsonPayload) {
         if (channelName == null || openConnectionListener == null) {
             throw new IllegalArgumentException();
         }
 
+        if (mListeners.contains(openConnectionListener)) {
+            return;
+        }
+
         mListeners.add(openConnectionListener);
-        if (isConnected() && mSocket != null) {
+        mChannelMap.put(openConnectionListener, channelName);
+
+        KayakoLogHelper.d(TAG, String.format("connect(), No. of Listeners %s", mListeners.size()));
+        if (isConnected()) {
             Channel channel = mSocket.chan(channelName, jsonPayload);
             openConnectionListener.onOpen(channel);
-        } else {
-            if (mMainListener == null) {
-                super.connect(kreCredentials, mMainListener = new OnOpenSocketConnectionListener() {
-                    @Override
-                    public synchronized void onOpen() {
-                        for (OnOpenConnectionListener listener : mListeners) {
-                            Channel channel = mSocket.chan(channelName, jsonPayload);
-                            listener.onOpen(channel);
-                        }
+        } else if (!mIsConnecting.get()) {
+            mIsConnecting.set(true);
+            KayakoLogHelper.d(TAG, "connect(), MAIN");
+            super.connect(kreCredentials, mMainListener = new OnOpenSocketConnectionListener() {
+                @Override
+                public synchronized void onOpen() {
+                    mIsConnecting.set(false);
+                    KayakoLogHelper.d(TAG, String.format("onOpen(), No. of Listeners %s", mListeners.size()));
+                    for (OnOpenConnectionListener listener : mListeners) {
+                        String channelName = mChannelMap.get(listener);
+                        Channel channel = mSocket.chan(channelName, jsonPayload);
+                        listener.onOpen(channel);
                     }
+                }
 
-                    @Override
-                    public synchronized void onError(String message) {
-                        for (OnOpenConnectionListener listener : mListeners) {
-                            listener.onError(message);
-                        }
+                @Override
+                public synchronized void onError(String message) {
+                    mIsConnecting.set(false);
+                    KayakoLogHelper.d(TAG, String.format("onError(), No. of Listeners %s", mListeners.size()));
+                    for (OnOpenConnectionListener listener : mListeners) {
+                        listener.onError(message);
                     }
-                }, jsonPayload);
-            }
+                }
+            }, jsonPayload);
+        } else { // not connected but connecting
+            // wait for the connection, after which all added listeners will be executed
         }
     }
 
@@ -73,10 +99,15 @@ public class KreConnection extends SocketConnection {
         }
 
         mListeners.remove(openConnectionListener);
+        mChannelMap.remove(openConnectionListener);
+
+        KayakoLogHelper.d(TAG, String.format("disconnect(), No. of Listeners %s", mListeners.size()));
         if (mListeners.size() == 0) {
             super.disconnect(null);
-            mListeners = new ArrayList<>();
+            mListeners = new HashSet<>();
+            mChannelMap = new HashMap<>();
             mMainListener = null;
+            KayakoLogHelper.d(TAG, String.format("disconnect(), FINAL", mListeners.size()));
         }
     }
 
