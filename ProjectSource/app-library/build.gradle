@@ -158,6 +158,8 @@ dependencies {
     compile 'com.openpojo:openpojo:0.8.4'
     compile 'com.aurea:tests-commons:1.6.4'
     compile 'javax.annotation:javax.annotation-api:1.2'
+
+    compile 'com.kayako:kayako:1.0.+'
     compile 'com.kayako.kre:kre-client:0.2.+'
 
 
