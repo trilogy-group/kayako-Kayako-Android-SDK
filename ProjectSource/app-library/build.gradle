@@ -135,8 +135,7 @@ allprojects {
 
         // Used for Internal Testing
         maven { url 'https://jitpack.io' }
-        maven {url 'https://scm.devfactory.com/nexus/content/repositories/EngUnitTests/'}
-       flatDir {
+        flatDir {
             dirs 'libs'
         }
     }
