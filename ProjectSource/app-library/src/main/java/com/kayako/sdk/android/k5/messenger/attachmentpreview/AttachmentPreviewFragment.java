@@ -176,7 +176,9 @@ public class AttachmentPreviewFragment extends Fragment implements PopupMenu.OnM
     public boolean onMenuItemClick(MenuItem item) {
         int i = item.getItemId();
         if (i == R.id.ko__action_download) {
-            mFileAttachmentDownloadHelper.onClickAttachmentToDownload(mDownloadAttachment, true);
+            if (FileAttachmentUtil.checkFileAccessPermissions(getActivity())) {
+                mFileAttachmentDownloadHelper.onClickAttachmentToDownload(mDownloadAttachment, true);
+            }
             return true;
         } else {
             return false;
