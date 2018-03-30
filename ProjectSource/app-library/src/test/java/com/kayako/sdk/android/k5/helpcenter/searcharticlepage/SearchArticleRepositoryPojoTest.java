@@ -1,16 +1,13 @@
 package com.kayako.sdk.android.k5.helpcenter.searcharticlepage;
 
-import com.kayako.sdk.error.KayakoException;
-import com.kayako.sdk.helpcenter.HelpCenter;
-import com.kayako.sdk.helpcenter.search.SearchArticle;
-import java.util.List;
-import java.util.Locale;
-import javax.annotation.Generated;
-import org.junit.Test;
-import com.aurea.unittest.commons.pojo.chain.TestChain;
-import com.openpojo.validation.Validator;
-import com.openpojo.reflection.impl.PojoClassFactory;
 import com.aurea.unittest.commons.pojo.Testers;
+import com.aurea.unittest.commons.pojo.chain.TestChain;
+import com.openpojo.reflection.impl.PojoClassFactory;
+import com.openpojo.validation.Validator;
+
+import org.junit.Test;
+
+import javax.annotation.Generated;
 
 @Generated("GeneralPatterns")
 public class SearchArticleRepositoryPojoTest {

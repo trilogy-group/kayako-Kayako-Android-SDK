@@ -1,24 +1,13 @@
 package com.kayako.sdk.android.k5.common.adapter.messengerlist;
 
-import com.kayako.sdk.android.k5.common.adapter.ContentComparable;
-import java.util.HashMap;
-import java.util.Map;
+import com.aurea.unittest.commons.pojo.Testers;
+import com.aurea.unittest.commons.pojo.chain.TestChain;
+import com.openpojo.reflection.impl.PojoClassFactory;
+import com.openpojo.validation.Validator;
+
+import org.junit.Test;
+
 import javax.annotation.Generated;
-import org.junit.Test;
-import com.aurea.unittest.commons.pojo.chain.TestChain;
-import com.openpojo.validation.Validator;
-import com.openpojo.reflection.impl.PojoClassFactory;
-import com.aurea.unittest.commons.pojo.Testers;
-import org.junit.Test;
-import com.aurea.unittest.commons.pojo.chain.TestChain;
-import com.openpojo.validation.Validator;
-import com.openpojo.reflection.impl.PojoClassFactory;
-import com.aurea.unittest.commons.pojo.Testers;
-import org.junit.Test;
-import com.aurea.unittest.commons.pojo.chain.TestChain;
-import com.openpojo.validation.Validator;
-import com.openpojo.reflection.impl.PojoClassFactory;
-import com.aurea.unittest.commons.pojo.Testers;
 
 @Generated("GeneralPatterns")
 public class ChannelDecorationPojoTest {
