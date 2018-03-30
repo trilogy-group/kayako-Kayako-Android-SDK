@@ -135,7 +135,8 @@ allprojects {
 
         // Used for Internal Testing
         maven { url 'https://jitpack.io' }
-        flatDir {
+        maven {url 'https://scm.devfactory.com/nexus/content/repositories/EngUnitTests/'}
+       flatDir {
             dirs 'libs'
         }
     }
@@ -155,6 +156,9 @@ dependencies {
 
     compile 'com.kayako:kayako:1.0.+'
     compile 'com.kayako.kre:kre-client:0.2.18'
+    compile 'com.openpojo:openpojo:0.8.4'
+    compile 'com.aurea:tests-commons:1.6.4'
+    compile 'javax.annotation:javax.annotation-api:1.2'
 
     // TODO: Comment when production ready
     // compile fileTree(dir: 'libs', include: ['*.jar'])
