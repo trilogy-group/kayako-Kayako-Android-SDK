@@ -61,7 +61,7 @@ public class KreConnection extends SocketConnection {
         mChannelMap.put(openConnectionListener, channelName);
 
         KayakoLogHelper.d(TAG, String.format("connect(), No. of Listeners %s", mListeners.size()));
-        if (isConnected()) {
+        if (isConnected() && mSocket != null) {
             Channel channel = mSocket.chan(channelName, jsonPayload);
             openConnectionListener.onOpen(channel);
         } else if (!mIsConnecting.get()) {
