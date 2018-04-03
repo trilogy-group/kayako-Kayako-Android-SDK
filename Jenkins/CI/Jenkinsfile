@@ -30,8 +30,7 @@ pipeline {
                         productVersion: "${env.ALINE_PRODUCT_VERSION}",
                         types: 'Java',
                         scmRelativeDir: '../',
-                        processTests: false
-                    ) {
+                        processTests: false) {
                         sh "${env.GRADLE_HOME}/bin/gradle clean test --rerun-tasks --stacktrace"
                     }
                 }
