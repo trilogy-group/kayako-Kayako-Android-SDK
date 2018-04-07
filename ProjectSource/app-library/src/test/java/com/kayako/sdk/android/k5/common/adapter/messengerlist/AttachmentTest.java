@@ -1,22 +1,30 @@
 package com.kayako.sdk.android.k5.common.adapter.messengerlist;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.rules.ErrorCollector;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.not;
 
 public class AttachmentTest {
 
-    Attachment attachment;
+    @Rule
+    public ErrorCollector errorCollector  = new ErrorCollector();
+
+    private Attachment attachment;
 
     @Before
     public void setUp(){
         attachment = new Attachment(Attachment.TYPE.FILE);
     }
+
     @Test
     public void test_constructor1(){
-        assertNotNull(attachment);
-        assertNotEquals(Attachment.TYPE.URL, attachment.getType());
-        assertEquals(Attachment.TYPE.FILE, attachment.getType());
+        errorCollector.checkThat(attachment, notNullValue());
+        errorCollector.checkThat(Attachment.TYPE.URL,not(attachment.getType()));
+        errorCollector.checkThat(Attachment.TYPE.FILE, equalTo(attachment.getType()));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -26,15 +34,13 @@ public class AttachmentTest {
 
     @Test
     public void test_getType(){
-        Attachment attachment = new Attachment(Attachment.TYPE.FILE);
-        assertEquals( Attachment.TYPE.FILE, attachment.getType());
-        assertNotEquals(Attachment.TYPE.URL, attachment.getType());
+        errorCollector.checkThat(Attachment.TYPE.URL,not(attachment.getType()));
+        errorCollector.checkThat(Attachment.TYPE.FILE, equalTo(attachment.getType()));
     }
 
     @Test
     public void test_getContents(){
-        Attachment attachment = new Attachment(Attachment.TYPE.FILE);
-        assertEquals(1, attachment.getContents().size());
-        assertEquals(Attachment.TYPE.FILE.toString(), attachment.getContents().get("type"));
+        errorCollector.checkThat(1, equalTo(attachment.getContents().size()));
+        errorCollector.checkThat(Attachment.TYPE.FILE.toString(), equalTo(attachment.getContents().get("type")));
     }
 }
