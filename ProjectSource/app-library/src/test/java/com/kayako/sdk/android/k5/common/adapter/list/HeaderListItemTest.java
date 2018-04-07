@@ -7,37 +7,37 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
 
 public class HeaderListItemTest {
 
     private HeaderListItem headerListItem;
-    private String title;
+    private static final String TITLE = "titleForTest";
 
     @Mock
     private Resource resource;
 
     @Before
     public void setUp() {
-        this.title = "titleForTest";
-        this.headerListItem = new HeaderListItem(title, resource);
+        this.headerListItem = new HeaderListItem(TITLE, resource);
     }
 
     @Test
     public void setTitleTest() {
-        headerListItem.setTitle(this.title);
-        assertThat(headerListItem.getTitle(), is(equalTo(this.title)));
+        headerListItem.setTitle(TITLE);
+        assertThat(headerListItem.getTitle(), is(equalTo(TITLE)));
     }
 
     @Test
     public void getTitleTest() {
-        assertThat(headerListItem.getTitle(), is(equalTo(this.title)));
+        assertThat(headerListItem.getTitle(), is(equalTo(TITLE)));
     }
 
     @Test
     public void constructorTest() {
-        assertThat(headerListItem.getTitle(), is(equalTo(this.title)));
+        assertThat(headerListItem.getTitle(), is(equalTo(TITLE)));
     }
 
     @Test
@@ -54,6 +54,6 @@ public class HeaderListItemTest {
     @Test
     public void getContentsTest() {
         String itemTitle = headerListItem.getContents().get("title");
-        assertThat(itemTitle, is(equalTo(String.valueOf(this.title))));
+        assertThat(itemTitle, is(equalTo(String.valueOf(TITLE))));
     }
 }
