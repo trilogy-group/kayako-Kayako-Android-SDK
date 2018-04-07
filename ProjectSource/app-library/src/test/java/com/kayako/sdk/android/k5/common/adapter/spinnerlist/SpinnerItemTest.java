@@ -9,8 +9,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SpinnerItemTest {
@@ -51,6 +51,6 @@ public class SpinnerItemTest {
         SpinnerItem spinnerItem1 = new SpinnerItem();
         spinnerItem.setResource(resource);
         spinnerItem1.setResource(resource);
-        assertEquals(true, spinnerItem.equals(spinnerItem1));
+        assertTrue( spinnerItem.equals(spinnerItem1));
     }
 }
