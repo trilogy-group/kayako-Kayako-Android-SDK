@@ -20,7 +20,7 @@ public class SpinnerItemTest {
 
     private static final SpinnerItem spinnerItem = new SpinnerItem();
 
-    private static final String LABEL = "labelTest";
+    private static final String LABEL = "labelForTest";
 
     @Test
     public void getResourceTest() {
@@ -54,3 +54,4 @@ public class SpinnerItemTest {
         assertTrue( spinnerItem.equals(spinnerItem1));
     }
 }
+
