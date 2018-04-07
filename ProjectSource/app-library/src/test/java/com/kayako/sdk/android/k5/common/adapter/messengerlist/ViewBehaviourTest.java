@@ -1,9 +1,17 @@
 package com.kayako.sdk.android.k5.common.adapter.messengerlist;
 
+import org.junit.Rule;
 import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.rules.ErrorCollector;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.equalTo;
 
 public class ViewBehaviourTest {
+
+    @Rule
+    public ErrorCollector errorCollector = new ErrorCollector();
 
     @Test
     public void test_constructor() {
@@ -15,10 +23,10 @@ public class ViewBehaviourTest {
         ViewBehaviour viewBehaviour = new ViewBehaviour(
                 showTime, showAvatar, showChannel, showAsSelf, showDeliveryIndicator, ViewBehaviour.MessageType.ATTACHMENT);
 
-        assertNotNull(viewBehaviour);
-        assertTrue(viewBehaviour.showTime);
-        assertFalse(viewBehaviour.showAsSelf);
-        assertNotEquals(ViewBehaviour.MessageType.SIMPLE, viewBehaviour.messageType);
-        assertEquals(ViewBehaviour.MessageType.ATTACHMENT, viewBehaviour.messageType);
+        errorCollector.checkThat(viewBehaviour, notNullValue());
+        errorCollector.checkThat(viewBehaviour.showTime, is(true));
+        errorCollector.checkThat(viewBehaviour.showAsSelf, is(false));
+        errorCollector.checkThat(viewBehaviour.messageType, is(not(ViewBehaviour.MessageType.SIMPLE)));
+        errorCollector.checkThat(viewBehaviour.messageType, is(equalTo(ViewBehaviour.MessageType.ATTACHMENT)));
     }
 }
