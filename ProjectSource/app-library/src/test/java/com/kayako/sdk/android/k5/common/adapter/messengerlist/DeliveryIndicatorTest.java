@@ -1,17 +1,24 @@
 package com.kayako.sdk.android.k5.common.adapter.messengerlist;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-
+import org.junit.rules.ErrorCollector;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.equalTo;
 import java.util.Map;
 
-import static org.junit.Assert.*;
 public class DeliveryIndicatorTest {
 
     private int deliveryStatusIconResId;
     private int deliveryStatusTextResId;
     private Long deliveryTime;
-    DeliveryIndicator deliveryIndicator;
+    private DeliveryIndicator deliveryIndicator;
+
+    @Rule
+    public ErrorCollector errorCollector = new ErrorCollector();
 
     @Before
     public void setup() {
@@ -23,45 +30,45 @@ public class DeliveryIndicatorTest {
 
     @Test
     public void test_constructor() {
-        assertNotNull(deliveryIndicator);
-        assertEquals(deliveryStatusIconResId, deliveryIndicator.getDeliveryStatusIconResId().intValue());
-        assertEquals(deliveryStatusTextResId, deliveryIndicator.getDeliveryStatusTextResId().intValue());
-        assertEquals(deliveryTime, deliveryIndicator.getDeliveryTime());
+        errorCollector.checkThat(deliveryIndicator, notNullValue());
+        errorCollector.checkThat(deliveryIndicator.getDeliveryStatusIconResId().intValue(), is(equalTo(deliveryStatusIconResId)));
+        errorCollector.checkThat(deliveryIndicator.getDeliveryStatusTextResId().intValue(), is(equalTo(deliveryStatusTextResId)));
+        errorCollector.checkThat(deliveryIndicator.getDeliveryTime(), is(equalTo(deliveryTime)));
     }
 
     @Test
     public void test_getDeliveryStatusIconResId1(){
-        assertEquals(deliveryStatusIconResId, deliveryIndicator.getDeliveryStatusIconResId().intValue());
+        errorCollector.checkThat(deliveryIndicator.getDeliveryStatusIconResId().intValue(), is(equalTo(deliveryStatusIconResId)));
     }
 
     @Test
     public void test_getDeliveryStatusIconResId2(){
         DeliveryIndicator deliveryIndicator1 = new DeliveryIndicator(0, deliveryStatusTextResId, deliveryTime);
-        assertNull(deliveryIndicator1.getDeliveryStatusIconResId());
+        errorCollector.checkThat(deliveryIndicator1.getDeliveryStatusIconResId(), nullValue());
     }
 
     @Test
     public void test_test_getDeliveryStatusTextResId1() {
-        assertEquals(deliveryStatusTextResId, deliveryIndicator.getDeliveryStatusTextResId().intValue());
+        errorCollector.checkThat(deliveryIndicator.getDeliveryStatusTextResId().intValue(), is(equalTo(deliveryStatusTextResId)));
     }
 
     @Test
     public void test_getDeliveryStatusTextResId2() {
         DeliveryIndicator deliveryIndicator1 = new DeliveryIndicator(deliveryStatusIconResId, 0, deliveryTime);
-        assertNull(deliveryIndicator1.getDeliveryStatusTextResId());
+        errorCollector.checkThat(deliveryIndicator1.getDeliveryStatusTextResId(), nullValue());
     }
 
     @Test
     public void test_getDeliveryTime() {
-        assertEquals(deliveryTime, deliveryIndicator.getDeliveryTime());
+        errorCollector.checkThat(deliveryIndicator.getDeliveryTime(), is(equalTo(deliveryTime)));
     }
 
     @Test
     public void test_getContents() {
         Map map = deliveryIndicator.getContents();
-        assertEquals(3, map.size());
-        assertEquals(String.valueOf(deliveryStatusIconResId), map.get("DeliveryIndicator.deliveryStatusIconResId"));
-        assertEquals(String.valueOf(deliveryStatusTextResId), map.get("DeliveryIndicator.deliveryStatusTextResId"));
-        assertEquals(String.valueOf(deliveryTime), map.get("DeliveryIndicator.deliveryTime"));
+        errorCollector.checkThat(map.size(), is(3));
+        errorCollector.checkThat(map.get("DeliveryIndicator.deliveryStatusIconResId").toString(), is(equalTo(String.valueOf(deliveryStatusIconResId))));
+        errorCollector.checkThat(map.get("DeliveryIndicator.deliveryStatusTextResId").toString(), is(equalTo(String.valueOf(deliveryStatusTextResId))));
+        errorCollector.checkThat(map.get("DeliveryIndicator.deliveryTime").toString(), is(equalTo(String.valueOf(deliveryTime))));
     }
 }
