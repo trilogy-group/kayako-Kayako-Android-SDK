@@ -1,87 +1,87 @@
 package com.kayako.sdk.android.k5.common.adapter.messengerlist;
 
-import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
-
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.*;
+import org.junit.rules.ErrorCollector;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.not;
 
 public class ChannelDecorationTest {
 
     private int sourceDrawable;
     private boolean isNote;
-    private String name;
+    private static final String NAME = "test";
 
-    ChannelDecoration channelDecoration;
+    private ChannelDecoration channelDecoration;
+
+    @Rule
+    public ErrorCollector errorCollector = new ErrorCollector();
 
     @Before
     public void setup() {
         sourceDrawable = 10;
         isNote = true;
-        name = "test";
-        channelDecoration = new ChannelDecoration(isNote, name);
+        channelDecoration = new ChannelDecoration(isNote, NAME);
     }
 
     @Test
     public void test_constructor1() {
-        assertNotNull(channelDecoration);
-        assertTrue(channelDecoration.isNote());
-        assertEquals(name, channelDecoration.getName());
+        errorCollector.checkThat(channelDecoration, notNullValue());
+        errorCollector.checkThat(channelDecoration.isNote(), is(true));
+        errorCollector.checkThat(channelDecoration.getName(), is(equalTo(NAME)));
     }
 
     @Test
     public void test_constructor2() {
         ChannelDecoration channelDecoration1 = new ChannelDecoration(sourceDrawable);
-        assertNotNull(channelDecoration1);
-        assertEquals(sourceDrawable, channelDecoration1.getSourceDrawable());
+        errorCollector.checkThat(channelDecoration1, notNullValue());
+        errorCollector.checkThat(sourceDrawable, is(equalTo(channelDecoration1.getSourceDrawable())));
     }
 
     @Test
     public void test_getName() {
-        assertEquals(name, channelDecoration.getName());
+        errorCollector.checkThat(NAME, is(equalTo(channelDecoration.getName())));
     }
 
     @Test
     public void test_setName() {
         channelDecoration.setName("test2");
-        assertNotEquals(name, channelDecoration.getName());
-        assertEquals("test2", channelDecoration.getName());
+        errorCollector.checkThat(channelDecoration.getName(), not(equalTo(NAME)));
+        errorCollector.checkThat(channelDecoration.getName(), is(equalTo("test2")));
     }
 
     @Test
     public void test_getSourceDrawable() {
         channelDecoration.setSourceDrawable(10);
-        assertEquals(sourceDrawable, channelDecoration.getSourceDrawable());
+        errorCollector.checkThat(channelDecoration.getSourceDrawable(), is(sourceDrawable));
     }
 
     @Test
     public void test_setSourceDrawable() {
         channelDecoration.setSourceDrawable(100);
-        assertNotEquals(sourceDrawable, channelDecoration.getSourceDrawable());
-        assertEquals(100, channelDecoration.getSourceDrawable());
+        errorCollector.checkThat(channelDecoration.getSourceDrawable(), not(equalTo(sourceDrawable)));
+        errorCollector.checkThat(channelDecoration.getSourceDrawable(), is(equalTo(100)));
     }
 
     @Test
     public void test_isNote() {
-        assertTrue(channelDecoration.isNote());
+        errorCollector.checkThat(channelDecoration.isNote(), is(true));
     }
 
     @Test
     public void test_setNote() {
         channelDecoration.setNote(false);
-        assertFalse(channelDecoration.isNote());
+        errorCollector.checkThat(channelDecoration.isNote(), is(false));
     }
 
     @Test
     public void test_getContents() {
-        assertEquals(3, channelDecoration.getContents().size());
-        assertEquals("true", channelDecoration.getContents().get("isNote"));
-        assertEquals("0", channelDecoration.getContents().get("sourceDrawable"));
-        assertEquals("test", channelDecoration.getContents().get("name"));
+        errorCollector.checkThat(channelDecoration.getContents().size(), is(equalTo(3)));
+        errorCollector.checkThat(channelDecoration.getContents().get("isNote"), is(equalTo("true")));
+        errorCollector.checkThat(channelDecoration.getContents().get("sourceDrawable"), is(equalTo("0")));
+        errorCollector.checkThat(channelDecoration.getContents().get("name"), is(equalTo("test")));
     }
-
 }
