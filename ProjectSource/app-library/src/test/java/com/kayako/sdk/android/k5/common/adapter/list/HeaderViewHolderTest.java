@@ -23,7 +23,6 @@ import static org.mockito.Mockito.when;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.*;
 
 
 @RunWith(MockitoJUnitRunner.class)
