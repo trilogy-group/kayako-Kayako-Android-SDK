@@ -17,7 +17,7 @@ public class InputEmailListItemTest {
     private static final String SUBMITTEDEMAIL  = "abc@xyz.com";
 
     @Rule
-    public ErrorCollector errorCollector = new ErrorCollector();
+    public final ErrorCollector errorCollector = new ErrorCollector();
 
     @Before
     public void setUp(){
@@ -25,7 +25,7 @@ public class InputEmailListItemTest {
     }
 
     @Test
-    public void test_constructor1() {
+    public void whenValidParamsConstructorThenObjectCreated() {
         InputEmailListItem emailListItem = new InputEmailListItem(onClickSubmitListener);
         errorCollector.checkThat(emailListItem, notNullValue());
         errorCollector.checkThat(emailListItem.getOnClickSubmitListener(), is(onClickSubmitListener));
@@ -33,7 +33,7 @@ public class InputEmailListItemTest {
     }
 
     @Test
-    public void test_constructor2() {
+    public void whenValidParamsInConstructorGivenThenObjectCreated() {
         InputEmailListItem emailListItem = new InputEmailListItem(SUBMITTEDEMAIL);
         errorCollector.checkThat(emailListItem, notNullValue());
         errorCollector.checkThat(emailListItem.getItemType(), is(equalTo(MessengerListType.INPUT_FIELD_EMAIL)));
@@ -41,13 +41,13 @@ public class InputEmailListItemTest {
     }
 
     @Test
-    public void test_getOnClickSubmitListener(){
+    public void getOnClickSubmitListener(){
         InputEmailListItem emailListItem = new InputEmailListItem(onClickSubmitListener);
         errorCollector.checkThat(emailListItem.getOnClickSubmitListener(), is(onClickSubmitListener));
     }
 
     @Test
-    public void test_getContents() {
+    public void getContents() {
         InputEmailListItem emailListItem = new InputEmailListItem(SUBMITTEDEMAIL);
         errorCollector.checkThat(emailListItem.getContents().size() > 0 , is(true));
         errorCollector.checkThat(emailListItem.getContents().size(), is(2));
