@@ -122,11 +122,6 @@ public class ListItemRecyclerViewAdapterTest {
     }
 
     @Test
-    //Todo , will implement this section later
-    public void onBindViewHolderTest() {
-    }
-
-    @Test
     public void getItemViewTypeTest() {
         int position = 0;
         when(baseListItems.get(0)).thenReturn(mock(BaseListItem.class));
