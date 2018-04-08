@@ -11,15 +11,15 @@ import static org.hamcrest.CoreMatchers.equalTo;
 public class ViewBehaviourTest {
 
     @Rule
-    public ErrorCollector errorCollector = new ErrorCollector();
+    public final ErrorCollector errorCollector = new ErrorCollector();
 
     @Test
-    public void test_constructor() {
-        Boolean showTime = true;
-        Boolean showAvatar = true;
-        Boolean showChannel = true;
-        Boolean showAsSelf = false;
-        Boolean showDeliveryIndicator = false;
+    public void givenValidParamsWhenConstructorThenObjectCreated() {
+        boolean showTime = true;
+        boolean showAvatar = true;
+        boolean showChannel = true;
+        boolean showAsSelf = false;
+        boolean showDeliveryIndicator = false;
         ViewBehaviour viewBehaviour = new ViewBehaviour(
                 showTime, showAvatar, showChannel, showAsSelf, showDeliveryIndicator, ViewBehaviour.MessageType.ATTACHMENT);
 
