@@ -18,7 +18,7 @@ public class ChannelDecorationTest {
     private ChannelDecoration channelDecoration;
 
     @Rule
-    public ErrorCollector errorCollector = new ErrorCollector();
+    public final ErrorCollector errorCollector = new ErrorCollector();
 
     @Before
     public void setup() {
@@ -28,57 +28,57 @@ public class ChannelDecorationTest {
     }
 
     @Test
-    public void test_constructor1() {
+    public void givenValidParamsThenObjectCreated() {
         errorCollector.checkThat(channelDecoration, notNullValue());
         errorCollector.checkThat(channelDecoration.isNote(), is(true));
         errorCollector.checkThat(channelDecoration.getName(), is(equalTo(NAME)));
     }
 
     @Test
-    public void test_constructor2() {
+    public void givenValidParametersThenObjectCreated() {
         ChannelDecoration channelDecoration1 = new ChannelDecoration(sourceDrawable);
         errorCollector.checkThat(channelDecoration1, notNullValue());
         errorCollector.checkThat(sourceDrawable, is(equalTo(channelDecoration1.getSourceDrawable())));
     }
 
     @Test
-    public void test_getName() {
+    public void getName() {
         errorCollector.checkThat(NAME, is(equalTo(channelDecoration.getName())));
     }
 
     @Test
-    public void test_setName() {
+    public void setName() {
         channelDecoration.setName("test2");
         errorCollector.checkThat(channelDecoration.getName(), not(equalTo(NAME)));
         errorCollector.checkThat(channelDecoration.getName(), is(equalTo("test2")));
     }
 
     @Test
-    public void test_getSourceDrawable() {
+    public void getSourceDrawable() {
         channelDecoration.setSourceDrawable(10);
         errorCollector.checkThat(channelDecoration.getSourceDrawable(), is(sourceDrawable));
     }
 
     @Test
-    public void test_setSourceDrawable() {
+    public void setSourceDrawable() {
         channelDecoration.setSourceDrawable(100);
         errorCollector.checkThat(channelDecoration.getSourceDrawable(), not(equalTo(sourceDrawable)));
         errorCollector.checkThat(channelDecoration.getSourceDrawable(), is(equalTo(100)));
     }
 
     @Test
-    public void test_isNote() {
+    public void isNote() {
         errorCollector.checkThat(channelDecoration.isNote(), is(true));
     }
 
     @Test
-    public void test_setNote() {
+    public void setNote() {
         channelDecoration.setNote(false);
         errorCollector.checkThat(channelDecoration.isNote(), is(false));
     }
 
     @Test
-    public void test_getContents() {
+    public void getContents() {
         errorCollector.checkThat(channelDecoration.getContents().size(), is(equalTo(3)));
         errorCollector.checkThat(channelDecoration.getContents().get("isNote"), is(equalTo("true")));
         errorCollector.checkThat(channelDecoration.getContents().get("sourceDrawable"), is(equalTo("0")));
