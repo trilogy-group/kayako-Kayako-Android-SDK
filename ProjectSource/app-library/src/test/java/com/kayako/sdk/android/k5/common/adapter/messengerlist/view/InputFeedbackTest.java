@@ -9,10 +9,10 @@ import static org.hamcrest.CoreMatchers.is;
 public class InputFeedbackTest {
 
     @Rule
-    public ErrorCollector errorCollector = new ErrorCollector();
+    public final ErrorCollector errorCollector = new ErrorCollector();
 
     @Test
-    public void test_enum(){
+    public void enumValue(){
         errorCollector.checkThat(InputFeedback.RATING.GOOD.name(), is(equalTo("GOOD")));
         errorCollector.checkThat(InputFeedback.RATING.BAD.name(), is(equalTo("BAD")));
     }
