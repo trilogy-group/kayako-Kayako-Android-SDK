@@ -25,4 +25,4 @@ public class BaseIdentityListItemTest {
     public void getIdTest() {
         assertEquals(baseIdentityListItem.getId().longValue(), ID);
     }
-}
+}  
