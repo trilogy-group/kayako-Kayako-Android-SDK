@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class SimpleMessageContinuedSelfListItemTest {
 
-    private Long id;
+    private long id;
     private static final String MESSAGE = "dummy message";
     private long time;
     private DeliveryIndicator deliveryIndicator;
@@ -24,7 +24,7 @@ public class SimpleMessageContinuedSelfListItemTest {
     private SimpleMessageContinuedSelfListItem simpleMessageContinuedSelfListItem;
 
     @Rule
-    public ErrorCollector errorCollector = new ErrorCollector();
+    public final ErrorCollector errorCollector = new ErrorCollector();
 
     @Before
     public void setUp(){
@@ -37,7 +37,7 @@ public class SimpleMessageContinuedSelfListItemTest {
     }
 
     @Test
-    public void test_constructor() {
+    public void whenValidParamsConstructorThenObjectCreated() {
         errorCollector.checkThat(simpleMessageContinuedSelfListItem, notNullValue());
         errorCollector.checkThat(simpleMessageContinuedSelfListItem.getId(), is(id));
         errorCollector.checkThat(simpleMessageContinuedSelfListItem.getItemType(), is(equalTo(MessengerListType.SIMPLE_MESSAGE_CONTINUED_SELF)));
@@ -45,12 +45,12 @@ public class SimpleMessageContinuedSelfListItemTest {
     }
 
     @Test
-    public void test_getMessage() {
+    public void getMessage() {
         errorCollector.checkThat(simpleMessageContinuedSelfListItem.getMessage(), is(equalTo(MESSAGE)));
     }
 
     @Test
-    public void test_setMessage() {
+    public void setMessage() {
         simpleMessageContinuedSelfListItem.setMessage("message2");
         errorCollector.checkThat(simpleMessageContinuedSelfListItem.getMessage(), is(equalTo("message2")));
     }
@@ -61,25 +61,25 @@ public class SimpleMessageContinuedSelfListItemTest {
     }
 
     @Test
-    public void test_setTime(){
+    public void setTime(){
         simpleMessageContinuedSelfListItem.setTime(12345L);
         errorCollector.checkThat(simpleMessageContinuedSelfListItem.getTime(), is(12345L));
     }
 
     @Test
-    public void test_getDeliveryIndicator() {
+    public void getDeliveryIndicator() {
         DeliveryIndicator deliveryIndicator1 = simpleMessageContinuedSelfListItem.getDeliveryIndicator();
         errorCollector.checkThat(deliveryIndicator, notNullValue());
         errorCollector.checkThat(deliveryIndicator1.getDeliveryTime().longValue(), is(1000L));
     }
 
     @Test
-    public void test_isFadeBackground() {
+    public void isFadeBackground() {
         errorCollector.checkThat(simpleMessageContinuedSelfListItem.isFadeBackground(), is(true));
     }
 
     @Test
-    public void test_getContents() {
+    public void getContents() {
         Map map = simpleMessageContinuedSelfListItem.getContents();
         errorCollector.checkThat(map.size() > 0, is(true));
         errorCollector.checkThat(map.get("message").toString(), is(equalTo(MESSAGE)));
