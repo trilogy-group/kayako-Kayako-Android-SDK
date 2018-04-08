@@ -12,11 +12,11 @@ import static org.hamcrest.CoreMatchers.equalTo;
 
 public class DateSeparatorListItemTest {
 
-    private Long timeInMilliseconds;
+    private long timeInMilliseconds;
     private DateSeparatorListItem separatorListItem;
 
     @Rule
-    public ErrorCollector errorCollector = new ErrorCollector();
+    public final ErrorCollector errorCollector = new ErrorCollector();
 
     @Before
     public void setUp(){
@@ -25,26 +25,26 @@ public class DateSeparatorListItemTest {
     }
 
     @Test
-    public void test_constructor() {
+    public void whenValidParamsConstructorThenObjectCreated() {
         errorCollector.checkThat(separatorListItem, notNullValue());
         errorCollector.checkThat(separatorListItem.getItemType(), is(MessengerListType.DATE_SEPARATOR));
     }
 
     @Test
-    public void test_getTimeInMilliseconds(){
-        errorCollector.checkThat(separatorListItem.getTimeInMilliseconds(), is(timeInMilliseconds.longValue()));
+    public void getTimeInMilliseconds(){
+        errorCollector.checkThat(separatorListItem.getTimeInMilliseconds(), is(timeInMilliseconds));
     }
 
     @Test
-    public void test_setTimeInMilliseconds(){
+    public void setTimeInMilliseconds(){
         separatorListItem.setTimeInMilliseconds(22222L);
         errorCollector.checkThat(separatorListItem.getTimeInMilliseconds(), is(22222L));
     }
 
     @Test
-    public void test_getContents() {
+    public void getContents() {
         errorCollector.checkThat(separatorListItem.getContents().size(), is(1));
-        errorCollector.checkThat(separatorListItem.getContents().get("timeInMilliseconds"), is(equalTo(timeInMilliseconds.toString())));
+        errorCollector.checkThat(separatorListItem.getContents().get("timeInMilliseconds"), is(equalTo(String.valueOf(timeInMilliseconds))));
     }
 
 }
