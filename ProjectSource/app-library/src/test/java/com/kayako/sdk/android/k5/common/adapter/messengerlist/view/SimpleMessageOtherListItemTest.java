@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class SimpleMessageOtherListItemTest {
 
-    private Long id;
+    private long id;
     private static final String MESSAGE = "test message";
     private static final String AVATARURL = "/avatarUrl";
     private long time;
@@ -25,7 +25,7 @@ public class SimpleMessageOtherListItemTest {
     private SimpleMessageOtherListItem otherListItem;
 
     @Rule
-    public ErrorCollector errorCollector = new ErrorCollector();
+    public final ErrorCollector errorCollector = new ErrorCollector();
 
     @Before
     public void setUp(){
@@ -37,7 +37,7 @@ public class SimpleMessageOtherListItemTest {
     }
 
     @Test
-    public void test_constructor() {
+    public void whenValidParamsInconstructorThenObjectCreated() {
         errorCollector.checkThat(otherListItem, notNullValue());
         errorCollector.checkThat(otherListItem.getItemType(), is(equalTo(MessengerListType.SIMPLE_MESSAGE_OTHER)));
         errorCollector.checkThat(otherListItem.getId(), is(id));
@@ -45,46 +45,46 @@ public class SimpleMessageOtherListItemTest {
     }
 
     @Test
-    public void test_getMessage() {
+    public void getMessage() {
         errorCollector.checkThat(otherListItem.getMessage(), is(equalTo(MESSAGE)));
     }
 
     @Test
-    public void test_setMessage() {
+    public void setMessage() {
         otherListItem.setMessage("message_2");
         errorCollector.checkThat(otherListItem.getMessage(), is(equalTo("message_2")));
     }
 
     @Test
-    public void test_getAvatarUrl(){
+    public void getAvatarUrl(){
         errorCollector.checkThat(otherListItem.getAvatarUrl(), is(equalTo(AVATARURL)));
     }
 
     @Test
-    public void test_setAvatarUrl(){
+    public void setAvatarUrl(){
         otherListItem.setAvatarUrl("/avatarUrl_2");
         errorCollector.checkThat(otherListItem.getAvatarUrl(), is(equalTo("/avatarUrl_2")));
     }
 
     @Test
-    public void test_getTime(){
+    public void getTime(){
         errorCollector.checkThat(otherListItem.getTime(), is(time));
     }
 
     @Test
-    public void test_setTime(){
+    public void setTime(){
         otherListItem.setTime(54321L);
         errorCollector.checkThat(otherListItem.getTime(), is(54321L));
     }
 
     @Test
-    public void test_getChannel() {
+    public void getChannel() {
         errorCollector.checkThat(otherListItem.getChannel(), is(equalTo(channel)));
         errorCollector.checkThat(otherListItem.getChannel().getSourceDrawable(), is(1));
     }
 
     @Test
-    public void test_setChannel() {
+    public void setChannel() {
         ChannelDecoration channelDecoration = new ChannelDecoration(5);
         otherListItem.setChannel(channelDecoration);
         errorCollector.checkThat(otherListItem.getChannel(), is(not(channel)));
@@ -92,7 +92,7 @@ public class SimpleMessageOtherListItemTest {
     }
 
     @Test
-    public void test_getContents(){
+    public void getContents(){
         Map map = otherListItem.getContents();
         errorCollector.checkThat(map.size() > 0, is(true));
         errorCollector.checkThat(map.size(), is(6));
