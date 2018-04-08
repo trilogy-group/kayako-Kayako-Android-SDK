@@ -18,7 +18,7 @@ public class TypingListItemTest {
     private TypingListItem typingListItem;
 
     @Rule
-    public ErrorCollector errorCollector = new ErrorCollector();
+    public final ErrorCollector errorCollector = new ErrorCollector();
 
     @Before
     public void setUp(){
@@ -26,24 +26,24 @@ public class TypingListItemTest {
     }
 
     @Test
-    public void test_constructor(){
+    public void whenValidParamsConstructorThenObjectCreated(){
         errorCollector.checkThat(typingListItem, notNullValue());
         errorCollector.checkThat(typingListItem.getItemType(), is(equalTo(MessengerListType.TYPING_FOOTER)));
     }
 
     @Test
-    public void test_getAvatarUrl(){
+    public void getAvatarUrl(){
         errorCollector.checkThat(typingListItem.getAvatarUrl(), is(equalTo(AVATARURL)));
     }
 
     @Test
-    public void test_setAvatarUrl(){
+    public void setAvatarUrl(){
         typingListItem.setAvatarUrl("/avatarUrl2");
         errorCollector.checkThat(typingListItem.getAvatarUrl(), is(equalTo("/avatarUrl2")));
     }
 
     @Test
-    public void test_getContents(){
+    public void getContents(){
         Map map = typingListItem.getContents();
         errorCollector.checkThat(map.size() > 0, is(true));
         errorCollector.checkThat(map.get("avatarUrl").toString(), is(equalTo(AVATARURL)));
