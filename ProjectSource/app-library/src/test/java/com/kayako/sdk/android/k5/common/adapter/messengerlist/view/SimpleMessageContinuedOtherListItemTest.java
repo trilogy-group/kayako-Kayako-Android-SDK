@@ -15,14 +15,14 @@ import java.util.Map;
 
 public class SimpleMessageContinuedOtherListItemTest {
 
-    private Long id;
+    private long id;
     private final static String MESSAGE = "message for testing";
     private long time;
     private Map<String, Object> data;
     private SimpleMessageContinuedOtherListItem continuedOtherListItem;
 
     @Rule
-    public ErrorCollector errorCollector = new ErrorCollector();
+    public final ErrorCollector errorCollector = new ErrorCollector();
 
     @Before
     public void setUp(){
@@ -33,36 +33,36 @@ public class SimpleMessageContinuedOtherListItemTest {
     }
 
     @Test
-    public void test_constructor(){
+    public void whenValidParamsConstructorThenObjectCreated(){
         errorCollector.checkThat(continuedOtherListItem, notNullValue());
         errorCollector.checkThat(continuedOtherListItem.getItemType(), is(equalTo(MessengerListType.SIMPLE_MESSAGE_CONTINUED_OTHER)));
         errorCollector.checkThat(continuedOtherListItem.getMessage(), is(equalTo(MESSAGE)));
     }
 
     @Test
-    public void test_getMessage() {
+    public void getMessage() {
         errorCollector.checkThat(continuedOtherListItem.getMessage(), is(equalTo(MESSAGE)));
     }
 
     @Test
-    public void test_setMessage() {
+    public void setMessage() {
         continuedOtherListItem.setMessage("Hello!!!");
         errorCollector.checkThat(continuedOtherListItem.getMessage(), is(equalTo("Hello!!!")));
     }
 
     @Test
-    public void test_getTime(){
+    public void getTime(){
         errorCollector.checkThat(continuedOtherListItem.getTime(), is(time));
     }
 
     @Test
-    public void test_setTime(){
+    public void setTime(){
         continuedOtherListItem.setTime(2345L);
         errorCollector.checkThat(continuedOtherListItem.getTime(), is(2345L));
     }
 
     @Test
-    public void test_getContents() {
+    public void getContents() {
         Map map = continuedOtherListItem.getContents();
         errorCollector.checkThat(map.size() > 0, is(true));
         errorCollector.checkThat(map.size(), is(2));
