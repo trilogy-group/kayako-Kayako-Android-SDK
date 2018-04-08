@@ -13,17 +13,17 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 public class EmptyListItemTest {
 
     @Rule
-    public ErrorCollector errorCollector = new ErrorCollector();
+    public final ErrorCollector errorCollector = new ErrorCollector();
 
     @Test
-    public void test_constructor() {
+    public void whenValidParamsConstructorThenObjectCreated() {
         EmptyListItem emptyListItem = new EmptyListItem();
         errorCollector.checkThat(emptyListItem, notNullValue());
         errorCollector.checkThat(emptyListItem.getItemType(), is(MessengerListType.EMPTY_SEPARATOR));
     }
 
     @Test
-    public void test_getContents(){
+    public void getContents(){
         Map map = new EmptyListItem().getContents();
         errorCollector.checkThat(map, notNullValue());
         errorCollector.checkThat(map.size() == 0, is(true));
