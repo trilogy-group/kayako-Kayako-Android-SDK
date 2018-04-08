@@ -12,17 +12,17 @@ import static org.hamcrest.CoreMatchers.equalTo;
 public class UnreadSeparatorListItemTest {
 
     @Rule
-    public ErrorCollector errorCollector = new ErrorCollector();
+    public final ErrorCollector errorCollector = new ErrorCollector();
 
     @Test
-    public void test_constructor1() {
+    public void whenValidParamsConstructorThenObjectCreated() {
         UnreadSeparatorListItem item = new UnreadSeparatorListItem();
         errorCollector.checkThat(item, notNullValue());
         errorCollector.checkThat(item.getItemType(), is(MessengerListType.UNREAD_SEPARATOR));
     }
 
     @Test
-    public void test_constructor2() {
+    public void whenValidParamsInConstructorThenObjectCreated() {
         String text = "some text";
         UnreadSeparatorListItem item = new UnreadSeparatorListItem(text);
         errorCollector.checkThat(item, notNullValue());
@@ -31,14 +31,14 @@ public class UnreadSeparatorListItemTest {
     }
 
     @Test
-    public void test_getText() {
+    public void getText() {
         String text = "some text";
         UnreadSeparatorListItem item = new UnreadSeparatorListItem(text);
         errorCollector.checkThat(item.getText(), is(equalTo(text)));
     }
 
     @Test
-    public void test_getContents() {
+    public void getContents() {
         String text = "some text";
         UnreadSeparatorListItem item = new UnreadSeparatorListItem(text);
         errorCollector.checkThat(item.getContents().size() > 0, is(true));
