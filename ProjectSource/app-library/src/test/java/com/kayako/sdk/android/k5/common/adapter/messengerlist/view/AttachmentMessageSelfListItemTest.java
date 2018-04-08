@@ -21,11 +21,11 @@ public class AttachmentMessageSelfListItemTest {
     private DeliveryIndicator deliveryIndicator;
     private boolean fadeBackground;
     private AttachmentMessageSelfListItem listItem;
-    private Long id;
+    private long id;
     private Map<String, Object> data;
 
     @Rule
-    public ErrorCollector errorCollector = new ErrorCollector();
+    public final ErrorCollector errorCollector = new ErrorCollector();
 
     @Before
     public void setUp() {
@@ -39,21 +39,21 @@ public class AttachmentMessageSelfListItemTest {
     }
 
     @Test
-    public void test_constructor() {
+    public void whenValidParamsConstructorThenObjectCreated() {
         errorCollector.checkThat(listItem, notNullValue());
         errorCollector.checkThat(listItem.getTime(), is(equalTo(time)));
         errorCollector.checkThat(listItem.getId(), is(id));
     }
 
     @Test
-    public void test_getAttachment() {
+    public void getAttachment() {
         errorCollector.checkThat(listItem.getAttachment(), is(attachment));
         errorCollector.checkThat(listItem.getAttachment().getType(), is(Attachment.TYPE.URL));
 
     }
 
     @Test
-    public void test_setAttachment() {
+    public void setAttachment() {
         Attachment attachment1 = new Attachment(Attachment.TYPE.FILE);
         listItem.setAttachment(attachment1);
         errorCollector.checkThat(listItem.getAttachment(), is(attachment1));
@@ -61,28 +61,28 @@ public class AttachmentMessageSelfListItemTest {
     }
 
     @Test
-    public void test_getTime(){
+    public void getTime(){
         errorCollector.checkThat(listItem.getTime(), is(time));
     }
 
     @Test
-    public void test_setTime(){
+    public void setTime(){
         listItem.setTime(2000L);
         errorCollector.checkThat(listItem.getTime(), is(2000L));
     }
 
     @Test
-    public void test_getDeliveryIndicator() {
+    public void getDeliveryIndicator() {
         errorCollector.checkThat(listItem.getDeliveryIndicator(), is(deliveryIndicator));
     }
 
     @Test
-    public void test_isFadeBackground() {
+    public void isFadeBackground() {
         errorCollector.checkThat(listItem.isFadeBackground(), is(false));
     }
 
     @Test
-    public void test_getContents() {
+    public void getContents() {
         errorCollector.checkThat(listItem.getContents().size() > 0, is(true));
         errorCollector.checkThat(listItem.getContents().size(), is(6));
         errorCollector.checkThat(listItem.getContents().get("fadeBackground"), is(equalTo(String.valueOf(fadeBackground))));
