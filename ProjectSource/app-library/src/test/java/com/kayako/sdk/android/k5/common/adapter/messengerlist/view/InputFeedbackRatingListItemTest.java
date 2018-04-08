@@ -18,7 +18,7 @@ public class InputFeedbackRatingListItemTest {
     private InputFeedbackRatingListItem ratingListItem;
 
     @Rule
-    public ErrorCollector errorCollector = new ErrorCollector();
+    public final ErrorCollector errorCollector = new ErrorCollector();
 
     @Before
     public void setUp() {
@@ -28,51 +28,51 @@ public class InputFeedbackRatingListItemTest {
     }
 
     @Test
-    public void test_constructor(){
+    public void whenValidParamsConstructorThenObjectCreated(){
         errorCollector.checkThat(ratingListItem, notNullValue());
         errorCollector.checkThat(ratingListItem.getInstructionMessage(), is(equalTo(instructionMessage)));
         errorCollector.checkThat(ratingListItem.getItemType(), is(equalTo(MessengerListType.INPUT_FIELD_FEEDBACK_RATING)));
     }
 
     @Test(expected = IllegalStateException.class)
-    public void test_constructor1(){
+    public void whenNullInstructionMessageThenIllegalStateException(){
         instructionMessage = null;
         ratingListItem = new InputFeedbackRatingListItem(instructionMessage, onSelectRatingListener);
     }
 
     @Test(expected = IllegalStateException.class)
-    public void test_constructor2(){
+    public void whenNullonSelectRatingListenerThenException(){
         InputFeedback.OnSelectRatingListener onSelectRatingListener = null;
         ratingListItem = new InputFeedbackRatingListItem(instructionMessage, onSelectRatingListener);
     }
 
     @Test
-    public void test_constructor3() {
+    public void whenValidParamsGivenConstructorThenObjectCreated() {
         InputFeedbackRatingListItem listItem = new InputFeedbackRatingListItem(instructionMessage, "submitted_rating");
         errorCollector.checkThat(listItem, notNullValue());
         errorCollector.checkThat(listItem.getItemType(), notNullValue());
     }
 
     @Test(expected = IllegalStateException.class)
-    public void test_constructor4() {
+    public void whenNullSubmittedRatingThenIllegalStateException() {
         String submittedRating = null;
         InputFeedbackRatingListItem listItem = new InputFeedbackRatingListItem(instructionMessage, submittedRating);
     }
 
 
     @Test
-    public void test_getInstructionMessage() {
+    public void getInstructionMessage() {
         errorCollector.checkThat(ratingListItem.getInstructionMessage(), is(equalTo(instructionMessage)));
     }
 
     @Test
-    public void test_getOnSelectRatingListener() {
+    public void getOnSelectRatingListener() {
         errorCollector.checkThat(ratingListItem.getOnSelectRatingListener(), notNullValue());
         errorCollector.checkThat(ratingListItem.getOnSelectRatingListener(), is(equalTo(onSelectRatingListener)));
     }
 
     @Test
-    public void test_getContents() {
+    public void getContents() {
         InputFeedbackRatingListItem listItem = new InputFeedbackRatingListItem(instructionMessage, "submitted_rating");
         errorCollector.checkThat(listItem.getContents().size() > 0, is(true));
         errorCollector.checkThat(ratingListItem.getContents().get("instructionMessage"), is(equalTo(instructionMessage)));
