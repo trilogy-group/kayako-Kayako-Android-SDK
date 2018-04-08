@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class SimpleMessageSelfListItemTest {
 
-    private Long id;
+    private long id;
     private static final String MESSAGE = "dummy message";
     private long time;
     private DeliveryIndicator deliveryIndicator;
@@ -24,7 +24,7 @@ public class SimpleMessageSelfListItemTest {
     private SimpleMessageSelfListItem selfListItem;
 
     @Rule
-    public ErrorCollector errorCollector = new ErrorCollector();
+    public final ErrorCollector errorCollector = new ErrorCollector();
 
     @Before
     public void setUp(){
@@ -37,7 +37,7 @@ public class SimpleMessageSelfListItemTest {
     }
 
     @Test
-    public void test_constructor() {
+    public void whenValidParamsConstructorThenObjectCreated() {
         errorCollector.checkThat(selfListItem, notNullValue());
         errorCollector.checkThat(selfListItem.getId(), is(id));
         errorCollector.checkThat(selfListItem.getItemType(), is(equalTo(MessengerListType.SIMPLE_MESSAGE_SELF)));
@@ -45,41 +45,41 @@ public class SimpleMessageSelfListItemTest {
     }
 
     @Test
-    public void test_getMessage() {
+    public void getMessage() {
         errorCollector.checkThat(selfListItem.getMessage(), is(equalTo(MESSAGE)));
     }
 
     @Test
-    public void test_setMessage() {
+    public void setMessage() {
         selfListItem.setMessage("message2");
         errorCollector.checkThat(selfListItem.getMessage(), is(equalTo("message2")));
     }
 
     @Test
-    public void test_getTime(){
+    public void getTime(){
         errorCollector.checkThat(selfListItem.getTime(), is(equalTo(time)));
     }
 
     @Test
-    public void test_setTime(){
+    public void setTime(){
         selfListItem.setTime(12345L);
         errorCollector.checkThat(selfListItem.getTime(), is(equalTo(12345L)));
     }
 
     @Test
-    public void test_getDeliveryIndicator() {
+    public void getDeliveryIndicator() {
         DeliveryIndicator deliveryIndicator1 = selfListItem.getDeliveryIndicator();
         errorCollector.checkThat(deliveryIndicator1, notNullValue());
         errorCollector.checkThat(deliveryIndicator1.getDeliveryTime().longValue(), is(1000L));
     }
 
     @Test
-    public void test_isFadeBackground() {
+    public void isFadeBackground() {
         errorCollector.checkThat(selfListItem.isFadeBackground(), is(true));
     }
 
     @Test
-    public void test_getContents() {
+    public void getContents() {
         Map map = selfListItem.getContents();
         errorCollector.checkThat(map.size() > 0, is(true));
         errorCollector.checkThat(map.get("message").toString(), is(equalTo(MESSAGE)));
