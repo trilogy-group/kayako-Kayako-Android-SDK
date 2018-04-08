@@ -173,7 +173,7 @@ public class MessengerAdapterTest {
     }
 
     @Test
-    public void testOnBindViewHolderWhenMessengerListTypeSimpleMessageSelf() {
+    public void onBindViewHolderWhenMessengerListTypeSimpleMessageSelf() {
         final SimpleMessageSelfListItem listItem = mock(SimpleMessageSelfListItem.class);
         mockStatic(DeliveryIndicatorHelper.class);
         mockStatic(MessageStyleHelper.class);
@@ -194,7 +194,7 @@ public class MessengerAdapterTest {
     }
 
     @Test
-    public void testOnBindViewHolderWhenMessengerListTypeIsAttachmentMessageOther() {
+    public void onBindViewHolderWhenMessengerListTypeIsAttachmentMessageOther() {
         ChannelDecoration channelDecoration = null;
         AttachmentMessageOtherListItem listItem = new AttachmentMessageOtherListItem
                 (ID, "", channelDecoration, mock(Attachment.class), ZERO_TIME, data);
@@ -225,7 +225,7 @@ public class MessengerAdapterTest {
     }
 
     @Test
-    public void testOnBindViewHolderWhenMessengerListTypeIsAttachmentMessageOtherElse() {
+    public void onBindViewHolderWhenMessengerListTypeIsAttachmentMessageOtherElse() {
         AttachmentMessageOtherListItem listItem = new AttachmentMessageOtherListItem
                 (ID, "", mock(ChannelDecoration.class), mock(Attachment.class), NON_ZERO_TIME, data);
         AttachmentMessageOtherViewHolder viewHolder = mock(AttachmentMessageOtherViewHolder.class);
@@ -255,7 +255,7 @@ public class MessengerAdapterTest {
     }
 
     @Test
-    public void testOnBindViewHolderWhenMessengerListTypeIsDateSeperator() {
+    public void onBindViewHolderWhenMessengerListTypeIsDateSeperator() {
         DateSeparatorListItem listItem = new DateSeparatorListItem(NON_ZERO_TIME);
         DateSeparatorViewHolder viewHolder = mock(DateSeparatorViewHolder.class);
         viewHolder.time = timeTextView;
@@ -274,14 +274,14 @@ public class MessengerAdapterTest {
     }
 
     @Test
-    public void testOnBindViewHolderWhenMessengerListTypeIsEmptySeperator() {
+    public void onBindViewHolderWhenMessengerListTypeIsEmptySeperator() {
         RecyclerView.ViewHolder viewHolder = mock(RecyclerView.ViewHolder.class);
         when(viewHolder.getItemViewType()).thenReturn(MessengerListType.EMPTY_SEPARATOR);
         messengerAdapter.onBindViewHolder(viewHolder, POSITION);
     }
 
     @Test
-    public void testOnBindViewHolderWhenMessengerListTypeIsSystemMessage() {
+    public void onBindViewHolderWhenMessengerListTypeIsSystemMessage() {
         SystemMessageListItem listItem = mock(SystemMessageListItem.class);
         SystemMessageViewHolder viewHolder = mock(SystemMessageViewHolder.class);
         viewHolder.message = timeTextView;
@@ -296,7 +296,7 @@ public class MessengerAdapterTest {
     }
 
     @Test
-    public void testOnBindViewHolderWhenMessengerListTypeIsInputEmail() {
+    public void onBindViewHolderWhenMessengerListTypeIsInputEmail() {
         InputEmailListItem listItem = mock(InputEmailListItem.class);
         InputEmailViewHolder viewHolder = mock(InputEmailViewHolder.class);
 
@@ -313,7 +313,7 @@ public class MessengerAdapterTest {
     }
 
     @Test
-    public void testOnBindViewHolderWhenMessengerListTypeIsInputFieldFeedback() {
+    public void onBindViewHolderWhenMessengerListTypeIsInputFieldFeedback() {
         InputFeedbackRatingListItem listItem = mock(InputFeedbackRatingListItem.class);
         InputFeedbackRatingViewHolder viewHolder = mock(InputFeedbackRatingViewHolder.class);
 
@@ -330,7 +330,7 @@ public class MessengerAdapterTest {
     }
 
     @Test
-    public void testOnBindViewHolderWhenMessengerListTypeIsInputFieldFeedbackComment() {
+    public void onBindViewHolderWhenMessengerListTypeIsInputFieldFeedbackComment() {
         InputFeedbackCommentListItem listItem = mock(InputFeedbackCommentListItem.class);
         InputFeedbackCommentViewHolder viewHolder = mock(InputFeedbackCommentViewHolder.class);
 
@@ -347,7 +347,7 @@ public class MessengerAdapterTest {
     }
 
     @Test
-    public void testOnBindViewHolderWhenMessengerListTypeIsInputFieldFeedbackCompleted() {
+    public void onBindViewHolderWhenMessengerListTypeIsInputFieldFeedbackCompleted() {
         InputFeedbackCompletedListItem listItem = new InputFeedbackCompletedListItem(
                 "instructionMessage", InputFeedback.RATING.GOOD, "feedback");
         InputFeedbackCompletedViewHolder viewHolder = mock(InputFeedbackCompletedViewHolder.class);
@@ -366,7 +366,7 @@ public class MessengerAdapterTest {
     }
 
     @Test
-    public void testOnBindViewHolderWhenMessengerListTypeIsInputFieldTypingFooter() {
+    public void onBindViewHolderWhenMessengerListTypeIsInputFieldTypingFooter() {
         TypingListItem listItem = mock(TypingListItem.class);
         TypingViewHolder viewHolder = mock(TypingViewHolder.class);
 
@@ -386,14 +386,14 @@ public class MessengerAdapterTest {
     }
 
     @Test
-    public void testOnBindViewHolderWhenMessengerListTypeIsDefault() {
+    public void onBindViewHolderWhenMessengerListTypeIsDefault() {
         RecyclerView.ViewHolder viewHolder = mock(RecyclerView.ViewHolder.class);
         when(viewHolder.getItemViewType()).thenReturn(99999); ///default
         messengerAdapter.onBindViewHolder(viewHolder, POSITION);
     }
 
     @Test
-    public void testOnBindViewHolderWhenMessengerListTypeIsBotMessageOtherElse() {
+    public void onBindViewHolderWhenMessengerListTypeIsBotMessageOtherElse() {
         BotMessageListItem listItem = new BotMessageListItem("", ZERO_TIME);
         BotMessageViewHolder viewHolder = mock(BotMessageViewHolder.class);
         viewHolder.time = timeTextView;
@@ -413,7 +413,7 @@ public class MessengerAdapterTest {
     }
 
     @Test
-    public void testOnBindViewHolderWhenMessengerListTypeIsBotMessageOtherElseCase() {
+    public void onBindViewHolderWhenMessengerListTypeIsBotMessageOtherElseCase() {
         BotMessageListItem listItem = new BotMessageListItem("", NON_ZERO_TIME);
         BotMessageViewHolder viewHolder = mock(BotMessageViewHolder.class);
         viewHolder.time = timeTextView;
@@ -434,7 +434,7 @@ public class MessengerAdapterTest {
 
 
     @Test
-    public void testOnBindViewHolderWhenMessengerListTypeIsAttachmentMessageContinuedOther() {
+    public void onBindViewHolderWhenMessengerListTypeIsAttachmentMessageContinuedOther() {
         ChannelDecoration channelDecoration = null;
         AttachmentMessageContinuedOtherListItem listItem = new AttachmentMessageContinuedOtherListItem
                 (ID, mock(Attachment.class), ZERO_TIME, data);
@@ -456,7 +456,7 @@ public class MessengerAdapterTest {
     }
 
     @Test
-    public void testOnBindViewHolderWhenMessengerListTypeIsAttachmentMessageContinuedOtherElseCase() {
+    public void onBindViewHolderWhenMessengerListTypeIsAttachmentMessageContinuedOtherElseCase() {
         ChannelDecoration channelDecoration = null;
         AttachmentMessageContinuedOtherListItem listItem = new AttachmentMessageContinuedOtherListItem
                 (ID, mock(Attachment.class), NON_ZERO_TIME, data);
@@ -479,7 +479,7 @@ public class MessengerAdapterTest {
     }
 
     @Test
-    public void testOnBindViewHolderWhenMessengerListTypeIsAttachmentMessageOtherElseCase() {
+    public void onBindViewHolderWhenMessengerListTypeIsAttachmentMessageOtherElseCase() {
         ChannelDecoration channelDecoration = null;
         AttachmentMessageOtherListItem listItem = new AttachmentMessageOtherListItem
                 (ID, "", channelDecoration, mock(Attachment.class), NON_ZERO_TIME, data);
@@ -509,7 +509,7 @@ public class MessengerAdapterTest {
     }
 
     @Test
-    public void testOnBindViewHolderWhenMessengerListTypeIsAttachmentMessageSelf() {
+    public void onBindViewHolderWhenMessengerListTypeIsAttachmentMessageSelf() {
         AttachmentMessageSelfListItem listItem = new AttachmentMessageSelfListItem
                 (ID, mock(DeliveryIndicator.class), false, mock(Attachment.class), NON_ZERO_TIME, data);
 
@@ -532,7 +532,7 @@ public class MessengerAdapterTest {
     }
 
     @Test
-    public void testOnBindViewHolderWhenMessengerListTypeIsAttachmentMessageContinuedSelf() {
+    public void onBindViewHolderWhenMessengerListTypeIsAttachmentMessageContinuedSelf() {
         AttachmentMessageContinuedSelfListItem listItem = new AttachmentMessageContinuedSelfListItem
                 (ID, mock(Attachment.class), NON_ZERO_TIME, mock(DeliveryIndicator.class), false, data);
 
@@ -555,7 +555,7 @@ public class MessengerAdapterTest {
     }
 
     @Test
-    public void testOnBindViewHolderWhenMessengerListTypeSImpleMessageContinuedSelf() {
+    public void onBindViewHolderWhenMessengerListTypeSImpleMessageContinuedSelf() {
         mockStatic(DeliveryIndicatorHelper.class);
         mockStatic(MessageStyleHelper.class);
         final SimpleMessageContinuedSelfViewHolder viewHolder = mock(SimpleMessageContinuedSelfViewHolder.class);
@@ -575,7 +575,7 @@ public class MessengerAdapterTest {
     }
 
     @Test
-    public void testOnBindViewHolderWhenMessengerListTypeSimpleMessageOther() {
+    public void onBindViewHolderWhenMessengerListTypeSimpleMessageOther() {
         mockStatic(Kayako.class);
         mockStatic(ImageUtils.class);
         mockStatic(MessageStyleHelper.class);
@@ -601,7 +601,7 @@ public class MessengerAdapterTest {
     }
 
     @Test
-    public void testOnBindViewHolderWhenMessengerListTypeSimpleMessageOtherElseCase() {
+    public void onBindViewHolderWhenMessengerListTypeSimpleMessageOtherElseCase() {
 
         mockStatic(Kayako.class);
         mockStatic(ImageUtils.class);
@@ -630,7 +630,7 @@ public class MessengerAdapterTest {
 
 
     @Test
-    public void testOnBindViewHolderWhenMessengerListTypeSimpleMessageContinuedOther() {
+    public void onBindViewHolderWhenMessengerListTypeSimpleMessageContinuedOther() {
 
 
         mockStatic(Kayako.class);
@@ -656,7 +656,7 @@ public class MessengerAdapterTest {
     }
 
     @Test
-    public void testOnBindViewHolderWhenMessengerListTypeSimpleMessageContinuedOtherElseCase() {
+    public void onBindViewHolderWhenMessengerListTypeSimpleMessageContinuedOtherElseCase() {
         mockStatic(Kayako.class);
         mockStatic(ImageUtils.class);
         mockStatic(MessageStyleHelper.class);
