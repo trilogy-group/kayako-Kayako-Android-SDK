@@ -16,7 +16,7 @@ public class InputFeedbackCompletedListItemTest {
     private InputFeedbackCompletedListItem listItem;
 
     @Rule
-    public ErrorCollector errorCollector = new ErrorCollector();
+    public final ErrorCollector errorCollector = new ErrorCollector();
 
     @Before
     public void setUp(){
@@ -25,35 +25,35 @@ public class InputFeedbackCompletedListItemTest {
     }
 
     @Test
-    public void test_constructor1() {
+    public void whenValidParamsConstructorThenObjectCreated() {
         errorCollector.checkThat(listItem, notNullValue());
         errorCollector.checkThat(listItem.getFeedback(), is(equalTo(FEEDBACK)));
 
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void test_constructor2() {
+    public void whenNullRatingThenIllegalArgumentException() {
         rating = null;
         listItem = new InputFeedbackCompletedListItem(INSTRUCTIONMESSAGE, rating, FEEDBACK);
     }
 
     @Test
-    public void test_getInstructionMessage() {
+    public void getInstructionMessage() {
         errorCollector.checkThat(listItem.getInstructionMessage(), is(equalTo(INSTRUCTIONMESSAGE)));
     }
 
     @Test
-    public void test_getRating() {
+    public void getRating() {
         errorCollector.checkThat(listItem.getRating().name(), is(equalTo("GOOD")));
     }
 
     @Test
-    public void test_getFeedback() {
+    public void getFeedback() {
         errorCollector.checkThat(listItem.getFeedback(), is(equalTo(FEEDBACK)));
     }
 
     @Test
-    public void test_getContents() {
+    public void getContents() {
         errorCollector.checkThat(listItem.getContents().size() > 0, is(true));
         errorCollector.checkThat(listItem.getContents().size(), is(5));
         errorCollector.checkThat(listItem.getContents().get("rating"), is(equalTo("GOOD")));
