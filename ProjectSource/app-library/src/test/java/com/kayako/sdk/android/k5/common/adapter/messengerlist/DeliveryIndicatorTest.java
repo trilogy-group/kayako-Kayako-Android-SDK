@@ -18,7 +18,7 @@ public class DeliveryIndicatorTest {
     private DeliveryIndicator deliveryIndicator;
 
     @Rule
-    public ErrorCollector errorCollector = new ErrorCollector();
+    public final ErrorCollector errorCollector = new ErrorCollector();
 
     @Before
     public void setup() {
@@ -29,7 +29,7 @@ public class DeliveryIndicatorTest {
     }
 
     @Test
-    public void test_constructor() {
+    public void whenValidParamsConstructorThenObjectCreated() {
         errorCollector.checkThat(deliveryIndicator, notNullValue());
         errorCollector.checkThat(deliveryIndicator.getDeliveryStatusIconResId().intValue(), is(equalTo(deliveryStatusIconResId)));
         errorCollector.checkThat(deliveryIndicator.getDeliveryStatusTextResId().intValue(), is(equalTo(deliveryStatusTextResId)));
@@ -37,34 +37,34 @@ public class DeliveryIndicatorTest {
     }
 
     @Test
-    public void test_getDeliveryStatusIconResId1(){
+    public void getDeliveryStatusIconResId(){
         errorCollector.checkThat(deliveryIndicator.getDeliveryStatusIconResId().intValue(), is(equalTo(deliveryStatusIconResId)));
     }
 
     @Test
-    public void test_getDeliveryStatusIconResId2(){
+    public void whenZeroDeliveryStatusIconResIdThenReturnNullValue(){
         DeliveryIndicator deliveryIndicator1 = new DeliveryIndicator(0, deliveryStatusTextResId, deliveryTime);
         errorCollector.checkThat(deliveryIndicator1.getDeliveryStatusIconResId(), nullValue());
     }
 
     @Test
-    public void test_test_getDeliveryStatusTextResId1() {
+    public void getDeliveryStatusTextResId() {
         errorCollector.checkThat(deliveryIndicator.getDeliveryStatusTextResId().intValue(), is(equalTo(deliveryStatusTextResId)));
     }
 
     @Test
-    public void test_getDeliveryStatusTextResId2() {
+    public void whenZeroDeliveryStatusTextResIdThenReturnNullValue() {
         DeliveryIndicator deliveryIndicator1 = new DeliveryIndicator(deliveryStatusIconResId, 0, deliveryTime);
         errorCollector.checkThat(deliveryIndicator1.getDeliveryStatusTextResId(), nullValue());
     }
 
     @Test
-    public void test_getDeliveryTime() {
+    public void getDeliveryTime() {
         errorCollector.checkThat(deliveryIndicator.getDeliveryTime(), is(equalTo(deliveryTime)));
     }
 
     @Test
-    public void test_getContents() {
+    public void getContents() {
         Map map = deliveryIndicator.getContents();
         errorCollector.checkThat(map.size(), is(3));
         errorCollector.checkThat(map.get("DeliveryIndicator.deliveryStatusIconResId").toString(), is(equalTo(String.valueOf(deliveryStatusIconResId))));
