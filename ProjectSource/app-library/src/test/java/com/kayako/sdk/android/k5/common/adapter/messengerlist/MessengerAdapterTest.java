@@ -1,7 +1,5 @@
 package com.kayako.sdk.android.k5.common.adapter.messengerlist;
 
-import android.media.Image;
-import android.media.Rating;
 import android.support.v7.widget.RecyclerView;
 import android.test.mock.MockContext;
 import android.text.Html;
@@ -76,7 +74,6 @@ import org.mockito.Mock;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.powermock.api.mockito.PowerMockito.mock;
@@ -997,5 +994,5 @@ public class MessengerAdapterTest {
         collector.checkThat(viewHolder, is(instanceOf(LoadingViewHolder.class)));
         collector.checkThat(viewHolder.itemView, is(equalTo(mockView)));
     }
-
 }
+
