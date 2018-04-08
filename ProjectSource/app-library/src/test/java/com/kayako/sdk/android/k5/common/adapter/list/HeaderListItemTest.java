@@ -36,11 +36,6 @@ public class HeaderListItemTest {
     }
 
     @Test
-    public void constructorTest() {
-        assertThat(headerListItem.getTitle(), is(equalTo(TITLE)));
-    }
-
-    @Test
     public void getResourceTest() {
         assertThat(headerListItem.getResource(), is(equalTo(resource)));
     }
@@ -54,6 +49,6 @@ public class HeaderListItemTest {
     @Test
     public void getContentsTest() {
         String itemTitle = headerListItem.getContents().get("title");
-        assertThat(itemTitle, is(equalTo(String.valueOf(TITLE))));
+        assertThat(itemTitle, is(equalTo(TITLE)));
     }
 }
