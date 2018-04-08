@@ -43,7 +43,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 public class ConversationListAdapterTest {
 
     @Rule
-    public ErrorCollector collector = new ErrorCollector();
+    public final ErrorCollector collector = new ErrorCollector();
 
     @Mock
     ConversationListAdapter.OnClickConversationListener onClickConversationListener;
@@ -75,7 +75,8 @@ public class ConversationListAdapterTest {
 
     @Test
     public void setListClickListenerTest() throws Exception {
-        conversationListAdapter = new ConversationListAdapter(baseListItemList, onClickConversationListener);
+        conversationListAdapter = new
+                ConversationListAdapter(baseListItemList, onClickConversationListener);
         // Class doesn't contain get method ,i  am going to use reflection for getting value
         final Field field = conversationListAdapter.getClass().getDeclaredField("mListener");
         field.setAccessible(true);
@@ -83,12 +84,13 @@ public class ConversationListAdapterTest {
     }
 
     @Test
-    public void testOnCreateViewHolderWhenViewTypeIsConversationListItem() {
+    public void onCreateViewHolderWhenViewTypeIsConversationListItem() {
         when(mockParent.getContext()).thenReturn(mockContext);
         when(LayoutInflater.from(mockContext)).thenReturn(mockInflater);
         when(mockInflater.inflate(anyInt(), eq(mockParent), eq(false))).thenReturn(mockView);
 
-        RecyclerView.ViewHolder viewHolder = conversationListAdapter.onCreateViewHolder(mockParent, ConversationListType.CONVERSATION_LIST_ITEM);
+        RecyclerView.ViewHolder viewHolder = conversationListAdapter
+                .onCreateViewHolder(mockParent, ConversationListType.CONVERSATION_LIST_ITEM);
 
         collector.checkThat(viewHolder, notNullValue());
         collector.checkThat(viewHolder, is(instanceOf(ConversationItemViewHolder.class)));
@@ -97,12 +99,13 @@ public class ConversationListAdapterTest {
     }
 
     @Test
-    public void testOnCreateViewHolderWhenViewTypeIsLoadingItem() {
+    public void onCreateViewHolderWhenViewTypeIsLoadingItem() {
         when(mockParent.getContext()).thenReturn(mockContext);
         when(LayoutInflater.from(mockContext)).thenReturn(mockInflater);
         when(mockInflater.inflate(anyInt(), eq(mockParent), eq(false))).thenReturn(mockView);
 
-        RecyclerView.ViewHolder viewHolder = conversationListAdapter.onCreateViewHolder(mockParent, ListType.LOADING_ITEM);
+        RecyclerView.ViewHolder viewHolder = conversationListAdapter
+                .onCreateViewHolder(mockParent, ListType.LOADING_ITEM);
 
         collector.checkThat(viewHolder, notNullValue());
         collector.checkThat(viewHolder, is(CoreMatchers.instanceOf(LoadingViewHolder.class)));
@@ -110,10 +113,6 @@ public class ConversationListAdapterTest {
 
     }
 
-    @Test
-    //Todo :i will add test later , in progress
-    public void onBindViewHolderTest() {
-    }
 
     @Test
     public void getItemViewTypeTest() {
