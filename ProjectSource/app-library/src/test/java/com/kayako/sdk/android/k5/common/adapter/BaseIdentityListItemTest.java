@@ -11,11 +11,10 @@ import static org.junit.Assert.assertEquals;
 @RunWith(MockitoJUnitRunner.class)
 public class BaseIdentityListItemTest {
 
-    private static final Long ID = 0L;
+    private static final long ID = 0L;
 
     @Mock
     BaseIdentityListItem baseIdentityListItem;
-
 
     @Before
     public void setUp() throws Exception {
@@ -24,12 +23,6 @@ public class BaseIdentityListItemTest {
 
     @Test
     public void getIdTest() {
-        assertEquals(baseIdentityListItem.getId(), ID);
+        assertEquals(baseIdentityListItem.getId().longValue(), ID);
     }
-
-    @Test
-    public void setIdTest() {
-        assertEquals(baseIdentityListItem.getId(), ID);
-    }
-
 }
