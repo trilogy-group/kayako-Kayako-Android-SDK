@@ -17,7 +17,7 @@ public class SystemMessageListItemTest {
     private SystemMessageListItem messageListItem;
 
     @Rule
-    public ErrorCollector errorCollector = new ErrorCollector();
+    public final ErrorCollector errorCollector = new ErrorCollector();
 
     @Before
     public void setUp() {
@@ -25,28 +25,28 @@ public class SystemMessageListItemTest {
     }
 
     @Test
-    public void test_constructor1(){
+    public void whenValidParamsConstructorThenObjectCreated(){
         errorCollector.checkThat(messageListItem, notNullValue());
         errorCollector.checkThat(messageListItem.getItemType(), is(equalTo(MessengerListType.SYSTEM_MESSAGE)));
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void test_constructor2() {
+    public void whenNullMessageThenIllegalArgumentException() {
         SystemMessageListItem listItem = new SystemMessageListItem(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void test_constructor3() {
+    public void whenEmptyMessageThenIllegalArgumentException() {
         SystemMessageListItem listItem = new SystemMessageListItem("");
     }
 
     @Test
-    public void test_getMessage() {
+    public void getMessage() {
         errorCollector.checkThat(messageListItem.getMessage(), is(equalTo(MESSAGE)));
     }
 
     @Test
-    public void test_getContents() {
+    public void getContents() {
         Map map = messageListItem.getContents();
         errorCollector.checkThat(map, notNullValue());
         errorCollector.checkThat(map.size(), is(1));
