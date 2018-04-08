@@ -11,17 +11,17 @@ import java.io.File;
 public class AttachmentFileTypeTest {
 
     @Rule
-    public ErrorCollector errorCollector  = new ErrorCollector();
+    public final ErrorCollector errorCollector  = new ErrorCollector();
 
     private static final String CAPTION = "file type test";
 
     @Test(expected = AssertionError.class)
-    public void test_constructor1() {
+    public void givenNullFileWhenConstructorThenAssertionError() {
         AttachmentFileType attachmentFileType = new AttachmentFileType(1L, null, CAPTION);
     }
 
     @Test
-    public void test_constructor2() {
+    public void givenValidParamsWhenConstructorThenObjectCreated() {
         File file = new File("");
         AttachmentFileType attachmentFileType = new AttachmentFileType(1L, file, CAPTION);
         errorCollector.checkThat(attachmentFileType, notNullValue());
@@ -29,19 +29,19 @@ public class AttachmentFileTypeTest {
     }
 
     @Test
-    public void test_getId() {
+    public void getId() {
         AttachmentFileType attachmentFileType = getAttachmentFileType();
         errorCollector.checkThat(1L, is(attachmentFileType.getId().longValue()));
     }
 
     @Test
-    public void test_getCaption() {
+    public void getCaption() {
         AttachmentFileType attachmentFileType = getAttachmentFileType();
         errorCollector.checkThat(CAPTION, equalTo(attachmentFileType.getCaption()));
     }
 
     @Test
-    public void test_getThumbnailFile() {
+    public void getThumbnailFile() {
         AttachmentFileType attachmentFileType = getAttachmentFileType();
         errorCollector.checkThat(attachmentFileType.getThumbnailFile(), notNullValue());
     }
