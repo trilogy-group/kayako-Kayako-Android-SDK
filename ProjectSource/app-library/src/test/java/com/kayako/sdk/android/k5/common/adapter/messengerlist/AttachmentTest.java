@@ -11,7 +11,7 @@ import static org.hamcrest.CoreMatchers.not;
 public class AttachmentTest {
 
     @Rule
-    public ErrorCollector errorCollector  = new ErrorCollector();
+    public final ErrorCollector errorCollector  = new ErrorCollector();
 
     private Attachment attachment;
 
@@ -21,25 +21,25 @@ public class AttachmentTest {
     }
 
     @Test
-    public void test_constructor1(){
+    public void givenValidParamsThenObjectCreated(){
         errorCollector.checkThat(attachment, notNullValue());
         errorCollector.checkThat(Attachment.TYPE.URL,not(attachment.getType()));
         errorCollector.checkThat(Attachment.TYPE.FILE, equalTo(attachment.getType()));
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void test_constructor2(){
+    public void whenNullTypeThenIllegalArgumentException(){
         Attachment attachment = new Attachment(null);
     }
 
     @Test
-    public void test_getType(){
+    public void getType(){
         errorCollector.checkThat(Attachment.TYPE.URL,not(attachment.getType()));
         errorCollector.checkThat(Attachment.TYPE.FILE, equalTo(attachment.getType()));
     }
 
     @Test
-    public void test_getContents(){
+    public void getContents(){
         errorCollector.checkThat(1, equalTo(attachment.getContents().size()));
         errorCollector.checkThat(Attachment.TYPE.FILE.toString(), equalTo(attachment.getContents().get("type")));
     }
