@@ -16,13 +16,13 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 public class AttachmentMessageContinuedOtherListItemTest {
 
     private Attachment attachment;
-    private Long id = 1L;
+    private long id = 1L;
     private long time = 1000L;
-    private Map<String, Object> data = new HashMap<String, Object>();
+    private final Map<String, Object> data = new HashMap<String, Object>();
     private AttachmentMessageContinuedOtherListItem attachmentMessageContinuedOtherListItem;
 
     @Rule
-    public ErrorCollector errorCollector = new ErrorCollector();
+    public final ErrorCollector errorCollector = new ErrorCollector();
 
     @Before
     public void setUp() {
@@ -31,20 +31,20 @@ public class AttachmentMessageContinuedOtherListItemTest {
     }
 
     @Test
-    public void test_constructor() {
+    public void whenValidParamsConstructorThenObjectCreated() {
         errorCollector.checkThat(attachmentMessageContinuedOtherListItem, notNullValue());
         errorCollector.checkThat(attachmentMessageContinuedOtherListItem.getId(), is(equalTo(id)));
     }
 
     @Test
-    public void test_getAttachment() {
+    public void getAttachment() {
         errorCollector.checkThat(attachmentMessageContinuedOtherListItem.getAttachment(), is(equalTo(attachment)));
         errorCollector.checkThat(attachmentMessageContinuedOtherListItem.getAttachment().getType(), is(equalTo(Attachment.TYPE.URL)));
 
     }
 
     @Test
-    public void test_setAttachment() {
+    public void setAttachment() {
         Attachment attachment1 = new Attachment(Attachment.TYPE.FILE);
         attachmentMessageContinuedOtherListItem.setAttachment(attachment1);
         errorCollector.checkThat(attachmentMessageContinuedOtherListItem.getAttachment(), is(equalTo(attachment1)));
@@ -52,18 +52,18 @@ public class AttachmentMessageContinuedOtherListItemTest {
     }
 
     @Test
-    public void test_getTime(){
+    public void getTime(){
         errorCollector.checkThat(attachmentMessageContinuedOtherListItem.getTime(), is(equalTo(time)));
     }
 
     @Test
-    public void test_setTime(){
+    public void setTime(){
         attachmentMessageContinuedOtherListItem.setTime(2000L);
         errorCollector.checkThat(attachmentMessageContinuedOtherListItem.getTime(), is(equalTo(2000L)));
     }
 
     @Test
-    public void test_getContents() {
+    public void getContents() {
         errorCollector.checkThat(attachmentMessageContinuedOtherListItem.getContents().size() > 0, is(true));
         errorCollector.checkThat(attachmentMessageContinuedOtherListItem.getContents().size(), is(2));
         errorCollector.checkThat(attachmentMessageContinuedOtherListItem.getContents().get("time"), is(equalTo(String.valueOf(time))));
