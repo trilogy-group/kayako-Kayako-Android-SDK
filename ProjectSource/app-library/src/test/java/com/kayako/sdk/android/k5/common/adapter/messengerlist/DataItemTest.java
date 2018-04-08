@@ -1,6 +1,5 @@
 package com.kayako.sdk.android.k5.common.adapter.messengerlist;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -18,11 +17,11 @@ import java.util.Map;
 
 public class DataItemTest {
 
-    private Long id;
+    private long id;
     private Map<String, Object> data;
     private UserDecoration userDecoration;
     private static final String MESSAGE = "test message";
-    private Long timeInMilliseconds;
+    private long timeInMilliseconds;
     private ChannelDecoration channelDecoration;
     private DeliveryIndicator deliveryIndicator;
     private boolean isRead;
@@ -32,7 +31,7 @@ public class DataItemTest {
     private DataItem dataItem;
 
     @Rule
-    public ErrorCollector errorCollector = new ErrorCollector();
+    public final ErrorCollector errorCollector = new ErrorCollector();
 
     @Before
     public void setup(){
@@ -52,7 +51,7 @@ public class DataItemTest {
     }
 
     @Test
-    public void test_constructor(){
+    public void whenValidParamsConstructorThenObjectCreated(){
         errorCollector.checkThat(dataItem, notNullValue());
         errorCollector.checkThat(dataItem, is(instanceOf(DataItem.class)));
         errorCollector.checkThat(dataItem.isRead(), is(true));
@@ -60,24 +59,24 @@ public class DataItemTest {
     }
 
     @Test
-    public void test_getId() {
+    public void getId() {
         errorCollector.checkThat(dataItem.getId(), is(equalTo(id)));
     }
 
     @Test
-    public void test_setId() {
+    public void setId() {
         dataItem.setId(5L);
         errorCollector.checkThat(dataItem.getId(), is(equalTo(5L)));
     }
 
     @Test
-    public void test_getData() {
+    public void getData() {
         errorCollector.checkThat(dataItem.getData().size(), is(equalTo(1)));
         errorCollector.checkThat(dataItem.getData().get("test").toString(), is(equalTo("object")));
     }
 
     @Test
-    public void test_setData() {
+    public void setData() {
         data.put("test_1", "object_1");
         dataItem.setData(data);
         errorCollector.checkThat(dataItem.getData().size(), is(equalTo(2)));
@@ -85,43 +84,43 @@ public class DataItemTest {
     }
 
     @Test
-    public void test_getMessage() {
+    public void getMessage() {
         errorCollector.checkThat(dataItem.getMessage(), is(equalTo(MESSAGE)));
     }
 
     @Test
-    public void test_setMessage() {
+    public void setMessage() {
         String message = "message to test setMessage()";
         dataItem.setMessage(message);
         errorCollector.checkThat(dataItem.getMessage(), is(equalTo(message)));
     }
 
     @Test
-    public void test_getTimeInMilliseconds() {
+    public void getTimeInMilliseconds() {
         errorCollector.checkThat(dataItem.getTimeInMilliseconds(), is(equalTo(timeInMilliseconds)));
     }
 
     @Test
-    public void test_getUserDecoration() {
+    public void getUserDecoration() {
         errorCollector.checkThat(dataItem.getUserDecoration(), notNullValue());
         errorCollector.checkThat(dataItem.getUserDecoration(), is(instanceOf(UserDecoration.class)));
         errorCollector.checkThat(dataItem.getUserDecoration(), is(equalTo(userDecoration)));
     }
 
     @Test
-    public void test_getChannelDecoration() {
+    public void getChannelDecoration() {
         errorCollector.checkThat(dataItem.getChannelDecoration(), notNullValue());
         errorCollector.checkThat(dataItem.getChannelDecoration(), is(instanceOf(ChannelDecoration.class)));
         errorCollector.checkThat(dataItem.getChannelDecoration(), is(equalTo(channelDecoration)));
     }
 
     @Test
-    public void test_isRead() {
+    public void isRead() {
         errorCollector.checkThat(dataItem.isRead(), is(true));
     }
 
     @Test
-    public void test_getAttachments() {
+    public void getAttachments() {
         List<Attachment> attachments = dataItem.getAttachments();
         errorCollector.checkThat(attachments.size(), is(equalTo(1)));
         errorCollector.checkThat(attachments.get(0), is(instanceOf(Attachment.class)));
@@ -129,7 +128,7 @@ public class DataItemTest {
     }
 
     @Test
-    public void test_getDeliveryIndicator() {
+    public void getDeliveryIndicator() {
         errorCollector.checkThat(dataItem.getDeliveryIndicator(), notNullValue());
         errorCollector.checkThat(dataItem.getDeliveryIndicator(), is(instanceOf(DeliveryIndicator.class)));
         errorCollector.checkThat(dataItem.getDeliveryIndicator(), is(equalTo(deliveryIndicator)));
