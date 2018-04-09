@@ -13,12 +13,12 @@ public class ListTypeTest {
     private static final int HEADER_ITEM = 3;
 
     @Test
-    public void testListItemValueIsCorrect() {
+    public void listItemValueIsCorrect() {
         assertThat(ListType.LIST_ITEM, is(equalTo(LIST_ITEM)));
     }
 
     @Test
-    public void testHeaderItemValueIsCorrect() {
+    public void headerItemValueIsCorrect() {
         assertThat(ListType.HEADER_ITEM, is(equalTo(HEADER_ITEM)));
     }
 }
