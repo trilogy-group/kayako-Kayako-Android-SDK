@@ -14,7 +14,6 @@ public class SearchListItemTest {
     private static final String TITLE = "title";
     private static final String SUBTITLE = "subtitle";
 
-
     private Resource resource;
 
     private SearchListItem searchListItem;
@@ -23,7 +22,6 @@ public class SearchListItemTest {
     public void setUp() {
         searchListItem = new SearchListItem(TITLE, SUBTITLE, resource);
     }
-
 
     @Test
     public void getTitleTest() {
