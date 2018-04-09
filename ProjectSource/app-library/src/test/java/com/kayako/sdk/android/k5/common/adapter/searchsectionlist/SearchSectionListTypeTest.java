@@ -2,9 +2,9 @@ package com.kayako.sdk.android.k5.common.adapter.searchsectionlist;
 
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.equalTo;
 
 public class SearchSectionListTypeTest {
 
