@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
@@ -27,37 +28,40 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 @RunWith(MockitoJUnitRunner.class)
 public class ListItemViewHolderTest {
 
+    private ListItemViewHolder listItemViewHolder;
+
     @Rule
     public final ErrorCollector collector = new ErrorCollector();
 
     @Mock
-    View view;
-    @Mock
-    TextView textView;
+    private View view;
 
-    ListItemViewHolder listItemViewHolder;
+    @Mock
+    private TextView textView;
 
     @Before
     public void setUp() {
-        when(view.findViewById(anyInt())).thenReturn(textView);
+        when(view.findViewById(eq(R.id.ko__list_item_title))).thenReturn(textView);
+        when(view.findViewById(eq(R.id.ko__list_item_subtitle))).thenReturn(textView);
         listItemViewHolder = new ListItemViewHolder(view);
     }
 
     @Test
-    public void constructorMViewTest() {
-        verify(view, times(2)).findViewById(anyInt());
+    public void constructorMView() {
+        verify(view, times(1)).findViewById(eq(R.id.ko__list_item_title));
+        verify(view, times(1)).findViewById(eq(R.id.ko__list_item_subtitle));
 
-        collector.checkThat(listItemViewHolder.mView, notNullValue());
         collector.checkThat(listItemViewHolder.mView, is(instanceOf(View.class)));
         collector.checkThat(listItemViewHolder.mView, is(equalTo(view)));
     }
 
     @Test
-    public void constructorMTitleTest() {
-        TextView textViewMTitle = (TextView) view.findViewById(R.id.ko__list_header_title);
-        verify(view, times(3)).findViewById(anyInt());
+    public void constructorMTitle() {
+        TextView textViewMTitle = (TextView) view.findViewById(R.id.ko__list_item_title);
 
-        collector.checkThat(listItemViewHolder.mTitle, notNullValue());
+        verify(view, times(2)).findViewById(eq(R.id.ko__list_item_title));
+        verify(view, times(1)).findViewById(eq(R.id.ko__list_item_subtitle));
+
         collector.checkThat(listItemViewHolder.mTitle, is(instanceOf(TextView.class)));
         collector.checkThat(listItemViewHolder.mTitle, is(equalTo(textViewMTitle)));
 
@@ -65,11 +69,12 @@ public class ListItemViewHolderTest {
     }
 
     @Test
-    public void constructorTest() {
+    public void constructorMSubTitle() {
         TextView textViewMSubTitle = (TextView) view.findViewById(R.id.ko__list_item_subtitle);
-        verify(view, times(3)).findViewById(anyInt());
 
-        collector.checkThat(listItemViewHolder.mSubTitle, notNullValue());
+        verify(view, times(1)).findViewById(eq(R.id.ko__list_item_title));
+        verify(view, times(2)).findViewById(eq(R.id.ko__list_item_subtitle));
+
         collector.checkThat(listItemViewHolder.mSubTitle, is(instanceOf(TextView.class)));
         collector.checkThat(listItemViewHolder.mSubTitle, is(equalTo(textViewMSubTitle)));
     }
