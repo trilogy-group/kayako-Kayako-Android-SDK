@@ -7,7 +7,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -25,25 +24,25 @@ public class SpinnerItemTest {
     @Test
     public void getResourceTest() {
         spinnerItem.setResource(resource);
-        assertThat(spinnerItem.getResource(), is(equalTo(resource)));
+        assertThat(spinnerItem.getResource(), is(resource));
     }
 
     @Test
     public void setResourceTest() {
         spinnerItem.setResource(resource);
-        assertThat(spinnerItem.getResource(), is(equalTo(resource)));
+        assertThat(spinnerItem.getResource(), is(resource));
     }
 
     @Test
     public void getLabel() {
         spinnerItem.setLabel(LABEL);
-        assertThat(spinnerItem.getLabel(), is(equalTo(LABEL)));
+        assertThat(spinnerItem.getLabel(), is(LABEL));
     }
 
     @Test
     public void setLabel() {
         spinnerItem.setLabel(LABEL);
-        assertThat(spinnerItem.getLabel(), is(equalTo(LABEL)));
+        assertThat(spinnerItem.getLabel(), is(LABEL));
     }
 
     @Test
@@ -51,7 +50,7 @@ public class SpinnerItemTest {
         SpinnerItem spinnerItem1 = new SpinnerItem();
         spinnerItem.setResource(resource);
         spinnerItem1.setResource(resource);
-        assertTrue( spinnerItem.equals(spinnerItem1));
+        assertTrue(spinnerItem.equals(spinnerItem1));
     }
 }
 
