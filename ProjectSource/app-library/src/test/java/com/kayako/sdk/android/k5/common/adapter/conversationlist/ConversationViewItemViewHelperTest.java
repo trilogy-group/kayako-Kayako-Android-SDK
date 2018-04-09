@@ -52,15 +52,9 @@ public class ConversationViewItemViewHelperTest {
     @Mock
     private View subjectLine;
 
-
     @Before
     public void setUp() throws Exception {
         mockContext = new MockContext();
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        validateMockitoUsage();
     }
 
     @Test
@@ -143,7 +137,7 @@ public class ConversationViewItemViewHelperTest {
     }
 
     @Test
-    public void setNameWhenNameisNull() {
+    public void setNameWhenNameIsNull() {
         String name = null;
         mockStatic(MessengerPref.class);
         when(MessengerPref.getInstance()).thenReturn(mock(MessengerPref.class));
@@ -152,7 +146,7 @@ public class ConversationViewItemViewHelperTest {
     }
 
     @Test
-    public void setNameWhenNameisNotNull() {
+    public void setNameWhenNameIsNotNull() {
         String name = "";
         ConversationViewItemViewHelper.setName(textView, name);
         verify(textView).setText(name);
