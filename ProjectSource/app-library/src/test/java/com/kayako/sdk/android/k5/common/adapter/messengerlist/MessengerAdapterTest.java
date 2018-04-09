@@ -62,7 +62,6 @@ import com.kayako.sdk.android.k5.common.utils.ImageUtils;
 import com.kayako.sdk.android.k5.common.view.CircleImageView;
 import com.kayako.sdk.android.k5.core.Kayako;
 
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -71,7 +70,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
@@ -147,7 +145,6 @@ public class MessengerAdapterTest {
     @Mock
     private CircleImageView channel;
 
-
     @Mock
     private TextView timeTextView;
 
@@ -161,9 +158,9 @@ public class MessengerAdapterTest {
     private MessengerAdapter messengerAdapter;
 
     private static final int POSITION = 0;
-    private static long NON_ZERO_TIME = System.currentTimeMillis();
-    private static long ZERO_TIME = 0L;
-    private static long ID = 1234L;
+    private static final long NON_ZERO_TIME = System.currentTimeMillis();
+    private static final long ZERO_TIME = 0L;
+    private static final long ID = 1L;
 
     @Before
     public void setUp() {
@@ -195,9 +192,8 @@ public class MessengerAdapterTest {
 
     @Test
     public void onBindViewHolderWhenMessengerListTypeIsAttachmentMessageOther() {
-        ChannelDecoration channelDecoration = null;
         AttachmentMessageOtherListItem listItem = new AttachmentMessageOtherListItem
-                (ID, "", channelDecoration, mock(Attachment.class), ZERO_TIME, data);
+                (ID, "", null, mock(Attachment.class), ZERO_TIME, data);
         AttachmentMessageOtherViewHolder viewHolder = mock(AttachmentMessageOtherViewHolder.class);
         viewHolder.channel = channel;
         viewHolder.time = timeTextView;
@@ -464,7 +460,6 @@ public class MessengerAdapterTest {
         verifyStatic(AttachmentHelper.class);
         AttachmentHelper.setUpAttachmentImages(listItem.getAttachment(), viewHolder.
                 attachmentPlaceholder, viewHolder.attachmentThumbnail, viewHolder.message);
-
     }
 
     @Test
@@ -490,14 +485,12 @@ public class MessengerAdapterTest {
         verifyStatic(AttachmentHelper.class);
         AttachmentHelper.setUpAttachmentImages(listItem.getAttachment(),
                 viewHolder.attachmentPlaceholder, viewHolder.attachmentThumbnail, viewHolder.message);
-
     }
 
     @Test
     public void onBindViewHolderWhenMessengerListTypeIsAttachmentMessageOtherElseCase() {
-        ChannelDecoration channelDecoration = null;
         AttachmentMessageOtherListItem listItem = new AttachmentMessageOtherListItem
-                (ID, "", channelDecoration, mock(Attachment.class), NON_ZERO_TIME, data);
+                (ID, "", null, mock(Attachment.class), NON_ZERO_TIME, data);
         AttachmentMessageOtherViewHolder viewHolder = mock(AttachmentMessageOtherViewHolder.class);
         viewHolder.channel = channel;
         viewHolder.time = timeTextView;
@@ -619,7 +612,6 @@ public class MessengerAdapterTest {
         when(recyclerViewScrollAdapter.getData()).thenReturn(baseListItemList);
         when(Kayako.getApplicationContext()).thenReturn(mockContext);
 
-
         messengerAdapter.onBindViewHolder(viewHolder, POSITION);
 
         verify(channel, times(1)).setVisibility(View.GONE);
@@ -632,7 +624,6 @@ public class MessengerAdapterTest {
 
     @Test
     public void onBindViewHolderWhenMessengerListTypeSimpleMessageOtherElseCase() {
-
         mockStatic(Kayako.class);
         mockStatic(ImageUtils.class);
         mockStatic(MessageStyleHelper.class);
@@ -663,8 +654,6 @@ public class MessengerAdapterTest {
 
     @Test
     public void onBindViewHolderWhenMessengerListTypeSimpleMessageContinuedOther() {
-
-
         mockStatic(Kayako.class);
         mockStatic(ImageUtils.class);
         mockStatic(MessageStyleHelper.class);
@@ -745,7 +734,6 @@ public class MessengerAdapterTest {
     public void setAvatarClickListenerOnView() {
         messengerAdapter.setOnAvatarClickListener(mAvatarClickListener);
         messengerAdapter.setAvatarClickListenerOnView(mockView, 0, ID, data);
-//        verifyNoMoreInteractions(mAvatarClickListener);
     }
 
     @Test
@@ -781,63 +769,59 @@ public class MessengerAdapterTest {
 
 
     @Test
-    public void testOnCreateViewHolderWhenMessengerListTypeIsSimpleMessageSelf() {
+    public void onCreateViewHolderWhenMessengerListTypeIsSimpleMessageSelf() {
         when(mockParent.getContext()).thenReturn(mockContext);
         when(LayoutInflater.from(mockContext)).thenReturn(mockInflater);
         when(mockInflater.inflate(anyInt(), eq(mockParent), eq(false))).thenReturn(mockView);
 
         RecyclerView.ViewHolder viewHolder = messengerAdapter.onCreateViewHolder(mockParent,
                 MessengerListType.SIMPLE_MESSAGE_SELF);
-
-        collector.checkThat(viewHolder, notNullValue());
+        
         collector.checkThat(viewHolder, is(instanceOf(SimpleMessageSelfViewHolder.class)));
         collector.checkThat(viewHolder.itemView, is(equalTo(mockView)));
     }
 
     @Test
-    public void testOnCreateViewHolderWhenMessengerListTypeIsSimpleMessageOther() {
+    public void onCreateViewHolderWhenMessengerListTypeIsSimpleMessageOther() {
         when(mockParent.getContext()).thenReturn(mockContext);
         when(LayoutInflater.from(mockContext)).thenReturn(mockInflater);
         when(mockInflater.inflate(anyInt(), eq(mockParent), eq(false))).thenReturn(mockView);
 
         RecyclerView.ViewHolder viewHolder = messengerAdapter.onCreateViewHolder(mockParent,
                 MessengerListType.SIMPLE_MESSAGE_OTHER);
-
-        collector.checkThat(viewHolder, notNullValue());
+        
         collector.checkThat(viewHolder, is(instanceOf(SimpleMessageOtherViewHolder.class)));
         collector.checkThat(viewHolder.itemView, is(equalTo(mockView)));
     }
 
     @Test
-    public void testOnCreateViewHolderWhenMessengerListTypeIsSimpleMessageContinuedSelf() {
+    public void onCreateViewHolderWhenMessengerListTypeIsSimpleMessageContinuedSelf() {
         when(mockParent.getContext()).thenReturn(mockContext);
         when(LayoutInflater.from(mockContext)).thenReturn(mockInflater);
         when(mockInflater.inflate(anyInt(), eq(mockParent), eq(false))).thenReturn(mockView);
 
         RecyclerView.ViewHolder viewHolder = messengerAdapter.onCreateViewHolder(mockParent,
                 MessengerListType.SIMPLE_MESSAGE_CONTINUED_SELF);
-
-        collector.checkThat(viewHolder, notNullValue());
+        
         collector.checkThat(viewHolder, is(instanceOf(SimpleMessageContinuedSelfViewHolder.class)));
         collector.checkThat(viewHolder.itemView, is(equalTo(mockView)));
     }
 
     @Test
-    public void testOnCreateViewHolderWhenMessengerListTypeIsSimpleMessageContinuedOther() {
+    public void onCreateViewHolderWhenMessengerListTypeIsSimpleMessageContinuedOther() {
         when(mockParent.getContext()).thenReturn(mockContext);
         when(LayoutInflater.from(mockContext)).thenReturn(mockInflater);
         when(mockInflater.inflate(anyInt(), eq(mockParent), eq(false))).thenReturn(mockView);
 
         RecyclerView.ViewHolder viewHolder = messengerAdapter.onCreateViewHolder(mockParent,
                 MessengerListType.SIMPLE_MESSAGE_CONTINUED_OTHER);
-
-        collector.checkThat(viewHolder, notNullValue());
+        
         collector.checkThat(viewHolder, is(instanceOf(SimpleMessageContinuedOtherViewHolder.class)));
         collector.checkThat(viewHolder.itemView, is(equalTo(mockView)));
     }
 
     @Test
-    public void testOnCreateViewHolderWhenMessengerListTypeIsAttachmentMessageSelf() {
+    public void onCreateViewHolderWhenMessengerListTypeIsAttachmentMessageSelf() {
         when(mockParent.getContext()).thenReturn(mockContext);
         when(LayoutInflater.from(mockContext)).thenReturn(mockInflater);
         when(mockInflater.inflate(anyInt(), eq(mockParent), eq(false))).thenReturn(mockView);
@@ -845,125 +829,117 @@ public class MessengerAdapterTest {
         RecyclerView.ViewHolder viewHolder = messengerAdapter.onCreateViewHolder(mockParent,
                 MessengerListType.ATTACHMENT_MESSAGE_SELF);
 
-        collector.checkThat(viewHolder, notNullValue());
+        
         collector.checkThat(viewHolder, is(instanceOf(AttachmentMessageSelfViewHolder.class)));
         collector.checkThat(viewHolder.itemView, is(equalTo(mockView)));
     }
 
     @Test
-    public void testOnCreateViewHolderWhenMessengerListTypeIsAttachmentMessageOther() {
+    public void onCreateViewHolderWhenMessengerListTypeIsAttachmentMessageOther() {
         when(mockParent.getContext()).thenReturn(mockContext);
         when(LayoutInflater.from(mockContext)).thenReturn(mockInflater);
         when(mockInflater.inflate(anyInt(), eq(mockParent), eq(false))).thenReturn(mockView);
 
         RecyclerView.ViewHolder viewHolder = messengerAdapter.onCreateViewHolder(mockParent,
                 MessengerListType.ATTACHMENT_MESSAGE_OTHER);
-
-        collector.checkThat(viewHolder, notNullValue());
+        
         collector.checkThat(viewHolder, is(instanceOf(AttachmentMessageOtherViewHolder.class)));
         collector.checkThat(viewHolder.itemView, is(equalTo(mockView)));
     }
 
     @Test
-    public void testOnCreateViewHolderWhenMessengerListTypeIsAttachmentMessageContinuedSelf() {
+    public void onCreateViewHolderWhenMessengerListTypeIsAttachmentMessageContinuedSelf() {
         when(mockParent.getContext()).thenReturn(mockContext);
         when(LayoutInflater.from(mockContext)).thenReturn(mockInflater);
         when(mockInflater.inflate(anyInt(), eq(mockParent), eq(false))).thenReturn(mockView);
 
         RecyclerView.ViewHolder viewHolder = messengerAdapter.onCreateViewHolder(mockParent,
                 MessengerListType.ATTACHMENT_MESSAGE_CONTINUED_SELF);
-
-        collector.checkThat(viewHolder, notNullValue());
+        
         collector.checkThat(viewHolder, is(instanceOf(AttachmentMessageContinuedSelfViewHolder.class)));
         collector.checkThat(viewHolder.itemView, is(equalTo(mockView)));
     }
 
     @Test
-    public void testOnCreateViewHolderWhenMessengerListTypeIsAttachmentMessageContinuedOther() {
+    public void onCreateViewHolderWhenMessengerListTypeIsAttachmentMessageContinuedOther() {
         when(mockParent.getContext()).thenReturn(mockContext);
         when(LayoutInflater.from(mockContext)).thenReturn(mockInflater);
         when(mockInflater.inflate(anyInt(), eq(mockParent), eq(false))).thenReturn(mockView);
 
         RecyclerView.ViewHolder viewHolder = messengerAdapter.onCreateViewHolder(mockParent,
                 MessengerListType.ATTACHMENT_MESSAGE_CONTINUED_OTHER);
-
-        collector.checkThat(viewHolder, notNullValue());
+        
         collector.checkThat(viewHolder, is(instanceOf(AttachmentMessageContinuedOtherViewHolder.class)));
         collector.checkThat(viewHolder.itemView, is(equalTo(mockView)));
     }
 
     @Test
-    public void testOnCreateViewHolderWhenMessengerListTypeIsDateSperator() {
+    public void onCreateViewHolderWhenMessengerListTypeIsDateSperator() {
         when(mockParent.getContext()).thenReturn(mockContext);
         when(LayoutInflater.from(mockContext)).thenReturn(mockInflater);
         when(mockInflater.inflate(anyInt(), eq(mockParent), eq(false))).thenReturn(mockView);
 
         RecyclerView.ViewHolder viewHolder = messengerAdapter.onCreateViewHolder(mockParent,
                 MessengerListType.DATE_SEPARATOR);
-
-        collector.checkThat(viewHolder, notNullValue());
+        
         collector.checkThat(viewHolder, is(instanceOf(DateSeparatorViewHolder.class)));
         collector.checkThat(viewHolder.itemView, is(equalTo(mockView)));
     }
 
     @Test
-    public void testOnCreateViewHolderWhenMessengerListTypeIsUnreadSperator() {
+    public void onCreateViewHolderWhenMessengerListTypeIsUnreadSperator() {
         when(mockParent.getContext()).thenReturn(mockContext);
         when(LayoutInflater.from(mockContext)).thenReturn(mockInflater);
         when(mockInflater.inflate(anyInt(), eq(mockParent), eq(false))).thenReturn(mockView);
 
         RecyclerView.ViewHolder viewHolder = messengerAdapter.onCreateViewHolder(mockParent,
                 MessengerListType.UNREAD_SEPARATOR);
-
-        collector.checkThat(viewHolder, notNullValue());
+        
         collector.checkThat(viewHolder, is(instanceOf(UnreadSeparatorViewHolder.class)));
         collector.checkThat(viewHolder.itemView, is(equalTo(mockView)));
     }
 
     @Test
-    public void testOnCreateViewHolderWhenMessengerListTypeIsEmptySperator() {
+    public void onCreateViewHolderWhenMessengerListTypeIsEmptySperator() {
         when(mockParent.getContext()).thenReturn(mockContext);
         when(LayoutInflater.from(mockContext)).thenReturn(mockInflater);
         when(mockInflater.inflate(anyInt(), eq(mockParent), eq(false))).thenReturn(mockView);
 
         RecyclerView.ViewHolder viewHolder = messengerAdapter.onCreateViewHolder(mockParent,
                 MessengerListType.EMPTY_SEPARATOR);
-
-        collector.checkThat(viewHolder, notNullValue());
+        
         collector.checkThat(viewHolder, is(instanceOf(EmptyViewHolder.class)));
         collector.checkThat(viewHolder.itemView, is(equalTo(mockView)));
     }
 
     @Test
-    public void testOnCreateViewHolderWhenMessengerListTypeIsBotMessage() {
+    public void onCreateViewHolderWhenMessengerListTypeIsBotMessage() {
         when(mockParent.getContext()).thenReturn(mockContext);
         when(LayoutInflater.from(mockContext)).thenReturn(mockInflater);
         when(mockInflater.inflate(anyInt(), eq(mockParent), eq(false))).thenReturn(mockView);
 
         RecyclerView.ViewHolder viewHolder = messengerAdapter.onCreateViewHolder(mockParent,
                 MessengerListType.BOT_MESSAGE);
-
-        collector.checkThat(viewHolder, notNullValue());
+        
         collector.checkThat(viewHolder, is(instanceOf(BotMessageViewHolder.class)));
         collector.checkThat(viewHolder.itemView, is(equalTo(mockView)));
     }
 
     @Test
-    public void testOnCreateViewHolderWhenMessengerListTypeIsSystemMessage() {
+    public void onCreateViewHolderWhenMessengerListTypeIsSystemMessage() {
         when(mockParent.getContext()).thenReturn(mockContext);
         when(LayoutInflater.from(mockContext)).thenReturn(mockInflater);
         when(mockInflater.inflate(anyInt(), eq(mockParent), eq(false))).thenReturn(mockView);
 
         RecyclerView.ViewHolder viewHolder = messengerAdapter.onCreateViewHolder(mockParent,
                 MessengerListType.SYSTEM_MESSAGE);
-
-        collector.checkThat(viewHolder, notNullValue());
+        
         collector.checkThat(viewHolder, is(instanceOf(SystemMessageViewHolder.class)));
         collector.checkThat(viewHolder.itemView, is(equalTo(mockView)));
     }
 
     @Test
-    public void testOnCreateViewHolderWhenMessengerListTypeIsInputFieldEmail() {
+    public void onCreateViewHolderWhenMessengerListTypeIsInputFieldEmail() {
         when(mockParent.getContext()).thenReturn(mockContext);
         when(LayoutInflater.from(mockContext)).thenReturn(mockInflater);
         when(mockInflater.inflate(anyInt(), eq(mockParent), eq(false))).thenReturn(mockView);
@@ -972,14 +948,13 @@ public class MessengerAdapterTest {
 
         RecyclerView.ViewHolder viewHolder = messengerAdapter.onCreateViewHolder(mockParent,
                 MessengerListType.INPUT_FIELD_EMAIL);
-
-        collector.checkThat(viewHolder, notNullValue());
+        
         collector.checkThat(viewHolder, is(instanceOf(InputEmailViewHolder.class)));
         collector.checkThat(viewHolder.itemView, is(equalTo(mockView)));
     }
 
     @Test
-    public void testOnCreateViewHolderWhenMessengerListTypeIsInputFeedbackRating() {
+    public void onCreateViewHolderWhenMessengerListTypeIsInputFeedbackRating() {
         when(mockParent.getContext()).thenReturn(mockContext);
         when(LayoutInflater.from(mockContext)).thenReturn(mockInflater);
         when(mockInflater.inflate(anyInt(), eq(mockParent), eq(false))).thenReturn(mockView);
@@ -988,14 +963,13 @@ public class MessengerAdapterTest {
 
         RecyclerView.ViewHolder viewHolder = messengerAdapter.onCreateViewHolder(mockParent,
                 MessengerListType.INPUT_FIELD_FEEDBACK_RATING);
-
-        collector.checkThat(viewHolder, notNullValue());
+        
         collector.checkThat(viewHolder, is(instanceOf(InputFeedbackRatingViewHolder.class)));
         collector.checkThat(viewHolder.itemView, is(equalTo(mockView)));
     }
 
     @Test
-    public void testOnCreateViewHolderWhenMessengerListTypeIsInputFeedbackComment() {
+    public void onCreateViewHolderWhenMessengerListTypeIsInputFeedbackComment() {
         when(mockParent.getContext()).thenReturn(mockContext);
         when(LayoutInflater.from(mockContext)).thenReturn(mockInflater);
         when(mockInflater.inflate(anyInt(), eq(mockParent), eq(false))).thenReturn(mockView);
@@ -1004,14 +978,13 @@ public class MessengerAdapterTest {
 
         RecyclerView.ViewHolder viewHolder = messengerAdapter.onCreateViewHolder(mockParent,
                 MessengerListType.INPUT_FIELD_FEEDBACK_COMMENT);
-
-        collector.checkThat(viewHolder, notNullValue());
+        
         collector.checkThat(viewHolder, is(instanceOf(InputFeedbackCommentViewHolder.class)));
         collector.checkThat(viewHolder.itemView, is(equalTo(mockView)));
     }
 
     @Test
-    public void testOnCreateViewHolderWhenMessengerListTypeIsInputFeedbackCompleted() {
+    public void onCreateViewHolderWhenMessengerListTypeIsInputFeedbackCompleted() {
         when(mockParent.getContext()).thenReturn(mockContext);
         when(LayoutInflater.from(mockContext)).thenReturn(mockInflater);
         when(mockInflater.inflate(anyInt(), eq(mockParent), eq(false))).thenReturn(mockView);
@@ -1020,36 +993,33 @@ public class MessengerAdapterTest {
 
         RecyclerView.ViewHolder viewHolder = messengerAdapter.onCreateViewHolder(mockParent,
                 MessengerListType.INPUT_FIELD_FEEDBACK_COMPLETED);
-
-        collector.checkThat(viewHolder, notNullValue());
+        
         collector.checkThat(viewHolder, is(instanceOf(InputFeedbackCompletedViewHolder.class)));
         collector.checkThat(viewHolder.itemView, is(equalTo(mockView)));
     }
 
     @Test
-    public void testOnCreateViewHolderWhenMessengerListTypeIsTypingFooter() {
+    public void onCreateViewHolderWhenMessengerListTypeIsTypingFooter() {
         when(mockParent.getContext()).thenReturn(mockContext);
         when(LayoutInflater.from(mockContext)).thenReturn(mockInflater);
         when(mockInflater.inflate(anyInt(), eq(mockParent), eq(false))).thenReturn(mockView);
 
         RecyclerView.ViewHolder viewHolder = messengerAdapter.onCreateViewHolder(mockParent,
                 MessengerListType.TYPING_FOOTER);
-
-        collector.checkThat(viewHolder, notNullValue());
+        
         collector.checkThat(viewHolder, is(instanceOf(TypingViewHolder.class)));
         collector.checkThat(viewHolder.itemView, is(equalTo(mockView)));
     }
 
     @Test
-    public void testOnCreateViewHolderWhenDefaultSection() {
+    public void onCreateViewHolderWhenDefaultSection() {
         when(mockParent.getContext()).thenReturn(mockContext);
         when(LayoutInflater.from(mockContext)).thenReturn(mockInflater);
         when(mockInflater.inflate(anyInt(), eq(mockParent), eq(false))).thenReturn(mockView);
 
         RecyclerView.ViewHolder viewHolder = messengerAdapter.onCreateViewHolder(mockParent,
                 ListType.LOADING_ITEM);
-
-        collector.checkThat(viewHolder, notNullValue());
+        
         collector.checkThat(viewHolder, is(instanceOf(LoadingViewHolder.class)));
         collector.checkThat(viewHolder.itemView, is(equalTo(mockView)));
     }
