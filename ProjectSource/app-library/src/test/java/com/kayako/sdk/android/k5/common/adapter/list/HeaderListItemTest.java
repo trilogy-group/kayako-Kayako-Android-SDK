@@ -2,7 +2,6 @@ package com.kayako.sdk.android.k5.common.adapter.list;
 
 import com.kayako.sdk.base.parser.Resource;
 
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -28,16 +27,6 @@ public class HeaderListItemTest {
     public void setTitleTest() {
         headerListItem.setTitle(TITLE);
         assertThat(headerListItem.getTitle(), is(equalTo(TITLE)));
-    }
-
-    @Test
-    public void getTitleTest() {
-        assertThat(headerListItem.getTitle(), is(equalTo(TITLE)));
-    }
-
-    @Test
-    public void getResourceTest() {
-        assertThat(headerListItem.getResource(), is(equalTo(resource)));
     }
 
     @Test
