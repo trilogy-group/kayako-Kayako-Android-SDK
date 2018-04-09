@@ -21,8 +21,6 @@ import org.mockito.Mock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.validateMockitoUsage;
@@ -33,25 +31,27 @@ import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.doNothing;
 
-
-
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Kayako.class, ImageUtils.class, MessengerPref.class})
+@PrepareForTest({
+        Kayako.class,
+        ImageUtils.class,
+        MessengerPref.class
+})
 public class ConversationViewItemViewHelperTest {
 
-    @Mock
-    TextView textView;
-
-    @Mock
-    ImageView imageView;
-
-    @Mock
-    View subjectLine;
-
+    private int unreadCount;
 
     private MockContext mockContext;
 
-    private int UNREAD_COUNT;
+    @Mock
+    private TextView textView;
+
+    @Mock
+    private ImageView imageView;
+
+    @Mock
+    private View subjectLine;
+
 
     @Before
     public void setUp() throws Exception {
@@ -65,43 +65,45 @@ public class ConversationViewItemViewHelperTest {
 
     @Test
     public void shouldCallSetVisibilityWhenZeroUnreadCount() {
-        UNREAD_COUNT = 0;
-        ConversationViewItemViewHelper.setUnreadCounter(textView, UNREAD_COUNT);
+        unreadCount = 0;
+        ConversationViewItemViewHelper.setUnreadCounter(textView, unreadCount);
         verify(textView, times(1)).setVisibility(View.GONE);
     }
 
     @Test
     public void shouldCallSetVisibilityWhenUnreadCountGreaterThanNine() {
-        UNREAD_COUNT = 10;
-        ConversationViewItemViewHelper.setUnreadCounter(textView, UNREAD_COUNT);
+        unreadCount = 10;
+        ConversationViewItemViewHelper.setUnreadCounter(textView, unreadCount);
         verify(textView, times(1)).setVisibility(View.VISIBLE);
         verify(textView, times(1)).setText("+9");
     }
 
     @Test
     public void shouldCallSetVisibilityWhenUnreadCountNotEqualZeroAndLessThanNine() {
-        UNREAD_COUNT = 5;
-        ConversationViewItemViewHelper.setUnreadCounter(textView, UNREAD_COUNT);
+        unreadCount = 5;
+        ConversationViewItemViewHelper.setUnreadCounter(textView, unreadCount);
         verify(textView, times(1)).setVisibility(View.VISIBLE);
-        verify(textView, times(1)).setText(String.valueOf(UNREAD_COUNT));
+        verify(textView, times(1)).setText(String.valueOf(unreadCount));
     }
 
     @Test
     public void setFormattedTimeTest() {
         long timeInMilliseconds = System.currentTimeMillis();
         ConversationViewItemViewHelper.setFormattedTime(textView, timeInMilliseconds);
-        verify(textView, times(1)).setText(DateTimeUtils.formatMessengerDateTime(System.currentTimeMillis(), timeInMilliseconds));
+        verify(textView, times(1)).setText(DateTimeUtils.
+                formatMessengerDateTime(System.currentTimeMillis(), timeInMilliseconds));
     }
 
     @Test
-    public void testSetTypingIndicatorWhenIsTypingIsTrue() throws Exception {
+    public void setTypingIndicatorWhenIsTypingIsTrue() throws Exception {
         boolean isTyping = Boolean.TRUE;
         mockStatic(Kayako.class);
         mockStatic(ImageUtils.class);
 
         when(Kayako.getApplicationContext()).thenReturn(mockContext);
         doNothing()
-                .when(ImageUtils.class, "setImage", eq(mockContext), eq(imageView), anyString(), anyInt());
+                .when(ImageUtils.class, "setImage", eq(mockContext), eq(imageView),
+                        eq(null), eq(R.drawable.ko__img_loading_dots));
 
         ConversationViewItemViewHelper.setTypingIndicator(imageView, subjectLine, isTyping);
 
@@ -110,7 +112,7 @@ public class ConversationViewItemViewHelperTest {
     }
 
     @Test
-    public void testSetTypingIndicatorWhenIsTypingisFalse() throws Exception {
+    public void setTypingIndicatorWhenIsTypingisFalse() throws Exception {
         boolean isTyping = Boolean.FALSE;
         ConversationViewItemViewHelper.setTypingIndicator(imageView, subjectLine, isTyping);
         verify(imageView, times(1)).setVisibility(View.GONE);
@@ -118,29 +120,30 @@ public class ConversationViewItemViewHelperTest {
     }
 
     @Test
-    public void testSetAvatarWhenAvatarUrlIsNull() throws Exception {
-        String avatarUrl = null;
+    public void setAvatarWhenAvatarUrlIsNull() throws Exception {
         mockStatic(ImageUtils.class);
-        doNothing().when(ImageUtils.class, "setAvatarImage", eq(mockContext), eq(imageView), eq(null));
-        ConversationViewItemViewHelper.setAvatar(mockContext, imageView, avatarUrl);
+        doNothing().when(ImageUtils.class, "setAvatarImage", eq(mockContext),
+                eq(imageView), eq(null));
+        ConversationViewItemViewHelper.setAvatar(mockContext, imageView, null);
 
         verifyStatic(ImageUtils.class, times(1));
-        ImageUtils.setAvatarImage(mockContext, imageView, BotMessageHelper.getDefaultDrawableForConversation());
+        ImageUtils.setAvatarImage(mockContext, imageView, BotMessageHelper
+                .getDefaultDrawableForConversation());
     }
 
     @Test
-    public void testSetAvatarWhenAvatarUrlIsNotNull() throws Exception {
+    public void setAvatarWhenAvatarUrlIsNotNull() throws Exception {
         String avatarUrl = "testUrl";
         mockStatic(ImageUtils.class);
-        doNothing().when(ImageUtils.class, "setAvatarImage", eq(mockContext), eq(imageView), anyString());
+        doNothing().when(ImageUtils.class, "setAvatarImage", eq(mockContext),
+                eq(imageView), eq(avatarUrl));
         ConversationViewItemViewHelper.setAvatar(mockContext, imageView, avatarUrl);
         verifyStatic(ImageUtils.class, times(1));
         ImageUtils.setAvatarImage(mockContext, imageView, avatarUrl);
-
     }
 
     @Test
-    public void testSetNameWhenNameisNull() {
+    public void setNameWhenNameisNull() {
         String name = null;
         mockStatic(MessengerPref.class);
         when(MessengerPref.getInstance()).thenReturn(mock(MessengerPref.class));
@@ -149,7 +152,7 @@ public class ConversationViewItemViewHelperTest {
     }
 
     @Test
-    public void testSetNameWhenNameisNotNull() {
+    public void setNameWhenNameisNotNull() {
         String name = "";
         ConversationViewItemViewHelper.setName(textView, name);
         verify(textView).setText(name);
