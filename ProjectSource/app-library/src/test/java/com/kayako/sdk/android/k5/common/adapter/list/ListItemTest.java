@@ -20,46 +20,33 @@ public class ListItemTest {
     @Rule
     public final ErrorCollector collector = new ErrorCollector();
 
-    private String title;
-    private String subtitle;
-    private int listType;
+    private static final String TITLE = "titleTest";
+    private static final String SUBTITLE = "subtitleTest";
+    private static final int LIST_TYPE = 2;
+
     private Resource resource;
     private ListItem listItem;
 
     @Before
     public void setUp() {
-        this.title = "titleTest";
-        this.subtitle = "subtitleTest";
-        this.listType = 2;
-        listItem = new ListItem(this.title, this.subtitle, this.resource);
-    }
-
-
-    @Test
-    public void getTitleTest() {
-        assertThat(listItem.getTitle(), is(equalTo(this.title)));
+        listItem = new ListItem(TITLE, SUBTITLE, resource);
     }
 
     @Test
     public void setTitleTest() {
         listItem.setTitle("titleTest");
-        assertThat(listItem.getTitle(), is(equalTo(this.title)));
-    }
-
-    @Test
-    public void getSubtitleTest() {
-        assertThat(listItem.getSubtitle(), is(equalTo(this.subtitle)));
+        assertThat(listItem.getTitle(), is(equalTo(TITLE)));
     }
 
     @Test
     public void setSubtitleTest() {
         listItem.setSubtitle("subtitleTest");
-        assertThat(listItem.getSubtitle(), is(equalTo(this.subtitle)));
+        assertThat(listItem.getSubtitle(), is(equalTo(SUBTITLE)));
     }
 
     @Test
     public void getResourceTest() {
-        assertThat(listItem.getResource(), is(equalTo(this.resource)));
+        assertThat(listItem.getResource(), is(equalTo(resource)));
     }
 
     @Test
@@ -70,10 +57,10 @@ public class ListItemTest {
 
     @Test
     public void constructorAllArgsTest() {
-        listItem = new ListItem(this.listType, this.title, this.subtitle, this.resource);
-        collector.checkThat(listItem.getItemType(), is(equalTo(this.listType)));
-        collector.checkThat(listItem.getTitle(), is(equalTo(this.title)));
-        collector.checkThat(listItem.getSubtitle(), is(equalTo(this.subtitle)));
+        listItem = new ListItem(LIST_TYPE, TITLE, SUBTITLE, resource);
+        collector.checkThat(listItem.getItemType(), is(equalTo(LIST_TYPE)));
+        collector.checkThat(listItem.getTitle(), is(equalTo(TITLE)));
+        collector.checkThat(listItem.getSubtitle(), is(equalTo(SUBTITLE)));
         collector.checkThat(listItem.getResource(), is(equalTo(resource)));
     }
 
@@ -81,13 +68,14 @@ public class ListItemTest {
     public void getContentsTest() {
         String listItemTitle = listItem.getContents().get("title");
         String listItemSubTitle = listItem.getContents().get("subtitle");
-        collector.checkThat(listItemTitle, is(equalTo(String.valueOf(this.title))));
-        collector.checkThat(listItemSubTitle, is(equalTo(String.valueOf(this.subtitle))));
+
+        collector.checkThat(listItemTitle, is(equalTo(String.valueOf(TITLE))));
+        collector.checkThat(listItemSubTitle, is(equalTo(String.valueOf(SUBTITLE))));
     }
 
     @Test
     public void equalsTest() {
-        ListItem listItem1 = new ListItem(this.title, this.subtitle, this.resource);
-        assertEquals(true, this.listItem.equals(listItem1));
+        ListItem listItem1 = new ListItem(TITLE, SUBTITLE, resource);
+        assertEquals(true, listItem.equals(listItem1));
     }
 }
