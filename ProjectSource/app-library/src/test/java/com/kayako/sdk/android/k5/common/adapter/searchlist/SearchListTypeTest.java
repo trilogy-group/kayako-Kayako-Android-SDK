@@ -11,9 +11,7 @@ public class SearchListTypeTest {
     private static final int SEARCH_ITEM = 2;
 
     @Test
-    public void testSearchItemValueIsCorrect() {
+    public void searchItemValueIsCorrect() {
         assertThat(SearchListType.SEARCH_ITEM, is(equalTo(SEARCH_ITEM)));
     }
-
-
 }
