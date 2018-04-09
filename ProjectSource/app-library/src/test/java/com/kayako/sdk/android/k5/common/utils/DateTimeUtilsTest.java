@@ -1,6 +1,7 @@
 package com.kayako.sdk.android.k5.common.utils;
 
 import android.test.mock.MockContext;
+import android.text.format.DateUtils;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.equalTo;
 
@@ -27,173 +28,167 @@ import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({android.text.format.DateUtils.class})
+@PrepareForTest({DateUtils.class})
 public class DateTimeUtilsTest {
 
-    private final String JUST_NOW = "Just now";
-    private final String NOW_ = "now";
-    private final String ONE_MINUTE_AGO = "1m ago";
-    private final String ONE_HOUR_AGO = "1h ago";
-    private final String ONE_DAY_AGO = "1d ago";
-    private final long ONE_SECOND = 1000;
-    private final long ONE_MINUTE = 60 * ONE_SECOND;
-    private final long ONE_HOUR = 60 * ONE_MINUTE;
-    private final long ONE_DAY = 24 * ONE_HOUR;
-    private final long ONE_YEAR = 365 * ONE_DAY;
+    private static final String JUST_NOW = "Just now";
+    private static final String NOW = "now";
+    private static final String ONE_MINUTE_AGO = "1m ago";
+    private static final String ONE_HOUR_AGO = "1h ago";
+    private static final String ONE_DAY_AGO = "1d ago";
+    private static final String FORMAT_PATTERN = "h:mm a";
+    private static final String FORMATTED_DATE = "12/12/2018";
 
-    final String FORMAT_PATTERN = "h:mm a";
+    private static final long ONE_SECOND_IN_MILLIS = 1_000L;
+    private static final long ONE_MINUTE_IN_MILLIS = 60 * ONE_SECOND_IN_MILLIS;
+    private static final long ONE_HOUR_IN_MILLIS = 60 * ONE_MINUTE_IN_MILLIS;
+    private static final long ONE_DAY_IN_MILLIS = 24 * ONE_HOUR_IN_MILLIS;
+    private static final long ONE_YEAR_IN_MILLIS = 365 * ONE_DAY_IN_MILLIS;
+    private static final long NOW_IN_MILLIS = System.currentTimeMillis();
+
+
+    private long timeInMilliseconds = NOW_IN_MILLIS;
 
     private MockContext mockContext;
-
-    private long TIME_IN_MILLISECONDS;
-    private long NOW;
-    private String FORMATTED_DATE;
-
 
     @Before
     public void setUp() {
         mockStatic(android.text.format.DateUtils.class);
         mockContext = new MockContext();
-        NOW = System.currentTimeMillis();
+        timeInMilliseconds = NOW_IN_MILLIS;
     }
-
 
     @Test
     public void formatDate() {
-        TIME_IN_MILLISECONDS = NOW;
-        FORMATTED_DATE = "12/12/2018";
         when(android.text.format.DateUtils.getRelativeTimeSpanString(anyLong(), anyLong(), anyLong(), anyInt())).thenReturn(FORMATTED_DATE);
-        String dateStr = DateTimeUtils.formatDate(mockContext, TIME_IN_MILLISECONDS);
+        String dateStr = DateTimeUtils.formatDate(mockContext, timeInMilliseconds);
         assertThat(dateStr, is(FORMATTED_DATE));
         verifyStatic(android.text.format.DateUtils.class, times(1));
     }
 
     @Test
     public void formatTimeTest() {
-        TIME_IN_MILLISECONDS = NOW;
-        String dateStr = DateTimeUtils.formatTime(mockContext, TIME_IN_MILLISECONDS);
+        String dateStr = DateTimeUtils.formatTime(mockContext, timeInMilliseconds);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(FORMAT_PATTERN, Locale.US);
-        assertThat(simpleDateFormat.format(new Date(TIME_IN_MILLISECONDS)), is(equalTo(dateStr)));
+        assertThat(simpleDateFormat.format(new Date(timeInMilliseconds)), is(equalTo(dateStr)));
     }
 
     @Test
     public void testFormatMessengerDateTimeWhenDifferenceLessThanAndEqualFourtyFour() {
-        TIME_IN_MILLISECONDS = NOW - 44 * ONE_SECOND;
-        String dateStr = DateTimeUtils.formatMessengerDateTime(NOW, TIME_IN_MILLISECONDS);
+        timeInMilliseconds = NOW_IN_MILLIS - 44 * ONE_SECOND_IN_MILLIS;
+        String dateStr = DateTimeUtils.formatMessengerDateTime(NOW_IN_MILLIS, timeInMilliseconds);
         assertThat(dateStr, is(equalTo(JUST_NOW)));
     }
 
     @Test
     public void testFormatMessengerDateTimeWhenDifferenceLessThanAndEqualEightyNineSecond() {
-        TIME_IN_MILLISECONDS = NOW - 89 * ONE_SECOND;
-        String dateStr = DateTimeUtils.formatMessengerDateTime(NOW, TIME_IN_MILLISECONDS);
+        timeInMilliseconds = NOW_IN_MILLIS - 89 * ONE_SECOND_IN_MILLIS;
+        String dateStr = DateTimeUtils.formatMessengerDateTime(NOW_IN_MILLIS, timeInMilliseconds);
         assertThat(dateStr, is(equalTo(ONE_MINUTE_AGO)));
     }
 
 
     @Test
     public void testFormatMessengerDateTimeWhenDifferenceLessThanAndEqualFourtyFourMinute() {
-        TIME_IN_MILLISECONDS = NOW - 44 * ONE_MINUTE;
-        String dateStr = DateTimeUtils.formatMessengerDateTime(NOW, TIME_IN_MILLISECONDS);
+        timeInMilliseconds = NOW_IN_MILLIS - 44 * ONE_MINUTE_IN_MILLIS;
+        String dateStr = DateTimeUtils.formatMessengerDateTime(NOW_IN_MILLIS, timeInMilliseconds);
         assertThat(dateStr, is(equalTo(String.format(Locale.US, "%dm ago", 44))));
     }
 
     @Test
     public void testFormatMessengerDateTimeWhenDifferenceLessThanAndEqualEightyNineMinutes() {
-        TIME_IN_MILLISECONDS = NOW - 89 * ONE_MINUTE;
-        String dateStr = DateTimeUtils.formatMessengerDateTime(NOW, TIME_IN_MILLISECONDS);
+        timeInMilliseconds = NOW_IN_MILLIS - 89 * ONE_MINUTE_IN_MILLIS;
+        String dateStr = DateTimeUtils.formatMessengerDateTime(NOW_IN_MILLIS, timeInMilliseconds);
         assertThat(dateStr, is(equalTo(ONE_HOUR_AGO)));
     }
 
     @Test
     public void testFormatMessengerDateTimeWhenDifferenceLessThanAndEqualTwentyOneHours() {
-        TIME_IN_MILLISECONDS = NOW - 21 * ONE_HOUR;
-        String dateStr = DateTimeUtils.formatMessengerDateTime(NOW, TIME_IN_MILLISECONDS);
+        timeInMilliseconds = NOW_IN_MILLIS - 21 * ONE_HOUR_IN_MILLIS;
+        String dateStr = DateTimeUtils.formatMessengerDateTime(NOW_IN_MILLIS, timeInMilliseconds);
         assertThat(dateStr, is(equalTo(String.format(Locale.US, "%dh ago", 21))));
     }
 
     @Test
     public void testFormatMessengerDateTimeWhenDifferenceLessThanAndEqualOneHundredThirtyTwoHours() {
-        TIME_IN_MILLISECONDS = NOW - 132 * ONE_HOUR;
-        String dateStr = DateTimeUtils.formatMessengerDateTime(NOW, TIME_IN_MILLISECONDS);
+        timeInMilliseconds = NOW_IN_MILLIS - 132 * ONE_HOUR_IN_MILLIS;
+        String dateStr = DateTimeUtils.formatMessengerDateTime(NOW_IN_MILLIS, timeInMilliseconds);
         assertThat(dateStr, is(equalTo(String.format(Locale.US, "%dd ago", 132 / 24))));
     }
 
     @Test
     public void testFormatMessengerDateTimeElseCase() {
-        TIME_IN_MILLISECONDS = NOW - 150 * ONE_HOUR;
-        String dateStr = DateTimeUtils.formatMessengerDateTime(NOW, TIME_IN_MILLISECONDS);
+        timeInMilliseconds = NOW_IN_MILLIS - 150 * ONE_HOUR_IN_MILLIS;
+        String dateStr = DateTimeUtils.formatMessengerDateTime(NOW_IN_MILLIS, timeInMilliseconds);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-        String expected = simpleDateFormat.format(new Date(TIME_IN_MILLISECONDS));
+        String expected = simpleDateFormat.format(new Date(timeInMilliseconds));
         assertThat(dateStr, is(equalTo(expected)));
     }
 
 
     @Test
     public void testFormatMessengerDateTimeWhenDifferenceLessThanAndEqualThirtyFiveHours() {
-        TIME_IN_MILLISECONDS = NOW - 35 * ONE_HOUR;
-        String dateStr = DateTimeUtils.formatMessengerDateTime(NOW, TIME_IN_MILLISECONDS);
+        timeInMilliseconds = NOW_IN_MILLIS - 35 * ONE_HOUR_IN_MILLIS;
+        String dateStr = DateTimeUtils.formatMessengerDateTime(NOW_IN_MILLIS, timeInMilliseconds);
         assertThat(dateStr, is(equalTo(ONE_DAY_AGO)));
     }
 
-
     @Test
     public void formatShortDateTimeTestWhenDiffLessThanOneMinute() {
-        TIME_IN_MILLISECONDS = NOW - 50 * ONE_SECOND;
-        String dateStr = DateTimeUtils.formatShortDateTime(NOW, TIME_IN_MILLISECONDS);
-        assertThat(dateStr, is(equalTo(NOW_)));
+        timeInMilliseconds = NOW_IN_MILLIS - 50 * ONE_SECOND_IN_MILLIS;
+        String dateStr = DateTimeUtils.formatShortDateTime(NOW_IN_MILLIS, timeInMilliseconds);
+        assertThat(dateStr, is(equalTo(NOW)));
     }
 
     @Test
     public void formatShortDateTimeTestWhenDiffLessThanOneHour() {
-        TIME_IN_MILLISECONDS = NOW - 50 * ONE_MINUTE;
-        String dateStr = DateTimeUtils.formatShortDateTime(NOW, TIME_IN_MILLISECONDS);
+        timeInMilliseconds = NOW_IN_MILLIS - 50 * ONE_MINUTE_IN_MILLIS;
+        String dateStr = DateTimeUtils.formatShortDateTime(NOW_IN_MILLIS, timeInMilliseconds);
         assertThat(dateStr, is(equalTo(String.format(Locale.US, "%dm", 50))));
     }
 
     @Test
     public void formatShortDateTimeTestWhenDiffLessThanOneDay() {
-        TIME_IN_MILLISECONDS = NOW - 23 * ONE_HOUR;
-        String dateStr = DateTimeUtils.formatShortDateTime(NOW, TIME_IN_MILLISECONDS);
+        timeInMilliseconds = NOW_IN_MILLIS - 23 * ONE_HOUR_IN_MILLIS;
+        String dateStr = DateTimeUtils.formatShortDateTime(NOW_IN_MILLIS, timeInMilliseconds);
         assertThat(dateStr, is(equalTo(String.format(Locale.US, "%dh", 23))));
     }
 
     @Test
     public void formatShortDateTimeTestWhenDiffLessThanThreeDay() {
-        TIME_IN_MILLISECONDS = NOW - 2 * ONE_DAY;
-        String dateStr = DateTimeUtils.formatShortDateTime(NOW, TIME_IN_MILLISECONDS);
+        timeInMilliseconds = NOW_IN_MILLIS - 2 * ONE_DAY_IN_MILLIS;
+        String dateStr = DateTimeUtils.formatShortDateTime(NOW_IN_MILLIS, timeInMilliseconds);
         assertThat(dateStr, is(equalTo(String.format(Locale.US, "%dd", 2))));
     }
 
     @Test
     public void formatShortDateTimeTestWhenDiffLessThanOneYear() {
-        TIME_IN_MILLISECONDS = NOW - 360 * ONE_DAY;
-        String dateStr = DateTimeUtils.formatShortDateTime(NOW, TIME_IN_MILLISECONDS);
-        assertThat(dateStr, is(equalTo(new SimpleDateFormat("d MMM", Locale.US).format(new Date(TIME_IN_MILLISECONDS)))));
+        timeInMilliseconds = NOW_IN_MILLIS - 360 * ONE_DAY_IN_MILLIS;
+        String dateStr = DateTimeUtils.formatShortDateTime(NOW_IN_MILLIS, timeInMilliseconds);
+        assertThat(dateStr, is(equalTo(new SimpleDateFormat("d MMM", Locale.US).format(new Date(timeInMilliseconds)))));
     }
 
     @Test
     public void formatShortDateTimeTestElseCase() {
-        TIME_IN_MILLISECONDS = NOW - 2 * ONE_YEAR;
-        String dateStr = DateTimeUtils.formatShortDateTime(NOW, TIME_IN_MILLISECONDS);
+        timeInMilliseconds = NOW_IN_MILLIS - 2 * ONE_YEAR_IN_MILLIS;
+        String dateStr = DateTimeUtils.formatShortDateTime(NOW_IN_MILLIS, timeInMilliseconds);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM yyyy", Locale.US);
-        assertThat(dateStr, is(equalTo(simpleDateFormat.format(new Date(TIME_IN_MILLISECONDS)))));
+        assertThat(dateStr, is(equalTo(simpleDateFormat.format(new Date(timeInMilliseconds)))));
     }
 
 
     @Test
     public void formatOnlyDateNotTimeThisYearTest() {
-        TIME_IN_MILLISECONDS = NOW - ONE_YEAR;
-        String dateStr = DateTimeUtils.formatOnlyDateNotTimeThisYear(TIME_IN_MILLISECONDS);
-        assertThat(dateStr, is(equalTo(new SimpleDateFormat("d MMM", Locale.US).format(new Date(TIME_IN_MILLISECONDS)))));
+        timeInMilliseconds = NOW_IN_MILLIS - ONE_YEAR_IN_MILLIS;
+        String dateStr = DateTimeUtils.formatOnlyDateNotTimeThisYear(timeInMilliseconds);
+        assertThat(dateStr, is(equalTo(new SimpleDateFormat("d MMM", Locale.US).format(new Date(timeInMilliseconds)))));
     }
 
     @Test
     public void formatOnlyDateNotTimeBeyondYearTest() {
-        TIME_IN_MILLISECONDS = NOW - 2 * ONE_YEAR;
-        String dateStr = DateTimeUtils.formatOnlyDateNotTimeBeyondYear(TIME_IN_MILLISECONDS);
+        timeInMilliseconds = NOW_IN_MILLIS - 2 * ONE_YEAR_IN_MILLIS;
+        String dateStr = DateTimeUtils.formatOnlyDateNotTimeBeyondYear(timeInMilliseconds);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM yyyy", Locale.US);
-        assertThat(dateStr, is(equalTo(simpleDateFormat.format(new Date(TIME_IN_MILLISECONDS)))));
-
+        assertThat(dateStr, is(equalTo(simpleDateFormat.format(new Date(timeInMilliseconds)))));
     }
 }
