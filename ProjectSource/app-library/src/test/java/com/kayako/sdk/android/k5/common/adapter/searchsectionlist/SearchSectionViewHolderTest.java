@@ -25,16 +25,16 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class SearchSectionViewHolderTest {
 
+    private SearchSectionViewHolder headerViewHolder;
+
     @Rule
-    public ErrorCollector collector = new ErrorCollector();
+    public final ErrorCollector collector = new ErrorCollector();
 
     @Mock
     View view;
 
     @Mock
     TextView textView;
-
-    SearchSectionViewHolder headerViewHolder;
 
     @Before
     public void setUp() {
@@ -53,12 +53,13 @@ public class SearchSectionViewHolderTest {
 
     @Test
     public void constructorMTitleTest() {
+        //Act
         TextView textViewMTitle = (TextView) view.findViewById(R.id.ko__search_bar);
-        verify(view, times(2)).findViewById(anyInt());
 
+        //Assert
+        verify(view, times(2)).findViewById(anyInt());
         collector.checkThat(headerViewHolder.mSearchEditText, notNullValue());
         collector.checkThat(headerViewHolder.mSearchEditText, is(instanceOf(TextView.class)));
         collector.checkThat(headerViewHolder.mSearchEditText, is(equalTo(textViewMTitle)));
     }
-
 }
