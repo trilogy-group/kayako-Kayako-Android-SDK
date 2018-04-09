@@ -10,7 +10,7 @@ public class SectionInfoListTypeTest {
     private static final int SECTION_INFO_ITEM = 4;
 
     @Test
-    public void testSectionInfoListTypPropertyValueIsCorrect() {
+    public void sectionInfoListTypPropertyValueIsCorrect() {
         assertThat(SectionInfoListType.SECTION_INFO_ITEM, is(equalTo(SECTION_INFO_ITEM)));
     }
 
