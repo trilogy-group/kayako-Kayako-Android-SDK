@@ -18,7 +18,6 @@ public class BaseDataListItemTest {
     @Mock
     BaseDataListItem baseDataListItem;
 
-
     @Test
     public void getData() {
         baseDataListItem.setData(data);
