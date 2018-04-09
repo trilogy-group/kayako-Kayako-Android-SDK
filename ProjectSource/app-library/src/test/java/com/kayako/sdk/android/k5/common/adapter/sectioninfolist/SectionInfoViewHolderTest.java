@@ -68,4 +68,3 @@ public class SectionInfoViewHolderTest {
         assertThat(sectionInfoViewHolder.description, is(equalTo(textViewMSubTitle)));
     }
 }
-
