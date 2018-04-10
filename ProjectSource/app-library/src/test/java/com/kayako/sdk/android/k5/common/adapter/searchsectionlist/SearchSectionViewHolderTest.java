@@ -11,13 +11,13 @@ import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -31,34 +31,34 @@ public class SearchSectionViewHolderTest {
     public final ErrorCollector collector = new ErrorCollector();
 
     @Mock
-    View view;
+    private View view;
 
     @Mock
-    TextView textView;
+    private TextView textView;
 
     @Before
     public void setUp() {
-        when(view.findViewById(anyInt())).thenReturn(textView);
+        when(view.findViewById(eq(R.id.ko__search_bar))).thenReturn(textView);
         headerViewHolder = new SearchSectionViewHolder(view);
     }
 
     @Test
-    public void constructorMViewTest() {
-        verify(view, times(1)).findViewById(anyInt());
+    public void constructorMView() {
+        //Arrange
+        verify(view, times(1)).findViewById(eq(R.id.ko__search_bar));
 
-        collector.checkThat(headerViewHolder.mView, notNullValue());
+        //Assert
         collector.checkThat(headerViewHolder.mView, is(instanceOf(View.class)));
         collector.checkThat(headerViewHolder.mView, is(equalTo(view)));
     }
 
     @Test
-    public void constructorMTitleTest() {
-        //Act
+    public void constructorMTitle() {
+        //Arrange
         TextView textViewMTitle = (TextView) view.findViewById(R.id.ko__search_bar);
+        verify(view, times(2)).findViewById(eq(R.id.ko__search_bar));
 
         //Assert
-        verify(view, times(2)).findViewById(anyInt());
-        collector.checkThat(headerViewHolder.mSearchEditText, notNullValue());
         collector.checkThat(headerViewHolder.mSearchEditText, is(instanceOf(TextView.class)));
         collector.checkThat(headerViewHolder.mSearchEditText, is(equalTo(textViewMTitle)));
     }
