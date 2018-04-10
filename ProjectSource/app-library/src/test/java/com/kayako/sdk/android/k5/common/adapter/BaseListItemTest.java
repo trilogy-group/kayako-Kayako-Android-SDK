@@ -17,7 +17,6 @@ public class BaseListItemTest {
     private static final int LIST_ITEM_TYPE = 4;
     private static final String LIST_ITEM_TYPE_FIELD = "listItemType";
 
-
     @Mock
     private BaseListItem baseListItem;
 
@@ -36,3 +35,4 @@ public class BaseListItemTest {
         assertThat(LIST_ITEM_TYPE, is(equalTo(expected)));
     }
 }
+
