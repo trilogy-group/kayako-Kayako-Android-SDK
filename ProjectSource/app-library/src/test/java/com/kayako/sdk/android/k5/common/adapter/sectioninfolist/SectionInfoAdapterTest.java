@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.list.HeaderViewHolder;
 import com.kayako.sdk.android.k5.common.adapter.list.ListItemRecyclerViewAdapter;
@@ -26,9 +27,8 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -40,31 +40,31 @@ import static org.powermock.api.mockito.PowerMockito.when;
 @PrepareForTest({LayoutInflater.class})
 public class SectionInfoAdapterTest {
 
+    private static final String DESCRIPTION = "description";
+    private static final String TITLE = "title";
+
+    private MockContext mockContext;
+
     @Rule
     public final ErrorCollector collector = new ErrorCollector();
 
     @Mock
-    ListItemRecyclerViewAdapter.OnListItemClickListener onListItemClickListener;
+    private ListItemRecyclerViewAdapter.OnListItemClickListener onListItemClickListener;
 
     @Mock
-    View mockView;
+    private View mockView;
 
     @Mock
-    LayoutInflater mockInflater;
+    private LayoutInflater mockInflater;
 
     @Mock
-    ViewGroup mockParent;
-
-    private MockContext mockContext;
+    private ViewGroup mockParent;
 
     @Mock
-    List<BaseListItem> baseListItemList;
+    private List<BaseListItem> baseListItemList;
 
     @InjectMocks
-    SectionInfoAdapter sectionInfoAdapter;
-
-    private static final String TITLE = "title";
-    private static final String DESCRIPTION = "description";
+    private SectionInfoAdapter sectionInfoAdapter;
 
     @Before
     public void setUp() {
@@ -73,7 +73,8 @@ public class SectionInfoAdapterTest {
     }
 
     @Test
-    public void constructorTest() {
+    public void constructor() {
+        //Arrange
         sectionInfoAdapter = new SectionInfoAdapter(baseListItemList, onListItemClickListener,
                 TITLE, DESCRIPTION);
         verify(baseListItemList, times(2)).add(0, null);
@@ -81,48 +82,62 @@ public class SectionInfoAdapterTest {
 
     @Test
     public void onCreateViewHolderWhenViewTypeIsSectionInfoItem() {
+        //Arrange
         when(mockParent.getContext()).thenReturn(mockContext);
         when(LayoutInflater.from(mockContext)).thenReturn(mockInflater);
-        when(mockInflater.inflate(anyInt(), eq(mockParent), eq(false))).thenReturn(mockView);
+        when(mockInflater.inflate(eq(R.layout.ko__list_section_info), eq(mockParent), eq(false))).thenReturn(mockView);
 
+        //Act
         RecyclerView.ViewHolder viewHolder = sectionInfoAdapter.onCreateViewHolder(mockParent,
                 SectionInfoListType.SECTION_INFO_ITEM);
 
-        collector.checkThat(viewHolder, notNullValue());
-        collector.checkThat(viewHolder, is(CoreMatchers.instanceOf(SectionInfoViewHolder.class)));
+        //Assert
+        collector.checkThat(viewHolder, is(instanceOf(SectionInfoViewHolder.class)));
         collector.checkThat(viewHolder.itemView, is(equalTo(mockView)));
 
     }
 
     @Test
     public void onCreateViewHolderWhenViewTypeIsNotSectionInfoItem() {
+        //Arrange
         when(mockParent.getContext()).thenReturn(mockContext);
         when(LayoutInflater.from(mockContext)).thenReturn(mockInflater);
-        when(mockInflater.inflate(anyInt(), eq(mockParent), eq(false))).thenReturn(mockView);
+        when(mockInflater.inflate(eq(R.layout.ko__list_header), eq(mockParent), eq(false))).thenReturn(mockView);
 
+        //Act
         RecyclerView.ViewHolder viewHolder = sectionInfoAdapter.onCreateViewHolder(mockParent,
                 ListType.HEADER_ITEM);
 
-        collector.checkThat(viewHolder, notNullValue());
-        collector.checkThat(viewHolder, is(CoreMatchers.instanceOf(HeaderViewHolder.class)));
+        //Assert
+        collector.checkThat(viewHolder, is(instanceOf(HeaderViewHolder.class)));
         collector.checkThat(viewHolder.itemView, is(equalTo(mockView)));
     }
 
     @Test
-    public void testGetItemViewTypeWhenItemTypeIsNotEqualToZero() {
+    public void getItemViewTypeWhenItemTypeIsNotEqualToZero() {
+        //Arrange
         int position = 1;
         when(baseListItemList.get(position)).thenReturn(mock(BaseListItem.class));
         sectionInfoAdapter.setData(baseListItemList);
+
+        //Act
         int res = sectionInfoAdapter.getItemViewType(position);
+
+        //Assert
         assertThat(res, is(equalTo(sectionInfoAdapter.getData().get(position).getItemType())));
     }
 
     @Test
-    public void testGetItemViewTypeWhenItemTypeIsEqualToZero() {
+    public void getItemViewTypeWhenItemTypeIsEqualToZero() {
+        //Arrange
         int position = 0;
         when(baseListItemList.get(position)).thenReturn(mock(BaseListItem.class));
         sectionInfoAdapter.setData(baseListItemList);
+
+        //Act
         int expected = sectionInfoAdapter.getItemViewType(position);
+
+        //Assert
         assertThat(expected, is(equalTo(SectionInfoListType.SECTION_INFO_ITEM)));
     }
 }
