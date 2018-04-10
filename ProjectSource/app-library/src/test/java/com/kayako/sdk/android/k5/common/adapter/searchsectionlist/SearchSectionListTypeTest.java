@@ -4,7 +4,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.equalTo;
 
 public class SearchSectionListTypeTest {
 
@@ -12,7 +11,7 @@ public class SearchSectionListTypeTest {
 
     @Test
     public void listItemValueIsCorrect() {
-        assertThat(SearchSectionListType.SEARCH_SECTION_ITEM, is(equalTo(SEARCH_SECTION_ITEM)));
+        assertThat(SearchSectionListType.SEARCH_SECTION_ITEM, is(SEARCH_SECTION_ITEM));
     }
 
 }
