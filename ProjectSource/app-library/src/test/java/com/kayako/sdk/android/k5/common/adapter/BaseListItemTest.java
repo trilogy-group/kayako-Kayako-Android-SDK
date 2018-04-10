@@ -3,7 +3,7 @@ package com.kayako.sdk.android.k5.common.adapter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.lang.reflect.Field;
 
