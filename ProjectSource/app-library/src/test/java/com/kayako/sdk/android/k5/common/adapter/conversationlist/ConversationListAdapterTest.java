@@ -6,10 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.list.ListType;
 import com.kayako.sdk.android.k5.common.adapter.loadmorelist.LoadingViewHolder;
-
 
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
@@ -28,10 +28,8 @@ import java.util.List;
 import static junit.framework.Assert.assertEquals;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
@@ -42,30 +40,28 @@ import static org.powermock.api.mockito.PowerMockito.when;
 
 public class ConversationListAdapterTest {
 
+    private MockContext mockContext;
+
     @Rule
     public final ErrorCollector collector = new ErrorCollector();
 
     @Mock
-    ConversationListAdapter.OnClickConversationListener onClickConversationListener;
-
-
-    @Mock
-    View mockView;
-
+    private ConversationListAdapter.OnClickConversationListener onClickConversationListener;
 
     @Mock
-    LayoutInflater mockInflater;
+    private View mockView;
 
     @Mock
-    ViewGroup mockParent;
-
-    private MockContext mockContext;
+    private LayoutInflater mockInflater;
 
     @Mock
-    List<BaseListItem> baseListItemList;
+    private ViewGroup mockParent;
+
+    @Mock
+    private List<BaseListItem> baseListItemList;
 
     @InjectMocks
-    ConversationListAdapter conversationListAdapter;
+    private ConversationListAdapter conversationListAdapter;
 
     @Before
     public void setUp() {
@@ -75,24 +71,31 @@ public class ConversationListAdapterTest {
 
     @Test
     public void setListClickListenerTest() throws Exception {
+        //Arrange
         conversationListAdapter = new
                 ConversationListAdapter(baseListItemList, onClickConversationListener);
+
+        //Act
         // Class doesn't contain get method ,i  am going to use reflection for getting value
         final Field field = conversationListAdapter.getClass().getDeclaredField("mListener");
         field.setAccessible(true);
+
+        //Assert
         assertEquals(field.get(conversationListAdapter), onClickConversationListener);
     }
 
     @Test
     public void onCreateViewHolderWhenViewTypeIsConversationListItem() {
+        //Arrange
         when(mockParent.getContext()).thenReturn(mockContext);
         when(LayoutInflater.from(mockContext)).thenReturn(mockInflater);
-        when(mockInflater.inflate(anyInt(), eq(mockParent), eq(false))).thenReturn(mockView);
+        when(mockInflater.inflate(eq(R.layout.ko__list_conversation), eq(mockParent), eq(false))).thenReturn(mockView);
 
+        //Act
         RecyclerView.ViewHolder viewHolder = conversationListAdapter
                 .onCreateViewHolder(mockParent, ConversationListType.CONVERSATION_LIST_ITEM);
 
-        collector.checkThat(viewHolder, notNullValue());
+        //Assert
         collector.checkThat(viewHolder, is(instanceOf(ConversationItemViewHolder.class)));
         collector.checkThat(viewHolder.itemView, is(equalTo(mockView)));
 
@@ -100,14 +103,16 @@ public class ConversationListAdapterTest {
 
     @Test
     public void onCreateViewHolderWhenViewTypeIsLoadingItem() {
+        //Arrange
         when(mockParent.getContext()).thenReturn(mockContext);
         when(LayoutInflater.from(mockContext)).thenReturn(mockInflater);
-        when(mockInflater.inflate(anyInt(), eq(mockParent), eq(false))).thenReturn(mockView);
+        when(mockInflater.inflate(eq(R.layout.ko__list_item_loading), eq(mockParent), eq(false))).thenReturn(mockView);
 
+        //Act
         RecyclerView.ViewHolder viewHolder = conversationListAdapter
                 .onCreateViewHolder(mockParent, ListType.LOADING_ITEM);
 
-        collector.checkThat(viewHolder, notNullValue());
+        //Assert
         collector.checkThat(viewHolder, is(CoreMatchers.instanceOf(LoadingViewHolder.class)));
         collector.checkThat(viewHolder.itemView, is(equalTo(mockView)));
 
@@ -116,10 +121,16 @@ public class ConversationListAdapterTest {
 
     @Test
     public void getItemViewTypeTest() {
+        //Arrange
         int position = 0;
         when(baseListItemList.get(0)).thenReturn(mock(BaseListItem.class));
+
+        //Act
         conversationListAdapter.setData(baseListItemList);
         int res = conversationListAdapter.getItemViewType(position);
+
+        //Assert
         assertThat(res, is(equalTo(conversationListAdapter.getData().get(position).getItemType())));
     }
 }
+
