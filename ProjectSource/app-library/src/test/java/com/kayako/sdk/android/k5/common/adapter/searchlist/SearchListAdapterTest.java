@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.list.ListType;
 import com.kayako.sdk.android.k5.common.adapter.loadmorelist.LoadingViewHolder;
@@ -24,10 +25,8 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
@@ -43,17 +42,16 @@ public class SearchListAdapterTest {
     public final ErrorCollector collector = new ErrorCollector();
 
     @Mock
-    View mockView;
+    private View mockView;
 
     @Mock
-    LayoutInflater mockInflater;
+    private LayoutInflater mockInflater;
 
     @Mock
-    ViewGroup mockParent;
-
+    private ViewGroup mockParent;
 
     @Mock
-    List<BaseListItem> baseListItemList;
+    private List<BaseListItem> baseListItemList;
 
     @InjectMocks
     private SearchListAdapter searchListAdapter;
@@ -69,9 +67,11 @@ public class SearchListAdapterTest {
         //Arrange
         int position = 1;
         when(baseListItemList.get(position)).thenReturn(mock(BaseListItem.class));
-        //Act
         searchListAdapter.setData(baseListItemList);
+
+        //Act
         int res = searchListAdapter.getItemViewType(position);
+
         //Assert
         assertThat(res, is(equalTo(searchListAdapter.getData().get(position).getItemType())));
     }
@@ -81,11 +81,12 @@ public class SearchListAdapterTest {
         //Arrange
         when(mockParent.getContext()).thenReturn(mockContext);
         when(LayoutInflater.from(mockContext)).thenReturn(mockInflater);
-        when(mockInflater.inflate(anyInt(), eq(mockParent), eq(false))).thenReturn(mockView);
+        when(mockInflater.inflate(eq(R.layout.ko__list_item_search_result), eq(mockParent), eq(false))).thenReturn(mockView);
+
         //Act
         RecyclerView.ViewHolder viewHolder = searchListAdapter.onCreateViewHolder(mockParent, SearchListType.SEARCH_ITEM);
+
         //Assert
-        collector.checkThat(viewHolder, notNullValue());
         collector.checkThat(viewHolder, is(instanceOf(SearchItemViewHolder.class)));
         collector.checkThat(viewHolder.itemView, is(equalTo(mockView)));
     }
@@ -95,11 +96,12 @@ public class SearchListAdapterTest {
         //Arrange
         when(mockParent.getContext()).thenReturn(mockContext);
         when(LayoutInflater.from(mockContext)).thenReturn(mockInflater);
-        when(mockInflater.inflate(anyInt(), eq(mockParent), eq(false))).thenReturn(mockView);
+        when(mockInflater.inflate(eq(R.layout.ko__list_item_loading), eq(mockParent), eq(false))).thenReturn(mockView);
+
         //Act
         RecyclerView.ViewHolder viewHolder = searchListAdapter.onCreateViewHolder(mockParent, ListType.LOADING_ITEM);
+
         //Assert
-        collector.checkThat(viewHolder, notNullValue());
         collector.checkThat(viewHolder, is(instanceOf(LoadingViewHolder.class)));
         collector.checkThat(viewHolder.itemView, is(equalTo(mockView)));
     }
