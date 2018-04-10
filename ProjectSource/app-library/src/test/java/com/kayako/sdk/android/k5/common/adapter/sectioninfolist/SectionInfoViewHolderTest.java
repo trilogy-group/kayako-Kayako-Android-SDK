@@ -44,31 +44,38 @@ public class SectionInfoViewHolderTest {
     }
 
     @Test
-    public void constructorMViewTest() {
+    public void constructorMView() {
+        //Act
         verify(view, times(1)).findViewById(eq(R.id.ko__section_title));
         verify(view, times(1)).findViewById(eq(R.id.ko__section_description));
 
+        //Assert
         collector.checkThat(sectionInfoViewHolder.mView, is(instanceOf(View.class)));
         collector.checkThat(sectionInfoViewHolder.mView, is(equalTo(view)));
     }
 
     @Test
-    public void constructorMTitleTest() {
+    public void constructorMTitle() {
+        //Act
         TextView textViewMTitle = (TextView) view.findViewById(R.id.ko__section_title);
         verify(view, times(2)).findViewById(eq(R.id.ko__section_title));
         verify(view, times(1)).findViewById(eq(R.id.ko__section_description));
 
+        //Assert
         collector.checkThat(sectionInfoViewHolder.title, is(instanceOf(TextView.class)));
         collector.checkThat(sectionInfoViewHolder.title, is(equalTo(textViewMTitle)));
     }
 
     @Test
-    public void constructorTest() {
+    public void constructor() {
+        //Act
         TextView textViewMSubTitle = (TextView) view.findViewById(R.id.ko__section_description);
         verify(view, times(2)).findViewById(eq(R.id.ko__section_description));
         verify(view, times(1)).findViewById(eq(R.id.ko__section_title));
 
+        //Assert
         assertThat(sectionInfoViewHolder.description, is(instanceOf(TextView.class)));
         assertThat(sectionInfoViewHolder.description, is(equalTo(textViewMSubTitle)));
     }
 }
+
