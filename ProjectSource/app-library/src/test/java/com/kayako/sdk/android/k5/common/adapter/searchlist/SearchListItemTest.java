@@ -7,12 +7,12 @@ import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 public class SearchListItemTest {
 
-    private static final String TITLE = "title";
     private static final String SUBTITLE = "subtitle";
+    private static final String TITLE = "title";
 
     private Resource resource;
 
@@ -24,35 +24,29 @@ public class SearchListItemTest {
     }
 
     @Test
-    public void getTitleTest() {
-        assertThat(searchListItem.getTitle(), is(equalTo(TITLE)));
-    }
-
-    @Test
     public void setTitleTest() {
+        // Act
         searchListItem.setTitle(TITLE);
-        assertThat(searchListItem.getTitle(), is(equalTo(TITLE)));
-    }
 
-    @Test
-    public void getSubtitleTest() {
-        assertThat(searchListItem.getSubtitle(), is(equalTo(SUBTITLE)));
+        //Assert
+        assertThat(searchListItem.getTitle(), is(equalTo(TITLE)));
     }
 
     @Test
     public void setSubtitleTest() {
+        // Act
         searchListItem.setSubtitle(SUBTITLE);
+
+        ///Assert
         assertThat(searchListItem.getSubtitle(), is(equalTo(SUBTITLE)));
     }
 
     @Test
-    public void getResourceTest() {
-        assertThat(searchListItem.getResource(), is(equalTo(resource)));
-    }
-
-    @Test
     public void setResourceTest() {
+        // Act
         searchListItem.setResource(resource);
+
+        //Assert
         assertThat(searchListItem.getResource(), is(equalTo(resource)));
     }
 }
