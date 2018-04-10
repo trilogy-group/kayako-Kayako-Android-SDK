@@ -41,6 +41,8 @@ import static org.powermock.api.mockito.PowerMockito.when;
 @PrepareForTest({LayoutInflater.class})
 public class SearchSectionAdapterTest {
 
+    private MockContext mockContext;
+
     @Rule
     public final ErrorCollector collector = new ErrorCollector();
 
@@ -59,8 +61,6 @@ public class SearchSectionAdapterTest {
     @Mock
     private ViewGroup mockParent;
 
-    private MockContext mockContext;
-
     @Mock
     private List<BaseListItem> baseListItemList;
 
@@ -74,7 +74,7 @@ public class SearchSectionAdapterTest {
     }
 
     @Test
-    public void constructorTest() {
+    public void constructor() {
         searchSectionAdapter = new SearchSectionAdapter(baseListItemList, itemClickListener,
                 onSearchClickListener);
         verify(baseListItemList, times(2)).add(0, null);
