@@ -6,7 +6,6 @@ import android.widget.TextView;
 import com.kayako.sdk.android.k5.R;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 
@@ -17,9 +16,9 @@ import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -40,16 +39,18 @@ public class SearchItemViewHolderTest {
 
     @Before
     public void setUp() {
-        when(view.findViewById(anyInt())).thenReturn(textView);
+        when(view.findViewById(eq(R.id.ko__list_item_title))).thenReturn(textView);
+        when(view.findViewById(eq(R.id.ko__list_item_subtitle))).thenReturn(textView);
         searchItemViewHolder = new SearchItemViewHolder(view);
     }
 
     @Test
     public void constructorMView() {
         // Act
-        verify(view, times(2)).findViewById(anyInt());
+        verify(view, times(1)).findViewById(eq(R.id.ko__list_item_title));
+        verify(view, times(1)).findViewById(eq(R.id.ko__list_item_subtitle));
+
         // Assert
-        collector.checkThat(searchItemViewHolder.mView, notNullValue());
         collector.checkThat(searchItemViewHolder.mView, is(instanceOf(View.class)));
         collector.checkThat(searchItemViewHolder.mView, is(equalTo(view)));
     }
@@ -59,8 +60,8 @@ public class SearchItemViewHolderTest {
         // Act
         TextView textViewMTitle = (TextView) view.findViewById(R.id.ko__list_item_title);
         verify(view, times(2)).findViewById(R.id.ko__list_item_title);
+
         // Assert
-        collector.checkThat(searchItemViewHolder.mTitle, notNullValue());
         collector.checkThat(searchItemViewHolder.mTitle, is(instanceOf(TextView.class)));
         collector.checkThat(searchItemViewHolder.mTitle, is(equalTo(textViewMTitle)));
     }
@@ -70,8 +71,8 @@ public class SearchItemViewHolderTest {
         //Act
         TextView textViewMSubTitle = (TextView) view.findViewById(R.id.ko__list_item_subtitle);
         verify(view, times(2)).findViewById(R.id.ko__list_item_subtitle);
+
         // Assert
-        collector.checkThat(searchItemViewHolder.mSubTitle, notNullValue());
         collector.checkThat(searchItemViewHolder.mSubTitle, is(instanceOf(TextView.class)));
         collector.checkThat(searchItemViewHolder.mSubTitle, is(equalTo(textViewMSubTitle)));
     }
