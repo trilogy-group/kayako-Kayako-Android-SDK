@@ -15,15 +15,17 @@ import static org.hamcrest.CoreMatchers.is;
 public class BaseListItemTest {
 
     private static final int LIST_ITEM_TYPE = 4;
+    private static final String LIST_ITEM_TYPE_FIELD = "listItemType";
+
 
     @Mock
-    BaseListItem baseListItem;
+    private BaseListItem baseListItem;
 
     @Test
     public void getData() throws Exception {
         //Arrange
         // class is abstract and field is private , going to use reflection
-        Field f1 = baseListItem.getClass().getSuperclass().getDeclaredField("listItemType");
+        Field f1 = baseListItem.getClass().getSuperclass().getDeclaredField(LIST_ITEM_TYPE_FIELD);
         f1.setAccessible(true);
         f1.set(baseListItem, LIST_ITEM_TYPE);
 
