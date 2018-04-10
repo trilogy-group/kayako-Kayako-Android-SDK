@@ -4,8 +4,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.equalTo;
-
 
 public class ListTypeTest {
 
@@ -14,11 +12,11 @@ public class ListTypeTest {
 
     @Test
     public void listItemValueIsCorrect() {
-        assertThat(ListType.LIST_ITEM, is(equalTo(LIST_ITEM)));
+        assertThat(ListType.LIST_ITEM, is(LIST_ITEM));
     }
 
     @Test
     public void headerItemValueIsCorrect() {
-        assertThat(ListType.HEADER_ITEM, is(equalTo(HEADER_ITEM)));
+        assertThat(ListType.HEADER_ITEM, is(HEADER_ITEM));
     }
 }
