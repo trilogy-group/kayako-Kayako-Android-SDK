@@ -20,8 +20,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.equalTo;
 
-import static org.mockito.Mockito.anyLong;
-import static org.mockito.Mockito.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
@@ -66,8 +66,10 @@ public class DateTimeUtilsTest {
     @Test
     public void formatDate() {
         // Arrange
-        when(DateUtils.getRelativeTimeSpanString(anyLong(), anyLong(), anyLong(),
-                anyInt())).thenReturn(FORMATTED_DATE);
+        //i should use anyLong() here because System.currentTimeMillis()  will be different result after one ms
+        when(DateUtils.getRelativeTimeSpanString(eq(timeInMilliseconds), anyLong(),
+                eq(DateUtils.DAY_IN_MILLIS), eq(DateUtils.FORMAT_SHOW_DATE)))
+                .thenReturn(FORMATTED_DATE);
         //Act
         String dateStr = DateTimeUtils.formatDate(mockContext, timeInMilliseconds);
         //Assert
@@ -102,7 +104,6 @@ public class DateTimeUtilsTest {
         //Assert
         assertThat(dateStr, is(equalTo(ONE_MINUTE_AGO)));
     }
-
 
     @Test
     public void testFormatMessengerDateTimeWhenDifferenceLessThanAndEqualFourtyFourMinute() {
@@ -155,7 +156,6 @@ public class DateTimeUtilsTest {
         //Assert
         assertThat(dateStr, is(equalTo(expected)));
     }
-
 
     @Test
     public void testFormatMessengerDateTimeWhenDifferenceLessThanAndEqualThirtyFiveHours() {
@@ -251,3 +251,4 @@ public class DateTimeUtilsTest {
                 .format(new Date(timeInMilliseconds)))));
     }
 }
+
