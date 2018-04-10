@@ -12,8 +12,9 @@ import static org.hamcrest.CoreMatchers.is;
 
 public class HeaderListItemTest {
 
-    private HeaderListItem headerListItem;
     private static final String TITLE = "titleForTest";
+
+    private HeaderListItem headerListItem;
 
     @Mock
     private Resource resource;
