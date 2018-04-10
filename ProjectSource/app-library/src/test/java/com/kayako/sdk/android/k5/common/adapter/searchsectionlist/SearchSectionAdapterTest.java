@@ -23,9 +23,7 @@ import org.mockito.Mock;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -50,24 +48,24 @@ public class SearchSectionAdapterTest {
     private SearchSectionAdapter.OnSearchClickListener onSearchClickListener;
 
     @Mock
-    ListItemRecyclerViewAdapter.OnListItemClickListener itemClickListener;
+    private ListItemRecyclerViewAdapter.OnListItemClickListener itemClickListener;
 
     @Mock
-    View mockView;
+    private View mockView;
 
     @Mock
-    LayoutInflater mockInflater;
+    private LayoutInflater mockInflater;
 
     @Mock
-    ViewGroup mockParent;
+    private ViewGroup mockParent;
 
     private MockContext mockContext;
 
     @Mock
-    List<BaseListItem> baseListItemList;
+    private List<BaseListItem> baseListItemList;
 
     @InjectMocks
-    SearchSectionAdapter searchSectionAdapter;
+    private SearchSectionAdapter searchSectionAdapter;
 
     @Before
     public void setUp() {
@@ -89,11 +87,12 @@ public class SearchSectionAdapterTest {
         when(LayoutInflater.from(mockContext)).thenReturn(mockInflater);
         when(mockInflater.inflate(eq(R.layout.ko__list_search_section), eq(mockParent),
                 eq(false))).thenReturn(mockView);
+
         //Act
         RecyclerView.ViewHolder viewHolder = searchSectionAdapter.onCreateViewHolder(mockParent,
                 SearchSectionListType.SEARCH_SECTION_ITEM);
+
         //Assert
-        collector.checkThat(viewHolder, notNullValue());
         collector.checkThat(viewHolder, is(instanceOf(SearchSectionViewHolder.class)));
         collector.checkThat(viewHolder.itemView, is(equalTo(mockView)));
     }
@@ -105,11 +104,12 @@ public class SearchSectionAdapterTest {
         when(LayoutInflater.from(mockContext)).thenReturn(mockInflater);
         when(mockInflater.inflate(eq(R.layout.ko__list_header), eq(mockParent),
                 eq(false))).thenReturn(mockView);
+
         //Act
         RecyclerView.ViewHolder viewHolder = searchSectionAdapter.
                 onCreateViewHolder(mockParent, ListType.HEADER_ITEM);
+
         //Assert
-        collector.checkThat(viewHolder, notNullValue());
         collector.checkThat(viewHolder, is(instanceOf(HeaderViewHolder.class)));
         collector.checkThat(viewHolder.itemView, is(equalTo(mockView)));
     }
@@ -118,10 +118,12 @@ public class SearchSectionAdapterTest {
     public void getItemViewTypeWhenItemTypeIsNotEqualZero() {
         //Arrange
         int position = 1;
-        //Act
         when(baseListItemList.get(position)).thenReturn(mock(BaseListItem.class));
         searchSectionAdapter.setData(baseListItemList);
+
+        //Act
         int res = searchSectionAdapter.getItemViewType(position);
+
         //Assert
         assertThat(res, is(equalTo(searchSectionAdapter.getData().get(position).getItemType())));
     }
@@ -130,11 +132,14 @@ public class SearchSectionAdapterTest {
     public void getItemViewTypeWhenItemTypeIsEqualZero() {
         //Arrange
         int position = 0;
-        //Act
         when(baseListItemList.get(position)).thenReturn(mock(BaseListItem.class));
         searchSectionAdapter.setData(baseListItemList);
+
+        //Act
         int expected = searchSectionAdapter.getItemViewType(position);
+
         //Assert
         assertThat(expected, is(equalTo(SearchSectionListType.SEARCH_SECTION_ITEM)));
     }
 }
+
