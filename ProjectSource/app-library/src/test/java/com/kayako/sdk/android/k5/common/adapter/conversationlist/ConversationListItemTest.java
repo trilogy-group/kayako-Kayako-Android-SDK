@@ -5,7 +5,7 @@ import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.Conversat
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
@@ -59,3 +59,4 @@ public class ConversationListItemTest {
         assertEquals(expected, map);
     }
 }
+
