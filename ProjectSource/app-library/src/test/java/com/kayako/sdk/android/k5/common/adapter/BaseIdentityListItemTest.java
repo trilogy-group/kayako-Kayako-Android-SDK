@@ -5,19 +5,23 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BaseIdentityListItemTest {
 
-    private static final Long ID = 0L;
+    private static final long ID = 0L;
 
     @Mock
     private BaseIdentityListItem baseIdentityListItem;
 
     @Test
     public void getIdTest() {
+        // Arrange & Act
         baseIdentityListItem.setId(ID);
-        assertEquals(ID, baseIdentityListItem.getId());
+
+        // Assert
+        assertThat(ID, is(baseIdentityListItem.getId()));
     }
 }  
