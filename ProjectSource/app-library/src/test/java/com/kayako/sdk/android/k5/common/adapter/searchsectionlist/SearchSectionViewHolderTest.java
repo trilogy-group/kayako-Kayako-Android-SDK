@@ -44,21 +44,19 @@ public class SearchSectionViewHolderTest {
 
     @Test
     public void constructorMView() {
-        //Arrange
-        verify(view, times(1)).findViewById(eq(R.id.ko__search_bar));
-
         //Assert
+        verify(view, times(1)).findViewById(eq(R.id.ko__search_bar));
         collector.checkThat(headerViewHolder.mView, is(instanceOf(View.class)));
         collector.checkThat(headerViewHolder.mView, is(equalTo(view)));
     }
 
     @Test
     public void constructorMTitle() {
-        //Arrange
+        //Act
         TextView textViewMTitle = (TextView) view.findViewById(R.id.ko__search_bar);
-        verify(view, times(2)).findViewById(eq(R.id.ko__search_bar));
 
         //Assert
+        verify(view, times(2)).findViewById(eq(R.id.ko__search_bar));
         collector.checkThat(headerViewHolder.mSearchEditText, is(instanceOf(TextView.class)));
         collector.checkThat(headerViewHolder.mSearchEditText, is(equalTo(textViewMTitle)));
     }
