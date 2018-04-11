@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.containsString;
 
 public class InputFeedbackCompletedListItemTest {
@@ -23,16 +22,16 @@ public class InputFeedbackCompletedListItemTest {
     public final ExpectedException thrown = ExpectedException.none();
 
     @Before
-    public void setUp(){
+    public void setUp() {
         rating = InputFeedback.RATING.GOOD;
         listItem = new InputFeedbackCompletedListItem(INSTRUCTION_MESSAGE, rating, FEEDBACK);
     }
 
     @Test
     public void whenValidParamsConstructorThenObjectCreated() {
-        errorCollector.checkThat(listItem.getInstructionMessage(), is(equalTo(INSTRUCTION_MESSAGE)));
+        errorCollector.checkThat(listItem.getInstructionMessage(), is(INSTRUCTION_MESSAGE));
         errorCollector.checkThat(listItem.getRating(), is(rating));
-        errorCollector.checkThat(listItem.getFeedback(), is(equalTo(FEEDBACK)));
+        errorCollector.checkThat(listItem.getFeedback(), is(FEEDBACK));
     }
 
     @Test
@@ -40,14 +39,13 @@ public class InputFeedbackCompletedListItemTest {
         final String exceptionMessage = "Invalid arguments";
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(containsString(exceptionMessage));
-        InputFeedbackCompletedListItem listItemLocal = new InputFeedbackCompletedListItem(
-                                        INSTRUCTION_MESSAGE, null, FEEDBACK);
+        new InputFeedbackCompletedListItem(INSTRUCTION_MESSAGE, null, FEEDBACK);
     }
 
     @Test
     public void getContents() {
         final String good = "GOOD";
         errorCollector.checkThat(listItem.getContents().size(), is(5));
-        errorCollector.checkThat(listItem.getContents().get("rating"), is(equalTo(good)));
+        errorCollector.checkThat(listItem.getContents().get("rating"), is(good));
     }
 }
