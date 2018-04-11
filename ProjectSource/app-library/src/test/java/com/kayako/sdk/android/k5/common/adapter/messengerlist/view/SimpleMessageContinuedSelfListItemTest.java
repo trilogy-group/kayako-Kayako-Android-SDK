@@ -10,7 +10,7 @@ import static org.hamcrest.CoreMatchers.is;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SimpleMessageContinuedSelfListItemTest{
+public class SimpleMessageContinuedSelfListItemTest {
 
     private static final String MESSAGE = "dummy message";
     private Map<String, Object> data = new HashMap<>();
@@ -24,7 +24,7 @@ public class SimpleMessageContinuedSelfListItemTest{
     public final ErrorCollector errorCollector = new ErrorCollector();
 
     @Before
-    public void setUp(){
+    public void setUp() {
         id = 1L;
         time = 2_222L;
         deliveryIndicator = new DeliveryIndicator(1, 1, 1_000L);
@@ -34,7 +34,7 @@ public class SimpleMessageContinuedSelfListItemTest{
     }
 
     @Test
-    public void whenValidParamsConstructorThenObjectCreated(){
+    public void whenValidParamsConstructorThenObjectCreated() {
         errorCollector.checkThat(simpleMessageContinuedSelfListItem.getId(), is(id));
         errorCollector.checkThat(simpleMessageContinuedSelfListItem.getMessage(), is(MESSAGE));
         errorCollector.checkThat(simpleMessageContinuedSelfListItem.getTime(), is(time));
@@ -46,21 +46,21 @@ public class SimpleMessageContinuedSelfListItemTest{
     }
 
     @Test
-    public void setMessage(){
+    public void setMessage() {
         final String newMessage = "new_message";
         simpleMessageContinuedSelfListItem.setMessage(newMessage);
         errorCollector.checkThat(simpleMessageContinuedSelfListItem.getMessage(), is(newMessage));
     }
 
     @Test
-    public void setTime(){
+    public void setTime() {
         final long newTime = 12_345L;
         simpleMessageContinuedSelfListItem.setTime(newTime);
         errorCollector.checkThat(simpleMessageContinuedSelfListItem.getTime(), is(newTime));
     }
 
     @Test
-    public void getContents(){
+    public void getContents() {
         Map<String, String> contentsMap = simpleMessageContinuedSelfListItem.getContents();
         errorCollector.checkThat(contentsMap.size(), is(6));
         errorCollector.checkThat(contentsMap.get("message"), is(MESSAGE));
