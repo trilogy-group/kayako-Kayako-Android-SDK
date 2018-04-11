@@ -37,15 +37,15 @@ public class AttachmentMessageContinuedOtherListItemTest {
 
     @Test
     public void setAttachment() {
-        Attachment attachment1 = new Attachment(Attachment.TYPE.FILE);
-        otherListItem.setAttachment(attachment1);
-        errorCollector.checkThat(otherListItem.getAttachment(), is(equalTo(attachment1)));
+        Attachment attachmentLocal = new Attachment(Attachment.TYPE.FILE);
+        otherListItem.setAttachment(attachmentLocal);
+        errorCollector.checkThat(otherListItem.getAttachment(), is(equalTo(attachmentLocal)));
         errorCollector.checkThat(otherListItem.getAttachment().getType(), is(equalTo(Attachment.TYPE.FILE)));
     }
 
     @Test
     public void setTime(){
-        long timeLocal = 2_000L;
+        final long timeLocal = 2_000L;
         otherListItem.setTime(timeLocal);
         errorCollector.checkThat(otherListItem.getTime(), is(equalTo(timeLocal)));
     }
