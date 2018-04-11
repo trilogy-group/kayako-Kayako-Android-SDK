@@ -9,7 +9,6 @@ import org.junit.rules.ErrorCollector;
 import java.util.HashMap;
 import java.util.Map;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.equalTo;
 
 public class AttachmentMessageSelfListItemTest {
 
@@ -53,7 +52,7 @@ public class AttachmentMessageSelfListItemTest {
     }
 
     @Test
-    public void setTime(){
+    public void setTime() {
         final long newTime = 2_000L;
         listItem.setTime(newTime);
         errorCollector.checkThat(listItem.getTime(), is(newTime));
@@ -62,6 +61,7 @@ public class AttachmentMessageSelfListItemTest {
     @Test
     public void getContents() {
         errorCollector.checkThat(listItem.getContents().size(), is(6));
-        errorCollector.checkThat(listItem.getContents().get("fadeBackground"), is(equalTo(String.valueOf(fadeBackground))));
+        errorCollector.checkThat(listItem.getContents().get("fadeBackground"),
+                is(String.valueOf(fadeBackground)));
     }
 }
