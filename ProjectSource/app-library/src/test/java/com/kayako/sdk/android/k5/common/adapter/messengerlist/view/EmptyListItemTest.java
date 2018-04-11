@@ -19,7 +19,7 @@ public class EmptyListItemTest {
     }
 
     @Test
-    public void getContents(){
+    public void getContents() {
         Map<String, String> contentsMap = new EmptyListItem().getContents();
         errorCollector.checkThat(contentsMap.isEmpty(), is(true));
     }
