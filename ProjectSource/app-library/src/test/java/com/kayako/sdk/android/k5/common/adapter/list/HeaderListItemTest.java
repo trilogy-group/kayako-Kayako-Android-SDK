@@ -13,6 +13,7 @@ import static org.hamcrest.CoreMatchers.is;
 public class HeaderListItemTest {
 
     private static final String TITLE = "titleForTest";
+    private static final String CONTENT_TITLE = "title";
 
     private HeaderListItem headerListItem;
 
@@ -21,24 +22,33 @@ public class HeaderListItemTest {
 
     @Before
     public void setUp() {
-        this.headerListItem = new HeaderListItem(TITLE, resource);
+        headerListItem = new HeaderListItem(TITLE, resource);
     }
 
     @Test
-    public void setTitleTest() {
+    public void setTitle() {
+        //Act
         headerListItem.setTitle(TITLE);
+
+        //Assert
         assertThat(headerListItem.getTitle(), is(equalTo(TITLE)));
     }
 
     @Test
-    public void setResourceTest() {
+    public void setResource() {
+        //Act
         headerListItem.setResource(resource);
+
+        //Assert
         assertThat(headerListItem.getResource(), is(equalTo(resource)));
     }
 
     @Test
-    public void getContentsTest() {
-        String itemTitle = headerListItem.getContents().get("title");
+    public void getContents() {
+        //Act
+        String itemTitle = headerListItem.getContents().get(CONTENT_TITLE);
+
+        //Assert
         assertThat(itemTitle, is(equalTo(TITLE)));
     }
 }
