@@ -9,7 +9,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.equalTo;
 
 @RunWith(MockitoJUnitRunner.class)
 public class InputEmailListItemTest {
@@ -24,26 +23,26 @@ public class InputEmailListItemTest {
     public final ErrorCollector errorCollector = new ErrorCollector();
 
     @Before
-    public void setUp(){
+    public void setUp() {
         emailListItem = new InputEmailListItem(SUBMITTED_EMAIL);
     }
 
     @Test
     public void whenValidParamsInConstructorGivenThenObjectCreated() {
-        errorCollector.checkThat(emailListItem.getItemType(), is(equalTo(MessengerListType.INPUT_FIELD_EMAIL)));
-        errorCollector.checkThat(emailListItem.getSubmittedValue(), is(equalTo(SUBMITTED_EMAIL)));
+        errorCollector.checkThat(emailListItem.getItemType(), is(MessengerListType.INPUT_FIELD_EMAIL));
+        errorCollector.checkThat(emailListItem.getSubmittedValue(), is(SUBMITTED_EMAIL));
     }
 
     @Test
     public void whenValidParamsConstructorThenObjectCreated() {
-        InputEmailListItem emailListItemLocal = new InputEmailListItem(onClickSubmitListener);
+        final InputEmailListItem emailListItemLocal = new InputEmailListItem(onClickSubmitListener);
         errorCollector.checkThat(emailListItemLocal.getOnClickSubmitListener(), is(onClickSubmitListener));
-        errorCollector.checkThat(emailListItemLocal.getItemType(), is(equalTo(MessengerListType.INPUT_FIELD_EMAIL)));
+        errorCollector.checkThat(emailListItemLocal.getItemType(), is(MessengerListType.INPUT_FIELD_EMAIL));
     }
 
     @Test
     public void getContents() {
         errorCollector.checkThat(emailListItem.getContents().size(), is(2));
-        errorCollector.checkThat(emailListItem.getContents().get("getSubmittedValue"), is(equalTo(SUBMITTED_EMAIL)));
+        errorCollector.checkThat(emailListItem.getContents().get("getSubmittedValue"), is(SUBMITTED_EMAIL));
     }
 }
