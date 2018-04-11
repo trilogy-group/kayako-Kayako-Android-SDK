@@ -39,6 +39,6 @@ public class DateSeparatorListItemTest {
     public void getContents() {
         errorCollector.checkThat(separatorListItem.getContents().size(), is(1));
         errorCollector.checkThat(separatorListItem.getContents().get("timeInMilliseconds"),
-                                    is(equalTo(String.valueOf(timeInMilliseconds))));
+                                is(equalTo(String.valueOf(timeInMilliseconds))));
     }
 }
