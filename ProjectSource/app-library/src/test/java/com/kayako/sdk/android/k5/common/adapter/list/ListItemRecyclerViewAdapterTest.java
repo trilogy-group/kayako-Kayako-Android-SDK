@@ -40,7 +40,7 @@ public class ListItemRecyclerViewAdapterTest {
     private MockContext mockContext;
 
     @Rule
-    public ErrorCollector collector = new ErrorCollector();
+    public final ErrorCollector collector = new ErrorCollector();
 
     @Mock
     private ListItemRecyclerViewAdapter.OnListItemClickListener onListItemClickListener;
