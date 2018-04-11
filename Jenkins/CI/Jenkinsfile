@@ -61,7 +61,7 @@ pipeline {
                            deltaInstructionCoverage: "${env.DELTA_INSTRUCTION_COVERAGE}",
                            deltaBranchCoverage: "${env.DELTA_BRANCH_COVERAGE}",
                            deltaComplexityCoverage: "${env.DELTA_COMPLEXITY_COVERAGE}"
-                       )
+                        )
                    }
                  }
                }
