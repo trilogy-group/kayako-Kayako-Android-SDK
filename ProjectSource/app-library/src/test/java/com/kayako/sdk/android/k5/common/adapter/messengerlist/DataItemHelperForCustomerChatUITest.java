@@ -1,5 +1,7 @@
 package com.kayako.sdk.android.k5.common.adapter.messengerlist;
 
+import static org.junit.Assert.*;
+
 public class DataItemHelperForCustomerChatUITest {
 
     /* TODO: Add tests to check the following behaviours:
