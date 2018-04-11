@@ -6,7 +6,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +35,7 @@ public class AttachmentMessageOtherListItemTest {
     @Test
     public void whenValidParamsConstructorThenObjectCreated() {
         errorCollector.checkThat(item.getId(), is(id));
-        errorCollector.checkThat(item.getAvatarUrl(), is(equalTo(AVATAR_URL)));
+        errorCollector.checkThat(item.getAvatarUrl(), is(AVATAR_URL));
         errorCollector.checkThat(item.getChannel(), is(channel));
         errorCollector.checkThat(item.getTime(), is(time));
         errorCollector.checkThat(item.getData(), is(data));
@@ -51,14 +50,14 @@ public class AttachmentMessageOtherListItemTest {
     }
 
     @Test
-    public void setTime(){
+    public void setTime() {
         final long timeLocal = 2_000L;
         item.setTime(timeLocal);
         errorCollector.checkThat(item.getTime(), is(timeLocal));
     }
 
     @Test
-    public void setAvatarUrl(){
+    public void setAvatarUrl() {
         final String avatarUrlLocal = "/avatarUrlLocal";
         item.setAvatarUrl(avatarUrlLocal);
         errorCollector.checkThat(item.getAvatarUrl(), is(avatarUrlLocal));
@@ -75,6 +74,6 @@ public class AttachmentMessageOtherListItemTest {
     @Test
     public void getContents() {
         errorCollector.checkThat(item.getContents().size(), is(6));
-        errorCollector.checkThat(item.getContents().get("time"), is(equalTo(String.valueOf(time))));
+        errorCollector.checkThat(item.getContents().get("time"), is(String.valueOf(time)));
     }
 }
