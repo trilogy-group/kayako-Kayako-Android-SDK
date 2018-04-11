@@ -56,18 +56,6 @@ public class ListItemViewHolderTest {
     }
 
     @Test
-    public void constructorMTitle() {
-        //Act
-        TextView textViewMTitle = (TextView) view.findViewById(R.id.ko__list_item_title);
-        verify(view, times(2)).findViewById(eq(R.id.ko__list_item_title));
-        verify(view, times(1)).findViewById(eq(R.id.ko__list_item_subtitle));
-
-        //Assert
-        collector.checkThat(listItemViewHolder.mTitle, is(instanceOf(TextView.class)));
-        collector.checkThat(listItemViewHolder.mTitle, is(equalTo(textViewMTitle)));
-    }
-
-    @Test
     public void constructorMSubTitle() {
         //Act
         TextView textViewMSubTitle = (TextView) view.findViewById(R.id.ko__list_item_subtitle);
@@ -77,5 +65,17 @@ public class ListItemViewHolderTest {
         //Assert
         collector.checkThat(listItemViewHolder.mSubTitle, is(instanceOf(TextView.class)));
         collector.checkThat(listItemViewHolder.mSubTitle, is(equalTo(textViewMSubTitle)));
+    }
+
+    @Test
+    public void constructorMTitle() {
+        //Act
+        TextView textViewMTitle = (TextView) view.findViewById(R.id.ko__list_item_title);
+        verify(view, times(2)).findViewById(eq(R.id.ko__list_item_title));
+        verify(view, times(1)).findViewById(eq(R.id.ko__list_item_subtitle));
+
+        //Assert
+        collector.checkThat(listItemViewHolder.mTitle, is(instanceOf(TextView.class)));
+        collector.checkThat(listItemViewHolder.mTitle, is(equalTo(textViewMTitle)));
     }
 }
