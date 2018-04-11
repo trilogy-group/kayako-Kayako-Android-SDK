@@ -32,8 +32,18 @@ public class ListItemTest {
         listItem = new ListItem(TITLE, SUBTITLE, resource);
     }
 
+
     @Test
-    public void setTitleTest() {
+    public void equals() {
+        //Act
+        ListItem listItem1 = new ListItem(TITLE, SUBTITLE, resource);
+
+        //Assert
+        assertEquals(true, listItem.equals(listItem1));
+    }
+
+    @Test
+    public void setTitle() {
         //Act
         listItem.setTitle("titleTest");
 
@@ -42,7 +52,7 @@ public class ListItemTest {
     }
 
     @Test
-    public void setSubtitleTest() {
+    public void setSubtitle() {
         //Act
         listItem.setSubtitle("subtitleTest");
 
@@ -51,7 +61,7 @@ public class ListItemTest {
     }
 
     @Test
-    public void setResourceTest() {
+    public void setResource() {
         //Act
         listItem.setResource(resource);
 
@@ -60,7 +70,7 @@ public class ListItemTest {
     }
 
     @Test
-    public void constructorAllArgsTest() {
+    public void constructorAllArgs() {
         //Act
         listItem = new ListItem(LIST_TYPE, TITLE, SUBTITLE, resource);
 
@@ -72,7 +82,7 @@ public class ListItemTest {
     }
 
     @Test
-    public void getContentsTest() {
+    public void getContents() {
         //Act
         String listItemTitle = listItem.getContents().get("title");
         String listItemSubTitle = listItem.getContents().get("subtitle");
@@ -82,12 +92,4 @@ public class ListItemTest {
         collector.checkThat(listItemSubTitle, is(equalTo(String.valueOf(SUBTITLE))));
     }
 
-    @Test
-    public void equalsTest() {
-        //Act
-        ListItem listItem1 = new ListItem(TITLE, SUBTITLE, resource);
-
-        //Assert
-        assertEquals(true, listItem.equals(listItem1));
-    }
 }
