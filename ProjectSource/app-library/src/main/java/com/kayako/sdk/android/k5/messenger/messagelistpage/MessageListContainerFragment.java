@@ -3,6 +3,7 @@ package com.kayako.sdk.android.k5.messenger.messagelistpage;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +24,7 @@ import com.kayako.sdk.android.k5.common.fragments.ListPageState;
 import com.kayako.sdk.android.k5.common.fragments.OnListPageStateChangeListener;
 import com.kayako.sdk.android.k5.common.fragments.OnScrollListListener;
 import com.kayako.sdk.android.k5.common.utils.KeyboardUtils;
+import com.kayako.sdk.android.k5.common.utils.file.FileAccessPermissions;
 import com.kayako.sdk.android.k5.common.utils.file.FileAttachment;
 import com.kayako.sdk.android.k5.common.utils.file.FileAttachmentUtil;
 import com.kayako.sdk.android.k5.core.KayakoLogHelper;
@@ -198,8 +200,10 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
             mMessageListView.setOnListAttachmentClickListener(new MessengerAdapter.OnAttachmentClickListener() {
                 @Override
                 public void onClickAttachment(int messageType, Long id, Attachment attachment, View attachmentView, Map<String, Object> messageData) {
-                    mLastAttachmentListItemViewClicked = attachmentView;
-                    mPresenter.onListAttachmentClick(attachment);
+                    if (FileAttachmentUtil.checkFileAccessPermissions(getActivity())) {
+                        mLastAttachmentListItemViewClicked = attachmentView;
+                        mPresenter.onListAttachmentClick(attachment);
+                    }
                 }
 
             });
@@ -346,7 +350,9 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
             return;
         }
 
-        FileAttachmentUtil.openFileChooserActivityFromFragment(this, REQUEST_CODE_ADD_ATTACHMENT);
+        if (FileAttachmentUtil.checkFileAccessPermissions(getActivity())) {
+            FileAttachmentUtil.openFileChooserActivityFromFragment(this, REQUEST_CODE_ADD_ATTACHMENT);
+        }
     }
 
     @Override
@@ -403,5 +409,9 @@ public class MessageListContainerFragment extends Fragment implements MessageLis
         KayakoAttachmentPreviewActivity.startActivityForPreview(getActivity(), this, mLastAttachmentListItemViewClicked, imageUrl, imageName, downloadUrl, time, fileSize, REQUEST_CODE_VIEW_UPLOADED_ATTACHMENT);
     }
 
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        FileAttachmentUtil.onRequestPermissionsResult(getActivity(), requestCode, permissions, grantResults);
+    }
 }

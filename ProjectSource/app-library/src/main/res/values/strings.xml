@@ -91,4 +91,7 @@
     <string name="ko__messenger_system_msg_conversation_is_closed">This conversation has been completed</string>
     <string name="ko__messenger_msg_failed_to_load_messages">Failed to load more!</string>
 
+    <string name="ko__permission_request_to_access_attachments">Please provide permission to add or download attachments</string>
+    <string name="ko__permission_granted_to_access_attachments">Permission granted! Please go ahead and access attachments</string>
+
 </resources>
