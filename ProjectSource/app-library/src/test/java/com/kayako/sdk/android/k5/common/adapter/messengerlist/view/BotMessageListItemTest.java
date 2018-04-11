@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 
 public class BotMessageListItemTest {
@@ -24,19 +23,19 @@ public class BotMessageListItemTest {
 
     @Test
     public void whenValidParamsConstructorThenObjectCreated() {
-        errorCollector.checkThat(botMessageListItem.getMessage(), is(equalTo(MESSAGE)));
+        errorCollector.checkThat(botMessageListItem.getMessage(), is(MESSAGE));
         errorCollector.checkThat(botMessageListItem.getTime(), is(time));
     }
 
     @Test
-    public void setMessage(){
+    public void setMessage() {
         final String newMessage = "newMessage_test";
         botMessageListItem.setMessage(newMessage);
-        errorCollector.checkThat(botMessageListItem.getMessage(), is(equalTo(newMessage)));
+        errorCollector.checkThat(botMessageListItem.getMessage(), is(newMessage));
     }
 
     @Test
-    public void setTime(){
+    public void setTime() {
         final long newTime = 2_000L;
         botMessageListItem.setTime(newTime);
         errorCollector.checkThat(botMessageListItem.getTime(), is(newTime));
@@ -45,6 +44,6 @@ public class BotMessageListItemTest {
     @Test
     public void getContents() {
         errorCollector.checkThat(botMessageListItem.getContents().size(), is(2));
-        errorCollector.checkThat(botMessageListItem.getContents().get("message"), is(equalTo(MESSAGE)));
+        errorCollector.checkThat(botMessageListItem.getContents().get("message"), is(MESSAGE));
     }
 }
