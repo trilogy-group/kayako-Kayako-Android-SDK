@@ -10,7 +10,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.containsString;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -37,14 +36,14 @@ public class InputFeedbackCommentListItemTest {
     }
 
     @Test
-    public void whenValidParamsConstructorThenObjectCreated(){
-        errorCollector.checkThat(listItem.getInstructionMessage(), is(equalTo(INSTRUCTION_MESSAGE)));
+    public void whenValidParamsConstructorThenObjectCreated() {
+        errorCollector.checkThat(listItem.getInstructionMessage(), is(INSTRUCTION_MESSAGE));
         errorCollector.checkThat(listItem.getRating(), is(rating));
         errorCollector.checkThat(listItem.getOnAddFeedbackComment(), is(onAddFeedbackComment));
     }
 
     @Test
-    public void whenNullInstructionMessageThenException(){
+    public void whenNullInstructionMessageThenException() {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(containsString(EXCEPTION_MESSAGE));
         InputFeedbackCommentListItem listItemLocal =
@@ -52,7 +51,7 @@ public class InputFeedbackCommentListItemTest {
     }
 
     @Test
-    public void whenNullRatingThenIllegalArgumentException(){
+    public void whenNullRatingThenIllegalArgumentException() {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(containsString(EXCEPTION_MESSAGE));
         InputFeedbackCommentListItem listItemLocal =
@@ -60,14 +59,19 @@ public class InputFeedbackCommentListItemTest {
     }
 
     @Test
-    public void validParamsGivenInConstructorThenObjectCreated(){
+    public void validParamsGivenInConstructorThenObjectCreated() {
+        //Arrange
         final String submittedComment = "submitted_Comment";
+
+        //Act
         listItem = new InputFeedbackCommentListItem(INSTRUCTION_MESSAGE, submittedComment);
-        errorCollector.checkThat(listItem.getItemType(), is(equalTo(MessengerListType.INPUT_FIELD_FEEDBACK_COMMENT)));
+
+        //Assert
+        errorCollector.checkThat(listItem.getItemType(), is(MessengerListType.INPUT_FIELD_FEEDBACK_COMMENT));
     }
 
     @Test
-    public void whenNullSubmittedCommentThenException(){
+    public void whenNullSubmittedCommentThenException() {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(containsString(EXCEPTION_MESSAGE));
         InputFeedbackCommentListItem listItemLocal =
@@ -78,6 +82,6 @@ public class InputFeedbackCommentListItemTest {
     public void getContents() {
         errorCollector.checkThat(listItem.getContents().isEmpty(), is(false));
         errorCollector.checkThat(listItem.getContents().get(
-                "instructionMessage"), is(equalTo(INSTRUCTION_MESSAGE)));
+                "instructionMessage"), is(INSTRUCTION_MESSAGE));
     }
 }
