@@ -7,7 +7,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -20,6 +20,8 @@ public class ListItemTest {
     private static final int LIST_TYPE = 2;
     private static final String SUBTITLE = "subtitleTest";
     private static final String TITLE = "titleTest";
+    private static final String TITLE_KEY = "title";
+    private static final String SUBTITLE_KEY = "subtitle";
 
     private Resource resource;
     private ListItem listItem;
@@ -31,7 +33,6 @@ public class ListItemTest {
     public void setUp() {
         listItem = new ListItem(TITLE, SUBTITLE, resource);
     }
-
 
     @Test
     public void equals() {
@@ -84,8 +85,8 @@ public class ListItemTest {
     @Test
     public void getContents() {
         //Act
-        String listItemTitle = listItem.getContents().get("title");
-        String listItemSubTitle = listItem.getContents().get("subtitle");
+        String listItemTitle = listItem.getContents().get(TITLE_KEY);
+        String listItemSubTitle = listItem.getContents().get(SUBTITLE_KEY);
 
         //Assert
         collector.checkThat(listItemTitle, is(equalTo(String.valueOf(TITLE))));
