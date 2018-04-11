@@ -47,9 +47,9 @@ public class AttachmentMessageContinuedSelfListItemTest {
 
     @Test
     public void setAttachment() {
-        Attachment attachment1 = new Attachment(Attachment.TYPE.FILE);
-        listItem.setAttachment(attachment1);
-        errorCollector.checkThat(listItem.getAttachment(), is(equalTo(attachment1)));
+        Attachment attachmentLocal = new Attachment(Attachment.TYPE.FILE);
+        listItem.setAttachment(attachmentLocal);
+        errorCollector.checkThat(listItem.getAttachment(), is(equalTo(attachmentLocal)));
         errorCollector.checkThat(listItem.getAttachment().getType(), is(equalTo(Attachment.TYPE.FILE)));
     }
 
