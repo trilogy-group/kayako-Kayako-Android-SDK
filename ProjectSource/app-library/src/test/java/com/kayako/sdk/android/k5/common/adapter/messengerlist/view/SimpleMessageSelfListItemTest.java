@@ -7,7 +7,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.equalTo;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +24,7 @@ public class SimpleMessageSelfListItemTest {
     public final ErrorCollector errorCollector = new ErrorCollector();
 
     @Before
-    public void setUp(){
+    public void setUp() {
         id = 1L;
         time = 2_222L;
         deliveryIndicator = new DeliveryIndicator(1,1,time);
@@ -36,33 +35,33 @@ public class SimpleMessageSelfListItemTest {
     @Test
     public void whenValidParamsConstructorThenObjectCreated() {
         errorCollector.checkThat(selfListItem.getId(), is(id));
-        errorCollector.checkThat(selfListItem.getMessage(), is(equalTo(MESSAGE)));
+        errorCollector.checkThat(selfListItem.getMessage(), is(MESSAGE));
         errorCollector.checkThat(selfListItem.getTime(), is(time));
         errorCollector.checkThat(selfListItem.getDeliveryIndicator(), is(deliveryIndicator));
         errorCollector.checkThat(selfListItem.isFadeBackground(), is(fadeBackground));
         errorCollector.checkThat(selfListItem.getData(), is(data));
-        errorCollector.checkThat(selfListItem.getItemType(), is(equalTo(MessengerListType.SIMPLE_MESSAGE_SELF)));
+        errorCollector.checkThat(selfListItem.getItemType(), is(MessengerListType.SIMPLE_MESSAGE_SELF));
     }
 
     @Test
     public void setMessage() {
         final String newMessage = "new_message";
         selfListItem.setMessage(newMessage);
-        errorCollector.checkThat(selfListItem.getMessage(), is(equalTo(newMessage)));
+        errorCollector.checkThat(selfListItem.getMessage(), is(newMessage));
     }
 
     @Test
-    public void setTime(){
+    public void setTime() {
         final long newTime = 12_345L;
         selfListItem.setTime(newTime);
-        errorCollector.checkThat(selfListItem.getTime(), is(equalTo(newTime)));
+        errorCollector.checkThat(selfListItem.getTime(), is(newTime));
     }
 
     @Test
     public void getContents() {
         Map<String, String> contentsMap = selfListItem.getContents();
         errorCollector.checkThat(contentsMap.isEmpty(), is(false));
-        errorCollector.checkThat(contentsMap.get("message"), is(equalTo(MESSAGE)));
-        errorCollector.checkThat(contentsMap.get("fadeBackground"), is(equalTo(String.valueOf(fadeBackground))));
+        errorCollector.checkThat(contentsMap.get("message"), is(MESSAGE));
+        errorCollector.checkThat(contentsMap.get("fadeBackground"), is(String.valueOf(fadeBackground)));
     }
 }
