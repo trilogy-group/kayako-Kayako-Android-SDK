@@ -1,5 +1,7 @@
 package com.kayako.sdk.android.k5.common.adapter.messengerlist;
 
+import org.hamcrest.Matcher;
+import org.hamcrest.core.IsNull;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -7,7 +9,6 @@ import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.equalTo;
 
 public class AttachmentUrlTypeTest {
 
@@ -39,76 +40,120 @@ public class AttachmentUrlTypeTest {
 
     @Test
     public void whenValidParamsInConstructorThenObjectCreated() {
-        errorCollector.checkThat(attachmentUrlType.getThumbnailUrl(), is(equalTo(THUMBNAIL_URL)));
-        errorCollector.checkThat(attachmentUrlType.getType(), is(equalTo(AttachmentUrlType.TYPE.URL)));
-        errorCollector.checkThat(attachmentUrlType.getOriginalImageUrl(), is(equalTo(ORIGINAL_IMAGE_URL)));
-        errorCollector.checkThat(attachmentUrlType.getFileName(), is(equalTo(FILE_NAME)));
+        errorCollector.checkThat(attachmentUrlType.getThumbnailUrl(), is(THUMBNAIL_URL));
+        errorCollector.checkThat(attachmentUrlType.getType(), is(AttachmentUrlType.TYPE.URL));
+        errorCollector.checkThat(attachmentUrlType.getOriginalImageUrl(), is(ORIGINAL_IMAGE_URL));
+        errorCollector.checkThat(attachmentUrlType.getFileName(), is(FILE_NAME));
         errorCollector.checkThat(attachmentUrlType.getFileSize(), is(fileSize));
-        errorCollector.checkThat(attachmentUrlType.getThumbnailType(), is(equalTo(THUMBNAIL_TYPE)));
+        errorCollector.checkThat(attachmentUrlType.getThumbnailType(), is(THUMBNAIL_TYPE));
         errorCollector.checkThat(attachmentUrlType.getTimeCreated(), is(timeCreated));
-        errorCollector.checkThat(attachmentUrlType.getDownloadUrl(), is(equalTo(DOWNLOAD_URL)));
+        errorCollector.checkThat(attachmentUrlType.getDownloadUrl(), is(DOWNLOAD_URL));
     }
 
     @Test
     public void whenValidParamsConstructorThenObjectCreated() {
-        AttachmentUrlType attachmentUrlTypeLocal = new AttachmentUrlType(id, THUMBNAIL_URL, CAPTION);
-        errorCollector.checkThat(attachmentUrlTypeLocal.getType(), is(equalTo(AttachmentUrlType.TYPE.URL)));
+        final AttachmentUrlType attachmentUrlTypeLocal = new AttachmentUrlType(id, THUMBNAIL_URL, CAPTION);
+        errorCollector.checkThat(attachmentUrlTypeLocal.getType(), is(AttachmentUrlType.TYPE.URL));
         errorCollector.checkThat(attachmentUrlTypeLocal.getId(), is(id));
-        errorCollector.checkThat(attachmentUrlTypeLocal.getCaption(), is(equalTo(CAPTION)));
+        errorCollector.checkThat(attachmentUrlTypeLocal.getCaption(), is(CAPTION));
     }
 
     @Test
     public void whenNullThumbNailUrlThenAssertionError() {
+        final Matcher<String> nullMatcher = new IsNull<>();
         thrown.expect(AssertionError.class);
-        AttachmentUrlType attachmentUrlType = new AttachmentUrlType(id, null, CAPTION);
+        thrown.expectMessage(nullMatcher);
+        new AttachmentUrlType(id, null, CAPTION);
     }
 
     @Test
     public void setFileName() {
-        attachmentUrlType.setFileName("test2.txt");
+        //Arrange
+        final String newFileName = "test2.txt";
+
+        //Act
+        attachmentUrlType.setFileName(newFileName);
+
+        //Assert
         errorCollector.checkThat(attachmentUrlType.getFileName(), not(FILE_NAME));
-        errorCollector.checkThat(attachmentUrlType.getFileName(), equalTo("test2.txt"));
+        errorCollector.checkThat(attachmentUrlType.getFileName(), is(newFileName));
     }
 
     @Test
-    public void setFileSize(){
-        attachmentUrlType.setFileSize(3_000L);
+    public void setFileSize() {
+        //Arrange
+        final long newFileSize = 3_000L;
+
+        //Act
+        attachmentUrlType.setFileSize(newFileSize);
+
+        //Assert
         errorCollector.checkThat(fileSize, not(attachmentUrlType.getFileSize()));
-        errorCollector.checkThat(attachmentUrlType.getFileSize(), is(3_000L));
+        errorCollector.checkThat(attachmentUrlType.getFileSize(), is(newFileSize));
     }
 
     @Test
     public void setThumbnailType() {
-        attachmentUrlType.setThumbnailType("thumbnail_type");
+        //Arrange
+        final String newThumbnailType = "thumbnail_type";
+
+        //Act
+        attachmentUrlType.setThumbnailType(newThumbnailType);
+
+        //Assert
         errorCollector.checkThat(attachmentUrlType.getThumbnailType(), not(THUMBNAIL_TYPE));
-        errorCollector.checkThat(attachmentUrlType.getThumbnailType(), equalTo("thumbnail_type"));
+        errorCollector.checkThat(attachmentUrlType.getThumbnailType(), is(newThumbnailType));
     }
 
     @Test
     public void setDownloadUrl() {
-        attachmentUrlType.setDownloadUrl("/downloadUrl2");
+        //Arrange
+        final String newDownloadUrl = "/newDownloadUrl";
+
+        //Act
+        attachmentUrlType.setDownloadUrl(newDownloadUrl);
+
+        //Assert
         errorCollector.checkThat(attachmentUrlType.getDownloadUrl(), not(DOWNLOAD_URL));
-        errorCollector.checkThat(attachmentUrlType.getDownloadUrl(), equalTo("/downloadUrl2"));
+        errorCollector.checkThat(attachmentUrlType.getDownloadUrl(), is(newDownloadUrl));
     }
 
     @Test
     public void setId() {
-        attachmentUrlType.setId(5L);
+        //Arrange
+        final long newId = 5L;
+
+        //Act
+        attachmentUrlType.setId(newId);
+
+        //Assert
         errorCollector.checkThat(attachmentUrlType.getId(), not(id));
-        errorCollector.checkThat(attachmentUrlType.getId(), is(5L));
+        errorCollector.checkThat(attachmentUrlType.getId(), is(newId));
     }
 
     @Test
     public void setThumbnailUrl() {
-        attachmentUrlType.setThumbnailUrl("/thumbnailUrl2");
+        //Arrange
+        final String newThumbNailUrl = "/newThumbnailUrl";
+
+        //Act
+        attachmentUrlType.setThumbnailUrl(newThumbNailUrl);
+
+        //Assert
         errorCollector.checkThat(attachmentUrlType.getThumbnailUrl(), not(THUMBNAIL_URL));
-        errorCollector.checkThat(attachmentUrlType.getThumbnailUrl(), equalTo("/thumbnailUrl2"));
+        errorCollector.checkThat(attachmentUrlType.getThumbnailUrl(), is(newThumbNailUrl));
     }
 
     @Test
     public void setCaption() {
-        attachmentUrlType.setCaption("caption test");
+        //Arrange
+        final String newCaption = "new_caption";
+
+        //Act
+        attachmentUrlType.setCaption(newCaption);
+
+        //Assert
         errorCollector.checkThat(attachmentUrlType.getCaption(), not(CAPTION));
-        errorCollector.checkThat(attachmentUrlType.getCaption(), is(equalTo("caption test")));
+        errorCollector.checkThat(attachmentUrlType.getCaption(), is(newCaption));
     }
 }
