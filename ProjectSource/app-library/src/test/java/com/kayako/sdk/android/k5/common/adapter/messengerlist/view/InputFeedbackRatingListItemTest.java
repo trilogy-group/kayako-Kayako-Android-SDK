@@ -9,7 +9,6 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.containsString;
 
@@ -36,33 +35,31 @@ public class InputFeedbackRatingListItemTest {
     }
 
     @Test
-    public void whenValidParamsConstructorThenObjectCreated(){
-        errorCollector.checkThat(ratingListItem.getInstructionMessage(), is(equalTo(INSTRUCTION_MESSAGE)));
+    public void whenValidParamsConstructorThenObjectCreated() {
+        errorCollector.checkThat(ratingListItem.getInstructionMessage(), is(INSTRUCTION_MESSAGE));
         errorCollector.checkThat(ratingListItem.getOnSelectRatingListener(), is(onSelectRatingListener));
-        errorCollector.checkThat(ratingListItem.getItemType(), is(equalTo(MessengerListType.INPUT_FIELD_FEEDBACK_RATING)));
+        errorCollector.checkThat(ratingListItem.getItemType(), is(MessengerListType.INPUT_FIELD_FEEDBACK_RATING));
     }
 
     @Test
-    public void whenNullInstructionMessageThenIllegalStateException(){
+    public void whenNullInstructionMessageThenIllegalStateException() {
         thrown.expect(IllegalStateException.class);
         thrown.expectMessage(containsString(EXCEPTION_MESSAGE));
-        InputFeedbackRatingListItem ratingListItemLocal =
-                new InputFeedbackRatingListItem(null, onSelectRatingListener);
+        new InputFeedbackRatingListItem(null, onSelectRatingListener);
     }
 
     @Test
-    public void whenNullOnSelectRatingListenerThenException(){
+    public void whenNullOnSelectRatingListenerThenException() {
         InputFeedback.OnSelectRatingListener onSelectRatingListener = null;
         thrown.expect(IllegalStateException.class);
         thrown.expectMessage(containsString(EXCEPTION_MESSAGE));
-        InputFeedbackRatingListItem ratingListItemLocal =
-                new InputFeedbackRatingListItem(INSTRUCTION_MESSAGE, onSelectRatingListener);
+        new InputFeedbackRatingListItem(INSTRUCTION_MESSAGE, onSelectRatingListener);
     }
 
     @Test
     public void whenValidParamsGivenConstructorThenObjectCreated() {
         InputFeedbackRatingListItem listItemLocal = new InputFeedbackRatingListItem(INSTRUCTION_MESSAGE, SUBMITTED_RATING);
-        errorCollector.checkThat(listItemLocal.getInstructionMessage(), is(equalTo(INSTRUCTION_MESSAGE)));
+        errorCollector.checkThat(listItemLocal.getInstructionMessage(), is(INSTRUCTION_MESSAGE));
     }
 
     @Test
@@ -75,8 +72,9 @@ public class InputFeedbackRatingListItemTest {
 
     @Test
     public void getContents() {
-        InputFeedbackRatingListItem listItem = new InputFeedbackRatingListItem(INSTRUCTION_MESSAGE, SUBMITTED_RATING);
+        InputFeedbackRatingListItem listItem =
+                new InputFeedbackRatingListItem(INSTRUCTION_MESSAGE, SUBMITTED_RATING);
         errorCollector.checkThat(listItem.getContents().isEmpty(), is(false));
-        errorCollector.checkThat(ratingListItem.getContents().get("instructionMessage"), is(equalTo(INSTRUCTION_MESSAGE)));
+        errorCollector.checkThat(ratingListItem.getContents().get("instructionMessage"), is(INSTRUCTION_MESSAGE));
     }
 }
