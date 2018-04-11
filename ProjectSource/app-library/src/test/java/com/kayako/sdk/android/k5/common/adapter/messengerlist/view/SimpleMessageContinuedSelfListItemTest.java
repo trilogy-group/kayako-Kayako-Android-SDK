@@ -6,12 +6,11 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SimpleMessageContinuedSelfListItemTest {
+public class SimpleMessageContinuedSelfListItemTest{
 
     private static final String MESSAGE = "dummy message";
     private Map<String, Object> data = new HashMap<>();
@@ -28,29 +27,29 @@ public class SimpleMessageContinuedSelfListItemTest {
     public void setUp(){
         id = 1L;
         time = 2_222L;
-        deliveryIndicator = new DeliveryIndicator(1,1,1_000L);
+        deliveryIndicator = new DeliveryIndicator(1, 1, 1_000L);
         fadeBackground = true;
         simpleMessageContinuedSelfListItem =
                 new SimpleMessageContinuedSelfListItem(id, MESSAGE, time, deliveryIndicator, fadeBackground, data);
     }
 
     @Test
-    public void whenValidParamsConstructorThenObjectCreated() {
+    public void whenValidParamsConstructorThenObjectCreated(){
         errorCollector.checkThat(simpleMessageContinuedSelfListItem.getId(), is(id));
-        errorCollector.checkThat(simpleMessageContinuedSelfListItem.getMessage(), is(equalTo(MESSAGE)));
+        errorCollector.checkThat(simpleMessageContinuedSelfListItem.getMessage(), is(MESSAGE));
         errorCollector.checkThat(simpleMessageContinuedSelfListItem.getTime(), is(time));
         errorCollector.checkThat(simpleMessageContinuedSelfListItem.getDeliveryIndicator(), is(deliveryIndicator));
         errorCollector.checkThat(simpleMessageContinuedSelfListItem.isFadeBackground(), is(fadeBackground));
         errorCollector.checkThat(simpleMessageContinuedSelfListItem.getData(), is(data));
         errorCollector.checkThat(simpleMessageContinuedSelfListItem.getItemType(),
-                is(equalTo(MessengerListType.SIMPLE_MESSAGE_CONTINUED_SELF)));
+                    is(MessengerListType.SIMPLE_MESSAGE_CONTINUED_SELF));
     }
 
     @Test
-    public void setMessage() {
+    public void setMessage(){
         final String newMessage = "new_message";
         simpleMessageContinuedSelfListItem.setMessage(newMessage);
-        errorCollector.checkThat(simpleMessageContinuedSelfListItem.getMessage(), is(equalTo(newMessage)));
+        errorCollector.checkThat(simpleMessageContinuedSelfListItem.getMessage(), is(newMessage));
     }
 
     @Test
@@ -61,10 +60,10 @@ public class SimpleMessageContinuedSelfListItemTest {
     }
 
     @Test
-    public void getContents() {
+    public void getContents(){
         Map<String, String> contentsMap = simpleMessageContinuedSelfListItem.getContents();
         errorCollector.checkThat(contentsMap.size(), is(6));
-        errorCollector.checkThat(contentsMap.get("message"), is(equalTo(MESSAGE)));
-        errorCollector.checkThat(contentsMap.get("fadeBackground"), is(equalTo(String.valueOf(fadeBackground))));
+        errorCollector.checkThat(contentsMap.get("message"), is(MESSAGE));
+        errorCollector.checkThat(contentsMap.get("fadeBackground"), is(String.valueOf(fadeBackground)));
     }
 }
