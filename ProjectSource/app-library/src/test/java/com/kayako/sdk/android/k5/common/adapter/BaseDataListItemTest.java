@@ -3,7 +3,8 @@ package com.kayako.sdk.android.k5.common.adapter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.runners.MockitoJUnitRunner;
+import static org.mockito.Mockito.when;
 
 import java.util.Map;
 
@@ -13,14 +14,20 @@ import static org.junit.Assert.assertEquals;
 public class BaseDataListItemTest {
 
     @Mock
-    Map<String, Object> data;
+    private Map<String, Object> data;
 
     @Mock
-    BaseDataListItem baseDataListItem;
+    private BaseDataListItem baseDataListItem;
 
     @Test
     public void getData() {
+        //Arrange
+        when(baseDataListItem.getData()).thenReturn(data);
+
+        //Act
         baseDataListItem.setData(data);
+
+        //Assert
         assertEquals(data, baseDataListItem.getData());
     }
 }
