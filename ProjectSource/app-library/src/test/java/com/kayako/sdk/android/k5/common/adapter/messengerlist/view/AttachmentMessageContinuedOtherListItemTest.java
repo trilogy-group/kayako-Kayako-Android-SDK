@@ -8,12 +8,11 @@ import org.junit.rules.ErrorCollector;
 import java.util.HashMap;
 import java.util.Map;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.equalTo;
 
 public class AttachmentMessageContinuedOtherListItemTest {
 
-    private final long id = 1L;
-    private final long time = 1_000L;
+    private static final long ID = 1L;
+    private static final long TIME = 1_000L;
     private final Map<String, Object> data = new HashMap<>();
     private Attachment attachment;
     private AttachmentMessageContinuedOtherListItem otherListItem;
@@ -24,36 +23,46 @@ public class AttachmentMessageContinuedOtherListItemTest {
     @Before
     public void setUp() {
         attachment = new Attachment(Attachment.TYPE.URL);
-        otherListItem = new AttachmentMessageContinuedOtherListItem(id, attachment, time, data);
+        otherListItem = new AttachmentMessageContinuedOtherListItem(ID, attachment, TIME, data);
     }
 
     @Test
     public void whenValidParamsConstructorThenObjectCreated() {
-        errorCollector.checkThat(otherListItem.getId(), is(id));
+        errorCollector.checkThat(otherListItem.getId(), is(ID));
         errorCollector.checkThat(otherListItem.getAttachment(), is(attachment));
-        errorCollector.checkThat(otherListItem.getTime(), is(time));
+        errorCollector.checkThat(otherListItem.getTime(), is(TIME));
         errorCollector.checkThat(otherListItem.getData(), is(data));
     }
 
     @Test
     public void setAttachment() {
-        Attachment attachmentLocal = new Attachment(Attachment.TYPE.FILE);
+        //Arrange
+        final Attachment attachmentLocal = new Attachment(Attachment.TYPE.FILE);
+
+        //Act
         otherListItem.setAttachment(attachmentLocal);
-        errorCollector.checkThat(otherListItem.getAttachment(), is(equalTo(attachmentLocal)));
-        errorCollector.checkThat(otherListItem.getAttachment().getType(), is(equalTo(Attachment.TYPE.FILE)));
+
+        //Assert
+        errorCollector.checkThat(otherListItem.getAttachment(), is(attachmentLocal));
+        errorCollector.checkThat(otherListItem.getAttachment().getType(), is(Attachment.TYPE.FILE));
     }
 
     @Test
-    public void setTime(){
+    public void setTime() {
+        //Arrange
         final long timeLocal = 2_000L;
+
+        //Act
         otherListItem.setTime(timeLocal);
-        errorCollector.checkThat(otherListItem.getTime(), is(equalTo(timeLocal)));
+
+        //Assert
+        errorCollector.checkThat(otherListItem.getTime(), is(timeLocal));
     }
 
     @Test
     public void getContents() {
         errorCollector.checkThat(otherListItem.getContents().isEmpty(), is(false));
         errorCollector.checkThat(otherListItem.getContents().size(), is(2));
-        errorCollector.checkThat(otherListItem.getContents().get("time"), is(equalTo(String.valueOf(time))));
+        errorCollector.checkThat(otherListItem.getContents().get("time"), is(String.valueOf(TIME)));
     }
 }
