@@ -101,7 +101,6 @@ public class AttachmentUrlTypeTest {
         attachmentUrlType.setThumbnailType(newThumbnailType);
 
         //Assert
-        errorCollector.checkThat(attachmentUrlType.getThumbnailType(), not(THUMBNAIL_TYPE));
         errorCollector.checkThat(attachmentUrlType.getThumbnailType(), is(newThumbnailType));
     }
 
@@ -114,7 +113,6 @@ public class AttachmentUrlTypeTest {
         attachmentUrlType.setDownloadUrl(newDownloadUrl);
 
         //Assert
-        errorCollector.checkThat(attachmentUrlType.getDownloadUrl(), not(DOWNLOAD_URL));
         errorCollector.checkThat(attachmentUrlType.getDownloadUrl(), is(newDownloadUrl));
     }
 
@@ -127,7 +125,6 @@ public class AttachmentUrlTypeTest {
         attachmentUrlType.setId(newId);
 
         //Assert
-        errorCollector.checkThat(attachmentUrlType.getId(), not(id));
         errorCollector.checkThat(attachmentUrlType.getId(), is(newId));
     }
 
