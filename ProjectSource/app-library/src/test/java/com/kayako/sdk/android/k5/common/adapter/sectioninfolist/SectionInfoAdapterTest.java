@@ -12,7 +12,6 @@ import com.kayako.sdk.android.k5.common.adapter.list.HeaderViewHolder;
 import com.kayako.sdk.android.k5.common.adapter.list.ListItemRecyclerViewAdapter;
 import com.kayako.sdk.android.k5.common.adapter.list.ListType;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
