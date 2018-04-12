@@ -7,7 +7,6 @@ import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
 
 public class AttachmentTest {
 
@@ -26,7 +25,6 @@ public class AttachmentTest {
 
     @Test
     public void givenValidParamsThenObjectCreated() {
-        errorCollector.checkThat(attachment.getType(), not(Attachment.TYPE.URL));
         errorCollector.checkThat(attachment.getType(), is(Attachment.TYPE.FILE));
     }
 
