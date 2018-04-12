@@ -7,7 +7,6 @@ import org.junit.rules.ErrorCollector;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.equalTo;
 import java.util.Map;
 
 public class DeliveryIndicatorTest {
@@ -31,20 +30,22 @@ public class DeliveryIndicatorTest {
     @Test
     public void whenValidParamsConstructorThenObjectCreated() {
         errorCollector.checkThat(deliveryIndicator, notNullValue());
-        errorCollector.checkThat(deliveryIndicator.getDeliveryStatusIconResId(), is(equalTo(deliveryStatusIconResId)));
-        errorCollector.checkThat(deliveryIndicator.getDeliveryStatusTextResId(), is(equalTo(deliveryStatusTextResId)));
-        errorCollector.checkThat(deliveryIndicator.getDeliveryTime(), is(equalTo(deliveryTime)));
+        errorCollector.checkThat(deliveryIndicator.getDeliveryStatusIconResId(), is(deliveryStatusIconResId));
+        errorCollector.checkThat(deliveryIndicator.getDeliveryStatusTextResId(), is(deliveryStatusTextResId));
+        errorCollector.checkThat(deliveryIndicator.getDeliveryTime(), is(deliveryTime));
     }
 
     @Test
-    public void whenZeroDeliveryStatusIconResIdThenReturnNullValue(){
-        DeliveryIndicator deliveryIndicatorLocal = new DeliveryIndicator(0, deliveryStatusTextResId, deliveryTime);
+    public void whenZeroDeliveryStatusIconResIdThenReturnNullValue() {
+        DeliveryIndicator deliveryIndicatorLocal = new DeliveryIndicator(
+                0, deliveryStatusTextResId, deliveryTime);
         errorCollector.checkThat(deliveryIndicatorLocal.getDeliveryStatusIconResId(), nullValue());
     }
 
     @Test
     public void whenZeroDeliveryStatusTextResIdThenReturnNullValue() {
-        DeliveryIndicator deliveryIndicatorLocal = new DeliveryIndicator(deliveryStatusIconResId, 0, deliveryTime);
+        DeliveryIndicator deliveryIndicatorLocal = new DeliveryIndicator(
+                deliveryStatusIconResId, 0, deliveryTime);
         errorCollector.checkThat(deliveryIndicatorLocal.getDeliveryStatusTextResId(), nullValue());
     }
 
@@ -52,8 +53,11 @@ public class DeliveryIndicatorTest {
     public void getContents() {
         Map<String, String> map = deliveryIndicator.getContents();
         errorCollector.checkThat(map.size(), is(3));
-        errorCollector.checkThat(map.get("DeliveryIndicator.deliveryStatusIconResId"), is(equalTo(String.valueOf(deliveryStatusIconResId))));
-        errorCollector.checkThat(map.get("DeliveryIndicator.deliveryStatusTextResId"), is(equalTo(String.valueOf(deliveryStatusTextResId))));
-        errorCollector.checkThat(map.get("DeliveryIndicator.deliveryTime"), is(equalTo(String.valueOf(deliveryTime))));
+        errorCollector.checkThat(map.get("DeliveryIndicator.deliveryStatusIconResId"),
+                is(String.valueOf(deliveryStatusIconResId)));
+        errorCollector.checkThat(map.get("DeliveryIndicator.deliveryStatusTextResId"),
+                is(String.valueOf(deliveryStatusTextResId)));
+        errorCollector.checkThat(map.get("DeliveryIndicator.deliveryTime"),
+                is(String.valueOf(deliveryTime)));
     }
 }
