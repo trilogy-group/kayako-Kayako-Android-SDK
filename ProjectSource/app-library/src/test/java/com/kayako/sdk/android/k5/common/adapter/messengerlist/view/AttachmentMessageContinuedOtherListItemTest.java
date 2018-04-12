@@ -61,7 +61,6 @@ public class AttachmentMessageContinuedOtherListItemTest {
 
     @Test
     public void getContents() {
-        errorCollector.checkThat(otherListItem.getContents().isEmpty(), is(false));
         errorCollector.checkThat(otherListItem.getContents().size(), is(2));
         errorCollector.checkThat(otherListItem.getContents().get("time"), is(String.valueOf(TIME)));
     }
