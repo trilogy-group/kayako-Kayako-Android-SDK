@@ -6,7 +6,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.equalTo;
 
 public class DateSeparatorListItemTest {
 
@@ -17,7 +16,7 @@ public class DateSeparatorListItemTest {
     public final ErrorCollector errorCollector = new ErrorCollector();
 
     @Before
-    public void setUp(){
+    public void setUp() {
         timeInMilliseconds = 10_000L;
         separatorListItem = new DateSeparatorListItem(timeInMilliseconds);
     }
@@ -29,7 +28,7 @@ public class DateSeparatorListItemTest {
     }
 
     @Test
-    public void setTimeInMilliseconds(){
+    public void setTimeInMilliseconds() {
         final long newTime = 22_222L;
         separatorListItem.setTimeInMilliseconds(newTime);
         errorCollector.checkThat(separatorListItem.getTimeInMilliseconds(), is(newTime));
@@ -39,6 +38,6 @@ public class DateSeparatorListItemTest {
     public void getContents() {
         errorCollector.checkThat(separatorListItem.getContents().size(), is(1));
         errorCollector.checkThat(separatorListItem.getContents().get("timeInMilliseconds"),
-                                is(equalTo(String.valueOf(timeInMilliseconds))));
+                                is(String.valueOf(timeInMilliseconds)));
     }
 }
