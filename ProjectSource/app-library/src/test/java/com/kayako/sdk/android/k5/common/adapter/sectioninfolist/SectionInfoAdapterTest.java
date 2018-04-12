@@ -92,7 +92,7 @@ public class SectionInfoAdapterTest {
 
         //Assert
         collector.checkThat(viewHolder, is(instanceOf(SectionInfoViewHolder.class)));
-        collector.checkThat(viewHolder.itemView, is(equalTo(mockView)));
+        collector.checkThat(viewHolder.itemView, is(mockView));
 
     }
 
