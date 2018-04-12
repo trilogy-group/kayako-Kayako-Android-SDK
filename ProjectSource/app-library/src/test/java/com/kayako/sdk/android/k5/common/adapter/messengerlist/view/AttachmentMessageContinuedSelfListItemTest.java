@@ -9,11 +9,10 @@ import org.junit.rules.ErrorCollector;
 import java.util.HashMap;
 import java.util.Map;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.equalTo;
 
 public class AttachmentMessageContinuedSelfListItemTest {
 
-    private final Map<String, Object> data = new HashMap<>();
+    private final Map<String, String> data = new HashMap<>();
     private long time;
     private boolean fadeBackground;
     private long id;
@@ -32,7 +31,7 @@ public class AttachmentMessageContinuedSelfListItemTest {
         deliveryIndicator = new DeliveryIndicator(1, 1, time);
         fadeBackground = false;
         listItem = new AttachmentMessageContinuedSelfListItem(
-                id, attachment, time, deliveryIndicator, fadeBackground,data);
+                id, attachment, time, deliveryIndicator, fadeBackground, (Map)data);
     }
 
     @Test
@@ -42,20 +41,25 @@ public class AttachmentMessageContinuedSelfListItemTest {
         errorCollector.checkThat(listItem.getTime(), is(time));
         errorCollector.checkThat(listItem.getDeliveryIndicator(), is(deliveryIndicator));
         errorCollector.checkThat(listItem.isFadeBackground(), is(fadeBackground));
-        errorCollector.checkThat(listItem.getData(), is(data));
+        errorCollector.checkThat((Map)listItem.getData(), is(data));
     }
 
     @Test
     public void setAttachment() {
-        Attachment attachmentLocal = new Attachment(Attachment.TYPE.FILE);
+        //Arrange
+        final Attachment attachmentLocal = new Attachment(Attachment.TYPE.FILE);
+
+        //Act
         listItem.setAttachment(attachmentLocal);
-        errorCollector.checkThat(listItem.getAttachment(), is(equalTo(attachmentLocal)));
-        errorCollector.checkThat(listItem.getAttachment().getType(), is(equalTo(Attachment.TYPE.FILE)));
+
+        //Assert
+        errorCollector.checkThat(listItem.getAttachment(), is(attachmentLocal));
+        errorCollector.checkThat(listItem.getAttachment().getType(), is(Attachment.TYPE.FILE));
     }
 
     @Test
     public void getContents() {
         errorCollector.checkThat(listItem.getContents().size(), is(6));
-        errorCollector.checkThat(listItem.getContents().get("fadeBackground"), is(equalTo(String.valueOf(fadeBackground))));
+        errorCollector.checkThat(listItem.getContents().get("fadeBackground"), is(String.valueOf(fadeBackground)));
     }
 }
