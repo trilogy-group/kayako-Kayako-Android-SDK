@@ -5,7 +5,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.equalTo;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +28,7 @@ public class DataItemTest {
     public final ErrorCollector errorCollector = new ErrorCollector();
 
     @Before
-    public void setup(){
+    public void setup() {
         id = 1L;
         data.put("test", "object");
         userDecoration = new UserDecoration("/avatarUrl", id, false);
@@ -45,13 +44,13 @@ public class DataItemTest {
     }
 
     @Test
-    public void whenValidParamsConstructorThenObjectCreated(){
+    public void whenValidParamsConstructorThenObjectCreated() {
         errorCollector.checkThat(dataItem.getId(), is(id));
         errorCollector.checkThat(dataItem.getData(), is(data));
         errorCollector.checkThat(dataItem.getUserDecoration(), is(userDecoration));
         errorCollector.checkThat(dataItem.getChannelDecoration(), is(channelDecoration));
         errorCollector.checkThat(dataItem.getDeliveryIndicator(), is(deliveryIndicator));
-        errorCollector.checkThat(dataItem.getMessage(), is(equalTo(MESSAGE)));
+        errorCollector.checkThat(dataItem.getMessage(), is(MESSAGE));
         errorCollector.checkThat(dataItem.getTimeInMilliseconds(), is(timeInMilliseconds));
         errorCollector.checkThat(dataItem.getAttachments(), is(attachments));
         errorCollector.checkThat(dataItem.isRead(), is(isRead));
@@ -59,22 +58,40 @@ public class DataItemTest {
 
     @Test
     public void setId() {
-        dataItem.setId(5L);
-        errorCollector.checkThat(dataItem.getId(), is(equalTo(5L)));
+        //Arrange
+        final long newId = 5L;
+
+        //Act
+        dataItem.setId(newId);
+
+        //Assert
+        errorCollector.checkThat(dataItem.getId(), is(newId));
     }
 
     @Test
     public void setData() {
-        data.put("test_1", "object_1");
+        //Arrange
+        final String key = "test_1";
+        final String value = "object_1";
+        data.put(key, value);
+
+        //Act
         dataItem.setData(data);
-        errorCollector.checkThat(dataItem.getData().size(), is(equalTo(2)));
-        errorCollector.checkThat(dataItem.getData().get("test_1").toString(), is(equalTo("object_1")));
+
+        //Assert
+        errorCollector.checkThat(dataItem.getData().size(), is(2));
+        errorCollector.checkThat(dataItem.getData().get(key).toString(), is(value));
     }
 
     @Test
     public void setMessage() {
-        String message = "message to test setMessage()";
-        dataItem.setMessage(message);
-        errorCollector.checkThat(dataItem.getMessage(), is(equalTo(message)));
+        //Arrange
+        final String newMessage = "message to test setMessage()";
+
+        //Act
+        dataItem.setMessage(newMessage);
+
+        //Assert
+        errorCollector.checkThat(dataItem.getMessage(), is(newMessage));
     }
 }
