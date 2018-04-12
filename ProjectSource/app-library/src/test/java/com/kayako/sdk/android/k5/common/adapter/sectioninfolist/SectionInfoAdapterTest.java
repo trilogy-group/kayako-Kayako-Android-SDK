@@ -72,14 +72,6 @@ public class SectionInfoAdapterTest {
     }
 
     @Test
-    public void constructor() {
-        //Arrange
-        sectionInfoAdapter = new SectionInfoAdapter(baseListItemList, onListItemClickListener,
-                TITLE, DESCRIPTION);
-        verify(baseListItemList, times(2)).add(0, null);
-    }
-
-    @Test
     public void onCreateViewHolderWhenViewTypeIsSectionInfoItem() {
         //Arrange
         when(mockParent.getContext()).thenReturn(mockContext);
@@ -94,6 +86,29 @@ public class SectionInfoAdapterTest {
         collector.checkThat(viewHolder, is(instanceOf(SectionInfoViewHolder.class)));
         collector.checkThat(viewHolder.itemView, is(mockView));
 
+    }
+
+
+    @Test
+    public void constructor() {
+        //Arrange
+        sectionInfoAdapter = new SectionInfoAdapter(baseListItemList, onListItemClickListener,
+                TITLE, DESCRIPTION);
+        verify(baseListItemList, times(2)).add(0, null);
+    }
+
+    @Test
+    public void getItemViewTypeWhenItemTypeIsEqualToZero() {
+        //Arrange
+        int position = 0;
+        when(baseListItemList.get(position)).thenReturn(mock(BaseListItem.class));
+        sectionInfoAdapter.setData(baseListItemList);
+
+        //Act
+        int expected = sectionInfoAdapter.getItemViewType(position);
+
+        //Assert
+        assertThat(expected, is(equalTo(SectionInfoListType.SECTION_INFO_ITEM)));
     }
 
     @Test
@@ -124,19 +139,5 @@ public class SectionInfoAdapterTest {
 
         //Assert
         assertThat(res, is(equalTo(sectionInfoAdapter.getData().get(position).getItemType())));
-    }
-
-    @Test
-    public void getItemViewTypeWhenItemTypeIsEqualToZero() {
-        //Arrange
-        int position = 0;
-        when(baseListItemList.get(position)).thenReturn(mock(BaseListItem.class));
-        sectionInfoAdapter.setData(baseListItemList);
-
-        //Act
-        int expected = sectionInfoAdapter.getItemViewType(position);
-
-        //Assert
-        assertThat(expected, is(equalTo(SectionInfoListType.SECTION_INFO_ITEM)));
     }
 }
