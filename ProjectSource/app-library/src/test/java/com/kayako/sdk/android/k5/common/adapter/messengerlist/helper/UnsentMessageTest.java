@@ -9,7 +9,6 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.CoreMatchers.containsString;
@@ -17,11 +16,10 @@ import static org.hamcrest.CoreMatchers.containsString;
 @RunWith(MockitoJUnitRunner.class)
 public class UnsentMessageTest {
 
-    private final static String CLIENT_ID = "123ABC";
-    private final static String MESSAGE = "message";
-    private final static String INVALID_ARGUMENTS = "Invalid Arguments";
+    private static final String CLIENT_ID = "123ABC";
+    private static final String MESSAGE = "message";
+    private static final String INVALID_ARGUMENTS = "Invalid Arguments";
     private ClientDeliveryStatus deliveryStatus;
-
 
     @Mock
     private FileAttachment attachment;
@@ -42,7 +40,7 @@ public class UnsentMessageTest {
         final String newMessage = null;
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(containsString(INVALID_ARGUMENTS));
-        UnsentMessage unsentMessage = new UnsentMessage(newMessage, deliveryStatus, CLIENT_ID);
+        new UnsentMessage(newMessage, deliveryStatus, CLIENT_ID);
     }
 
     @Test
@@ -50,7 +48,7 @@ public class UnsentMessageTest {
         deliveryStatus = null;
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(containsString(INVALID_ARGUMENTS));
-        UnsentMessage unsentMessage = new UnsentMessage(MESSAGE, deliveryStatus, CLIENT_ID);
+        new UnsentMessage(MESSAGE, deliveryStatus, CLIENT_ID);
     }
 
     @Test
@@ -58,7 +56,7 @@ public class UnsentMessageTest {
         final String newClientId = null;
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(containsString(INVALID_ARGUMENTS));
-        UnsentMessage unsentMessage = new UnsentMessage(MESSAGE, deliveryStatus, newClientId);
+        new UnsentMessage(MESSAGE, deliveryStatus, newClientId);
     }
 
     @Test
@@ -66,24 +64,24 @@ public class UnsentMessageTest {
         attachment = null;
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(containsString(INVALID_ARGUMENTS));
-        UnsentMessage unsentMessage = new UnsentMessage(attachment, deliveryStatus, CLIENT_ID);
+        new UnsentMessage(attachment, deliveryStatus, CLIENT_ID);
     }
 
     @Test
     public void whenValidParamsConstructorThenObjectCreated() {
-        UnsentMessage unsentMessage = new UnsentMessage(attachment, deliveryStatus, CLIENT_ID);
+        final UnsentMessage unsentMessage = new UnsentMessage(attachment, deliveryStatus, CLIENT_ID);
         errorCollector.checkThat(unsentMessage.getClientId(), is(CLIENT_ID));
         errorCollector.checkThat(unsentMessage.getAttachment(), is(attachment));
-        errorCollector.checkThat(unsentMessage.getDeliveryStatus(), is(equalTo(deliveryStatus)));
+        errorCollector.checkThat(unsentMessage.getDeliveryStatus(), is(deliveryStatus));
         errorCollector.checkThat(unsentMessage.getMessage(), nullValue());
     }
 
     @Test
     public void whenValidParamsGivenInConstructorThenObjectCreated() {
-        UnsentMessage unsentMessageLocal = new UnsentMessage(MESSAGE, deliveryStatus, CLIENT_ID);
+        final UnsentMessage unsentMessageLocal = new UnsentMessage(MESSAGE, deliveryStatus, CLIENT_ID);
         errorCollector.checkThat(unsentMessageLocal.getClientId(), is(CLIENT_ID));
-        errorCollector.checkThat(unsentMessageLocal.getDeliveryStatus(), is(equalTo(ClientDeliveryStatus.SENDING)));
-        errorCollector.checkThat(unsentMessageLocal.getMessage(), is(equalTo(MESSAGE)));
+        errorCollector.checkThat(unsentMessageLocal.getDeliveryStatus(), is(ClientDeliveryStatus.SENDING));
+        errorCollector.checkThat(unsentMessageLocal.getMessage(), is(MESSAGE));
         errorCollector.checkThat(unsentMessageLocal.getAttachment(), nullValue());
     }
 }
