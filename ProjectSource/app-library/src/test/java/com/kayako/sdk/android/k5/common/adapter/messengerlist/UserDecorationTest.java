@@ -7,7 +7,6 @@ import org.junit.rules.ErrorCollector;
 import java.util.Map;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.nullValue;
 
 public class UserDecorationTest {
@@ -30,16 +29,19 @@ public class UserDecorationTest {
 
     @Test
     public void whenValidParamsConstructorThenObjectCreated() {
-        errorCollector.checkThat(userDecoration.getName(), is(equalTo(NAME)));
-        errorCollector.checkThat(userDecoration.getAvatarUrl(), is(equalTo(AVATAR_URL)));
+        errorCollector.checkThat(userDecoration.getName(), is(NAME));
+        errorCollector.checkThat(userDecoration.getAvatarUrl(), is(AVATAR_URL));
         errorCollector.checkThat(userDecoration.getUserId(), is(userId));
         errorCollector.checkThat(userDecoration.isSelf(), is(isSelf));
     }
 
     @Test
     public void whenValidParamsInConstructorThenObjectCreated() {
-        UserDecoration userDecorationLocal = new UserDecoration(AVATAR_URL, userId, isSelf);
-        errorCollector.checkThat(userDecorationLocal.getAvatarUrl(), is(equalTo(AVATAR_URL)));
+        //Act
+        final UserDecoration userDecorationLocal = new UserDecoration(AVATAR_URL, userId, isSelf);
+
+        //Assert
+        errorCollector.checkThat(userDecorationLocal.getAvatarUrl(), is(AVATAR_URL));
         errorCollector.checkThat(userDecoration.getUserId(), is(userId));
         errorCollector.checkThat(userDecorationLocal.isSelf(), is(true));
         errorCollector.checkThat(userDecorationLocal.getName(), nullValue());
@@ -47,40 +49,59 @@ public class UserDecorationTest {
 
     @Test
     public void setName() {
-        String nameLocal = "name_local";
+        //Arrange
+        final String nameLocal = "name_local";
+
+        //Act
         userDecoration.setName(nameLocal);
+
+        //Assert
         errorCollector.checkThat(userDecoration.getName(), is(not(NAME)));
-        errorCollector.checkThat(userDecoration.getName(), is(equalTo(nameLocal)));
+        errorCollector.checkThat(userDecoration.getName(), is(nameLocal));
     }
 
     @Test
     public void setUserId() {
-        userDecoration.setUserId(0L);
+        //Arrange
+        final long newUserId = 0L;
+
+        //Act
+        userDecoration.setUserId(newUserId);
+
+        //Assert
         errorCollector.checkThat(userDecoration.getUserId(), is(not(userId)));
-        errorCollector.checkThat(userDecoration.getUserId(), is(0L));
+        errorCollector.checkThat(userDecoration.getUserId(), is(newUserId));
     }
 
     @Test
     public void setAvatarUrl() {
-        String avatarUrlLocal = "/avatarUrlLocal";
+        //Arrange
+        final String avatarUrlLocal = "/avatarUrlLocal";
+
+        //Act
         userDecoration.setAvatarUrl(avatarUrlLocal);
+
+        //Assert
         errorCollector.checkThat(userDecoration.getAvatarUrl(), is(not(AVATAR_URL)));
-        errorCollector.checkThat(userDecoration.getAvatarUrl(), is(equalTo(avatarUrlLocal)));
+        errorCollector.checkThat(userDecoration.getAvatarUrl(), is(avatarUrlLocal));
     }
 
     @Test
     public void setSelf() {
+        //Act
         userDecoration.setSelf(false);
+
+        //Assert
         errorCollector.checkThat(userDecoration.isSelf(), is(false));
     }
 
     @Test
     public void getContents() {
-        Map<String, String> contentsMap = userDecoration.getContents();
+        final Map<String, String> contentsMap = userDecoration.getContents();
         errorCollector.checkThat(contentsMap.size(), is(4));
-        errorCollector.checkThat(contentsMap.get("name"), is(equalTo(NAME)));
-        errorCollector.checkThat(contentsMap.get("userId"), is(equalTo(String.valueOf(userId))));
-        errorCollector.checkThat(contentsMap.get("avatarUrl"), is(equalTo(AVATAR_URL)));
-        errorCollector.checkThat(contentsMap.get("isSelf"), is(equalTo(String.valueOf(isSelf))));
+        errorCollector.checkThat(contentsMap.get("name"), is(NAME));
+        errorCollector.checkThat(contentsMap.get("userId"), is(String.valueOf(userId)));
+        errorCollector.checkThat(contentsMap.get("avatarUrl"), is(AVATAR_URL));
+        errorCollector.checkThat(contentsMap.get("isSelf"), is(String.valueOf(isSelf)));
     }
 }
