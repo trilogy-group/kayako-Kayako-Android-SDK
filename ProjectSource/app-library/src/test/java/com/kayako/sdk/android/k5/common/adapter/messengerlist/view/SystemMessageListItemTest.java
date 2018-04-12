@@ -1,6 +1,8 @@
 package com.kayako.sdk.android.k5.common.adapter.messengerlist.view;
 
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.MessengerListType;
+import org.hamcrest.Matcher;
+import org.hamcrest.core.IsNull;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -8,7 +10,6 @@ import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
 import java.util.Map;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.equalTo;
 
 public class SystemMessageListItemTest {
 
@@ -27,28 +28,32 @@ public class SystemMessageListItemTest {
     }
 
     @Test
-    public void whenValidParamsConstructorThenObjectCreated(){
-        errorCollector.checkThat(messageListItem.getItemType(), is(equalTo(MessengerListType.SYSTEM_MESSAGE)));
-        errorCollector.checkThat(messageListItem.getMessage(), is(equalTo(MESSAGE)));
+    public void whenValidParamsConstructorThenObjectCreated() {
+        errorCollector.checkThat(messageListItem.getItemType(), is(MessengerListType.SYSTEM_MESSAGE));
+        errorCollector.checkThat(messageListItem.getMessage(), is(MESSAGE));
     }
 
     @Test
     public void whenNullMessageThenIllegalArgumentException() {
+        final Matcher<String> nullMatcher = new IsNull<>();
         thrown.expect(IllegalArgumentException.class);
-        SystemMessageListItem listItem = new SystemMessageListItem(null);
+        thrown.expectMessage(nullMatcher);
+        new SystemMessageListItem(null);
     }
 
     @Test
     public void whenEmptyMessageThenIllegalArgumentException() {
+        final Matcher<String> nullMatcher = new IsNull<>();
         final String emptyString = "";
         thrown.expect(IllegalArgumentException.class);
-        SystemMessageListItem listItem = new SystemMessageListItem(emptyString);
+        thrown.expectMessage(nullMatcher);
+        new SystemMessageListItem(emptyString);
     }
 
     @Test
     public void getContents() {
         Map<String, String> contentsMap = messageListItem.getContents();
         errorCollector.checkThat(contentsMap.size(), is(1));
-        errorCollector.checkThat(contentsMap.get("message"), is(equalTo(MESSAGE)));
+        errorCollector.checkThat(contentsMap.get("message"), is(MESSAGE));
     }
 }
