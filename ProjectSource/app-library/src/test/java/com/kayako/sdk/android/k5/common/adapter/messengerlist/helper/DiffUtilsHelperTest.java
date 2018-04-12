@@ -2,7 +2,6 @@ package com.kayako.sdk.android.k5.common.adapter.messengerlist.helper;
 
 import com.kayako.sdk.android.k5.common.adapter.BaseIdentityListItem;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -14,12 +13,12 @@ import java.util.HashMap;
 import java.util.Map;
 import static org.mockito.Mockito.when;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.nullValue;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DiffUtilsHelperTest {
 
+    private static final String NEW_LINE = "\n";
     private final Map<String, String > map = new HashMap<>();
 
     @Mock
@@ -74,14 +73,23 @@ public class DiffUtilsHelperTest {
 
     @Test
     public void convertToStringWithValidParams() {
+        System.out.print(NEW_LINE);
+        // Arrange
+        final String expectedValue = new StringBuilder()
+                .append("1").append("=").append("1").append(NEW_LINE)
+                .append("2").append("=").append("2").append(NEW_LINE)
+                .append("3").append("=").append("3").append(NEW_LINE)
+                .toString();
+
         final Map<String,String> mapLocal = new HashMap<>();
-        final StringBuffer bf = new StringBuffer();
         mapLocal.put("1", "1");
         mapLocal.put("2", "2");
         mapLocal.put("3", "3");
-        bf.append("1").append("=").append("1").append("\n")
-                .append("2").append("=").append("2").append("\n")
-                .append("3").append("=").append("3").append("\n");
-        errorCollector.checkThat(DiffUtilsHelper.convertToString(mapLocal), is(equalTo(bf.toString())));
+
+        // Act
+        final String convertedValue = DiffUtilsHelper.convertToString(mapLocal);
+
+        // Assert
+        errorCollector.checkThat(convertedValue, is(expectedValue));
     }
 }
