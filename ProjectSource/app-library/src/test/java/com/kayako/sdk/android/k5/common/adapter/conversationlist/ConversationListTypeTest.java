@@ -12,6 +12,6 @@ public class ConversationListTypeTest {
     @Test
     public void conversationListItemValueIsCorrect() {
         //Assert
-        assertThat(CONVERSATION_LIST_ITEM, is(2));
+        assertThat(ConversationListType.CONVERSATION_LIST_ITEM, is(CONVERSATION_LIST_ITEM));
     }
 }
