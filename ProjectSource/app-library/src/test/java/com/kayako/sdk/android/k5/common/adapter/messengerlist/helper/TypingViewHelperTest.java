@@ -14,7 +14,7 @@ public class TypingViewHelperTest {
 
     private static final String AVATAR = "avatar";
     private static final String FULL_NAME = "full_name";
-    private final long lastActiveAt = 1_000L;
+    private static final long LAST_ACTIVE_AT = 1_000L;
     private UserViewModel userViewModel;
     private TypingViewHelper typingViewHelper;
 
@@ -23,12 +23,12 @@ public class TypingViewHelperTest {
 
     @Before
     public void setUp() {
-        userViewModel = new UserViewModel(AVATAR, FULL_NAME, lastActiveAt);
+        userViewModel = new UserViewModel(AVATAR, FULL_NAME, LAST_ACTIVE_AT);
         typingViewHelper = new TypingViewHelper();
     }
 
     @Test
-    public void validObjectCreation(){
+    public void validObjectCreation() {
         errorCollector.checkThat(typingViewHelper, notNullValue());
     }
 
