@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import java.util.Map;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 
 public class ChannelDecorationTest {
@@ -29,41 +28,56 @@ public class ChannelDecorationTest {
     @Test
     public void givenValidParamsThenObjectCreated() {
         errorCollector.checkThat(channelDecoration.isNote(), is(isNote));
-        errorCollector.checkThat(channelDecoration.getName(), is(equalTo(NAME)));
+        errorCollector.checkThat(channelDecoration.getName(), is(NAME));
     }
 
     @Test
     public void givenValidParametersThenObjectCreated() {
         ChannelDecoration channelDecorationLocal = new ChannelDecoration(sourceDrawable);
-        errorCollector.checkThat(channelDecorationLocal.getSourceDrawable(), is(equalTo(sourceDrawable)));
+        errorCollector.checkThat(channelDecorationLocal.getSourceDrawable(), is(sourceDrawable));
     }
 
     @Test
     public void setName() {
-        channelDecoration.setName("test2");
-        errorCollector.checkThat(channelDecoration.getName(), not(equalTo(NAME)));
-        errorCollector.checkThat(channelDecoration.getName(), is(equalTo("test2")));
+        //Arrange
+        final String newName = "Test Name";
+
+        //Act
+        channelDecoration.setName(newName);
+
+        //Assert
+        errorCollector.checkThat(channelDecoration.getName(), not(NAME));
+        errorCollector.checkThat(channelDecoration.getName(), is(newName));
     }
 
     @Test
     public void setSourceDrawable() {
-        channelDecoration.setSourceDrawable(100);
-        errorCollector.checkThat(channelDecoration.getSourceDrawable(), not(equalTo(sourceDrawable)));
-        errorCollector.checkThat(channelDecoration.getSourceDrawable(), is(equalTo(100)));
+        //Arrange
+        final int newSourceDrawable = 100;
+
+        //Act
+        channelDecoration.setSourceDrawable(newSourceDrawable);
+
+        //Assert
+        errorCollector.checkThat(channelDecoration.getSourceDrawable(), not(sourceDrawable));
+        errorCollector.checkThat(channelDecoration.getSourceDrawable(), is(newSourceDrawable));
     }
 
     @Test
     public void setNote() {
+        //Act
         channelDecoration.setNote(false);
+
+        //Assert
         errorCollector.checkThat(channelDecoration.isNote(), is(false));
     }
 
     @Test
     public void getContents() {
-        Map<String, String> contentsMap = channelDecoration.getContents();
-        errorCollector.checkThat(contentsMap.size(), is(equalTo(3)));
-        errorCollector.checkThat(contentsMap.get("isNote"), is(equalTo("true")));
-        errorCollector.checkThat(contentsMap.get("sourceDrawable"), is(equalTo("0")));
-        errorCollector.checkThat(contentsMap.get("name"), is(equalTo("test")));
+        final Map<String, String> contentsMap = channelDecoration.getContents();
+        errorCollector.checkThat(contentsMap.size(), is(3));
+        errorCollector.checkThat(contentsMap.get("isNote"), is("true"));
+        errorCollector.checkThat(contentsMap.get("sourceDrawable"), is("0"));
+        errorCollector.checkThat(contentsMap.get("name"), is("test"));
     }
 }
