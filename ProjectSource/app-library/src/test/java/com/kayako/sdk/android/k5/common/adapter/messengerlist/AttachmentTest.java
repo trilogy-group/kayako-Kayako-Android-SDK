@@ -6,9 +6,7 @@ import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 
 public class AttachmentTest {
@@ -28,21 +26,21 @@ public class AttachmentTest {
 
     @Test
     public void givenValidParamsThenObjectCreated() {
-        errorCollector.checkThat(attachment, notNullValue());
-        errorCollector.checkThat(Attachment.TYPE.URL, not(attachment.getType()));
-        errorCollector.checkThat(Attachment.TYPE.FILE, is(equalTo(attachment.getType())));
+        errorCollector.checkThat(attachment.getType(), not(Attachment.TYPE.URL));
+        errorCollector.checkThat(attachment.getType(), is(Attachment.TYPE.FILE));
     }
 
     @Test
     public void whenNullTypeThenIllegalArgumentException() {
+        final String exceptionMessage = "Invalid argument";
         thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage(containsString("Invalid argument"));
-        Attachment attachment = new Attachment(null);
+        thrown.expectMessage(containsString(exceptionMessage));
+        new Attachment(null);
     }
 
     @Test
     public void getContents() {
         errorCollector.checkThat(1, is(attachment.getContents().size()));
-        errorCollector.checkThat(Attachment.TYPE.FILE.name(), is(equalTo(attachment.getContents().get("type"))));
+        errorCollector.checkThat(Attachment.TYPE.FILE.name(), is(attachment.getContents().get("type")));
     }
 }
