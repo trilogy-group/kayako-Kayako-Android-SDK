@@ -6,7 +6,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.equalTo;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +21,7 @@ public class SimpleMessageContinuedOtherListItemTest {
     public final ErrorCollector errorCollector = new ErrorCollector();
 
     @Before
-    public void setUp(){
+    public void setUp() {
         id = 2L;
         time = 9_876L;
         continuedOtherListItem = new SimpleMessageContinuedOtherListItem(id, MESSAGE, time, data);
@@ -33,28 +32,38 @@ public class SimpleMessageContinuedOtherListItemTest {
         errorCollector.checkThat(continuedOtherListItem.getId(), is(id));
         errorCollector.checkThat(continuedOtherListItem.getTime(), is(time));
         errorCollector.checkThat(continuedOtherListItem.getData(), is(data));
-        errorCollector.checkThat(continuedOtherListItem.getMessage(), is(equalTo(MESSAGE)));
+        errorCollector.checkThat(continuedOtherListItem.getMessage(), is(MESSAGE));
         errorCollector.checkThat(continuedOtherListItem.getItemType(),
-                is(equalTo(MessengerListType.SIMPLE_MESSAGE_CONTINUED_OTHER)));
+                is(MessengerListType.SIMPLE_MESSAGE_CONTINUED_OTHER));
     }
 
     @Test
     public void setMessage() {
+        //Arrange
         final String newMessage = "Hello!!!";
+
+        //Act
         continuedOtherListItem.setMessage(newMessage);
-        errorCollector.checkThat(continuedOtherListItem.getMessage(), is(equalTo(newMessage)));
+
+        //Assert
+        errorCollector.checkThat(continuedOtherListItem.getMessage(), is(newMessage));
     }
 
     @Test
-    public void setTime(){
+    public void setTime() {
+        //Arrange
         final long newTime = 2_345L;
+
+        //Act
         continuedOtherListItem.setTime(newTime);
+
+        //Assert
         errorCollector.checkThat(continuedOtherListItem.getTime(), is(newTime));
     }
 
     @Test
     public void getContents() {
-        Map<String, String> contentsMap = continuedOtherListItem.getContents();
+        final Map<String, String> contentsMap = continuedOtherListItem.getContents();
         errorCollector.checkThat(contentsMap.size(), is(2));
         errorCollector.checkThat(contentsMap.get("time"), is(String.valueOf(time)));
     }
