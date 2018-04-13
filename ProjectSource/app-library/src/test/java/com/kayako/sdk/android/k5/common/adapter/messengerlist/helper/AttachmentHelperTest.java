@@ -108,6 +108,8 @@ public class AttachmentHelperTest {
         verify(thumbnailImageView, times(1)).setVisibility(View.GONE);
     }
 
+
+
     @Test
     public void setUpAttachmentImagesWhenTypeIsURLElseCase() {
         //Arrange
