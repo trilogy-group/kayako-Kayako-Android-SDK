@@ -45,6 +45,7 @@ android {
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
     }
+    
     buildTypes {
         debug {
             testCoverageEnabled = true
