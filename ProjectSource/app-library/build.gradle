@@ -29,7 +29,7 @@ archivesBaseName = appArtifactId // Sets the artefact Id name
 
 android {
     compileSdkVersion 24
-    buildToolsVersion '25'
+    buildToolsVersion '24.0.2'
 
     lintOptions {
         abortOnError false
