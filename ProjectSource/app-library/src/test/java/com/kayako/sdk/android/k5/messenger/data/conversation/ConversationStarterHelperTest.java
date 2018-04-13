@@ -8,11 +8,15 @@ import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.core.Kayako;
 import com.kayako.sdk.android.k5.core.MessengerPref;
 import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.UserViewModel;
-import static com.kayako.sdk.android.k5.messenger.data.conversationstarter.ConversationStarterHelper.*;
+import static com.kayako.sdk.android.k5.messenger.data.conversationstarter.ConversationStarterHelper.convertToLastActiveAgentsData;
+import static com.kayako.sdk.android.k5.messenger.data.conversationstarter.ConversationStarterHelper.getAverageResponseTimeCaption;
+import static com.kayako.sdk.android.k5.messenger.data.conversationstarter.ConversationStarterHelper.getLastActiveAgentsCaption;
+import static com.kayako.sdk.android.k5.messenger.data.conversationstarter.ConversationStarterHelper.getAvatarUrl;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.LastActiveAgentsData;
 import com.kayako.sdk.helpcenter.user.UserMinimal;
 import com.kayako.sdk.messenger.conversationstarter.ConversationStarter;
 
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -20,32 +24,37 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import static org.hamcrest.core.Is.is;
+
+import org.hamcrest.CoreMatchers;
 import org.junit.Before;
-import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ErrorCollector;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
-
-/**
- * Created by pedroveras on 12/04/18.
- */
+import java.util.concurrent.TimeUnit;
 
 public class ConversationStarterHelperTest {
     private long averageReplyTimeInMilliseconds;
     private UserMinimal userMinimal;
     private UserViewModel user;
-    Context context;
+    private Context context;
+    private static final long TIMEOUT_MINUTES = 10_000L;
+    private static final String CHANEL = "chanel";
+
+    @Rule
+    public final ErrorCollector collector = new ErrorCollector();
 
     @Before
     public void setUp() {
-        this.averageReplyTimeInMilliseconds = 10000 * 60 * 1000;
-        this.userMinimal = userMinimal = new UserMinimal(1L, "TestUser",
-                "http://teste.com/logo.png", 10000L, 10000L, "channel");
-        this.user = new UserViewModel(userMinimal.getAvatarUrl(), userMinimal.getFullName(),
+        averageReplyTimeInMilliseconds = TimeUnit.MINUTES.toMillis(TIMEOUT_MINUTES);
+        userMinimal = userMinimal = new UserMinimal(1L, "TestUser",
+                "http://teste.com/logo.png", TIMEOUT_MINUTES, TIMEOUT_MINUTES, CHANEL);
+        user = new UserViewModel(userMinimal.getAvatarUrl(), userMinimal.getFullName(),
                 userMinimal.getLastActiveAt());
 
         SharedPreferences sharedPreferences = mock(SharedPreferences.class);
@@ -97,8 +106,7 @@ public class ConversationStarterHelperTest {
     @Test
     public void convertToLastActiveAgentsDataTest() {
         when(MessengerPref.getInstance().getBrandName()).thenReturn("Test");
-        UserMinimal userMinimal = new UserMinimal(1L, "TestUser", "http://teste.com/logo.png",
-                10000L, 10000L, "channel");
+
         List<UserMinimal> lastActiveAgents = new ArrayList<>();
         lastActiveAgents.add(userMinimal);
 
@@ -116,15 +124,17 @@ public class ConversationStarterHelperTest {
 
         LastActiveAgentsData returnedLastActiveAgentsData = convertToLastActiveAgentsData(conversationStarter);
 
-        assertEquals(lastActiveAgentsData.getBrandName(), returnedLastActiveAgentsData.getBrandName());
-        assertEquals(lastActiveAgentsData.getAverageReplyTime(), returnedLastActiveAgentsData
-                .getAverageReplyTime());
-        assertEquals(lastActiveAgentsData.getUser1().getAvatar(), returnedLastActiveAgentsData
-                .getUser1().getAvatar());
-        assertEquals(lastActiveAgentsData.getUser1().getFullName(), returnedLastActiveAgentsData
-                .getUser1().getFullName());
-        assertEquals(lastActiveAgentsData.getUser1().getLastActiveAt(), returnedLastActiveAgentsData
-                .getUser1().getLastActiveAt());
+        collector.checkThat(returnedLastActiveAgentsData.getBrandName(),
+                equalTo(lastActiveAgentsData.getBrandName()));
+        collector.checkThat(returnedLastActiveAgentsData
+                .getAverageReplyTime(), equalTo(lastActiveAgentsData.getAverageReplyTime()));
+        collector.checkThat(returnedLastActiveAgentsData
+                .getUser1().getAvatar(), equalTo(lastActiveAgentsData.getUser1().getAvatar()));
+        collector.checkThat(returnedLastActiveAgentsData
+                .getUser1().getFullName(), equalTo(lastActiveAgentsData.getUser1().getFullName()));
+        collector.checkThat(returnedLastActiveAgentsData
+                .getUser1().getLastActiveAt(), equalTo(lastActiveAgentsData.getUser1()
+                .getLastActiveAt()));
     }
 
     @Test
@@ -132,32 +142,23 @@ public class ConversationStarterHelperTest {
         assertThat(getAverageResponseTimeCaption(-1L), is(""));
         assertThat(getAverageResponseTimeCaption(null), is(""));
 
-        assertThat(getAverageResponseTimeCaption(60000L), is("Usually replies in a few minutes"));
-        assertThat(getAverageResponseTimeCaption(600000L), is("Usually replies in under 10 minutes"));
-        assertThat(getAverageResponseTimeCaption(900000L), is("Usually replies in under 20 minutes"));
-        assertThat(getAverageResponseTimeCaption(1800000L), is("Usually replies in under 30 minutes"));
-        assertThat(getAverageResponseTimeCaption(3600000L), is("Usually replies within an hour"));
-        assertThat(getAverageResponseTimeCaption(6000000L), is("Usually replies within a few hours"));
-        assertThat(getAverageResponseTimeCaption(30000000L), is("Typically responds in a day"));
-        assertThat(getAverageResponseTimeCaption(120000000L), is(""));
-    }
-
-
-    public void getLastActiveTimeCaptionTest() {
-        assertThat(getLastActiveTimeCaption(true,10000L), is("Active"));
-        assertThat(getLastActiveTimeCaption(false, 100L), is(""));
-        assertThat(getLastActiveTimeCaption(false, 600000L), is("Active in the last 15 minutes"));
-        assertThat(getLastActiveTimeCaption(false, 1500000L), is("Active in the last 30 minutes"));
-        assertThat(getLastActiveTimeCaption(false, 2400000L), is("Active in the last 45 minutes"));
-        assertThat(getLastActiveTimeCaption(false, 3300000L), is("Active in the last hour"));
-        assertThat(getLastActiveTimeCaption(false, 36000000L), is("Active 10 hours ago"));
-        assertThat(getLastActiveTimeCaption(false, 72000000L), is("Active in the last day"));
-        assertThat(getLastActiveTimeCaption(false, 172800000L), is("Active 2 days ago"));
+        assertThat(getAverageResponseTimeCaption(60_000L), is("Usually replies in a few minutes"));
+        assertThat(getAverageResponseTimeCaption(600_000L),
+                is("Usually replies in under 10 minutes"));
+        assertThat(getAverageResponseTimeCaption(900_000L),
+                is("Usually replies in under 20 minutes"));
+        assertThat(getAverageResponseTimeCaption(1_800_000L),
+                is("Usually replies in under 30 minutes"));
+        assertThat(getAverageResponseTimeCaption(3_600_000L), is("Usually replies within an hour"));
+        assertThat(getAverageResponseTimeCaption(6_000_000L),
+                is("Usually replies within a few hours"));
+        assertThat(getAverageResponseTimeCaption(30_000_000L), is("Typically responds in a day"));
+        assertThat(getAverageResponseTimeCaption(120_000_000L), is(""));
     }
 
     @Test
     public void getLastActiveAgentsCaptionTest() {
-        assertThat(getLastActiveAgentsCaption(new LastActiveAgentsData("Test", 10000L, user,
+        assertThat(getLastActiveAgentsCaption(new LastActiveAgentsData("Test", 10_000L, user,
                 null, null)), is("TestUser was online recently"));
     }
 
