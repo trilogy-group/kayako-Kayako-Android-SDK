@@ -85,22 +85,21 @@ public class SectionInfoAdapterTest {
         //Assert
         collector.checkThat(viewHolder, is(instanceOf(SectionInfoViewHolder.class)));
         collector.checkThat(viewHolder.itemView, is(mockView));
-
     }
-
 
     @Test
     public void constructor() {
-        //Arrange
+        //Act
         sectionInfoAdapter = new SectionInfoAdapter(baseListItemList, onListItemClickListener,
                 TITLE, DESCRIPTION);
+        //Assert
         verify(baseListItemList, times(2)).add(0, null);
     }
 
     @Test
     public void getItemViewTypeWhenItemTypeIsEqualToZero() {
         //Arrange
-        int position = 0;
+       final int position = 0;
         when(baseListItemList.get(position)).thenReturn(mock(BaseListItem.class));
         sectionInfoAdapter.setData(baseListItemList);
 
@@ -130,12 +129,12 @@ public class SectionInfoAdapterTest {
     @Test
     public void getItemViewTypeWhenItemTypeIsNotEqualToZero() {
         //Arrange
-        int position = 1;
+        final int position = 1;
         when(baseListItemList.get(position)).thenReturn(mock(BaseListItem.class));
         sectionInfoAdapter.setData(baseListItemList);
 
         //Act
-        int res = sectionInfoAdapter.getItemViewType(position);
+        final int res = sectionInfoAdapter.getItemViewType(position);
 
         //Assert
         assertThat(res, is(equalTo(sectionInfoAdapter.getData().get(position).getItemType())));
