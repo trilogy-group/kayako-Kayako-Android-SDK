@@ -181,6 +181,8 @@ dependencies {
     androidTestCompile "org.mockito:mockito-core:$mockito_version"
 
     testCompile 'com.openpojo:openpojo:0.8.4'
+//    Commented unresolved dependency
+//    testCompile 'com.aurea:tests-commons:1.6.4'
     testCompile 'javax.annotation:javax.annotation-api:1.2'
 
     androidTestCompile 'com.android.support:support-annotations:24.2.0'

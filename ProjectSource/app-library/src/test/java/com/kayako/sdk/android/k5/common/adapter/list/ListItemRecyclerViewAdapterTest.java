@@ -71,40 +71,54 @@ public class ListItemRecyclerViewAdapterTest {
 
     @Test
     public void setListClickListenerTest() throws Exception {
+        //Arrange
         listItemRecyclerViewAdapter.setListClickListener(onListItemClickListener);
-        // Class doesn't contain get method ,i  am going to use reflection for getting value
+
+        //Act
         final Field field = listItemRecyclerViewAdapter.getClass().getDeclaredField("mListItemClickListener");
+
+        //Assert
         assertEquals(field.get(listItemRecyclerViewAdapter), onListItemClickListener);
     }
 
     @Test
     public void setHeaderClickListenerTest() throws Exception {
+        //Arrange
         listItemRecyclerViewAdapter.setHeaderClickListener(onHeaderItemClickListener);
-        // Class doesn't contain get method ,i  am going to use reflection for getting value
+
+        //Act
         final Field field = listItemRecyclerViewAdapter.getClass().getDeclaredField("mHeaderItemClickListener");
+
+        //Assert
         assertEquals(field.get(listItemRecyclerViewAdapter), onHeaderItemClickListener);
     }
 
     @Test
     public void onCreateViewHolderHeaderItemTest() {
+        //Arrange
         when(mockParent.getContext()).thenReturn(mockContext);
         when(LayoutInflater.from(mockContext)).thenReturn(mockInflater);
         when(mockInflater.inflate(anyInt(), eq(mockParent), eq(false))).thenReturn(mockView);
 
+        //Act
         RecyclerView.ViewHolder viewHolder = listItemRecyclerViewAdapter.onCreateViewHolder(mockParent, ListType.HEADER_ITEM);
 
+        //Assert
         collector.checkThat(viewHolder, is(instanceOf(HeaderViewHolder.class)));
         collector.checkThat(viewHolder.itemView, is(equalTo(mockView)));
     }
 
     @Test
     public void onCreateViewHolderListItemTest() {
+        //Arrange
         when(mockParent.getContext()).thenReturn(mockContext);
         when(LayoutInflater.from(mockContext)).thenReturn(mockInflater);
         when(mockInflater.inflate(anyInt(), eq(mockParent), eq(false))).thenReturn(mockView);
 
+        //Act
         RecyclerView.ViewHolder viewHolder = listItemRecyclerViewAdapter.onCreateViewHolder(mockParent, ListType.LIST_ITEM);
 
+        //Assert
         collector.checkThat(viewHolder, is(instanceOf(ListItemViewHolder.class)));
         collector.checkThat(viewHolder.itemView, is(equalTo(mockView)));
 
@@ -112,22 +126,31 @@ public class ListItemRecyclerViewAdapterTest {
 
     @Test
     public void onCreateViewHolderLoadingItemTest() {
+        //Arrange
         when(mockParent.getContext()).thenReturn(mockContext);
         when(LayoutInflater.from(mockContext)).thenReturn(mockInflater);
         when(mockInflater.inflate(anyInt(), eq(mockParent), eq(false))).thenReturn(mockView);
 
+        //Act
         RecyclerView.ViewHolder viewHolder = listItemRecyclerViewAdapter.onCreateViewHolder(mockParent, ListType.LOADING_ITEM);
 
+        //Assert
         collector.checkThat(viewHolder, is(instanceOf(LoadingViewHolder.class)));
         collector.checkThat(viewHolder.itemView, is(equalTo(mockView)));
     }
 
     @Test
     public void getItemViewTypeTest() {
-        int position = 0;
+        //Arrange
+        final int position = 0;
         when(baseListItems.get(0)).thenReturn(mock(BaseListItem.class));
         listItemRecyclerViewAdapter.setData(baseListItems);
-        int res = listItemRecyclerViewAdapter.getItemViewType(position);
-        collector.checkThat(res, is(equalTo(listItemRecyclerViewAdapter.getData().get(position).getItemType())));
+
+        //Act
+        final int res = listItemRecyclerViewAdapter.getItemViewType(position);
+
+        //Assert
+        collector.checkThat(res, is(equalTo(listItemRecyclerViewAdapter.getData()
+                .get(position).getItemType())));
     }
 }
