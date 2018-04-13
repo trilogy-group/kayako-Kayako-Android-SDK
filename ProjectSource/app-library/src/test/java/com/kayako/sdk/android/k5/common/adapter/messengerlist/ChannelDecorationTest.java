@@ -46,7 +46,6 @@ public class ChannelDecorationTest {
         channelDecoration.setName(newName);
 
         //Assert
-        errorCollector.checkThat(channelDecoration.getName(), not(NAME));
         errorCollector.checkThat(channelDecoration.getName(), is(newName));
     }
 
@@ -59,7 +58,6 @@ public class ChannelDecorationTest {
         channelDecoration.setSourceDrawable(newSourceDrawable);
 
         //Assert
-        errorCollector.checkThat(channelDecoration.getSourceDrawable(), not(sourceDrawable));
         errorCollector.checkThat(channelDecoration.getSourceDrawable(), is(newSourceDrawable));
     }
 
