@@ -16,6 +16,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -71,8 +72,8 @@ public class SectionInfoViewHolderTest {
         //Assert
         verify(view, times(2)).findViewById(eq(R.id.ko__section_description));
         verify(view, times(1)).findViewById(eq(R.id.ko__section_title));
-        collector.checkThat(sectionInfoViewHolder.description, is(instanceOf(TextView.class)));
-        collector.checkThat(sectionInfoViewHolder.description, is(equalTo(textViewMSubTitle)));
+        assertThat(sectionInfoViewHolder.description, is(instanceOf(TextView.class)));
+        assertThat(sectionInfoViewHolder.description, is(equalTo(textViewMSubTitle)));
     }
 }
 
