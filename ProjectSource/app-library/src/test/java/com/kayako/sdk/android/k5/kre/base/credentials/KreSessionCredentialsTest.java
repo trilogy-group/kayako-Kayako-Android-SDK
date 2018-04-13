@@ -1,10 +1,6 @@
-package com.kayako.sdk.android.k5.kre.base.kase.credentials;
+package com.kayako.sdk.android.k5.kre.base.credentials;
 
 import android.text.TextUtils;
-
-import com.kayako.sdk.android.k5.kre.base.credentials.KreCredentials;
-import com.kayako.sdk.android.k5.kre.base.credentials.KreSessionCredentials;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -14,7 +10,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
@@ -55,7 +50,7 @@ public class KreSessionCredentialsTest {
     }
 
     @Test
-    public void whenValidPramsConstructorThenObjectCreated() {
+    public void whenValidParamsConstructorThenObjectCreated() {
         errorCollector.checkThat(one.getRealtimeUrl(), is(REAL_TIME_URL));
         errorCollector.checkThat(one.getSessionId(), is(SESSION_ID));
         errorCollector.checkThat(one.getInstanceUrl(), is(INSTANCE_URL));
@@ -78,7 +73,7 @@ public class KreSessionCredentialsTest {
     }
 
     @Test
-    public void relexivity() {
+    public void reflexivity() {
         errorCollector.checkThat(one, is(one));
     }
 
