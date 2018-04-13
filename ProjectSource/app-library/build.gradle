@@ -173,7 +173,9 @@ dependencies {
     testCompile "org.powermock:powermock-api-mockito2:$powermock_version"
 
     testCompile "junit:junit:$junit_junit_version"
-    testCompile 'org.mockito:mockito-core:1.10.19'
+
+    //  Commented unresolved dependency
+    //  testCompile 'org.mockito:mockito-core:1.10.19'
 
     testCompile 'com.openpojo:openpojo:0.8.4'
     testCompile 'com.aurea:tests-commons:1.6.4'
