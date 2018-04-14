@@ -2,8 +2,6 @@ package com.kayako.sdk.android.k5.common.utils.file;
 
 import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
-
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -14,25 +12,25 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
-
 import java.io.File;
 import java.io.IOException;
-
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({MimeTypeMap.class, TextUtils.class})
+@PrepareForTest({
+        MimeTypeMap.class,
+        TextUtils.class
+})
 public class FileAttachmentTest {
     private static final String TEST_API_KEY = "QWE";
     private static FileAttachment fileAttachment;
     private static final String TEST_FILE_NAME = "test.jpg";
     private static File testFile;
 
-
     @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
+    public final TemporaryFolder folder = new TemporaryFolder();
 
     @Before
     public void setUpClass() throws IOException {
@@ -43,23 +41,19 @@ public class FileAttachmentTest {
     @Test
     public void verifyIfFileIsReturnAndExists() {
         File expectedFile = fileAttachment.getFile();
-
         assertTrue(expectedFile.exists());
     }
 
     @Test
     public void verifyIfReturningPathNotNull() {
         String expectedPath = fileAttachment.getPath();
-
         assertNotNull(expectedPath);
     }
 
     @Test
     public void verifyIfReturningCorrectFileName() {
         String returnedFileName = fileAttachment.getName();
-
         assertEquals(TEST_FILE_NAME, returnedFileName);
-
     }
 
     @Test
@@ -79,7 +73,6 @@ public class FileAttachmentTest {
         PowerMockito.mockStatic(MimeTypeMap.class);
         PowerMockito.when(MimeTypeMap.getFileExtensionFromUrl(testFile.getAbsolutePath())).thenReturn("jpg");
         String returnedFileExtension = fileAttachment.getExtension();
-
         assertEquals("jpg", returnedFileExtension);
     }
 
