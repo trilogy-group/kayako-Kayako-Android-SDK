@@ -1,6 +1,5 @@
 package com.kayako.sdk.android.k5.common.adapter.messengerlist.helper;
 
-import android.test.mock.MockContext;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -14,6 +13,7 @@ import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.Attachment;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentFileType;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentUrlType;
+import com.kayako.sdk.android.k5.common.utils.file.FileStorageUtil;
 import com.kayako.sdk.android.k5.core.Kayako;
 
 import org.junit.Before;
@@ -39,14 +39,17 @@ import static org.mockito.Mockito.when;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({
         TextUtils.class,
-        Html.class
+        Html.class,
+        FileStorageUtil.class
 })
 public class AttachmentHelperTest {
 
     private static final String THUMBNAIL_IMAGE_URL = "imageUrl";
-    private static final String FILE_TYPE = "image";
+    private static final String IMAGE_FILE_TYPE = "image";
+
     private static final String FILE_CAPTION = "caption";
 
+    @Mock
     private File attachmentFile;
 
     @Mock
@@ -94,8 +97,10 @@ public class AttachmentHelperTest {
         AttachmentFileType attachmentFileType = mock(AttachmentFileType.class);
         mockStatic(TextUtils.class);
         mockStatic(Html.class);
+        mockStatic(FileStorageUtil.class);
         when(TextUtils.isEmpty(attachmentFileType.getCaption())).thenReturn(false);
         when(Html.fromHtml(FILE_CAPTION)).thenReturn(mock(Spanned.class));
+        when(FileStorageUtil.getMimeType(attachmentFile)).thenReturn(IMAGE_FILE_TYPE);
         when(attachmentFileType.getType()).thenReturn(Attachment.TYPE.FILE);
         when(attachmentFileType.getThumbnailFile()).thenReturn(attachmentFile);
         when(attachmentFileType.getCaption()).thenReturn(FILE_CAPTION);
