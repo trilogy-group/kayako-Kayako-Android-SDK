@@ -13,21 +13,24 @@ import static junit.framework.Assert.assertNotNull;
  */
 
 public class HeaderListItemTest {
-    HeaderListItem headerListItem;
+    private static final String TITLE = "Test title";
+    private static final String SUBTITLE = "Test subtitle";
+
+    private HeaderListItem headerListItem;
 
     @Before
     public void setUp() {
-        headerListItem = new HeaderListItem("Test title", "Test subtitle");
+        headerListItem = new HeaderListItem(TITLE, SUBTITLE);
     }
 
     @Test
     public void getTitle() {
-        assertEquals(headerListItem.getTitle(), "Test title");
+        assertEquals(headerListItem.getTitle(), TITLE);
     }
 
     @Test
     public void getSubTitle() {
-        assertEquals(headerListItem.getSubtitle(), "Test subtitle");
+        assertEquals(headerListItem.getSubtitle(), SUBTITLE);
     }
 
     @Test
@@ -42,7 +45,7 @@ public class HeaderListItemTest {
     @Test
     public void getContents() {
         Map<String,String> map = headerListItem.getContents();
-        assertEquals(map.get("title"),"Test title");
-        assertEquals(map.get("subtitle"),"Test subtitle");
+        assertEquals(map.get("title"),TITLE);
+        assertEquals(map.get("subtitle"),SUBTITLE);
     }
 }
