@@ -7,27 +7,26 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestManager;
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.Attachment;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentFileType;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentUrlType;
 import com.kayako.sdk.android.k5.common.utils.file.FileStorageUtil;
-import com.kayako.sdk.android.k5.core.Kayako;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ErrorCollector;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 
-import static org.mockito.ArgumentMatchers.eq;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.doNothing;
 
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -44,10 +43,12 @@ import static org.mockito.Mockito.when;
 })
 public class AttachmentHelperTest {
 
-    private static final String THUMBNAIL_IMAGE_URL = "imageUrl";
+    private static final String AUDIO_FILE_TYPE = "audio";
     private static final String IMAGE_FILE_TYPE = "image";
-
+    private static final String VIDEO_FILE_TYPE = "video";
     private static final String FILE_CAPTION = "caption";
+    private static final String FILE_NAME = "filename";
+    private static final String THUMBNAIL_IMAGE_URL = "imageUrl";
 
     @Mock
     private File attachmentFile;
@@ -67,9 +68,8 @@ public class AttachmentHelperTest {
     @Mock
     private ImageView mockImageView;
 
-    @Before
-    public void setUp() {
-    }
+    @Rule
+    public final ErrorCollector collector = new ErrorCollector();
 
     @Test
     public void setUpAttachmentImagesWhenTypeIsFile() {
@@ -89,6 +89,8 @@ public class AttachmentHelperTest {
         //Assert
         verify(attachmentPlaceholder, times(1)).setVisibility(View.VISIBLE);
         verify(thumbnailImageView, times(1)).setVisibility(View.GONE);
+        collector.checkThat(attachmentPlaceholder.getVisibility(), notNullValue());
+        collector.checkThat(thumbnailImageView.getVisibility(), notNullValue());
     }
 
     @Test
@@ -100,10 +102,12 @@ public class AttachmentHelperTest {
         mockStatic(FileStorageUtil.class);
         when(TextUtils.isEmpty(attachmentFileType.getCaption())).thenReturn(false);
         when(Html.fromHtml(FILE_CAPTION)).thenReturn(mock(Spanned.class));
-        when(FileStorageUtil.getMimeType(attachmentFile)).thenReturn(IMAGE_FILE_TYPE);
+        when(FileStorageUtil.getMimeType(attachmentFile)).thenReturn(VIDEO_FILE_TYPE);
         when(attachmentFileType.getType()).thenReturn(Attachment.TYPE.FILE);
         when(attachmentFileType.getThumbnailFile()).thenReturn(attachmentFile);
         when(attachmentFileType.getCaption()).thenReturn(FILE_CAPTION);
+        when(attachmentPlaceholder.findViewById(R.id.ko__attachment_placeholder_icon)).thenReturn(mockImageView);
+        when(attachmentPlaceholder.findViewById(R.id.ko__attachment_placeholder_text)).thenReturn(mockTextView);
 
         //Act
         AttachmentHelper.setUpAttachmentImages(attachmentFileType, attachmentPlaceholder, thumbnailImageView, captionTextView);
@@ -111,19 +115,18 @@ public class AttachmentHelperTest {
         //Assert
         verify(attachmentPlaceholder, times(1)).setVisibility(View.VISIBLE);
         verify(thumbnailImageView, times(1)).setVisibility(View.GONE);
+        collector.checkThat(attachmentPlaceholder.getVisibility(), notNullValue());
+        collector.checkThat(thumbnailImageView.getVisibility(), notNullValue());
     }
 
-
-
     @Test
-    public void setUpAttachmentImagesWhenTypeIsURLElseCase() {
+    public void setUpAttachmentImagesWhenTypeIsURL() {
         //Arrange
         AttachmentUrlType attachmentUrlType = mock(AttachmentUrlType.class);
         when(attachmentUrlType.getType()).thenReturn(Attachment.TYPE.URL);
         when(attachmentUrlType.getThumbnailUrl()).thenReturn(THUMBNAIL_IMAGE_URL);
         when(attachmentPlaceholder.findViewById(R.id.ko__attachment_placeholder_icon)).thenReturn(mockImageView);
         when(attachmentPlaceholder.findViewById(R.id.ko__attachment_placeholder_text)).thenReturn(mockTextView);
-
         mockStatic(TextUtils.class);
         when(TextUtils.isEmpty(attachmentUrlType.getCaption())).thenReturn(true);
 
@@ -133,16 +136,27 @@ public class AttachmentHelperTest {
         //Assert
         verify(attachmentPlaceholder, times(1)).setVisibility(View.VISIBLE);
         verify(thumbnailImageView, times(1)).setVisibility(View.GONE);
-
         verify(mockTextView, times(1)).setText(R.string.ko__messenger_attachment_placeholder_untitled);
         verify(mockImageView, times(1)).setImageResource(R.drawable.ko__ic_attachment_generic);
+        collector.checkThat(thumbnailImageView.getVisibility(), notNullValue());
+        collector.checkThat(attachmentPlaceholder.getVisibility(), notNullValue());
     }
 
     @Test
-    public void configureAttachmentPlaceholder() {
+    public void identifyTypeWhenTypeIsAudio() {
+        //Act
+        AttachmentHelper.AttachmentFileType attachmentFileType = AttachmentHelper.identifyType(AUDIO_FILE_TYPE, FILE_NAME);
+
+        //Assert
+        assertThat(attachmentFileType, is(AttachmentHelper.AttachmentFileType.AUDIO));
     }
 
     @Test
-    public void identifyType() {
+    public void identifyTypeWhenTypeIsImage() {
+        //Act
+        AttachmentHelper.AttachmentFileType attachmentFileType = AttachmentHelper.identifyType(IMAGE_FILE_TYPE, FILE_NAME);
+
+        //Assert
+        assertThat(attachmentFileType, is(AttachmentHelper.AttachmentFileType.IMAGE));
     }
 }
