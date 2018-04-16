@@ -64,33 +64,54 @@ public class FileStorageUtilTest {
 
     @Test
     public void verifyIfPurifyFileName() {
+        //Arrange
+
+        //Act
         String resultedFileName = FileStorageUtil.purify(TEST_FILE_NAME);
+
+        //Assert
         assertEquals(CORRECT_TEST_FILE_NAME, resultedFileName);
     }
 
     @Test
     public void verifyIfReturnsCorrectFilePath() {
+        //Arrange
+
+        //Act
         String returnedFilePath = FileStorageUtil.getFilePath(testFile);
+
+        //Assert
         assertTrue(new File(returnedFilePath).exists());
     }
 
     @Test
     public void verifyIfReturnFileSize() {
+        //Arrange
+
+        //Act
         Long returnedSize = FileStorageUtil.getFileSize(testFile);
+
+        //Assert
         assertNotNull(returnedSize);
     }
 
     @Test
     public void verifyIfReturningCorrectFileExtension() {
+        //Arrange
         mockStatic(MimeTypeMap.class);
         when(MimeTypeMap.getFileExtensionFromUrl(testFile.getAbsolutePath()))
                 .thenReturn(TEST_FILE_EXTENSION);
+
+        //Act
         String returnedFileExtension = FileStorageUtil.getFileExtension(testFile);
+
+        //Assert
         assertEquals("txt", returnedFileExtension);
     }
 
     @Test
     public void verifyIfVerifyIfGetMimeTypeCorrectly() throws Exception {
+        //Arrange
         MimeTypeMap mockHelper = Whitebox.invokeConstructor(MimeTypeMap.class);
         mockStatic(MimeTypeMap.class);
         when(MimeTypeMap.getFileExtensionFromUrl(testFile.getAbsolutePath()))
@@ -101,18 +122,28 @@ public class FileStorageUtilTest {
         mockStatic(TextUtils.class);
         stub(method(TextUtils.class, "isEmpty", String.class))
                 .toReturn(false);
+
+        //Act
         String returnedMimeType = FileStorageUtil.getMimeType(testFile);
+
+        //Assert
         assertEquals(JPG_MIME_TYPE, returnedMimeType);
     }
 
     @Test
     public void verifyIfReturningCorrectFileName() {
+        //Arrange
+
+        //Act
         String returnedFileName = FileStorageUtil.getFileName(testFile);
+
+        //Assert
         assertEquals(CORRECT_TEST_FILE_NAME, returnedFileName);
     }
 
     @Test
     public void verifyIfSaveFileCorrectly() throws Exception {
+        //Arrange
         mockStatic(Uri.class);
         Uri uri = mock(Uri.class);
         when(Uri.class, "parse", anyString()).thenReturn(uri);
@@ -120,21 +151,31 @@ public class FileStorageUtilTest {
         when(inputStream, "read", any()).thenReturn(-1);
         when(contentResolver, "openInputStream", uri).thenReturn(inputStream);
         when(context, "getFileStreamPath", anyString()).thenReturn(testFile);
+
+        //Act
         File saveFile = FileStorageUtil
                 .saveFile(context, Uri.parse(new java.net.URI("").toString()), CORRECT_TEST_FILE_NAME);
+
+        //Assert
         assertTrue(saveFile.isFile());
     }
 
     @Test
     public void verifyIfDeleteFilesCorrectly() throws Exception {
+        //Arrange
         when(context, "fileList")
                 .thenReturn(new String[]{ATTACHMENT_NAME_PREFIX + CORRECT_TEST_FILE_NAME});
+
+        //Act
         boolean deleted = FileStorageUtil.deleteSavedFiles(context);
+
+        //Assert
         assertTrue(deleted);
     }
 
     @Test
     public void verifyIfValidatingImageCorrectly() throws Exception {
+        //Arrange
         MimeTypeMap mockHelper = Whitebox.invokeConstructor(MimeTypeMap.class);
         mockStatic(MimeTypeMap.class);
         when(MimeTypeMap.getFileExtensionFromUrl(testFile.getAbsolutePath()))
@@ -145,13 +186,22 @@ public class FileStorageUtilTest {
         mockStatic(TextUtils.class);
         stub(method(TextUtils.class, "isEmpty", String.class))
                 .toReturn(false);
+
+        //Act
         boolean isImage = FileStorageUtil.isImage(testFile);
+
+        //Assert
         assertTrue(isImage);
     }
 
     @Test
     public void verifyIfVerifyingExistingCorrectly() {
+        //Arrange
+
+        //Act
         boolean fileExists = FileStorageUtil.isExisting(testFile);
+
+        //Assert
         assertTrue(fileExists);
     }
 }
