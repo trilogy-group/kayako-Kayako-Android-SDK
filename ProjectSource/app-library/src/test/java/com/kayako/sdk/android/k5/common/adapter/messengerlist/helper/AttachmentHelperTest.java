@@ -84,7 +84,8 @@ public class AttachmentHelperTest {
         when(attachmentFileType.getCaption()).thenReturn(FILE_CAPTION);
 
         //Act
-        AttachmentHelper.setUpAttachmentImages(attachmentFileType, attachmentPlaceholder, thumbnailImageView, captionTextView);
+        AttachmentHelper.setUpAttachmentImages(attachmentFileType, attachmentPlaceholder,
+                thumbnailImageView, captionTextView);
 
         //Assert
         verify(attachmentPlaceholder, times(1)).setVisibility(View.VISIBLE);
@@ -106,11 +107,14 @@ public class AttachmentHelperTest {
         when(attachmentFileType.getType()).thenReturn(Attachment.TYPE.FILE);
         when(attachmentFileType.getThumbnailFile()).thenReturn(attachmentFile);
         when(attachmentFileType.getCaption()).thenReturn(FILE_CAPTION);
-        when(attachmentPlaceholder.findViewById(R.id.ko__attachment_placeholder_icon)).thenReturn(mockImageView);
-        when(attachmentPlaceholder.findViewById(R.id.ko__attachment_placeholder_text)).thenReturn(mockTextView);
+        when(attachmentPlaceholder.findViewById(R.id.ko__attachment_placeholder_icon))
+                .thenReturn(mockImageView);
+        when(attachmentPlaceholder.findViewById(R.id.ko__attachment_placeholder_text))
+                .thenReturn(mockTextView);
 
         //Act
-        AttachmentHelper.setUpAttachmentImages(attachmentFileType, attachmentPlaceholder, thumbnailImageView, captionTextView);
+        AttachmentHelper.setUpAttachmentImages(attachmentFileType, attachmentPlaceholder,
+                thumbnailImageView, captionTextView);
 
         //Assert
         verify(attachmentPlaceholder, times(1)).setVisibility(View.VISIBLE);
@@ -125,19 +129,24 @@ public class AttachmentHelperTest {
         AttachmentUrlType attachmentUrlType = mock(AttachmentUrlType.class);
         when(attachmentUrlType.getType()).thenReturn(Attachment.TYPE.URL);
         when(attachmentUrlType.getThumbnailUrl()).thenReturn(THUMBNAIL_IMAGE_URL);
-        when(attachmentPlaceholder.findViewById(R.id.ko__attachment_placeholder_icon)).thenReturn(mockImageView);
-        when(attachmentPlaceholder.findViewById(R.id.ko__attachment_placeholder_text)).thenReturn(mockTextView);
+        when(attachmentPlaceholder.findViewById(R.id.ko__attachment_placeholder_icon))
+                .thenReturn(mockImageView);
+        when(attachmentPlaceholder.findViewById(R.id.ko__attachment_placeholder_text))
+                .thenReturn(mockTextView);
         mockStatic(TextUtils.class);
         when(TextUtils.isEmpty(attachmentUrlType.getCaption())).thenReturn(true);
 
         //Act
-        AttachmentHelper.setUpAttachmentImages(attachmentUrlType, attachmentPlaceholder, thumbnailImageView, captionTextView);
+        AttachmentHelper.setUpAttachmentImages(attachmentUrlType, attachmentPlaceholder,
+                thumbnailImageView, captionTextView);
 
         //Assert
         verify(attachmentPlaceholder, times(1)).setVisibility(View.VISIBLE);
         verify(thumbnailImageView, times(1)).setVisibility(View.GONE);
-        verify(mockTextView, times(1)).setText(R.string.ko__messenger_attachment_placeholder_untitled);
-        verify(mockImageView, times(1)).setImageResource(R.drawable.ko__ic_attachment_generic);
+        verify(mockTextView, times(1))
+                .setText(R.string.ko__messenger_attachment_placeholder_untitled);
+        verify(mockImageView, times(1))
+                .setImageResource(R.drawable.ko__ic_attachment_generic);
         collector.checkThat(thumbnailImageView.getVisibility(), notNullValue());
         collector.checkThat(attachmentPlaceholder.getVisibility(), notNullValue());
     }
@@ -145,7 +154,8 @@ public class AttachmentHelperTest {
     @Test
     public void identifyTypeWhenTypeIsAudio() {
         //Act
-        AttachmentHelper.AttachmentFileType attachmentFileType = AttachmentHelper.identifyType(AUDIO_FILE_TYPE, FILE_NAME);
+        AttachmentHelper.AttachmentFileType attachmentFileType = AttachmentHelper
+                .identifyType(AUDIO_FILE_TYPE, FILE_NAME);
 
         //Assert
         assertThat(attachmentFileType, is(AttachmentHelper.AttachmentFileType.AUDIO));
@@ -154,7 +164,8 @@ public class AttachmentHelperTest {
     @Test
     public void identifyTypeWhenTypeIsImage() {
         //Act
-        AttachmentHelper.AttachmentFileType attachmentFileType = AttachmentHelper.identifyType(IMAGE_FILE_TYPE, FILE_NAME);
+        AttachmentHelper.AttachmentFileType attachmentFileType = AttachmentHelper
+                .identifyType(IMAGE_FILE_TYPE, FILE_NAME);
 
         //Assert
         assertThat(attachmentFileType, is(AttachmentHelper.AttachmentFileType.IMAGE));
