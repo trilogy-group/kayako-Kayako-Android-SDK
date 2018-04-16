@@ -13,7 +13,6 @@ import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentFileType
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentUrlType;
 import com.kayako.sdk.android.k5.common.utils.file.FileStorageUtil;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
