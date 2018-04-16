@@ -145,11 +145,13 @@ public class FileStorageUtilTest {
         mockStatic(TextUtils.class);
         stub(method(TextUtils.class, "isEmpty", String.class))
                 .toReturn(false);
-        assertTrue(FileStorageUtil.isImage(testFile));
+        boolean isImage = FileStorageUtil.isImage(testFile);
+        assertTrue(isImage);
     }
 
     @Test
     public void verifyIfVerifyingExistingCorrectly() {
-        assertTrue(FileStorageUtil.isExisting(testFile));
+        boolean fileExists = FileStorageUtil.isExisting(testFile);
+        assertTrue(fileExists);
     }
 }
