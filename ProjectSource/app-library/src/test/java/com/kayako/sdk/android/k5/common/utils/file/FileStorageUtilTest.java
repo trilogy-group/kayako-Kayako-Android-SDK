@@ -65,9 +65,10 @@ public class FileStorageUtilTest {
     @Test
     public void verifyIfPurifyFileName() {
         //Arrange
+        String resultedFileName;
 
         //Act
-        String resultedFileName = FileStorageUtil.purify(TEST_FILE_NAME);
+        resultedFileName = FileStorageUtil.purify(TEST_FILE_NAME);
 
         //Assert
         assertEquals(CORRECT_TEST_FILE_NAME, resultedFileName);
@@ -76,9 +77,10 @@ public class FileStorageUtilTest {
     @Test
     public void verifyIfReturnsCorrectFilePath() {
         //Arrange
+        String returnedFilePath;
 
         //Act
-        String returnedFilePath = FileStorageUtil.getFilePath(testFile);
+        returnedFilePath = FileStorageUtil.getFilePath(testFile);
 
         //Assert
         assertTrue(new File(returnedFilePath).exists());
@@ -87,9 +89,10 @@ public class FileStorageUtilTest {
     @Test
     public void verifyIfReturnFileSize() {
         //Arrange
+        Long returnedSize;
 
         //Act
-        Long returnedSize = FileStorageUtil.getFileSize(testFile);
+        returnedSize = FileStorageUtil.getFileSize(testFile);
 
         //Assert
         assertNotNull(returnedSize);
@@ -98,12 +101,13 @@ public class FileStorageUtilTest {
     @Test
     public void verifyIfReturningCorrectFileExtension() {
         //Arrange
+        String returnedFileExtension;
         mockStatic(MimeTypeMap.class);
         when(MimeTypeMap.getFileExtensionFromUrl(testFile.getAbsolutePath()))
                 .thenReturn(TEST_FILE_EXTENSION);
 
         //Act
-        String returnedFileExtension = FileStorageUtil.getFileExtension(testFile);
+        returnedFileExtension = FileStorageUtil.getFileExtension(testFile);
 
         //Assert
         assertEquals("txt", returnedFileExtension);
@@ -112,6 +116,7 @@ public class FileStorageUtilTest {
     @Test
     public void verifyIfVerifyIfGetMimeTypeCorrectly() throws Exception {
         //Arrange
+        String returnedMimeType;
         MimeTypeMap mockHelper = Whitebox.invokeConstructor(MimeTypeMap.class);
         mockStatic(MimeTypeMap.class);
         when(MimeTypeMap.getFileExtensionFromUrl(testFile.getAbsolutePath()))
@@ -124,7 +129,7 @@ public class FileStorageUtilTest {
                 .toReturn(false);
 
         //Act
-        String returnedMimeType = FileStorageUtil.getMimeType(testFile);
+        returnedMimeType = FileStorageUtil.getMimeType(testFile);
 
         //Assert
         assertEquals(JPG_MIME_TYPE, returnedMimeType);
@@ -133,9 +138,10 @@ public class FileStorageUtilTest {
     @Test
     public void verifyIfReturningCorrectFileName() {
         //Arrange
+        String returnedFileName;
 
         //Act
-        String returnedFileName = FileStorageUtil.getFileName(testFile);
+        returnedFileName = FileStorageUtil.getFileName(testFile);
 
         //Assert
         assertEquals(CORRECT_TEST_FILE_NAME, returnedFileName);
@@ -144,6 +150,7 @@ public class FileStorageUtilTest {
     @Test
     public void verifyIfSaveFileCorrectly() throws Exception {
         //Arrange
+        File saveFile;
         mockStatic(Uri.class);
         Uri uri = mock(Uri.class);
         when(Uri.class, "parse", anyString()).thenReturn(uri);
@@ -153,7 +160,7 @@ public class FileStorageUtilTest {
         when(context, "getFileStreamPath", anyString()).thenReturn(testFile);
 
         //Act
-        File saveFile = FileStorageUtil
+        saveFile = FileStorageUtil
                 .saveFile(context, Uri.parse(new java.net.URI("").toString()), CORRECT_TEST_FILE_NAME);
 
         //Assert
@@ -163,11 +170,12 @@ public class FileStorageUtilTest {
     @Test
     public void verifyIfDeleteFilesCorrectly() throws Exception {
         //Arrange
+        boolean deleted;
         when(context, "fileList")
                 .thenReturn(new String[]{ATTACHMENT_NAME_PREFIX + CORRECT_TEST_FILE_NAME});
 
         //Act
-        boolean deleted = FileStorageUtil.deleteSavedFiles(context);
+        deleted = FileStorageUtil.deleteSavedFiles(context);
 
         //Assert
         assertTrue(deleted);
@@ -176,6 +184,7 @@ public class FileStorageUtilTest {
     @Test
     public void verifyIfValidatingImageCorrectly() throws Exception {
         //Arrange
+        boolean isImage;
         MimeTypeMap mockHelper = Whitebox.invokeConstructor(MimeTypeMap.class);
         mockStatic(MimeTypeMap.class);
         when(MimeTypeMap.getFileExtensionFromUrl(testFile.getAbsolutePath()))
@@ -188,7 +197,7 @@ public class FileStorageUtilTest {
                 .toReturn(false);
 
         //Act
-        boolean isImage = FileStorageUtil.isImage(testFile);
+        isImage = FileStorageUtil.isImage(testFile);
 
         //Assert
         assertTrue(isImage);
@@ -197,9 +206,10 @@ public class FileStorageUtilTest {
     @Test
     public void verifyIfVerifyingExistingCorrectly() {
         //Arrange
+        boolean fileExists;
 
         //Act
-        boolean fileExists = FileStorageUtil.isExisting(testFile);
+        fileExists = FileStorageUtil.isExisting(testFile);
 
         //Assert
         assertTrue(fileExists);
