@@ -8,12 +8,12 @@ public class DevicePayloadTest {
     @Test
     public void whenValidParamsThenObjectCreated() {
         //Arrange
-        final long device_id = 1_000L;
+        final long deviceId = 1_000L;
 
         //Act
-        final DevicePayload devicePayload = new DevicePayload(device_id);
+        final DevicePayload devicePayload = new DevicePayload(deviceId);
 
         //Assert
-        assertEquals(device_id, devicePayload.device_id.longValue());
+        assertEquals(deviceId, devicePayload.device_id.longValue());
     }
 }
