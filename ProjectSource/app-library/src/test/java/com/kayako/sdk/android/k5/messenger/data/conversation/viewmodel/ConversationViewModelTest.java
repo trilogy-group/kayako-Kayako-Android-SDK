@@ -17,6 +17,7 @@ public class ConversationViewModelTest {
     private static final String NAME = "name";
     private static final String AVATAR_URL = "/avatarUrl";
     private static final String SUBJECT = "subject";
+    private static final String EXCEPTION_MESSAGE = "Invalid values";
     private static final long CONVERSATION_ID = 12_345L;
     private static final long TIME_IN_MILLISECONDS = 1_000L;
     private static final int UNREAD_COUNT = 3;
@@ -49,6 +50,7 @@ public class ConversationViewModelTest {
 
     @Test
     public void whenValidParamsConstructorThenObjectCreated() {
+        //Assert
         errorCollector.checkThat(one.getConversationId(), is(CONVERSATION_ID));
         errorCollector.checkThat(one.getAvatarUrl(), is(AVATAR_URL));
         errorCollector.checkThat(one.getName(), is(NAME));
@@ -60,45 +62,57 @@ public class ConversationViewModelTest {
 
     @Test
     public void whenLastAgentReplierTypingNullThenException() {
+        //Arrange
         final String exceptionMessage = new StringBuilder()
                 .append("lastAgentReplierTyping should not be null! ")
                 .append("If not applicable, create an object with isTyping = false!").toString();
+
+        //Contract
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(containsString(exceptionMessage));
+
+        //Act
         new ConversationViewModel(CONVERSATION_ID, AVATAR_URL, NAME, TIME_IN_MILLISECONDS, SUBJECT,
                                     UNREAD_COUNT, null);
     }
 
     @Test
     public void whenConversionIdZeroThenException() {
-        final String exceptionMessage = "Invalid values";
+        //Contract
         thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage(containsString(exceptionMessage));
+        thrown.expectMessage(containsString(EXCEPTION_MESSAGE));
+
+        //Act
         new ConversationViewModel(0, AVATAR_URL, NAME, TIME_IN_MILLISECONDS, SUBJECT,
                         UNREAD_COUNT, lastAgentReplierTyping);
     }
 
     @Test
     public void whenSubjectNullThenException() {
-        final String exceptionMessage = "Invalid values";
+        //Contract
         thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage(containsString(exceptionMessage));
+        thrown.expectMessage(containsString(EXCEPTION_MESSAGE));
+
+        //Act
         new ConversationViewModel(CONVERSATION_ID, AVATAR_URL, NAME, TIME_IN_MILLISECONDS, null,
                         UNREAD_COUNT, lastAgentReplierTyping);
     }
 
     @Test
     public void reflexivity() {
+        //Assert
         errorCollector.checkThat(one, is(one));
     }
 
     @Test
     public void nullInequality() {
+        //Assert
         errorCollector.checkThat(one.equals(null), is(false));
     }
 
     @Test
     public void symmetry() {
+        //Assert
         errorCollector.checkThat(one, is(same));
         errorCollector.checkThat(same, is(one));
         errorCollector.checkThat(one.hashCode(), is(same.hashCode()));
@@ -108,6 +122,7 @@ public class ConversationViewModelTest {
 
     @Test
     public void transitivity() {
+        //Assert
         errorCollector.checkThat(one, is(same));
         errorCollector.checkThat(same, is(secondSame));
         errorCollector.checkThat(one, is(secondSame));
@@ -117,6 +132,7 @@ public class ConversationViewModelTest {
 
     @Test
     public void getContents() {
+        //Assert
         errorCollector.checkThat(one.getContents().isEmpty(), is(false));
         errorCollector.checkThat(one.getContents().get("subject"), is(SUBJECT));
     }
