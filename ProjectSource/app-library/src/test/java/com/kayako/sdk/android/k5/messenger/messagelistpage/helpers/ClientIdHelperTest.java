@@ -13,11 +13,16 @@ public class ClientIdHelperTest {
 
     @Test
     public void generateClientId() {
+        //Arrange
         final String android = "android";
         final ClientIdHelper idHelperFirst = new ClientIdHelper();
         final ClientIdHelper idHelperSecond = new ClientIdHelper();
+
+        //Act
         String firstClientId = idHelperFirst.generateClientId(MessageType.MESSAGE);
         String secondClientId = idHelperSecond.generateClientId(MessageType.ATTACHMENT);
+
+        //Assert
         errorCollector.checkThat(firstClientId.contains(MessageType.MESSAGE.name()), is(true));
         errorCollector.checkThat(secondClientId.contains(MessageType.ATTACHMENT.name()), is(true));
         errorCollector.checkThat(firstClientId.contains(android), is(true));
