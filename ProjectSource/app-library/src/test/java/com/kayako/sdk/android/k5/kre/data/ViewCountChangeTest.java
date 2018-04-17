@@ -9,7 +9,7 @@ public class ViewCountChangeTest {
 
     private static final long RESOURCE_ID = 1_234L;
     private static final String RESOURCE_TYPE = "test_resource_type";
-    public static final String RESOURCE_URL = "test_resource_url";
+    private static final String RESOURCE_URL = "test_resource_url";
     private final ViewCountChangedProperties viewCountChangedProperties =
             new ViewCountChangedProperties();
 
