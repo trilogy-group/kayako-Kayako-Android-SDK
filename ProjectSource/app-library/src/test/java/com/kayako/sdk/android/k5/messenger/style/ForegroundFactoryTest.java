@@ -37,24 +37,33 @@ public class ForegroundFactoryTest {
     }
 
     @Test
-    public void textureForeGroundOption() {
+    public void textureForegroundOption() {
         for (ForegroundOption foregroundOption : foreGroundList) {
+            //Act
             final Foreground foreground = ForegroundFactory.getForeground(foregroundOption);
+
+            //Assert
             errorCollector.checkThat(foreground, instanceOf(Texture.class));
             errorCollector.checkThat(foreground.getType(), is(Foreground.ForegroundType.TEXTURE));
         }
     }
 
     @Test
-    public void whenNoTextureThenBlankForeGround() {
+    public void whenNoTextureThenBlankForeground() {
+        //Arrange & Act
         final Foreground foreground = ForegroundFactory.getForeground(ForegroundOption.NO_TEXTURE);
+
+        //Assert
         errorCollector.checkThat(foreground, instanceOf(BlankForground.class));
         errorCollector.checkThat(foreground.getType(), is(Foreground.ForegroundType.NONE));
     }
 
     @Test
-    public void whenNullThenGetForeGroundReturnNull() {
+    public void whenNullThenGetForegroundReturnNull() {
+        //Arrange & Act
         final Foreground foreground = ForegroundFactory.getForeground(null);
+
+        //Assert
         errorCollector.checkThat(foreground, nullValue());
     }
 }
