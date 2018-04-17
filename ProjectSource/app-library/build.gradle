@@ -27,6 +27,21 @@ group = appGroupId  // Maven Group ID for the artifact
 version = appVersion // Library version
 archivesBaseName = appArtifactId // Sets the artefact Id name
 
+apply plugin: 'jacoco'
+jacoco {
+    toolVersion = "0.8.0"
+}
+
+tasks.withType(Test) { 
+  testLogging {
+    exceptionFormat "full"
+    events "started", "skipped", "passed", "failed"
+    showStandardStreams true
+  }
+
+  exclude "**/*TimeUtilsTest*"
+}
+
 android {
     compileSdkVersion 24
     buildToolsVersion '24.0.2'
@@ -170,8 +185,6 @@ dependencies {
     testCompile "org.mockito:mockito-core:$mockito_version"
     testCompile "junit:junit:$junit_version"
 
-    testCompile 'org.mockito:mockito-core:1.10.19'
-    
     testCompile "org.powermock:powermock-core:$powermock_version"
     testCompile "org.powermock:powermock-module-junit4:$powermock_version"
     testCompile "org.powermock:powermock-api-mockito2:$powermock_version"
