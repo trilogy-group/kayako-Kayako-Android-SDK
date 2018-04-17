@@ -37,47 +37,72 @@ public class ConversationHelperTest {
 
     @Test
     public void setConversationId() {
+        //Act
         conversationHelper.setConversationId(CONVERSATION_ID);
+
+        //Assert
         errorCollector.checkThat(conversationHelper.getConversationId(), is(CONVERSATION_ID));
     }
 
     @Test
     public void setConversation() {
+        //Act
         conversationHelper.setConversation(conversation);
+
+        //Assert
         errorCollector.checkThat(conversationHelper.getConversation(), is(conversation));
     }
 
     @Test
     public void setIsConversationCreated() {
+        //Act
         conversationHelper.setIsConversationCreated(Boolean.TRUE);
+
+        //Assert
         errorCollector.checkThat(conversationHelper.isConversationCreated(), is(Boolean.TRUE));
     }
 
     @Test
     public void isConversationCompleted() {
+        //Arrange
         when(conversation.getStatus().getType()).thenReturn(Status.Type.COMPLETED);
+
+        //Act
         conversationHelper.setConversation(conversation);
+
+        //Assert
         errorCollector.checkThat(conversationHelper.isConversationCompleted(), is(true));
     }
 
     @Test
     public void isConversationClosed() {
+        //Arrange
         when(conversation.getStatus().getType()).thenReturn(Status.Type.CLOSED);
+
+        //Act
         conversationHelper.setConversation(conversation);
+
+        //Assert
         errorCollector.checkThat(conversationHelper.isConversationClosed(), is(true));
     }
 
     @Test
     public void whenNullEmailThenAssertionError() {
+        //Contract
         thrown.expect(AssertionError.class);
         thrown.expectMessage(EXCEPTION_MESSAGE);
+
+        //Act
         conversationHelper.getNewConversationBodyParams(null, USER_NAME, MESSAGE, CLIENT_ID);
     }
 
     @Test
     public void whenValidParamsThenObjectCreated() {
+        //Act
         PostConversationBodyParams bodyParams = conversationHelper.getNewConversationBodyParams(
                 EMAIL, USER_NAME, MESSAGE, CLIENT_ID);
+
+        //Assert
         errorCollector.checkThat(bodyParams.getClientId(), is(CLIENT_ID));
         errorCollector.checkThat(bodyParams.getName(), is(USER_NAME));
         errorCollector.checkThat(bodyParams.getEmail(), is(EMAIL));
@@ -89,9 +114,14 @@ public class ConversationHelperTest {
 
     @Test
     public void whenNullUserThenExtractedFromEmail() {
+        //Arrange
         final String extractedUserName  = EMAIL.substring(0, EMAIL.indexOf("@"));
+
+        //Act
         PostConversationBodyParams bodyParams = conversationHelper.getNewConversationBodyParams(
                 EMAIL, null, MESSAGE, CLIENT_ID);
+
+        //Assert
         errorCollector.checkThat(bodyParams.getName(), is(extractedUserName));
     }
 }
