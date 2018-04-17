@@ -289,7 +289,6 @@ public class MessageListContainerPresenterTest {
 
     @Test
     public void resetVariables() throws Exception {
-        //method is private, i am going to use reflection
         //Arrange
         Method method = messageListContainerPresenter.getClass().getDeclaredMethod("resetVariables");
         method.setAccessible(true);
@@ -393,17 +392,23 @@ public class MessageListContainerPresenterTest {
     @Test
     public void onClickSendInReplyView() {
         //Arrange
-        Whitebox.setInternalState(messageListContainerPresenter,
-                "mConversationHelper", mConversationHelper);
-        Whitebox.setInternalState(mConversationHelper,
-                "mIsConversationCreated", mIsConversationCreated);
         when(mConversationHelper.isConversationCreated()).thenReturn(true);
         when(mConversationHelper.getConversationId()).thenReturn(null);
+        doNothing().when(mView).collapseToolbar();
+        Whitebox.setInternalState(messageListContainerPresenter,
+                "mConversationHelper", mConversationHelper);
+        Whitebox.setInternalState(messageListContainerPresenter,
+                "mView", mView);
+        Whitebox.setInternalState(mConversationHelper,
+                "mIsConversationCreated", mIsConversationCreated);
         exception.expect(AssertionError.class);
         exception.expectMessage(ERROR_MESSAGE1);
 
         //Act
         messageListContainerPresenter.onClickSendInReplyView(DUMMY_STRING);
+
+        //Assert
+        verify(mView, times(1)).collapseToolbar();
     }
 
     @Test
@@ -417,56 +422,16 @@ public class MessageListContainerPresenterTest {
         when(mConversationHelper.getConversationId()).thenReturn(CONVERSATION_ID);
         Whitebox.setInternalState(messageListContainerPresenter,
                 "mConversationHelper", mConversationHelper);
+        Whitebox.setInternalState(messageListContainerPresenter,
+                "mView", mView);
         exception.expect(IllegalStateException.class);
         exception.expectMessage(ERROR_MESSAGE2);
 
         //Act
         messageListContainerPresenter.onClickSendInReplyView(DUMMY_STRING);
-    }
 
-//    @Test
-//    public void closePage() {
-//        //Arrange
-//        when(handler.post(any(Runnable.class))).thenReturn(true);
-//
-//        //Act
-//        messageListContainerPresenter.closePage();
-//    }
-
-    @Test
-    public void onScrollList() {
-    }
-
-    @Test
-    public void onListItemClick() {
-    }
-
-    @Test
-    public void onLoadMoreItems() {
-    }
-
-    @Test
-    public void setView() {
-    }
-
-
-    @Test
-    public void onTypeReply() {
-    }
-
-    @Test
-    public void onClickAddAttachment() {
-    }
-
-    @Test
-    public void onConfirmSendingOfAttachment() {
-    }
-
-    @Test
-    public void loadNextMessages() {
-    }
-
-    @Test
-    public void reloadConversation() {
+        //Assert
+        verify(mView, times(1)).collapseToolbar();
     }
 }
+
