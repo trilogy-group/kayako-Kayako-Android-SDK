@@ -41,15 +41,19 @@ public class LastActiveAgentsDataTest {
 
     @Test
     public void whenValidParamsThenValidObject() {
+        //Assert
         errorCollector.checkThat(one.getBrandName(), is(BRAND_NAME));
         errorCollector.checkThat(one.getAverageReplyTime(), is(AVERAGE_REPLY_TIME));
     }
 
     @Test
     public void whenValidParamsConstructorThenObjectCreated() {
+        //Act & Arrange
         final LastActiveAgentsData lastActiveAgentsDataLocal =
                 new LastActiveAgentsData(BRAND_NAME, AVERAGE_REPLY_TIME, userViewModel,
                         userViewModel, userViewModel);
+
+        //Assert
         errorCollector.checkThat(lastActiveAgentsDataLocal.getBrandName(), is(BRAND_NAME));
         errorCollector.checkThat(lastActiveAgentsDataLocal.getAverageReplyTime(), is(AVERAGE_REPLY_TIME));
         errorCollector.checkThat(lastActiveAgentsDataLocal.getUser1(), is(userViewModel));
@@ -59,31 +63,40 @@ public class LastActiveAgentsDataTest {
 
     @Test
     public void whenNullBrandNameThenIllegalArgumentException() {
+        //Contract
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(EXCEPTION_MESSAGE);
+
+        //Act
         new LastActiveAgentsData(null, AVERAGE_REPLY_TIME);
     }
 
     @Test
     public void whenNullAverageReplyTimeThenIllegalArgumentException() {
+        //Contract
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(EXCEPTION_MESSAGE);
+
+        //Act
         new LastActiveAgentsData(BRAND_NAME, null, userViewModel,
                 userViewModel, userViewModel);
     }
 
     @Test
     public void reflexivity() {
+        //Assert
         errorCollector.checkThat(one, is(one));
     }
 
     @Test
     public void nullInequality() {
+        //Assert
         errorCollector.checkThat(one.equals(null), is(false));
     }
 
     @Test
     public void symmetry() {
+        //Assert
         errorCollector.checkThat(one, is(same));
         errorCollector.checkThat(same, is(one));
         errorCollector.checkThat(one.hashCode(), is(same.hashCode()));
@@ -95,6 +108,7 @@ public class LastActiveAgentsDataTest {
 
     @Test
     public void transitivity() {
+        //Assert
         errorCollector.checkThat(one, is(same));
         errorCollector.checkThat(same, is(secondSame));
         errorCollector.checkThat(one, is(secondSame));
