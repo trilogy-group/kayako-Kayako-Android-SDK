@@ -31,24 +31,37 @@ public class DownloadAttachmentTest {
 
     @Test
     public void whenFileNameNullThenIllegalStateException() {
+        //Arrange
         final String newFileName = null;
+
+        //Assert
         thrown.expect(IllegalStateException.class);
         thrown.expectMessage(nullMatcher);
+
+        //Act
         new DownloadAttachment(newFileName, FILE_SIZE, DOWNLOAD_URL, auth);
     }
 
     @Test
     public void whenDownloadUrlNullThenIllegalStateException() {
+        //Arrange
         final String newDownloadUrl = null;
+
+        //Contract
         thrown.expect(IllegalStateException.class);
         thrown.expectMessage(nullMatcher);
+
+        //Act
         new DownloadAttachment(FILE_NAME, FILE_SIZE, newDownloadUrl, auth);
     }
 
     @Test
     public void whenValidParamsThenObjectCreated() {
+        //Act
         final DownloadAttachment downloadAttachment =
                 new DownloadAttachment(FILE_NAME, FILE_SIZE, DOWNLOAD_URL, auth);
+
+        //Assert
         errorCollector.checkThat(downloadAttachment.getFileName(), is(FILE_NAME));
         errorCollector.checkThat(downloadAttachment.getFileSize(), is(FILE_SIZE));
         errorCollector.checkThat(downloadAttachment.getDownloadUrl(), is(DOWNLOAD_URL));
