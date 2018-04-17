@@ -50,7 +50,10 @@ public class BackgroundFactoryTest {
     @Test
     public void gradientBackGroundOption() {
         for (Map.Entry<BackgroundOption, Boolean> entry : gradientMap.entrySet()) {
+            //Act
             final Background background = BackgroundFactory.getBackground(entry.getKey());
+
+            //Assert
             errorCollector.checkThat(background.isDarkBackground(), is(entry.getValue()));
             errorCollector.checkThat(background.getType(), is(Background.BackgroundType.GRADIENT));
         }
@@ -59,7 +62,10 @@ public class BackgroundFactoryTest {
     @Test
     public void solidColorBackGroundOption() {
         for (Map.Entry<BackgroundOption, Boolean> entry : solidColorMap.entrySet()) {
+            //Act
             final Background background = BackgroundFactory.getBackground(entry.getKey());
+
+            //Assert
             errorCollector.checkThat(background.isDarkBackground(), is(entry.getValue()));
             errorCollector.checkThat(background.getType(), is(Background.BackgroundType.SOLID_COLOR));
         }
