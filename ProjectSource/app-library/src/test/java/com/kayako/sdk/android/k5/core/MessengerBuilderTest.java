@@ -31,8 +31,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({URLUtil.class, Patterns.class, Kayako.class,
-MessengerPref.class, MessengerStylePref.class, KayakoMessengerActivity.class})
+@PrepareForTest({
+        URLUtil.class,
+        Patterns.class,
+        Kayako.class,
+        MessengerPref.class,
+        MessengerStylePref.class,
+        KayakoMessengerActivity.class})
 public class MessengerBuilderTest {
 
     private static final String TITLE = "title";
@@ -106,122 +111,182 @@ public class MessengerBuilderTest {
 
     @Test
     public void whenInvalidUrlThenIllegalArgumentException() {
+        //Arrange
         final String exceptionMessage = "Invalid Network Url!";
         final String instanceUrl = "/url";
         when(URLUtil.isNetworkUrl(instanceUrl)).thenReturn(false);
+
+        //Assert
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(exceptionMessage);
+
+        //Act
         builder.setUrl(instanceUrl);
     }
 
     @Test
     public void whenNullFingerprintIdThenIllegalArgumentException() {
+        //Arrange
         final String exceptionMessage = "Invalid Fingerprint Id";
         final String newFingerprintId = null;
+
+        //Assert
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(exceptionMessage);
+
+        //Act
         builder.setFingerprintId(newFingerprintId);
     }
 
     @Test
     public void whenInvalidEmailThenIllegalArgumentException() {
+        //Arrange
         final String exceptionMessage = "Invalid Email Provided";
         final String newEmail = "abc";
+
+        //Assert
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(exceptionMessage);
+
+        //Act
         builder.setUserEmail(newEmail);
     }
 
     @Test
     public void whenNullUserNameThenIllegalArgumentException() {
+        //Arrange
         final String exceptionMessage = "Invalid User Name Provided";
         final String newUserName = null;
+
+        //Assert
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(exceptionMessage);
+
+        //act
         builder.setUserName(newUserName);
     }
 
     @Test
     public void whenNullBackgroundThenIllegalArgumentException() {
+        //Arrange
         final String exceptionMessage = "Invalid Background";
         final Background newBackground = null;
+
+        //Assert
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(exceptionMessage);
+
+        //Act
         builder.setBackground(newBackground);
     }
 
     @Test
     public void whenNullForegroundThenIllegalArgumentException() {
+        //Arrange
         final String exceptionMessage = "Invalid Foreground";
         final Foreground newForeground = null;
+
+        //Contract
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(exceptionMessage);
+
+        //Act
         builder.setForeground(newForeground);
     }
 
     @Test
     public void whenInvalidStringResIdThenIllegalArgumentException() {
+        //Arrange
         final String exceptionMessage = "Invalid String resource for Brand Name";
         final int stringResId = 0;
+        when(resources.getString(stringResId)).thenThrow(Resources.NotFoundException.class);
+
+        //Assert
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(exceptionMessage);
-        when(resources.getString(stringResId)).thenThrow(Resources.NotFoundException.class);
+
+        //Act
         builder.setBrandName(stringResId);
     }
 
     @Test
     public void whenNullBrandNameThenIllegalArgumentException() {
+        //Arrange
         final String exceptionMessage = "Invalid String";
         final String newBrandName = null;
+
+        //Assert
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(exceptionMessage);
+
+        //Act
         builder.setBrandName(newBrandName);
     }
 
     @Test
     public void whenUrlNullThenIllegalArgumentException() {
+        //Arrange
         final String exceptionMessage = "URL is mandatory. Please call setUrl()";
         final MessengerBuilder builderLocal = new MessengerBuilder();
+
+        //Assert
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(exceptionMessage);
+
+        //Act
         builderLocal.open(activity);
     }
 
     @Test
     public void whenBrandNameNullThenIllegalArgumentException() {
+        //Arrange
         final String exceptionMessage = "BrandName is mandatory. Please call setBrandName()";
         final MessengerBuilder builderLocal = new MessengerBuilder();
+        builderLocal.setUrl(URL);
+
+        //Assert
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(exceptionMessage);
-        builderLocal.setUrl(URL);
+
+        //Act
         builderLocal.open(activity);
     }
 
     @Test
     public void whenTitleNullThenIllegalArgumentException() {
+        //Arrange
         final String exceptionMessage = "Title is mandatory. Please call setTitle()";
         final MessengerBuilder builderLocal = new MessengerBuilder();
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage(exceptionMessage);
         builderLocal.setUrl(URL);
         builderLocal.setBrandName(BRAND_NAME);
+
+        //Assert
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage(exceptionMessage);
+
+        //Act
         builderLocal.open(activity);
     }
 
     @Test
     public void whenDescriptionNullThenIllegalArgumentException() {
+        //Arrange
         final String exceptionMessage = "Description is mandatory. Please call setDescription()";
         final MessengerBuilder builderLocal = new MessengerBuilder();
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage(exceptionMessage);
         builderLocal.setUrl(URL);
         builderLocal.setBrandName(BRAND_NAME);
         builderLocal.setTitle(TITLE);
+
+        //Contract
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage(exceptionMessage);
+
+        //Act
         builderLocal.open(activity);
     }
 
     @Test
-    public void openActivity() throws Exception{
+    public void openActivity() throws Exception {
         //Arrange
         whenNew(Intent.class).withArguments(activity, KayakoMessengerActivity.class).thenReturn(intent);
         builder.setBrandName(STRING_RES_ID);
