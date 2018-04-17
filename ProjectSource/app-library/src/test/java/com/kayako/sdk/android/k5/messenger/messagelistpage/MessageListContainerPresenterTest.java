@@ -1,5 +1,6 @@
 package com.kayako.sdk.android.k5.messenger.messagelistpage;
 
+import android.os.Handler;
 import android.test.mock.MockContext;
 
 import com.kayako.sdk.android.k5.R;
@@ -14,8 +15,9 @@ import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.DownloadAttac
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.FileAttachmentDownloadHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.FileAttachmentHelper;
 import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.MessengerListHelper;
+import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.MessengerPrefHelper;
+import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.OnboardingHelper;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
@@ -24,6 +26,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.verify;
 
 import static org.junit.Assert.assertEquals;
@@ -42,13 +45,15 @@ import org.powermock.reflect.Whitebox;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({
         MessengerPref.class,
         Kayako.class,
         AttachmentHelper.class,
-        FileAttachmentDownloadHelper.class
+        FileAttachmentDownloadHelper.class,
+        Handler.class,
 })
 public class MessageListContainerPresenterTest {
 
@@ -57,11 +62,22 @@ public class MessageListContainerPresenterTest {
     private static final String DOWNLOAD_URL = "DOWNLOAD_URL";
     private static final String IMAGE_NAME = "IMAGE_NAME";
     private static final String ERROR_MESSAGE = "ConversationId must be valid to call this method!";
+    private static final String ERROR_MESSAGE1 = "If it is NOT a new conversation, conversation " +
+            "id should NOT be null";
+    private static final String ERROR_MESSAGE2 = "setIsConversationCreated() should be called before" +
+            " calling any this method";
+    private static final String DUMMY_STRING = "Dummy";
     private static final String FORMAT_PARAM = "Message %1$s";
     private static final long CONVERSATION_ID = 123L;
-    private static final long TIME_CREATED = System.currentTimeMillis();
     private static final long FILE_SIZE = 1234L;
+    private static final long TIME_CREATED = System.currentTimeMillis();
     private static final ListPageState pageState = ListPageState.EMPTY;
+
+    @Mock
+    private AtomicBoolean mIsConversationCreated;
+
+    @Mock
+    private Handler handler;
 
     @Mock
     private MockContext mockContext;
@@ -77,6 +93,12 @@ public class MessageListContainerPresenterTest {
 
     @Mock
     private MessengerListHelper mMessengerListHelper;
+
+    @Mock
+    private MessengerPrefHelper mMessengerPrefHelper;
+
+    @Mock
+    private OnboardingHelper mOnboardingHelper;
 
     @Mock
     private ConversationHelper mConversationHelper;
@@ -190,7 +212,7 @@ public class MessageListContainerPresenterTest {
         //Act
         messageListContainerPresenter.onPageStateChange(pageState);
 
-        //Asert
+        //Assert
         verify(mMessengerListHelper, times(1)).setListPageState(pageState);
     }
 
@@ -206,7 +228,6 @@ public class MessageListContainerPresenterTest {
         when(attachmentUrlType.getType()).thenReturn(Attachment.TYPE.URL);
         when(attachmentUrlType.getOriginalImageUrl()).thenReturn(IMAGE_URL);
         when(attachmentUrlType.getThumbnailUrl()).thenReturn(IMAGE_URL);
-        when(attachmentUrlType.getOriginalImageUrl()).thenReturn(IMAGE_URL);
         when(attachmentUrlType.getFileName()).thenReturn(IMAGE_NAME);
         when(attachmentUrlType.getDownloadUrl()).thenReturn(DOWNLOAD_URL);
         when(attachmentUrlType.getTimeCreated()).thenReturn(TIME_CREATED);
@@ -239,7 +260,6 @@ public class MessageListContainerPresenterTest {
         mockStatic(Kayako.class);
         mockStatic(MessengerPref.class);
         mockStatic(FileAttachmentDownloadHelper.class);
-        Whitebox.setInternalState(messageListContainerPresenter, "mFileAttachmentDownloadHelper", mFileAttachmentDownloadHelper);
         when(Kayako.getApplicationContext()).thenReturn(mockContext);
         when(MessengerPref.getInstance()).thenReturn(sInstance);
         when(attachmentUrlType.getType()).thenReturn(Attachment.TYPE.URL);
@@ -256,6 +276,7 @@ public class MessageListContainerPresenterTest {
         ).thenReturn(AttachmentHelper.AttachmentFileType.OTHER);
         when(FileAttachmentDownloadHelper.generateDownloadAttachmentForMessenger(
                 eq(IMAGE_NAME), eq(FILE_SIZE), eq(DOWNLOAD_URL))).thenReturn(downloadAttachment);
+        Whitebox.setInternalState(messageListContainerPresenter, "mFileAttachmentDownloadHelper", mFileAttachmentDownloadHelper);
 
         //Act
         messageListContainerPresenter.onListAttachmentClick(attachmentUrlType);
@@ -278,6 +299,141 @@ public class MessageListContainerPresenterTest {
     }
 
     @Test
+    public void getOnboardingListItemViewsWhenStateIsAskForEmail() throws Exception {
+        //Arrange
+        Whitebox.setInternalState(messageListContainerPresenter,
+                "mMessengerPrefHelper", mMessengerPrefHelper);
+        Whitebox.setInternalState(messageListContainerPresenter,
+                "mOnboardingHelper", mOnboardingHelper);
+        mockStatic(MessengerPref.class);
+        when(MessengerPref.getInstance()).thenReturn(sInstance);
+        when(MessengerPref.getInstance().getEmailId()).thenReturn(DUMMY_STRING);
+        when(mMessengerPrefHelper.getEmail()).thenReturn(DUMMY_STRING);
+        when(mOnboardingHelper.getOnboardingState(anyBoolean(), anyBoolean()))
+                .thenReturn(OnboardingHelper.OnboardingState.ASK_FOR_EMAIL);
+        Method method = messageListContainerPresenter.getClass()
+                .getDeclaredMethod("getOnboardingListItemViews");
+        method.setAccessible(true);
+
+        //Act
+        method.invoke(messageListContainerPresenter);
+
+        //Assert
+        verify(mMessengerPrefHelper, times(1)).getEmail();
+    }
+
+    @Test
+    public void getOnboardingListItemViewsWhenStateIsNone() throws Exception {
+        //Arrange
+        Whitebox.setInternalState(messageListContainerPresenter,
+                "mMessengerPrefHelper", mMessengerPrefHelper);
+        Whitebox.setInternalState(messageListContainerPresenter,
+                "mOnboardingHelper", mOnboardingHelper);
+        mockStatic(MessengerPref.class);
+        when(MessengerPref.getInstance()).thenReturn(sInstance);
+        when(MessengerPref.getInstance().getEmailId()).thenReturn(DUMMY_STRING);
+        when(mMessengerPrefHelper.getEmail()).thenReturn(DUMMY_STRING);
+        when(mOnboardingHelper.getOnboardingState(anyBoolean(), anyBoolean()))
+                .thenReturn(OnboardingHelper.OnboardingState.NONE);
+        Method method = messageListContainerPresenter.getClass()
+                .getDeclaredMethod("getOnboardingListItemViews");
+        method.setAccessible(true);
+
+        //Act
+        method.invoke(messageListContainerPresenter);
+
+        //Assert
+        verify(mMessengerPrefHelper, times(1)).getEmail();
+        verify(mOnboardingHelper, times(1)).generateOnboardingMessagesWithoutEmail();
+    }
+
+    @Test
+    public void getOnboardingListItemViewsWhenStateIsPrefilledEmail() throws Exception {
+        //Arrange
+        Whitebox.setInternalState(messageListContainerPresenter,
+                "mMessengerPrefHelper", mMessengerPrefHelper);
+        Whitebox.setInternalState(messageListContainerPresenter,
+                "mOnboardingHelper", mOnboardingHelper);
+        mockStatic(MessengerPref.class);
+        when(MessengerPref.getInstance()).thenReturn(sInstance);
+        when(MessengerPref.getInstance().getEmailId()).thenReturn(DUMMY_STRING);
+        when(mMessengerPrefHelper.getEmail()).thenReturn(DUMMY_STRING);
+        when(mOnboardingHelper.getOnboardingState(anyBoolean(), anyBoolean()))
+                .thenReturn(OnboardingHelper.OnboardingState.PREFILLED_EMAIL);
+        Method method = messageListContainerPresenter.getClass()
+                .getDeclaredMethod("getOnboardingListItemViews");
+        method.setAccessible(true);
+
+        //Act
+        method.invoke(messageListContainerPresenter);
+
+        //Assert
+        verify(mMessengerPrefHelper, times(1)).getEmail();
+        verify(mOnboardingHelper, times(1)).generateOnboardingMessagesWithPrefilledEmail(DUMMY_STRING);
+    }
+
+    @Test
+    public void initPage() {
+        //Arrange
+        mockStatic(Kayako.class);
+        mockStatic(MessengerPref.class);
+        when(Kayako.getApplicationContext()).thenReturn(mockContext);
+        when(MessengerPref.getInstance()).thenReturn(sInstance);
+        when(MessengerPref.getInstance().getBrandName()).thenReturn(BRAND_NAME);
+        Whitebox.setInternalState(messageListContainerPresenter,
+                "mConversationHelper", mConversationHelper);
+        //Act
+        messageListContainerPresenter.initPage(true, CONVERSATION_ID);
+
+        //Assert
+        verifyStatic(MessengerPref.class, times(4));
+        MessengerPref.getInstance();
+    }
+
+    @Test
+    public void onClickSendInReplyView() {
+        //Arrange
+        Whitebox.setInternalState(messageListContainerPresenter,
+                "mConversationHelper", mConversationHelper);
+        Whitebox.setInternalState(mConversationHelper,
+                "mIsConversationCreated", mIsConversationCreated);
+        when(mConversationHelper.isConversationCreated()).thenReturn(true);
+        when(mConversationHelper.getConversationId()).thenReturn(null);
+        exception.expect(AssertionError.class);
+        exception.expectMessage(ERROR_MESSAGE1);
+
+        //Act
+        messageListContainerPresenter.onClickSendInReplyView(DUMMY_STRING);
+    }
+
+    @Test
+    public void onClickSendInReplyViewElseCase() {
+        //Arrange
+        mockStatic(Kayako.class);
+        mockStatic(MessengerPref.class);
+        when(Kayako.getApplicationContext()).thenReturn(mockContext);
+        when(MessengerPref.getInstance()).thenReturn(sInstance);
+        when(mConversationHelper.isConversationCreated()).thenReturn(false);
+        when(mConversationHelper.getConversationId()).thenReturn(CONVERSATION_ID);
+        Whitebox.setInternalState(messageListContainerPresenter,
+                "mConversationHelper", mConversationHelper);
+        exception.expect(IllegalStateException.class);
+        exception.expectMessage(ERROR_MESSAGE2);
+
+        //Act
+        messageListContainerPresenter.onClickSendInReplyView(DUMMY_STRING);
+    }
+
+//    @Test
+//    public void closePage() {
+//        //Arrange
+//        when(handler.post(any(Runnable.class))).thenReturn(true);
+//
+//        //Act
+//        messageListContainerPresenter.closePage();
+//    }
+
+    @Test
     public void onScrollList() {
     }
 
@@ -293,17 +449,6 @@ public class MessageListContainerPresenterTest {
     public void setView() {
     }
 
-    @Test
-    public void initPage() {
-    }
-
-    @Test
-    public void closePage() {
-    }
-
-    @Test
-    public void onClickSendInReplyView() {
-    }
 
     @Test
     public void onTypeReply() {
