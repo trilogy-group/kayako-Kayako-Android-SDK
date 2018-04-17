@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.stubbing.OngoingStubbing;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.when;
@@ -33,26 +34,41 @@ public class ConversationMessagesHelperTest {
 
     @Test
     public void whenMessageNullThenIllegalArgumentException() {
+        //Arrange
         final String exceptionMessage = "Invalid argument. Can not be null!";
         final Message messageLocal = null;
+
+        //Assert
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(exceptionMessage);
+
+        //Act
         helper.updateMessage(messageLocal);
     }
 
     @Test
     public void whenMessageNotNullThenUpdate() {
+        //Arrange
         when(message.getId()).thenReturn(ID);
+
+        //Act
         helper.updateMessage(message);
+
+        //Assert
         errorCollector.checkThat(helper.getSize(), is(1));
         errorCollector.checkThat(helper.exists(ID), is(true));
     }
 
     @Test
     public void whenZeroMessagesThenHasMoreMessagesFalse() {
+        //Arrange
         final int offset = 0;
         newMessages = new ArrayList<>();
+
+        //Act
         helper.onLoadNextMessages(newMessages, offset);
+
+        //Assert
         errorCollector.checkThat(helper.hasMoreMessages(), is(Boolean.FALSE));
         errorCollector.checkThat(helper.hasLoadedMessagesBefore(), is(Boolean.TRUE));
         errorCollector.checkThat(helper.getLastSuccessfulOffset(), is(offset));
@@ -61,11 +77,15 @@ public class ConversationMessagesHelperTest {
 
     @Test
     public void whenMessagesLessLimitThenHasMoreMessagesFalse() {
+        //Arrange
         final int offset = 1;
-        newMessages = new ArrayList<>();
-        newMessages.add(message);
+        newMessages = Collections.singletonList(message);
         when(message.getId()).thenReturn(ID);
+
+        //Act
         helper.onLoadNextMessages(newMessages, offset);
+
+        //Assert
         errorCollector.checkThat(helper.hasMoreMessages(), is(Boolean.FALSE));
         errorCollector.checkThat(helper.hasLoadedMessagesBefore(), is(Boolean.TRUE));
         errorCollector.checkThat(helper.getLastSuccessfulOffset(), is(offset));
@@ -74,6 +94,7 @@ public class ConversationMessagesHelperTest {
 
     @Test
     public void whenMessagesEqualLimitThenHasMoreMessagesFalse() {
+        //Arrange
         final int offset = 5;
         newMessages = new ArrayList<>();
         for(long i = 1; i<= LIMIT; i++){
@@ -83,7 +104,11 @@ public class ConversationMessagesHelperTest {
         for(long j = 2; j <= LIMIT+2; j++) {
             stubbing.thenReturn(j);
         }
+
+        //Act
         helper.onLoadNextMessages(newMessages, offset);
+
+        //Assert
         errorCollector.checkThat(helper.hasMoreMessages(), is(Boolean.TRUE));
         errorCollector.checkThat(helper.hasLoadedMessagesBefore(), is(Boolean.TRUE));
         errorCollector.checkThat(helper.getLastSuccessfulOffset(), is(offset));
