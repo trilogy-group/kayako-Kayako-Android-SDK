@@ -1,22 +1,23 @@
 package com.kayako.sdk.android.k5.messenger.homescreenpage.adapter.header;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.util.Map;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
-/**
- * Created by pedroveras on 16/04/18.
- */
-
 public class HeaderListItemTest {
     private static final String TITLE = "Test title";
     private static final String SUBTITLE = "Test subtitle";
 
     private HeaderListItem headerListItem;
+
+    @Rule
+    public final ExpectedException thrown = ExpectedException.none();
 
     @Before
     public void setUp() {
@@ -34,12 +35,9 @@ public class HeaderListItemTest {
     }
 
     @Test
-    public void testThrowException() {
-        try {
-            HeaderListItem headerListItem = new HeaderListItem(null, null);
-        } catch (IllegalArgumentException e) {
-            assertNotNull(e.getMessage());
-        }
+    public void test_Constructor_ThrowException() {
+        thrown.expect(IllegalArgumentException.class);
+        new HeaderListItem(null, null);
     }
 
     @Test
