@@ -1,5 +1,6 @@
 package com.kayako.sdk.android.k5.messenger.data.conversationstarter;
 
+import com.kayako.sdk.android.k5.EqualsAndHashTest;
 import com.kayako.sdk.android.k5.messenger.data.conversation.viewmodel.UserViewModel;
 import org.junit.Before;
 import org.junit.Rule;
@@ -13,17 +14,13 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class AssignedAgentDataTest {
+public class AssignedAgentDataTest extends EqualsAndHashTest<AssignedAgentData> {
 
     private static final String EXCEPTION_MESSAGE = "User and properties can not be null!";
     private static final boolean IS_ACTIVE = Boolean.TRUE;
     private static final String FULL_NAME = "full_name";
     private static final String AVATAR = "avatar";
     private static final long LAST_ACTIVE_AT = 1_000L;
-    private AssignedAgentData one;
-    private AssignedAgentData same;
-    private AssignedAgentData secondSame;
-    private AssignedAgentData other;
 
     @Mock
     private UserViewModel userViewModel;
@@ -47,50 +44,31 @@ public class AssignedAgentDataTest {
 
     @Test
     public void whenValidParamsConstructorThenObjectCreated() {
+        //Assert
         errorCollector.checkThat(one.getUser(), is(userViewModel));
         errorCollector.checkThat(one.isActive(), is(IS_ACTIVE));
     }
 
     @Test
     public void whenUserNUllThenIllegalArgumentException() {
+        //Contract
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(EXCEPTION_MESSAGE);
+
+        //Act
         new AssignedAgentData(null, IS_ACTIVE);
     }
 
     @Test
     public void whenUserFullNameNullThenIllegalArgumentException() {
+        //Arrange
+        when(userViewModel.getFullName()).thenReturn(null);
+
+        //Assert
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(EXCEPTION_MESSAGE);
-        when(userViewModel.getFullName()).thenReturn(null);
+
+        //Act
         new AssignedAgentData(userViewModel, IS_ACTIVE);
-    }
-
-    @Test
-    public void reflexivity() {
-        errorCollector.checkThat(one, is(one));
-    }
-
-    @Test
-    public void nullInequality() {
-        errorCollector.checkThat(one.equals(null), is(false));
-    }
-
-    @Test
-    public void symmetry() {
-        errorCollector.checkThat(one, is(same));
-        errorCollector.checkThat(same, is(one));
-        errorCollector.checkThat(one.hashCode(), is(same.hashCode()));
-        errorCollector.checkThat(one.equals(other), is(false));
-        errorCollector.checkThat(other.equals(one), is(false));
-    }
-
-    @Test
-    public void transitivity() {
-        errorCollector.checkThat(one, is(same));
-        errorCollector.checkThat(same, is(secondSame));
-        errorCollector.checkThat(one, is(secondSame));
-        errorCollector.checkThat(one.hashCode(), is(same.hashCode()));
-        errorCollector.checkThat(one.hashCode(), is(secondSame.hashCode()));
     }
 }
