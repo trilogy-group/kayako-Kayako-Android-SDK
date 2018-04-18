@@ -20,7 +20,6 @@ import com.kayako.sdk.android.k5.messenger.messagelistpage.helpers.OnboardingHel
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -61,13 +60,18 @@ public class MessageListContainerPresenterTest {
     private static final String IMAGE_URL = "IMAGE_URL";
     private static final String DOWNLOAD_URL = "DOWNLOAD_URL";
     private static final String IMAGE_NAME = "IMAGE_NAME";
+    private static final String CONVERSATION_HELPER = "mConversationHelper";
+    private static final String ONBOARDING_HELPER = "mOnboardingHelper";
+    private static final String MESSENGER_PREF_HELPER = "mMessengerPrefHelper";
+    private static final String MVIEW = "mView";
+    private static final String GET_ONBOARDING_LIST_ITEM_VIEWS = "getOnboardingListItemViews";
+    private static final String DUMMY_STRING = "Dummy";
+    private static final String FORMAT_PARAM = "Message %1$s";
     private static final String ERROR_MESSAGE = "ConversationId must be valid to call this method!";
     private static final String ERROR_MESSAGE1 = "If it is NOT a new conversation, conversation " +
             "id should NOT be null";
     private static final String ERROR_MESSAGE2 = "setIsConversationCreated() should be called before" +
             " calling any this method";
-    private static final String DUMMY_STRING = "Dummy";
-    private static final String FORMAT_PARAM = "Message %1$s";
     private static final long CONVERSATION_ID = 123L;
     private static final long FILE_SIZE = 1234L;
     private static final long TIME_CREATED = System.currentTimeMillis();
@@ -111,9 +115,6 @@ public class MessageListContainerPresenterTest {
 
     @InjectMocks
     private MessageListContainerPresenter messageListContainerPresenter;
-
-    @Rule
-    public final ErrorCollector collector = new ErrorCollector();
 
     @Rule
     public final ExpectedException exception = ExpectedException.none();
@@ -161,7 +162,7 @@ public class MessageListContainerPresenterTest {
         when(mConversationHelper.getConversationId()).thenReturn(null);
         doNothing().when(mView).showLoadingViewInMessageListingView();
         doNothing().when(mView).expandToolbar();
-        Whitebox.setInternalState(messageListContainerPresenter, "mConversationHelper",
+        Whitebox.setInternalState(messageListContainerPresenter, CONVERSATION_HELPER,
                 mConversationHelper);
         exception.expect(AssertionError.class);
         exception.expectMessage(ERROR_MESSAGE);
@@ -188,7 +189,7 @@ public class MessageListContainerPresenterTest {
         when(mConversationHelper.getConversationId()).thenReturn(CONVERSATION_ID);
         doNothing().when(mView).showLoadingViewInMessageListingView();
         doNothing().when(mView).expandToolbar();
-        Whitebox.setInternalState(messageListContainerPresenter, "mConversationHelper",
+        Whitebox.setInternalState(messageListContainerPresenter, CONVERSATION_HELPER,
                 mConversationHelper);
 
         //Act
@@ -236,7 +237,7 @@ public class MessageListContainerPresenterTest {
                 attachmentUrlType.getThumbnailType(),
                 attachmentUrlType.getFileName())
         ).thenReturn(AttachmentHelper.AttachmentFileType.IMAGE);
-        Whitebox.setInternalState(messageListContainerPresenter, "mView", mView);
+        Whitebox.setInternalState(messageListContainerPresenter, MVIEW, mView);
 
         //Act
         messageListContainerPresenter.onListAttachmentClick(attachmentUrlType);
@@ -276,7 +277,8 @@ public class MessageListContainerPresenterTest {
         ).thenReturn(AttachmentHelper.AttachmentFileType.OTHER);
         when(FileAttachmentDownloadHelper.generateDownloadAttachmentForMessenger(
                 eq(IMAGE_NAME), eq(FILE_SIZE), eq(DOWNLOAD_URL))).thenReturn(downloadAttachment);
-        Whitebox.setInternalState(messageListContainerPresenter, "mFileAttachmentDownloadHelper", mFileAttachmentDownloadHelper);
+        Whitebox.setInternalState(messageListContainerPresenter,
+                "mFileAttachmentDownloadHelper", mFileAttachmentDownloadHelper);
 
         //Act
         messageListContainerPresenter.onListAttachmentClick(attachmentUrlType);
@@ -301,9 +303,9 @@ public class MessageListContainerPresenterTest {
     public void getOnboardingListItemViewsWhenStateIsAskForEmail() throws Exception {
         //Arrange
         Whitebox.setInternalState(messageListContainerPresenter,
-                "mMessengerPrefHelper", mMessengerPrefHelper);
+                MESSENGER_PREF_HELPER, mMessengerPrefHelper);
         Whitebox.setInternalState(messageListContainerPresenter,
-                "mOnboardingHelper", mOnboardingHelper);
+                ONBOARDING_HELPER, mOnboardingHelper);
         mockStatic(MessengerPref.class);
         when(MessengerPref.getInstance()).thenReturn(sInstance);
         when(MessengerPref.getInstance().getEmailId()).thenReturn(DUMMY_STRING);
@@ -311,7 +313,7 @@ public class MessageListContainerPresenterTest {
         when(mOnboardingHelper.getOnboardingState(anyBoolean(), anyBoolean()))
                 .thenReturn(OnboardingHelper.OnboardingState.ASK_FOR_EMAIL);
         Method method = messageListContainerPresenter.getClass()
-                .getDeclaredMethod("getOnboardingListItemViews");
+                .getDeclaredMethod(GET_ONBOARDING_LIST_ITEM_VIEWS);
         method.setAccessible(true);
 
         //Act
@@ -325,9 +327,9 @@ public class MessageListContainerPresenterTest {
     public void getOnboardingListItemViewsWhenStateIsNone() throws Exception {
         //Arrange
         Whitebox.setInternalState(messageListContainerPresenter,
-                "mMessengerPrefHelper", mMessengerPrefHelper);
+                MESSENGER_PREF_HELPER, mMessengerPrefHelper);
         Whitebox.setInternalState(messageListContainerPresenter,
-                "mOnboardingHelper", mOnboardingHelper);
+                ONBOARDING_HELPER, mOnboardingHelper);
         mockStatic(MessengerPref.class);
         when(MessengerPref.getInstance()).thenReturn(sInstance);
         when(MessengerPref.getInstance().getEmailId()).thenReturn(DUMMY_STRING);
@@ -335,7 +337,7 @@ public class MessageListContainerPresenterTest {
         when(mOnboardingHelper.getOnboardingState(anyBoolean(), anyBoolean()))
                 .thenReturn(OnboardingHelper.OnboardingState.NONE);
         Method method = messageListContainerPresenter.getClass()
-                .getDeclaredMethod("getOnboardingListItemViews");
+                .getDeclaredMethod(GET_ONBOARDING_LIST_ITEM_VIEWS);
         method.setAccessible(true);
 
         //Act
@@ -350,9 +352,9 @@ public class MessageListContainerPresenterTest {
     public void getOnboardingListItemViewsWhenStateIsPrefilledEmail() throws Exception {
         //Arrange
         Whitebox.setInternalState(messageListContainerPresenter,
-                "mMessengerPrefHelper", mMessengerPrefHelper);
+                MESSENGER_PREF_HELPER, mMessengerPrefHelper);
         Whitebox.setInternalState(messageListContainerPresenter,
-                "mOnboardingHelper", mOnboardingHelper);
+                ONBOARDING_HELPER, mOnboardingHelper);
         mockStatic(MessengerPref.class);
         when(MessengerPref.getInstance()).thenReturn(sInstance);
         when(MessengerPref.getInstance().getEmailId()).thenReturn(DUMMY_STRING);
@@ -360,7 +362,7 @@ public class MessageListContainerPresenterTest {
         when(mOnboardingHelper.getOnboardingState(anyBoolean(), anyBoolean()))
                 .thenReturn(OnboardingHelper.OnboardingState.PREFILLED_EMAIL);
         Method method = messageListContainerPresenter.getClass()
-                .getDeclaredMethod("getOnboardingListItemViews");
+                .getDeclaredMethod(GET_ONBOARDING_LIST_ITEM_VIEWS);
         method.setAccessible(true);
 
         //Act
@@ -368,7 +370,8 @@ public class MessageListContainerPresenterTest {
 
         //Assert
         verify(mMessengerPrefHelper, times(1)).getEmail();
-        verify(mOnboardingHelper, times(1)).generateOnboardingMessagesWithPrefilledEmail(DUMMY_STRING);
+        verify(mOnboardingHelper, times(1))
+                .generateOnboardingMessagesWithPrefilledEmail(DUMMY_STRING);
     }
 
     @Test
@@ -380,7 +383,7 @@ public class MessageListContainerPresenterTest {
         when(MessengerPref.getInstance()).thenReturn(sInstance);
         when(MessengerPref.getInstance().getBrandName()).thenReturn(BRAND_NAME);
         Whitebox.setInternalState(messageListContainerPresenter,
-                "mConversationHelper", mConversationHelper);
+                CONVERSATION_HELPER, mConversationHelper);
         //Act
         messageListContainerPresenter.initPage(true, CONVERSATION_ID);
 
@@ -392,13 +395,13 @@ public class MessageListContainerPresenterTest {
     @Test
     public void onClickSendInReplyView() {
         //Arrange
-        when(mConversationHelper.isConversationCreated()).thenReturn(true);
+            when(mConversationHelper.isConversationCreated()).thenReturn(true);
         when(mConversationHelper.getConversationId()).thenReturn(null);
         doNothing().when(mView).collapseToolbar();
         Whitebox.setInternalState(messageListContainerPresenter,
-                "mConversationHelper", mConversationHelper);
+                CONVERSATION_HELPER, mConversationHelper);
         Whitebox.setInternalState(messageListContainerPresenter,
-                "mView", mView);
+                MVIEW, mView);
         Whitebox.setInternalState(mConversationHelper,
                 "mIsConversationCreated", mIsConversationCreated);
         exception.expect(AssertionError.class);
@@ -421,9 +424,9 @@ public class MessageListContainerPresenterTest {
         when(mConversationHelper.isConversationCreated()).thenReturn(false);
         when(mConversationHelper.getConversationId()).thenReturn(CONVERSATION_ID);
         Whitebox.setInternalState(messageListContainerPresenter,
-                "mConversationHelper", mConversationHelper);
+                CONVERSATION_HELPER, mConversationHelper);
         Whitebox.setInternalState(messageListContainerPresenter,
-                "mView", mView);
+                MVIEW, mView);
         exception.expect(IllegalStateException.class);
         exception.expectMessage(ERROR_MESSAGE2);
 
