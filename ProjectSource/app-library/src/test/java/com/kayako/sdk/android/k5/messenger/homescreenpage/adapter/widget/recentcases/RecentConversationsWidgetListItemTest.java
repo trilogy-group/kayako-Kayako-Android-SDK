@@ -11,8 +11,13 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 import static org.hamcrest.core.Is.is;
+
+import static  org.hamcrest.CoreMatchers.equalTo;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ErrorCollector;
+import org.junit.rules.ExpectedException;
 
 import static org.mockito.Mockito.mock;
 
@@ -28,6 +33,12 @@ public class RecentConversationsWidgetListItemTest {
     private OnClickRecentConversationListener onClickRecentConversationListener;
     private ConversationViewModel conversationViewModel;
     private BaseWidgetListItem.OnClickActionListener onClickActionListener;
+
+    @Rule
+    public final ExpectedException thrown = ExpectedException.none();
+
+    @Rule
+    public final ErrorCollector collector = new ErrorCollector();
 
     @Before
     public void setUp() {
@@ -56,27 +67,21 @@ public class RecentConversationsWidgetListItemTest {
 
     @Test
     public void testIllegalArgumentoExceptionForConversations() {
-        try {
-            List<ConversationViewModel> emptyConversations = new ArrayList<>();
-            RecentConversationsWidgetListItem recentConversationsWidgetListItem =
-                    new RecentConversationsWidgetListItem(TITLE,
-                            "Action Button Label", onClickActionListener, emptyConversations,
-                            onClickRecentConversationListener);
-        } catch (IllegalArgumentException e) {
-            assertNotNull(e.getMessage());
-        }
+        thrown.expect(IllegalArgumentException.class);
+        List<ConversationViewModel> emptyConversations = new ArrayList<>();
+        RecentConversationsWidgetListItem recentConversationsWidgetListItem =
+                new RecentConversationsWidgetListItem(TITLE,
+                        "Action Button Label", onClickActionListener, emptyConversations,
+                        onClickRecentConversationListener);
     }
 
     @Test
     public void testIllegalArgumentoExceptionForOnClickRecentConversationListener() {
-        try {
-            RecentConversationsWidgetListItem recentConversationsWidgetListItem =
-                    new RecentConversationsWidgetListItem(TITLE,
-                            "Action Button Label", onClickActionListener, conversations,
-                            null);
-        } catch (IllegalArgumentException e) {
-            assertNotNull(e.getMessage());
-        }
+        thrown.expect(IllegalArgumentException.class);
+        RecentConversationsWidgetListItem recentConversationsWidgetListItem =
+                new RecentConversationsWidgetListItem(TITLE,
+                        "Action Button Label", onClickActionListener, conversations,
+                        null);
     }
 
     @Test
@@ -88,9 +93,11 @@ public class RecentConversationsWidgetListItemTest {
     @Test
     public void getContents() {
         Map<String, String> contents = recentConversationsWidgetListItem.getContents();
-        assertThat(contents.get("title"), is(TITLE));
-        assertThat(contents.get("conversations"), is(String.valueOf(conversations.size())));
-        assertThat(contents.get("conversations_" + conversationViewModel.getConversationId()),
-                is(DiffUtilsHelper.convertToString(conversationViewModel.getContents())));
+
+        collector.checkThat(contents.get("conversations"), equalTo(String.valueOf(
+                conversations.size())));
+        collector.checkThat(contents.get("title"), equalTo(TITLE));
+        collector.checkThat(contents.get("conversations_" + conversationViewModel.getConversationId()),
+                equalTo(DiffUtilsHelper.convertToString(conversationViewModel.getContents())));
     }
 }
