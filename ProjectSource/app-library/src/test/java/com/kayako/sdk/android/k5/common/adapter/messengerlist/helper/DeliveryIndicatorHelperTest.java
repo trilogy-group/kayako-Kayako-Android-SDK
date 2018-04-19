@@ -77,10 +77,12 @@ public class DeliveryIndicatorHelperTest {
     @Test
     public void whenValidClientDeliveryStatusThenReturnCreatedObject(){
         //Act & Assert
-        errorCollector.checkThat(DeliveryIndicatorHelper.getDeliveryIndicator(ClientDeliveryStatus.SENDING),
-                                    is(instanceOf(DeliveryIndicator.class)));
-        errorCollector.checkThat(DeliveryIndicatorHelper.getDeliveryIndicator(ClientDeliveryStatus.SENDING), notNullValue());
-        errorCollector.checkThat(DeliveryIndicatorHelper.getDeliveryIndicator(ClientDeliveryStatus.FAILED_TO_SEND), notNullValue());
+        errorCollector.checkThat(DeliveryIndicatorHelper.getDeliveryIndicator(
+                ClientDeliveryStatus.SENDING), is(instanceOf(DeliveryIndicator.class)));
+        errorCollector.checkThat(DeliveryIndicatorHelper.getDeliveryIndicator(
+                ClientDeliveryStatus.SENDING), notNullValue());
+        errorCollector.checkThat(DeliveryIndicatorHelper.getDeliveryIndicator(
+                ClientDeliveryStatus.FAILED_TO_SEND), notNullValue());
 
     }
 
@@ -90,7 +92,8 @@ public class DeliveryIndicatorHelperTest {
         Message message = null;
 
         //Act & Assert
-        errorCollector.checkThat(DeliveryIndicatorHelper.getDeliveryIndicator(message), nullValue());
+        errorCollector.checkThat(DeliveryIndicatorHelper.getDeliveryIndicator(
+                message), nullValue());
     }
 
     @Test
@@ -100,6 +103,7 @@ public class DeliveryIndicatorHelperTest {
         final long messageStatusUpdatedAt = 1_000L;
         final long createdAt = 2_000L;
         final long updatedAt = 3_000L;
+        final long deliveryTime = 1_000L;
         final Message deliveredMessage = new Message(id,null,null,null,null,null,null,
                 null,null,MessageStatus.DELIVERED, messageStatusUpdatedAt, createdAt, updatedAt);
         final Message rejectedMessage = new Message(id,null,null,null,null,null,null,
@@ -110,10 +114,14 @@ public class DeliveryIndicatorHelperTest {
                 null,null,MessageStatus.SENT, messageStatusUpdatedAt, createdAt, updatedAt);
 
         //Act & Assert
-        errorCollector.checkThat(DeliveryIndicatorHelper.getDeliveryIndicator(deliveredMessage).getDeliveryTime(), is(1_000L));
-        errorCollector.checkThat(DeliveryIndicatorHelper.getDeliveryIndicator(rejectedMessage).getDeliveryTime(), nullValue());
-        errorCollector.checkThat(DeliveryIndicatorHelper.getDeliveryIndicator(seenMessage).getDeliveryTime(), is(1_000L));
-        errorCollector.checkThat(DeliveryIndicatorHelper.getDeliveryIndicator(sentMessage).getDeliveryTime(), is(1_000L));
+        errorCollector.checkThat(DeliveryIndicatorHelper.getDeliveryIndicator(
+                deliveredMessage).getDeliveryTime(), is(deliveryTime));
+        errorCollector.checkThat(DeliveryIndicatorHelper.getDeliveryIndicator(
+                rejectedMessage).getDeliveryTime(), nullValue());
+        errorCollector.checkThat(DeliveryIndicatorHelper.getDeliveryIndicator(
+                seenMessage).getDeliveryTime(), is(deliveryTime));
+        errorCollector.checkThat(DeliveryIndicatorHelper.getDeliveryIndicator(
+                sentMessage).getDeliveryTime(), is(deliveryTime));
     }
 
     @Test
