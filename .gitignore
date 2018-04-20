@@ -44,5 +44,3 @@ build/
 #NDK
 obj/
 
-*.properties
-*.jar
