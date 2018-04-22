@@ -100,12 +100,6 @@ public class MessengerToolbarExpandedFragmentTest {
     }
 
     @Test
-    public void updateWhenLastActiveAgentsData() {
-        messengerToolbarExpandedFragment.update(lastActiveAgentsData, 10);
-        verify(messengerToolbarExpandedFragment, times(1)).isAdded();
-    }
-
-    @Test
     public void setExpandCollapseButtonClicked() {
         //Act
         messengerToolbarExpandedFragment.setExpandCollapseButtonClicked(listener);
