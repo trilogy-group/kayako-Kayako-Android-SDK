@@ -1,4 +1,4 @@
-package com.kayako.sdk.android.k5.messenger.toolbarview.view;
+package com.kayako.sdk.android.k5.messenger.toolbarview.child;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,7 +9,7 @@ import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.AssignedAgentData;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.LastActiveAgentsData;
 import com.kayako.sdk.android.k5.messenger.toolbarview.MessengerToolbarContract;
-import com.kayako.sdk.android.k5.messenger.toolbarview.child.MessengerToolbarExpandedFragment;
+
 import static junit.framework.Assert.assertEquals;
 import org.junit.Rule;
 import org.junit.Test;
