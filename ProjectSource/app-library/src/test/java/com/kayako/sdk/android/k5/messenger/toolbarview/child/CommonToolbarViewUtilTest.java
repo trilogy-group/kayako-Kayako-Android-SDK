@@ -15,7 +15,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import static org.mockito.ArgumentMatchers.anyInt;
 import org.mockito.Answers;
 import org.mockito.Mock;
 import static org.mockito.Mockito.times;
@@ -25,9 +24,10 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-@PrepareForTest({ConversationStarterHelper.class,
-                 TextUtils.class,
-                 MessengerTemplateHelper.class})
+@PrepareForTest({
+        ConversationStarterHelper.class,
+        TextUtils.class,
+        MessengerTemplateHelper.class})
 @RunWith(PowerMockRunner.class)
 public class CommonToolbarViewUtilTest {
 
@@ -59,7 +59,7 @@ public class CommonToolbarViewUtilTest {
     public void setUnreadCountWhenLessThanNine() {
         //Arrange
         final int unreadCount = 5;
-        when(view.findViewById(anyInt())).thenReturn(textView);
+        when(view.findViewById(R.id.ko__unread_counter)).thenReturn(textView);
 
         //Act
         CommonToolbarViewUtil.setUnreadCount(view, unreadCount);
@@ -73,7 +73,7 @@ public class CommonToolbarViewUtilTest {
     public void setUnreadCountWhenGreaterThanNine() {
         //Arrange
         final int unreadCount = 10;
-        when(view.findViewById(anyInt())).thenReturn(textView);
+        when(view.findViewById(R.id.ko__unread_counter)).thenReturn(textView);
 
         //Act
         CommonToolbarViewUtil.setUnreadCount(view, unreadCount);
@@ -87,7 +87,7 @@ public class CommonToolbarViewUtilTest {
     public void setUnreadCountWhenZero() {
         //Arrange
         final int unreadCount = 0;
-        when(view.findViewById(anyInt())).thenReturn(textView);
+        when(view.findViewById(R.id.ko__unread_counter)).thenReturn(textView);
 
         //Act
         CommonToolbarViewUtil.setUnreadCount(view, unreadCount);
@@ -114,7 +114,7 @@ public class CommonToolbarViewUtilTest {
     public void setTitle() {
         //Arrange
         final String brandName = "brand_name";
-        when(view.findViewById(anyInt())).thenReturn(textView);
+        when(view.findViewById(R.id.ko__messenger_toolbar_title)).thenReturn(textView);
 
         //Act
         CommonToolbarViewUtil.setTitle(view, brandName);
@@ -132,7 +132,7 @@ public class CommonToolbarViewUtilTest {
         when(ConversationStarterHelper.getAverageResponseTimeCaption(
                 averageReplyTimeInMilliseconds)).thenReturn("");
         when(TextUtils.isEmpty("")).thenReturn(true);
-        when(view.findViewById(anyInt())).thenReturn(textView);
+        when(view.findViewById(R.id.ko__messenger_toolbar_subtitle)).thenReturn(textView);
 
         //Act
         CommonToolbarViewUtil.setSubtitleForAverageResponseTime(view, averageReplyTimeInMilliseconds);
@@ -150,7 +150,7 @@ public class CommonToolbarViewUtilTest {
         when(ConversationStarterHelper.getAverageResponseTimeCaption(
                 averageReplyTimeInMilliseconds)).thenReturn("text");
         when(TextUtils.isEmpty("text")).thenReturn(false);
-        when(view.findViewById(anyInt())).thenReturn(textView);
+        when(view.findViewById(R.id.ko__messenger_toolbar_subtitle)).thenReturn(textView);
 
         //Act
         CommonToolbarViewUtil.setSubtitleForAverageResponseTime(view, averageReplyTimeInMilliseconds);
@@ -169,7 +169,7 @@ public class CommonToolbarViewUtilTest {
         when(ConversationStarterHelper.getLastActiveTimeCaption(assignedAgentData.isActive(),
                 assignedAgentData.getUser().getLastActiveAt())).thenReturn("");
         when(TextUtils.isEmpty("")).thenReturn(true);
-        when(view.findViewById(anyInt())).thenReturn(textView);
+        when(view.findViewById(R.id.ko__messenger_toolbar_subtitle)).thenReturn(textView);
 
         //Act
         CommonToolbarViewUtil.setSubtitleForUserLastActiveTime(view, assignedAgentData);
@@ -188,7 +188,7 @@ public class CommonToolbarViewUtilTest {
         when(ConversationStarterHelper.getLastActiveTimeCaption(assignedAgentData.isActive(),
                 assignedAgentData.getUser().getLastActiveAt())).thenReturn("text");
         when(TextUtils.isEmpty("text")).thenReturn(false);
-        when(view.findViewById(anyInt())).thenReturn(textView);
+        when(view.findViewById(R.id.ko__messenger_toolbar_subtitle)).thenReturn(textView);
 
         //Act
         CommonToolbarViewUtil.setSubtitleForUserLastActiveTime(view, assignedAgentData);
@@ -200,7 +200,9 @@ public class CommonToolbarViewUtilTest {
     @Test
     public void setLastActiveAgentAvatars() {
         //Arrange
-        when(view.findViewById(anyInt())).thenReturn(imageView);
+        when(view.findViewById(R.id.ko__messenger_toolbar_avatar1)).thenReturn(imageView);
+        when(view.findViewById(R.id.ko__messenger_toolbar_avatar2)).thenReturn(imageView);
+        when(view.findViewById(R.id.ko__messenger_toolbar_avatar3)).thenReturn(imageView);
         when(view.findViewById(R.id.ko__messenger_toolbar_avatar_caption_text)).thenReturn(textView);
         when(lastActiveAgentsData.getUser1()).thenReturn(userViewModel);
         when(lastActiveAgentsData.getUser2()).thenReturn(userViewModel);
@@ -210,7 +212,10 @@ public class CommonToolbarViewUtilTest {
         CommonToolbarViewUtil.setLastActiveAgentAvatars(view, lastActiveAgentsData);
 
         //Assert
-        verify(view, times(4)).findViewById(anyInt());
+        verify(view, times(1)).findViewById(R.id.ko__messenger_toolbar_avatar1);
+        verify(view, times(1)).findViewById(R.id.ko__messenger_toolbar_avatar2);
+        verify(view, times(1)).findViewById(R.id.ko__messenger_toolbar_avatar3);
+        verify(view, times(1)).findViewById(R.id.ko__messenger_toolbar_avatar_caption_text);
     }
 
     @Test
@@ -222,7 +227,7 @@ public class CommonToolbarViewUtilTest {
         CommonToolbarViewUtil.setAssignedAgentAvatar(view, assignedAgentData);
 
         //Assert
-        verify(view, times(1)).findViewById(anyInt());
+        verify(view, times(1)).findViewById(R.id.ko__messenger_toolbar_avatar2);
     }
 
     @Test
@@ -238,7 +243,9 @@ public class CommonToolbarViewUtilTest {
         CommonToolbarViewUtil.customizeColorsToMatchMessengerStyle(view);
 
         //Arrange
-        verify(view, times(3)).findViewById(anyInt());
+        verify(view, times(1)).findViewById(R.id.ko__messenger_toolbar_subtitle);
+        verify(view, times(1)).findViewById(R.id.ko__messenger_toolbar_title);
+        verify(view, times(1)).findViewById(R.id.ko__messenger_toolbar_back_button);
     }
 
     @Test
@@ -254,7 +261,9 @@ public class CommonToolbarViewUtilTest {
         CommonToolbarViewUtil.customizeColorsToMatchMessengerStyleForExpandedToolbar(view);
 
         //Assert
-        verify(view, times(3)).findViewById(anyInt());
+        verify(view, times(1)).findViewById(R.id.ko__messenger_toolbar_avatar_caption_text);
+        verify(view, times(1)).findViewById(R.id.ko__messenger_toolbar_avatar_separator);
+        verify(view, times(1)).findViewById(R.id.ko__messenger_toolbar_back_button);
     }
 
     @Test
@@ -285,6 +294,7 @@ public class CommonToolbarViewUtilTest {
         CommonToolbarViewUtil.setOnlyTitle(view, title);
 
         //Assert
-        verify(view, times(4)).findViewById(anyInt());
+        verify(textView, times(1)).setVisibility(View.VISIBLE);
+        verify(textView, times(1)).setText(title);
     }
 }
