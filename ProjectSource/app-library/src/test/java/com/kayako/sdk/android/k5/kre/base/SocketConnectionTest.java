@@ -50,7 +50,7 @@ public abstract class SocketConnectionTest {
     private static final String FINGERPRINT_ID = "fingerprintId";
     private static final String HOST = "host";
     private static final String URL_STRING = "url_string";
-    private static final Throwable THROWABLE = new Throwable();
+    private static final Throwable throwable = new Throwable();
     private static final String NO_NETWORK_CONNECTION = "No Network Connection";
     static final String ERROR_MESSAGE = "errorMessage";
 
@@ -137,7 +137,7 @@ public abstract class SocketConnectionTest {
 
     private void verifyConnectWasNotSuccessfulWhenOnThrowCalled() {
         verifyConnect();
-        socketThrowCaptor.getValue().onThrowException(ERROR_MESSAGE, THROWABLE);
+        socketThrowCaptor.getValue().onThrowException(ERROR_MESSAGE, throwable);
         assertFalse(socketConnection.isConnected());
     }
 
