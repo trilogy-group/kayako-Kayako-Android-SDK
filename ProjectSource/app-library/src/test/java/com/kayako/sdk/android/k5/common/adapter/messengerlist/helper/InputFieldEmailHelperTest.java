@@ -58,6 +58,7 @@ public class InputFieldEmailHelperTest {
     private static final int HINT_DEFAULT_MESSENGER = R.string.ko__messenger_input_email_message_hint_default;
     private static final int HINT_DEFAULT = R.string.ko__messenger_input_email_message_hint_default;
     private static final String EMAIL = "myemail@abcd.com";
+    private static final String EMAIL_ADDRESS_FIELD = "EMAIL_ADDRESS";
     private static final String DUMMY_STRING = "abcd";
 
     private InputFieldEmailHelper inputFieldEmailHelper;
@@ -121,9 +122,9 @@ public class InputFieldEmailHelperTest {
 
         viewHolder = new InputEmailViewHolder(mockView);
 
-        Constructor<InputFieldEmailHelper> c = InputFieldEmailHelper.class.getDeclaredConstructor();
-        c.setAccessible(true);
-        inputFieldEmailHelper = c.newInstance();
+        Constructor<InputFieldEmailHelper> constructor = InputFieldEmailHelper.class.getDeclaredConstructor();
+        constructor.setAccessible(true);
+        inputFieldEmailHelper = constructor.newInstance();
     }
 
     @Test
@@ -221,7 +222,7 @@ public class InputFieldEmailHelperTest {
         final Matcher matcher = mock(Matcher.class);
         when(pattern.matcher(EMAIL)).thenReturn(matcher);
         when(matcher.matches()).thenReturn(true);
-        setFinalStatic(Patterns.class.getField("EMAIL_ADDRESS"), pattern);
+        setFinalStatic(Patterns.class.getField(EMAIL_ADDRESS_FIELD), pattern);
         when(mockEditable.toString()).thenReturn(EMAIL);
         when(emailEditText.getText()).thenReturn(mockEditable);
         when(mockView.findViewById(R.id.ko__email_input_field_edittext)).thenReturn(emailEditText);
@@ -252,7 +253,7 @@ public class InputFieldEmailHelperTest {
         final Matcher matcher = PowerMockito.mock(Matcher.class);
         when(pattern.matcher(EMAIL)).thenReturn(matcher);
         when(matcher.matches()).thenReturn(false);
-        setFinalStatic(Patterns.class.getField("EMAIL_ADDRESS"), pattern);
+        setFinalStatic(Patterns.class.getField(EMAIL_ADDRESS_FIELD), pattern);
         when(mockEditable.toString()).thenReturn(EMAIL);
         when(emailEditText.getText()).thenReturn(mockEditable);
         when(mockView.findViewById(R.id.ko__email_input_field_edittext)).thenReturn(emailEditText);
@@ -284,7 +285,7 @@ public class InputFieldEmailHelperTest {
         final Matcher matcher = PowerMockito.mock(Matcher.class);
         when(pattern.matcher(EMAIL)).thenReturn(matcher);
         when(matcher.matches()).thenReturn(true);
-        setFinalStatic(Patterns.class.getField("EMAIL_ADDRESS"), pattern);
+        setFinalStatic(Patterns.class.getField(EMAIL_ADDRESS_FIELD), pattern);
         when(mockEditable.toString()).thenReturn(EMAIL);
         when(emailEditText.getText()).thenReturn(mockEditable);
         when(mockView.findViewById(R.id.ko__email_input_field_edittext)).thenReturn(emailEditText);
