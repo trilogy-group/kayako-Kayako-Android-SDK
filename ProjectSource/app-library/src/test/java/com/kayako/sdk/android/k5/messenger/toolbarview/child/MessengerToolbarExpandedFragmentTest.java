@@ -7,21 +7,22 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.AssignedAgentData;
-import com.kayako.sdk.android.k5.messenger.data.conversationstarter.LastActiveAgentsData;
 import com.kayako.sdk.android.k5.messenger.toolbarview.MessengerToolbarContract;
-
-import static junit.framework.Assert.assertEquals;
+import static org.hamcrest.CoreMatchers.is;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import static org.mockito.Mockito.times;
 import static org.powermock.api.mockito.PowerMockito.when;
 import static org.mockito.Mockito.verify;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
+import java.util.List;
 
 @RunWith(PowerMockRunner.class)
 public class MessengerToolbarExpandedFragmentTest {
@@ -47,8 +48,8 @@ public class MessengerToolbarExpandedFragmentTest {
     @Mock
     private AssignedAgentData assignedAgentData;
 
-    @Mock
-    private LastActiveAgentsData lastActiveAgentsData;
+    @Captor
+    private ArgumentCaptor<Integer> captor;
 
     @Mock
     private MessengerToolbarContract.OnExpandOrCollapseListener listener;
@@ -56,19 +57,31 @@ public class MessengerToolbarExpandedFragmentTest {
     @Rule
     public final ExpectedException thrown = ExpectedException.none();
 
+    @Rule
+    public final ErrorCollector errorCollector = new ErrorCollector();
+
     @Test
     public void onViewCreated() {
         //Arrange
         when(inflater.inflate(R.layout.ko__messenger_toolbar_expanded, viewGroup, false)).thenReturn(view);
-        when(view.findViewById(ArgumentMatchers.anyInt())).thenReturn(view);
+        when(view.findViewById(R.id.ko__messenger_toolbar_title)).thenReturn(view);
+        when(view.findViewById(R.id.ko__messenger_toolbar_subtitle)).thenReturn(view);
+        when(view.findViewById(R.id.ko__messenger_toolbar_back_button)).thenReturn(view);
+        when(view.findViewById(R.id.ko__messenger_toolbar_avatars)).thenReturn(view);
         when(view.findViewById(R.id.ko__unread_counter)).thenReturn(textView);
 
         //Act
         messengerToolbarExpandedFragment.onCreateView(inflater, viewGroup, bundle);
         messengerToolbarExpandedFragment.onViewCreated(view, bundle);
+        verify(view, times(5)).findViewById(captor.capture());
 
         //Assert
-        verify(view, times(5)).findViewById(ArgumentMatchers.anyInt());
+        final List<Integer> capturedValues = captor.getAllValues();
+        errorCollector.checkThat(R.id.ko__messenger_toolbar_title, is(capturedValues.get(0)));
+        errorCollector.checkThat(R.id.ko__messenger_toolbar_subtitle, is(capturedValues.get(1)));
+        errorCollector.checkThat(R.id.ko__messenger_toolbar_back_button, is(capturedValues.get(2)));
+        errorCollector.checkThat(R.id.ko__messenger_toolbar_avatars, is(capturedValues.get(3)));
+        errorCollector.checkThat(R.id.ko__unread_counter, is(capturedValues.get(4)));
     }
 
     @Test
@@ -107,6 +120,6 @@ public class MessengerToolbarExpandedFragmentTest {
                 Whitebox.getInternalState(messengerToolbarExpandedFragment, "mListener");
 
         //Assert
-        assertEquals(listener, listenerLocal);
+        errorCollector.checkThat(listener, is(listenerLocal));
     }
 }
