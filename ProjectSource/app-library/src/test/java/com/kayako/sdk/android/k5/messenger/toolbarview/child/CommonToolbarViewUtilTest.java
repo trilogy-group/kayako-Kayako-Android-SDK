@@ -11,11 +11,15 @@ import com.kayako.sdk.android.k5.messenger.data.conversationstarter.Conversation
 import com.kayako.sdk.android.k5.messenger.data.conversationstarter.LastActiveAgentsData;
 import com.kayako.sdk.android.k5.messenger.style.MessengerTemplateHelper;
 import com.kayako.sdk.android.k5.messenger.style.type.Background;
+import static org.hamcrest.CoreMatchers.is;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Answers;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -23,6 +27,7 @@ import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import java.util.List;
 
 @PrepareForTest({
         ConversationStarterHelper.class,
@@ -52,8 +57,17 @@ public class CommonToolbarViewUtilTest {
     @Mock
     private Background background;
 
+    @Captor
+    private ArgumentCaptor<Integer> integerCaptor;
+
+    @Captor
+    private ArgumentCaptor<String> stringCaptor;
+
     @Rule
     public final ExpectedException thrown = ExpectedException.none();
+
+    @Rule
+    public final ErrorCollector errorCollector = new ErrorCollector();
 
     @Test
     public void setUnreadCountWhenLessThanNine() {
@@ -63,10 +77,12 @@ public class CommonToolbarViewUtilTest {
 
         //Act
         CommonToolbarViewUtil.setUnreadCount(view, unreadCount);
+        verify(textView).setVisibility(integerCaptor.capture());
+        verify(textView).setText(stringCaptor.capture());
 
         //Assert
-        verify(textView, times(1)).setVisibility(View.VISIBLE);
-        verify(textView, times(1)).setText(String.valueOf(unreadCount));
+        errorCollector.checkThat(View.VISIBLE, is(integerCaptor.getValue()));
+        errorCollector.checkThat(String.valueOf(unreadCount), is(stringCaptor.getValue()));
     }
 
     @Test
@@ -77,10 +93,12 @@ public class CommonToolbarViewUtilTest {
 
         //Act
         CommonToolbarViewUtil.setUnreadCount(view, unreadCount);
+        verify(textView).setVisibility(integerCaptor.capture());
+        verify(textView).setText(stringCaptor.capture());
 
         //Assert
-        verify(textView, times(1)).setVisibility(View.VISIBLE);
-        verify(textView, times(1)).setText("+9");
+        errorCollector.checkThat(View.VISIBLE, is(integerCaptor.getValue()));
+        errorCollector.checkThat("+9", is(stringCaptor.getValue()));
     }
 
     @Test
@@ -91,9 +109,10 @@ public class CommonToolbarViewUtilTest {
 
         //Act
         CommonToolbarViewUtil.setUnreadCount(view, unreadCount);
+        verify(textView).setVisibility(integerCaptor.capture());
 
         //Assert
-        verify(textView, times(1)).setVisibility(View.GONE);
+        errorCollector.checkThat(View.GONE, is(integerCaptor.getValue()));
     }
 
     @Test
@@ -118,9 +137,10 @@ public class CommonToolbarViewUtilTest {
 
         //Act
         CommonToolbarViewUtil.setTitle(view, brandName);
+        verify(textView).setText(stringCaptor.capture());
 
         //Assert
-        verify(textView, times(1)).setText(brandName);
+        errorCollector.checkThat(brandName, is(stringCaptor.getValue()));
     }
 
     @Test
@@ -136,65 +156,76 @@ public class CommonToolbarViewUtilTest {
 
         //Act
         CommonToolbarViewUtil.setSubtitleForAverageResponseTime(view, averageReplyTimeInMilliseconds);
+        verify(textView).setVisibility(integerCaptor.capture());
 
         //Assert
-        verify(textView, times(1)).setVisibility(View.GONE);
+        errorCollector.checkThat(View.GONE, is(integerCaptor.getValue()));
     }
 
     @Test
     public void setSubtitleForAverageResponseTimeWhenSubtitleNotEmpty() {
         //Arrange
+        final String text = "text";
         final long averageReplyTimeInMilliseconds = 1_000L;
         mockStatic(ConversationStarterHelper.class);
         mockStatic(TextUtils.class);
         when(ConversationStarterHelper.getAverageResponseTimeCaption(
-                averageReplyTimeInMilliseconds)).thenReturn("text");
-        when(TextUtils.isEmpty("text")).thenReturn(false);
+                averageReplyTimeInMilliseconds)).thenReturn(text);
+        when(TextUtils.isEmpty(text)).thenReturn(false);
         when(view.findViewById(R.id.ko__messenger_toolbar_subtitle)).thenReturn(textView);
 
         //Act
         CommonToolbarViewUtil.setSubtitleForAverageResponseTime(view, averageReplyTimeInMilliseconds);
+        verify(textView).setVisibility(integerCaptor.capture());
+        verify(textView).setText(stringCaptor.capture());
 
         //Assert
-        verify(textView, times(1)).setVisibility(View.VISIBLE);
+        errorCollector.checkThat(View.VISIBLE, is(integerCaptor.getValue()));
+        errorCollector.checkThat(text, is(stringCaptor.getValue()));
     }
 
     @Test
     public void setSubtitleForUserLastActiveTimeWhenSubtitleEmpty() {
         //Arrange
+        final String emptyString = "";
         mockStatic(ConversationStarterHelper.class);
         mockStatic(TextUtils.class);
         when(assignedAgentData.isActive()).thenReturn(true);
         when(assignedAgentData.getUser().getLastActiveAt()).thenReturn(1_000L);
         when(ConversationStarterHelper.getLastActiveTimeCaption(assignedAgentData.isActive(),
-                assignedAgentData.getUser().getLastActiveAt())).thenReturn("");
-        when(TextUtils.isEmpty("")).thenReturn(true);
+                assignedAgentData.getUser().getLastActiveAt())).thenReturn(emptyString);
+        when(TextUtils.isEmpty(emptyString)).thenReturn(true);
         when(view.findViewById(R.id.ko__messenger_toolbar_subtitle)).thenReturn(textView);
 
         //Act
         CommonToolbarViewUtil.setSubtitleForUserLastActiveTime(view, assignedAgentData);
+        verify(textView).setVisibility(integerCaptor.capture());
 
         //Assert
-        verify(textView, times(1)).setVisibility(View.GONE);
+        errorCollector.checkThat(View.GONE, is(integerCaptor.getValue()));
     }
 
     @Test
     public void setSubtitleForUserLastActiveTimeWhenSubtitleNotEmpty() {
         //Arrange
+        final String text = "text";
         mockStatic(ConversationStarterHelper.class);
         mockStatic(TextUtils.class);
         when(assignedAgentData.isActive()).thenReturn(true);
         when(assignedAgentData.getUser().getLastActiveAt()).thenReturn(1_000L);
         when(ConversationStarterHelper.getLastActiveTimeCaption(assignedAgentData.isActive(),
-                assignedAgentData.getUser().getLastActiveAt())).thenReturn("text");
-        when(TextUtils.isEmpty("text")).thenReturn(false);
+                assignedAgentData.getUser().getLastActiveAt())).thenReturn(text);
+        when(TextUtils.isEmpty(text)).thenReturn(false);
         when(view.findViewById(R.id.ko__messenger_toolbar_subtitle)).thenReturn(textView);
 
         //Act
         CommonToolbarViewUtil.setSubtitleForUserLastActiveTime(view, assignedAgentData);
+        verify(textView).setVisibility(integerCaptor.capture());
+        verify(textView).setText(stringCaptor.capture());
 
         //Assert
-        verify(textView, times(1)).setVisibility(View.VISIBLE);
+        errorCollector.checkThat(View.VISIBLE, is(integerCaptor.getValue()));
+        errorCollector.checkThat(text, is(stringCaptor.getValue()));
     }
 
     @Test
@@ -210,12 +241,15 @@ public class CommonToolbarViewUtilTest {
 
         //Act
         CommonToolbarViewUtil.setLastActiveAgentAvatars(view, lastActiveAgentsData);
+        verify(imageView, times(3)).setVisibility(integerCaptor.capture());
+        verify(textView).setVisibility(integerCaptor.capture());
 
         //Assert
-        verify(view, times(1)).findViewById(R.id.ko__messenger_toolbar_avatar1);
-        verify(view, times(1)).findViewById(R.id.ko__messenger_toolbar_avatar2);
-        verify(view, times(1)).findViewById(R.id.ko__messenger_toolbar_avatar3);
-        verify(view, times(1)).findViewById(R.id.ko__messenger_toolbar_avatar_caption_text);
+        final List<Integer> capturedValue = integerCaptor.getAllValues();
+        errorCollector.checkThat(View.GONE, is(capturedValue.get(0)));
+        errorCollector.checkThat(View.GONE, is(capturedValue.get(1)));
+        errorCollector.checkThat(View.GONE, is(capturedValue.get(2)));
+        errorCollector.checkThat(View.GONE, is(capturedValue.get(3)));
     }
 
     @Test
@@ -225,9 +259,10 @@ public class CommonToolbarViewUtilTest {
 
         //Act
         CommonToolbarViewUtil.setAssignedAgentAvatar(view, assignedAgentData);
+        verify(imageView).setVisibility(integerCaptor.capture());
 
         //Assert
-        verify(view, times(1)).findViewById(R.id.ko__messenger_toolbar_avatar2);
+        errorCollector.checkThat(View.GONE, is(integerCaptor.getValue()));
     }
 
     @Test
@@ -259,11 +294,13 @@ public class CommonToolbarViewUtilTest {
 
         //Act
         CommonToolbarViewUtil.customizeColorsToMatchMessengerStyleForExpandedToolbar(view);
+        verify(view, times(3)).findViewById(integerCaptor.capture());
 
         //Assert
-        verify(view, times(1)).findViewById(R.id.ko__messenger_toolbar_avatar_caption_text);
-        verify(view, times(1)).findViewById(R.id.ko__messenger_toolbar_avatar_separator);
-        verify(view, times(1)).findViewById(R.id.ko__messenger_toolbar_back_button);
+        final List<Integer> capturedValues = integerCaptor.getAllValues();
+        errorCollector.checkThat(R.id.ko__messenger_toolbar_avatar_caption_text, is(capturedValues.get(0)));
+        errorCollector.checkThat(R.id.ko__messenger_toolbar_avatar_separator, is(capturedValues.get(1)));
+        errorCollector.checkThat(R.id.ko__messenger_toolbar_back_button, is(capturedValues.get(2)));
     }
 
     @Test
@@ -292,9 +329,14 @@ public class CommonToolbarViewUtilTest {
 
         //Act
         CommonToolbarViewUtil.setOnlyTitle(view, title);
+        verify(textView, times(3)).setVisibility(integerCaptor.capture());
+        verify(textView).setText(stringCaptor.capture());
 
         //Assert
-        verify(textView, times(1)).setVisibility(View.VISIBLE);
-        verify(textView, times(1)).setText(title);
+        List<Integer> capturedValues = integerCaptor.getAllValues();
+        errorCollector.checkThat(View.VISIBLE, is(capturedValues.get(0)));
+        errorCollector.checkThat(View.GONE, is(capturedValues.get(1)));
+        errorCollector.checkThat(View.GONE, is(capturedValues.get(2)));
+        errorCollector.checkThat(title, is(stringCaptor.getValue()));
     }
 }
