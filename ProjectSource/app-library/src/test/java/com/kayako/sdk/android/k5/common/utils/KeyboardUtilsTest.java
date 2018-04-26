@@ -28,25 +28,30 @@ public class KeyboardUtilsTest {
     public void givenActivityWhenHideKeyboardThenHideKeyboard() {
         //Arrange
         when(appCompatActivity.getCurrentFocus()).thenReturn(view);
-        when(appCompatActivity.getSystemService(Context.INPUT_METHOD_SERVICE)).thenReturn(inputMethodManager);
+        when(appCompatActivity.getSystemService(Context.INPUT_METHOD_SERVICE))
+                .thenReturn(inputMethodManager);
 
         //Act
         KeyboardUtils.hideKeyboard(appCompatActivity);
 
         //Assert
-        verify(inputMethodManager, times(1)).hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        verify(inputMethodManager, times(1))
+                .hideSoftInputFromWindow(view.getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     @Test
     public void givenActivityWhenShowKeyboardThenShowKeyboard() {
         //Arrange
         when(appCompatActivity.getCurrentFocus()).thenReturn(view);
-        when(appCompatActivity.getSystemService(Context.INPUT_METHOD_SERVICE)).thenReturn(inputMethodManager);
+        when(appCompatActivity.getSystemService(Context.INPUT_METHOD_SERVICE))
+                .thenReturn(inputMethodManager);
 
         //Act
         KeyboardUtils.showKeyboard(appCompatActivity);
 
         //Assert
-        verify(inputMethodManager, times(1)).showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+        verify(inputMethodManager, times(1))
+                .showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
     }
 }
