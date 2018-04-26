@@ -12,12 +12,17 @@ public class KreConnectionFactoryTest {
 
     @Test
     public void getConnection() {
+        //Arrange
         final boolean agentTrue = Boolean.TRUE;
         final boolean agentFalse = Boolean.FALSE;
+
+        //Act
         final KreConnection sAgentKreConnection =
                 KreConnectionFactory.getConnection(agentTrue);
         final KreConnection sMessengerKreConnection =
                 KreConnectionFactory.getConnection(agentFalse);
+
+        //Assert
         errorCollector.checkThat(sAgentKreConnection, notNullValue());
         errorCollector.checkThat(sMessengerKreConnection, notNullValue());
     }
