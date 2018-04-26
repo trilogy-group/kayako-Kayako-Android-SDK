@@ -1,6 +1,8 @@
 package com.kayako.sdk.android.k5.core;
 
 import static org.hamcrest.CoreMatchers.is;
+
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
@@ -30,48 +32,89 @@ public class KayakoLogHelperTest {
     @Rule
     public final ErrorCollector errorCollector = new ErrorCollector();
 
+    @Before
+    public void setUp() {
+        KayakoLogHelper.addLogListener(printLogListener);
+    }
+
     @Test
-    public void test() {
+    public void givenKayakoLogHelperWhenDThenParametersArePassed() {
         //Arrange
         final String debugTag = "debugTag";
         final String debugMessage = "debugMessage";
-        final String verboseTag = "verboseTag";
-        final String verboseMessage = "verboseMessage";
-        final String errorTag = "errorTag";
-        final String errorMessage = "errorMessage";
-        final String stackTraceTag = "stackTraceTag";
-        final String exceptionTag = "exceptionTag";
 
         //Act
-        KayakoLogHelper.addLogListener(printLogListener);
         KayakoLogHelper.d(debugTag, debugMessage);
-        KayakoLogHelper.v(verboseTag, verboseMessage);
-        KayakoLogHelper.e(errorTag, errorMessage);
-        KayakoLogHelper.printStackTrace(stackTraceTag, throwable);
-        KayakoLogHelper.logException(exceptionTag, throwable);
         verify(printLogListener).printDebugLogs(stringArgumentCaptor.capture(),
                 stringArgumentCaptor.capture());
-        verify(printLogListener).printVerboseLogs(stringArgumentCaptor.capture(),
-                stringArgumentCaptor.capture());
-        verify(printLogListener).printErrorLogs(stringArgumentCaptor.capture(),
-                stringArgumentCaptor.capture());
-        verify(printLogListener).printStackTrace(stringArgumentCaptor.capture(),
-                throwableArgumentCaptor.capture());
-        verify(printLogListener).logPotentialCrash(stringArgumentCaptor.capture(),
-                throwableArgumentCaptor.capture());
         final List<String> capturedStringValues = stringArgumentCaptor.getAllValues();
-        final List<Throwable> capturedThrowableValues = throwableArgumentCaptor.getAllValues();
 
         //Assert
         errorCollector.checkThat(debugTag, is(capturedStringValues.get(0)));
         errorCollector.checkThat(debugMessage, is(capturedStringValues.get(1)));
-        errorCollector.checkThat(verboseTag, is(capturedStringValues.get(2)));
-        errorCollector.checkThat(verboseMessage, is(capturedStringValues.get(3)));
-        errorCollector.checkThat(errorTag, is(capturedStringValues.get(4)));
-        errorCollector.checkThat(errorMessage, is(capturedStringValues.get(5)));
-        errorCollector.checkThat(stackTraceTag, is(capturedStringValues.get(6)));
-        errorCollector.checkThat(exceptionTag, is(capturedStringValues.get(7)));
-        errorCollector.checkThat(throwable, is(capturedThrowableValues.get(0)));
-        errorCollector.checkThat(throwable, is(capturedThrowableValues.get(1)));
+    }
+
+    @Test
+    public void givenKayakoLogHelperWhenVThenParametersArePassed() {
+        //Arrange
+        final String verboseTag = "verboseTag";
+        final String verboseMessage = "verboseMessage";
+
+        //Act
+        KayakoLogHelper.v(verboseTag, verboseMessage);
+        verify(printLogListener).printVerboseLogs(stringArgumentCaptor.capture(),
+                stringArgumentCaptor.capture());
+        final List<String> capturedStringValues = stringArgumentCaptor.getAllValues();
+
+        //Assert
+        errorCollector.checkThat(verboseTag, is(capturedStringValues.get(0)));
+        errorCollector.checkThat(verboseMessage, is(capturedStringValues.get(1)));
+    }
+
+    @Test
+    public void givenKayakoLogHelperWhenEThenParametersArePassed() {
+        //Arrange
+        final String errorTag = "errorTag";
+        final String errorMessage = "errorMessage";
+
+        //Act
+        KayakoLogHelper.e(errorTag, errorMessage);
+        verify(printLogListener).printErrorLogs(stringArgumentCaptor.capture(),
+                stringArgumentCaptor.capture());
+        final List<String> capturedStringValues = stringArgumentCaptor.getAllValues();
+
+        //Assert
+        errorCollector.checkThat(errorTag, is(capturedStringValues.get(0)));
+        errorCollector.checkThat(errorMessage, is(capturedStringValues.get(1)));
+    }
+
+    @Test
+    public void givenKayakoLogHelperWhenPrintStackTraceThenParametersArePassed() {
+        //Arrange
+        final String stackTraceTag = "stackTraceTag";
+
+        //Act
+        KayakoLogHelper.printStackTrace(stackTraceTag, throwable);
+        verify(printLogListener).printStackTrace(stringArgumentCaptor.capture(),
+                throwableArgumentCaptor.capture());
+
+        //Assert
+        errorCollector.checkThat(stackTraceTag, is(stringArgumentCaptor.getValue()));
+        errorCollector.checkThat(throwable, is(throwableArgumentCaptor.getValue()));
+    }
+
+    @Test
+    public void givenKayakoLogHelperWhenLogExceptionThenParametersArePassed() {
+        //Arrange
+        final String exceptionTag = "exceptionTag";
+
+        //Act
+        KayakoLogHelper.logException(exceptionTag, throwable);
+        verify(printLogListener).logPotentialCrash(stringArgumentCaptor.capture(),
+                throwableArgumentCaptor.capture());
+
+        //Assert
+        errorCollector.checkThat(exceptionTag, is(stringArgumentCaptor.getValue()));
+        errorCollector.checkThat(throwable, is(throwableArgumentCaptor.getValue()));
     }
 }
