@@ -27,3 +27,4 @@ public class KreConnectionFactoryTest {
         errorCollector.checkThat(sMessengerKreConnection, notNullValue());
     }
 }
+
