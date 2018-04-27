@@ -1,7 +1,6 @@
 package com.kayako.sdk.android.k5.core;
 
 import static org.hamcrest.CoreMatchers.is;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
