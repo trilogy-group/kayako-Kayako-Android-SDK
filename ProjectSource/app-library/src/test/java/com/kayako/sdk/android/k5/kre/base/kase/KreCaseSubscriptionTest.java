@@ -152,12 +152,12 @@ public class KreCaseSubscriptionTest {
         kreCaseSubscription.removeUserPresenceListener(rawUserOnCasePresenceListener);
 
         //Assert
-        errorCollector.checkThat(mClientTypingListeners.size(), is(0));
-        errorCollector.checkThat(mMinimalClientTypingListeners.size(), is(0));
-        errorCollector.checkThat(mClientActivityListeners.size(), is(0));
-        errorCollector.checkThat(mCaseChangeListeners.size(), is(0));
-        errorCollector.checkThat(mRawCasePostChangeListener.size(), is(0));
-        errorCollector.checkThat(mUserPresenceListeners.size(), is(0));
+        errorCollector.checkThat(mClientTypingListeners.isEmpty(), is(true));
+        errorCollector.checkThat(mMinimalClientTypingListeners.isEmpty(), is(true));
+        errorCollector.checkThat(mClientActivityListeners.isEmpty(), is(true));
+        errorCollector.checkThat(mCaseChangeListeners.isEmpty(), is(true));
+        errorCollector.checkThat(mRawCasePostChangeListener.isEmpty(), is(true));
+        errorCollector.checkThat(mUserPresenceListeners.isEmpty(), is(true));
     }
 
     @Test
@@ -268,7 +268,7 @@ public class KreCaseSubscriptionTest {
         //Assert
         final List<KreSubscription.OnSubscriptionListener> mChildListeners =
                 Whitebox.getInternalState(kreCaseSubscription, "mChildListeners");
-        errorCollector.checkThat(mChildListeners.size(), is(0));
+        errorCollector.checkThat(mChildListeners.isEmpty(), is(true));
     }
 
     @Test
@@ -297,11 +297,11 @@ public class KreCaseSubscriptionTest {
         final List<RawCasePostChangeListener> mRawCasePostChangeListenersList =
                 Whitebox.getInternalState(kreCaseSubscription, "mRawCasePostChangeListeners");
         errorCollector.checkThat(mMainListenerLocal, nullValue());
-        errorCollector.checkThat(mMinimalClientTypingListenersList.size(), is(0));
-        errorCollector.checkThat(mClientTypingListenersList.size(), is(0));
-        errorCollector.checkThat(mClientActivityListenersList.size(), is(0));
-        errorCollector.checkThat(mCaseChangeListenersList.size(), is(0));
-        errorCollector.checkThat(mUserPresenceListenersList.size(), is(0));
-        errorCollector.checkThat(mRawCasePostChangeListenersList.size(), is(0));
+        errorCollector.checkThat(mMinimalClientTypingListenersList.isEmpty(), is(true));
+        errorCollector.checkThat(mClientTypingListenersList.isEmpty(), is(true));
+        errorCollector.checkThat(mClientActivityListenersList.isEmpty(), is(true));
+        errorCollector.checkThat(mCaseChangeListenersList.isEmpty(), is(true));
+        errorCollector.checkThat(mUserPresenceListenersList.isEmpty(), is(true));
+        errorCollector.checkThat(mRawCasePostChangeListenersList.isEmpty(), is(true));
     }
 }
