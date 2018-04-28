@@ -34,7 +34,6 @@ import java.io.File;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -75,8 +74,6 @@ public class ImageUtilsTest {
 
     @Rule
     public final ErrorCollector collector = new ErrorCollector();
-    @Mock
-    private RequestListener requestListener;
     @Mock
     private CircleImageView mockCircleView;
     @Mock
@@ -160,7 +157,7 @@ public class ImageUtilsTest {
     }
 
     private void setupDrawableRequestBuilder() {
-        stubChainDrawTypeReq().listener(eq(requestListener));
+        stubChainDrawTypeReq().listener(any(RequestListener.class));
         stubChainDrawTypeReq().dontAnimate();
         stubChainDrawTypeReq().override(WIDTH, HEIGHT);
         stubChainReqBReqB().dontAnimate();
