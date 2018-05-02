@@ -13,26 +13,24 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
-
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.utils.ImageUtils;
 import com.kayako.sdk.android.k5.common.utils.ViewUtils;
 import com.kayako.sdk.android.k5.common.view.CircleImageView;
 import com.kayako.sdk.android.k5.common.viewhelpers.DefaultStateViewHelper;
 import com.kayako.sdk.helpcenter.articles.Article;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
-import static org.powermock.api.mockito.PowerMockito.mock;
+import static org.powermock.api.mockito.PowerMockito.doNothing;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.spy;
 import static org.powermock.api.mockito.PowerMockito.verifyStatic;
@@ -343,7 +341,7 @@ public class ArticleFragmentTest {
     }
 
     @Test
-    public void givenLongWhenFormatTimeReturnString(){
+    public void givenLongWhenFormatTimeReturnString() {
         //Arrange
         String expectedValue = "";
         articleFragment = new ArticleFragment();
@@ -400,7 +398,8 @@ public class ArticleFragmentTest {
     }
 
     @Test
-    public void givenActivityWhenShowFailedToLoadErrorMessageThenShowMessage() throws Exception {
+    public void givenActivityWhenShowFailedToLoadErrorMessageThenShowMessage()
+            throws Exception {
         //Arrange
         ArticleFragment articleFragmentSpy =
                 spy(new ArticleFragment());
@@ -413,14 +412,103 @@ public class ArticleFragmentTest {
         articleFragmentSpy.onCreateView(layoutInflater, viewGroup, bundle);
         mockStatic(ViewUtils.class);
         mockStatic(Looper.class);
-        Snackbar snackBar = PowerMockito.mock(Snackbar.class);
-        when(articleFragmentSpy.getClass().getMethod("getString", View.class, String.class, int.class)).thenReturn(articleFragment);
-        when(ViewUtils.createSnackBar(view, articleFragmentSpy.getString(R.string.ko__msg_error_unable_to_article), Snackbar.LENGTH_SHORT)).thenReturn(snackBar);
+        doReturn(ERROR_MESSAGE).when(articleFragmentSpy)
+                .getString(R.string.ko__msg_error_unable_to_article);
+        doNothing().when(ViewUtils.class,
+                "showSnackBar", eq(view), eq(String.class));
 
         //Act
         articleFragmentSpy.showFailedToLoadErrorMessage();
 
         //Assert
         verify(articleFragmentSpy).isAdded();
+    }
+
+    @Test
+    public void givenViewWhenShowArticleContentThenSetVisibility()
+            throws Exception {
+        //Arrange
+        ArticleFragment articleFragmentSpy =
+                spy(new ArticleFragment());
+        when(layoutInflater
+                .inflate(R.layout.ko__fragment_article_content, null))
+                .thenReturn(view);
+        whenNew(DefaultStateViewHelper.class).withAnyArguments()
+                .thenReturn(defaultStateViewHelper);
+        articleFragmentSpy
+                .onCreateView(layoutInflater, viewGroup, bundle);
+        when(view.findViewById(R.id.ko__article_web_view))
+                .thenReturn(view);
+
+        //Act
+        articleFragmentSpy.showArticleContent();
+
+        //Assert
+        verify(view).setVisibility(View.VISIBLE);
+    }
+
+    @Test
+    public void givenViewWhenHideArticleContentThenSetVisibility()
+            throws Exception {
+        //Arrange
+        ArticleFragment articleFragmentSpy =
+                spy(new ArticleFragment());
+        when(layoutInflater
+                .inflate(R.layout.ko__fragment_article_content, null))
+                .thenReturn(view);
+        whenNew(DefaultStateViewHelper.class).withAnyArguments()
+                .thenReturn(defaultStateViewHelper);
+        articleFragmentSpy
+                .onCreateView(layoutInflater, viewGroup, bundle);
+        when(view.findViewById(R.id.ko__article_web_view))
+                .thenReturn(view);
+
+        //Act
+        articleFragmentSpy.hideArticleContent();
+
+        //Assert
+        verify(view).setVisibility(View.GONE);
+    }
+
+    @Test
+    public void givenViewWhenShowLoadingThenShowLoadingView()
+            throws Exception {
+        //Arrange
+        ArticleFragment articleFragmentSpy =
+                spy(new ArticleFragment());
+        when(layoutInflater
+                .inflate(R.layout.ko__fragment_article_content, null))
+                .thenReturn(view);
+        whenNew(DefaultStateViewHelper.class).withAnyArguments()
+                .thenReturn(defaultStateViewHelper);
+        articleFragmentSpy
+                .onCreateView(layoutInflater, viewGroup, bundle);
+
+        //Act
+        articleFragmentSpy.showLoading();
+
+        //Assert
+        verify(defaultStateViewHelper).showLoadingView();
+    }
+
+    @Test
+    public void givenViewWhenHideLoadingThenHideLoadingView()
+            throws Exception {
+        //Arrange
+        ArticleFragment articleFragmentSpy =
+                spy(new ArticleFragment());
+        when(layoutInflater
+                .inflate(R.layout.ko__fragment_article_content, null))
+                .thenReturn(view);
+        whenNew(DefaultStateViewHelper.class).withAnyArguments()
+                .thenReturn(defaultStateViewHelper);
+        articleFragmentSpy
+                .onCreateView(layoutInflater, viewGroup, bundle);
+
+        //Act
+        articleFragmentSpy.hideLoading();
+
+        //Assert
+        verify(defaultStateViewHelper).hideLoadingView();
     }
 }
