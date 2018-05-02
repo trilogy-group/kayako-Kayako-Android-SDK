@@ -1,5 +1,6 @@
 package com.kayako.sdk.android.k5.common.view;
 
+import static junit.framework.Assert.fail;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
@@ -12,6 +13,7 @@ import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
@@ -22,6 +24,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -39,11 +42,15 @@ public class CircleImageViewTest {
   private final int padEnd = 5;
   private final int width = 120;
   private final int height = 240;
+  private static final int DEF_STYLE = 1;
 
   private CircleImageView circleImageView;
 
   @Mock
   private Context context;
+
+  @Mock
+  private AttributeSet attributeSet;
 
   @Mock
   private Bitmap bitmap;
@@ -97,6 +104,19 @@ public class CircleImageViewTest {
   }
 
   @Test
+  public void borderColorWithoutChange() throws Exception {
+    // Arrange
+    int borderColor = circleImageView.getBorderColor();
+
+    // Act
+    circleImageView.setBorderColor(borderColor);
+
+    // Assert
+    PowerMockito.verifyPrivate(circleImageView, Mockito.never())
+        .invoke("invalidate");
+  }
+
+  @Test
   public void borderWidthTest() throws Exception {
     // Arrange
     int borderWidth = circleImageView.getBorderWidth();
@@ -108,6 +128,20 @@ public class CircleImageViewTest {
     // Assert
     assertThat(circleImageView.getBorderWidth(), is(equalTo(borderWidth)));
     PowerMockito.verifyPrivate(circleImageView)
+        .invoke("setup");
+  }
+
+  @Test
+  public void borderWidthWithoutChange() throws Exception {
+    // Arrange
+    int borderWidth = circleImageView.getBorderWidth();
+
+    // Act
+    circleImageView.setBorderWidth(borderWidth);
+
+    // Assert
+    assertThat(circleImageView.getBorderWidth(), is(equalTo(borderWidth)));
+    PowerMockito.verifyPrivate(circleImageView, Mockito.never())
         .invoke("setup");
   }
 
@@ -127,6 +161,20 @@ public class CircleImageViewTest {
   }
 
   @Test
+  public void borderOverlayWithoutChange() throws Exception {
+    // Arrange
+    boolean borderOverlay = circleImageView.isBorderOverlay();
+
+    // Act
+    circleImageView.setBorderOverlay(borderOverlay);
+
+    // Assert
+    assertThat(circleImageView.isBorderOverlay(), is(equalTo(borderOverlay)));
+    PowerMockito.verifyPrivate(circleImageView, Mockito.never())
+        .invoke("setup");
+  }
+
+  @Test
   public void disableCircularTransformTest() throws Exception {
     // Arrange
     boolean disableCircularTransform = circleImageView.isDisableCircularTransformation();
@@ -142,19 +190,45 @@ public class CircleImageViewTest {
   }
 
   @Test
+  public void disableCircularTransformTestWithoutChange() throws Exception {
+    // Arrange
+    boolean disableCircularTransform = circleImageView.isDisableCircularTransformation();
+
+    // Act
+    circleImageView.setDisableCircularTransformation(disableCircularTransform);
+
+    // Assert
+    assertThat(circleImageView.isDisableCircularTransformation(), is(equalTo(disableCircularTransform)));
+    PowerMockito.verifyPrivate(circleImageView, Mockito.never())
+        .invoke("initializeBitmap");
+  }
+
+  @Test
   public void checkConstructor() throws Exception {
     // Arrange
     CircleImageView mock = PowerMockito.mock(CircleImageView.class);
     PowerMockito.whenNew(CircleImageView.class)
         .withArguments(context)
         .thenReturn(mock);
+    PowerMockito.whenNew(CircleImageView.class)
+        .withArguments(context, attributeSet)
+        .thenReturn(mock);
+    PowerMockito.whenNew(CircleImageView.class)
+        .withArguments(context, attributeSet, DEF_STYLE)
+        .thenReturn(mock);
 
     // Act
-    CircleImageView civ = new CircleImageView(context);
+    new CircleImageView(context);
+    new CircleImageView(context, attributeSet);
+    new CircleImageView(context, attributeSet, DEF_STYLE);
 
     // Assert
     PowerMockito.verifyNew(CircleImageView.class)
         .withArguments(context);
+    PowerMockito.verifyNew(CircleImageView.class)
+        .withArguments(context, attributeSet);
+    PowerMockito.verifyNew(CircleImageView.class)
+        .withArguments(context, attributeSet, DEF_STYLE);
   }
 
   @Test
@@ -192,6 +266,19 @@ public class CircleImageViewTest {
 
     // Act
     circleImageView.setAdjustViewBounds(adjustViewBounds);
+  }
+
+  @Test
+  public void setValidAdjustViewBounds() {
+    // Arrange
+    boolean adjustViewBounds = false;
+
+    try {
+      // Act
+      circleImageView.setAdjustViewBounds(adjustViewBounds);
+    } catch (IllegalArgumentException ex) {
+      fail(ex.getMessage());
+    }
   }
 
   @Test
