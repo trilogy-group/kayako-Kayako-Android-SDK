@@ -76,7 +76,8 @@ public class RealtimeUserHelperTest {
         mockStatic(KayakoLogHelper.class);
 
         when(KreConnectionFactory.getConnection(false)).thenReturn(kreConnection);
-        whenNew(KreUserSubscription.class).withArguments(kreConnection, USER_PRESENCE_CHANNEL).thenReturn(kreUserSubscription);
+        whenNew(KreUserSubscription.class).withArguments(kreConnection, USER_PRESENCE_CHANNEL)
+                .thenReturn(kreUserSubscription);
         whenNew(Handler.class).withNoArguments().thenReturn(handler);
         when(KreStarterFactory.getKreStarterValues()).thenReturn(kreStarter);
     }
@@ -87,7 +88,8 @@ public class RealtimeUserHelperTest {
     }
 
     private void verifyCallbackCommon(boolean online) {
-        verify(kreUserSubscription).subscribe(any(KreCredentials.class), eq(USER_PRESENCE_CHANNEL), eq(USER_ID), subscriptionListenerCaptor.capture());
+        verify(kreUserSubscription).subscribe(any(KreCredentials.class), eq(USER_PRESENCE_CHANNEL),
+                eq(USER_ID), subscriptionListenerCaptor.capture());
         subscriptionListenerCaptor.getValue().onSubscription();
         verify(kreUserSubscription).addUserOnlinePresenceListener(onlinePresenceListenerCaptor.capture());
         RawUserOnlinePresenceListener onlinePresenceListener = onlinePresenceListenerCaptor.getValue();
@@ -106,7 +108,7 @@ public class RealtimeUserHelperTest {
     }
 
     private void verifyCallbackCalled(boolean online) {
-       verifyCallbackCommon(online);
+        verifyCallbackCommon(online);
         if (online) {
             verify(userPresenceListener).onUserOnline(userIdCaptor.capture());
         } else {
