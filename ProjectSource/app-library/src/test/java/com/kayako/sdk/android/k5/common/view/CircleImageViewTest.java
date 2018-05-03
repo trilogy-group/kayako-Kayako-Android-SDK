@@ -33,15 +33,15 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest({CircleImageView.class,ImageView.class,Paint.class,View.class})
 public class CircleImageViewTest {
 
-  private final static String INVALID_BOUNDS_MESSAGE = "adjustViewBounds not supported.";
-  private final int padLeft = 5;
-  private final int padTop = 5;
-  private final int padRight = 5;
-  private final int padBottom = 5;
-  private final int padStart = 5;
-  private final int padEnd = 5;
-  private final int width = 120;
-  private final int height = 240;
+  private static final String INVALID_BOUNDS_MESSAGE = "adjustViewBounds not supported.";
+  private static final int PAD_LEFT = 5;
+  private static final int PAD_TOP = 5;
+  private static final int PAD_RIGHT = 5;
+  private static final int PAD_BOTTOM = 5;
+  private static final int PAD_START = 5;
+  private static final int PAD_END = 5;
+  private static final int WIDTH = 120;
+  private static final int HEIGHT = 240;
   private static final int DEF_STYLE = 1;
 
   private CircleImageView circleImageView;
@@ -84,7 +84,6 @@ public class CircleImageViewTest {
     suppress(method(View.class, "onSizeChanged"));
     suppress(method(View.class, "setPaddingRelative"));
 
-    //circleImageView = new CircleImageView(context);
     circleImageView = PowerMockito.spy(new CircleImageView(context));
   }
 
@@ -204,29 +203,49 @@ public class CircleImageViewTest {
   }
 
   @Test
-  public void checkConstructor() throws Exception {
+  public void checkConstructorWithContext() throws Exception {
     // Arrange
     CircleImageView mock = PowerMockito.mock(CircleImageView.class);
     PowerMockito.whenNew(CircleImageView.class)
         .withArguments(context)
         .thenReturn(mock);
+
+    // Act
+    new CircleImageView(context);
+
+    // Assert
+    PowerMockito.verifyNew(CircleImageView.class)
+        .withArguments(context);
+  }
+
+  @Test
+  public void checkConstructorWithContextAttributeSet() throws Exception {
+    // Arrange
+    CircleImageView mock = PowerMockito.mock(CircleImageView.class);
     PowerMockito.whenNew(CircleImageView.class)
         .withArguments(context, attributeSet)
         .thenReturn(mock);
+
+    // Act
+    new CircleImageView(context, attributeSet);
+
+    // Assert
+    PowerMockito.verifyNew(CircleImageView.class)
+        .withArguments(context, attributeSet);
+  }
+
+  @Test
+  public void checkConstructorWithContextAttributeSetDefStyle() throws Exception {
+    // Arrange
+    CircleImageView mock = PowerMockito.mock(CircleImageView.class);
     PowerMockito.whenNew(CircleImageView.class)
         .withArguments(context, attributeSet, DEF_STYLE)
         .thenReturn(mock);
 
     // Act
-    new CircleImageView(context);
-    new CircleImageView(context, attributeSet);
     new CircleImageView(context, attributeSet, DEF_STYLE);
 
     // Assert
-    PowerMockito.verifyNew(CircleImageView.class)
-        .withArguments(context);
-    PowerMockito.verifyNew(CircleImageView.class)
-        .withArguments(context, attributeSet);
     PowerMockito.verifyNew(CircleImageView.class)
         .withArguments(context, attributeSet, DEF_STYLE);
   }
@@ -286,7 +305,7 @@ public class CircleImageViewTest {
     // Arrange
 
     // Act
-    circleImageView.setPadding(padLeft, padTop, padRight, padBottom);
+    circleImageView.setPadding(PAD_LEFT, PAD_TOP, PAD_RIGHT, PAD_BOTTOM);
 
     // Assert
     PowerMockito.verifyPrivate(circleImageView)
@@ -298,7 +317,7 @@ public class CircleImageViewTest {
     // Arrange
 
     // Act
-    circleImageView.onSizeChanged(width, height, width+100, height+100);
+    circleImageView.onSizeChanged(WIDTH, HEIGHT, WIDTH +100, HEIGHT +100);
 
     // Assert
     PowerMockito.verifyPrivate(circleImageView)
@@ -310,7 +329,7 @@ public class CircleImageViewTest {
     // Arrange
 
     // Act
-    circleImageView.setPaddingRelative(padStart, padTop, padEnd, padBottom);
+    circleImageView.setPaddingRelative(PAD_START, PAD_TOP, PAD_END, PAD_BOTTOM);
 
     // Assert
     PowerMockito.verifyPrivate(circleImageView)
