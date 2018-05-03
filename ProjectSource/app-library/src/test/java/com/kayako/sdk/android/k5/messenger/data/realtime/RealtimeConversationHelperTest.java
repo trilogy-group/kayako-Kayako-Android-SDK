@@ -36,6 +36,7 @@ import com.kayako.sdk.messenger.message.Message;
 import java.util.Collections;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.junit.runner.RunWith;
@@ -120,6 +121,7 @@ public class RealtimeConversationHelperTest {
     private ArgumentCaptor<Boolean> isTypingCaptor;
     @Mock
     private OnConversationMessagesChangeListener onConversationMessagesChangeListener;
+    @Rule
     private final ErrorCollector errorCollector = new ErrorCollector();
 
     @Before
