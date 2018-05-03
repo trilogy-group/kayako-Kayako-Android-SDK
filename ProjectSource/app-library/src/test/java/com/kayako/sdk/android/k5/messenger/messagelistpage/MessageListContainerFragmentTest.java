@@ -7,7 +7,6 @@ import static org.junit.Assert.assertThat;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -25,7 +24,6 @@ import com.kayako.sdk.android.k5.core.HelpCenterPref;
 import com.kayako.sdk.android.k5.core.Kayako;
 import com.kayako.sdk.android.k5.core.MessengerPref;
 import com.kayako.sdk.android.k5.messenger.replyboxview.ReplyBoxContract;
-import com.kayako.sdk.android.k5.messenger.toolbarview.MessengerToolbarContract;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Before;
@@ -63,6 +61,12 @@ public class MessageListContainerFragmentTest {
   private static final int RESULT_CODE_OK = 1;
   private static final String TOAST_MESSAGE = "HELLO";
   private static final String HINT_MESSAGE = "TEST MESSAGE";
+  private static final String TOOLBAR_VIEW_FIELD = "mToolbarView";
+  private static final String REPLY_BOX_FIELD = "mReplyBoxView";
+  private static final String MESSAGE_LIST_FIELD = "mMessageListView";
+  private static final String PRESENTER_FIELD = "mPresenter";
+  private static final String MAKE_TEXT_METHOD = "makeText";
+  private static final String LAST_FILE_ATTACHMENT_FIELD = "mLastFileAttachmentAttached";
 
   @Mock
   private Bundle bundle;
@@ -88,11 +92,8 @@ public class MessageListContainerFragmentTest {
   @Mock
   private Intent intent;
 
-  @Mock
-  private Resources resources;
-
   @Rule
-  private ExpectedException thrown = ExpectedException.none();
+  private final ExpectedException thrown = ExpectedException.none();
 
   @Before
   public void setUp() {
@@ -122,7 +123,8 @@ public class MessageListContainerFragmentTest {
     // Assert
     Mockito.verify(messageListContainerFragment).onCreate(bundle);
     Mockito.verify(messageListContainerFragment).setRetainInstance(true);
-    PowerMockito.verifyStatic(MessageListContainerFactory.class, Mockito.times(1));
+    PowerMockito
+        .verifyStatic(MessageListContainerFactory.class, Mockito.times(1));
     MessageListContainerFactory.getPresenter(messageListContainerFragment);
   }
 
@@ -134,7 +136,8 @@ public class MessageListContainerFragmentTest {
     messageListContainerFragment.onCreateView(inflater, viewGroup, null);
 
     // Assert
-    Mockito.verify(inflater).inflate(R.layout.ko__fragment_message_list_container, viewGroup, SAVED_INSTANCE_STATE);
+    Mockito.verify(inflater)
+        .inflate(R.layout.ko__fragment_message_list_container, viewGroup, SAVED_INSTANCE_STATE);
   }
 
   @Test
@@ -146,7 +149,8 @@ public class MessageListContainerFragmentTest {
 
     // Assert
     Mockito.verify(messageListContainerFragment).onViewCreated(view, bundle);
-    Mockito.verify(messageListContainerFragment, Mockito.times(3)).getChildFragmentManager();
+    Mockito.verify(messageListContainerFragment, Mockito.times(3))
+        .getChildFragmentManager();
   }
 
   @Test
@@ -164,9 +168,10 @@ public class MessageListContainerFragmentTest {
   }
 
   @Test
-  public void testOnActivityResultWithAddAttachment() {
+  public void onActivityResultWithAddAttachment() {
     // Arrange
-    int addAttachmentCode = Whitebox.getInternalState(MessageListContainerFragment.class, "REQUEST_CODE_ADD_ATTACHMENT");
+    int addAttachmentCode = Whitebox
+        .getInternalState(MessageListContainerFragment.class, "REQUEST_CODE_ADD_ATTACHMENT");
 
     // Act
     messageListContainerFragment.onActivityResult(addAttachmentCode, RESULT_CODE_OK, intent);
@@ -177,23 +182,26 @@ public class MessageListContainerFragmentTest {
   }
 
   @Test
-  public void testOnActivityResultWithViewAttachment() {
+  public void onActivityResultWithViewAttachment() {
     // Arrange
-    int viewAttachmentCode = Whitebox.getInternalState(MessageListContainerFragment.class, "REQUEST_CODE_VIEW_ATTACHMENT_BEFORE_SENDING");
+    int viewAttachmentCode = Whitebox
+        .getInternalState(MessageListContainerFragment.class, "REQUEST_CODE_VIEW_ATTACHMENT_BEFORE_SENDING");
     int resultCode = Whitebox.getInternalState(KayakoAttachmentPreviewActivity.class, "RESULT_EXIT");
 
     // Act
     messageListContainerFragment.onActivityResult(viewAttachmentCode, resultCode, intent);
 
     // Assert
-    assertNull(Whitebox.getInternalState(messageListContainerFragment, "mLastFileAttachmentAttached"));
+    assertNull(Whitebox.getInternalState(messageListContainerFragment,
+        LAST_FILE_ATTACHMENT_FIELD));
   }
 
   @Test
-  public void testOnDestroyView() {
+  public void onDestroyView() {
     // Arrange
-    MessageListContainerContract.Presenter presenterMock = PowerMockito.mock(MessageListContainerContract.Presenter.class);
-    Whitebox.setInternalState(messageListContainerFragment, "mPresenter", presenterMock);
+    MessageListContainerContract.Presenter presenterMock = PowerMockito
+        .mock(MessageListContainerContract.Presenter.class);
+    Whitebox.setInternalState(messageListContainerFragment, PRESENTER_FIELD, presenterMock);
 
     // Act
     messageListContainerFragment.onDestroyView();
@@ -203,7 +211,7 @@ public class MessageListContainerFragmentTest {
   }
 
   @Test
-  public void testHasPageLoaded() {
+  public void hasPageLoaded() {
     // Arrange
     boolean isAdded = messageListContainerFragment.isAdded();
     Activity activity = messageListContainerFragment.getActivity();
@@ -220,10 +228,10 @@ public class MessageListContainerFragmentTest {
   }
 
   @Test
-  public void testShowToastMessageWithResId() throws Exception {
+  public void showToastMessageWithResId() throws Exception {
     // Arrange
     Toast toastMock = Mockito.mock(Toast.class);
-    PowerMockito.when(Toast.class, "makeText", context, R.string.ko__action_contact, Toast.LENGTH_SHORT)
+    PowerMockito.when(Toast.class, MAKE_TEXT_METHOD, context, R.string.ko__action_contact, Toast.LENGTH_SHORT)
         .thenReturn(toastMock);
 
     // Act
@@ -234,10 +242,10 @@ public class MessageListContainerFragmentTest {
   }
 
   @Test
-  public void testShowToastMessageWithString() throws Exception {
+  public void showToastMessageWithString() throws Exception {
     // Arrange
     Toast toastMock = Mockito.mock(Toast.class);
-    PowerMockito.when(Toast.class, "makeText", context, TOAST_MESSAGE, Toast.LENGTH_SHORT)
+    PowerMockito.when(Toast.class, MAKE_TEXT_METHOD, context, TOAST_MESSAGE, Toast.LENGTH_SHORT)
         .thenReturn(toastMock);
 
     // Act
@@ -248,14 +256,16 @@ public class MessageListContainerFragmentTest {
   }
 
   @Test
-  public void testSetupListInMessageListingView() {
+  public void setupListInMessageListingView() {
     // Arrange
     List<BaseListItem> baseListItems = new ArrayList<>();
     PowerMockito.when(messageListContainerFragment.hasPageLoaded()).thenReturn(true);
-    MessageListContract.ConfigureView messageListViewMock = Mockito.mock(MessageListContract.ConfigureView.class);
-    MessageListContainerContract.Presenter presenterMock = Mockito.mock(MessageListContainerContract.Presenter.class);
-    Whitebox.setInternalState(messageListContainerFragment, "mMessageListView", messageListViewMock);
-    Whitebox.setInternalState(messageListContainerFragment, "mPresenter", presenterMock);
+    MessageListContract.ConfigureView messageListViewMock = Mockito
+        .mock(MessageListContract.ConfigureView.class);
+    MessageListContainerContract.Presenter presenterMock = Mockito
+        .mock(MessageListContainerContract.Presenter.class);
+    Whitebox.setInternalState(messageListContainerFragment, MESSAGE_LIST_FIELD, messageListViewMock);
+    Whitebox.setInternalState(messageListContainerFragment, PRESENTER_FIELD, presenterMock);
 
     // Act
     messageListContainerFragment.setupListInMessageListingView(baseListItems);
@@ -266,11 +276,12 @@ public class MessageListContainerFragmentTest {
   }
 
   @Test
-  public void testShowEmptyViewInMessageListingView() {
+  public void showEmptyViewInMessageListingView() {
     // Arrange
     PowerMockito.when(messageListContainerFragment.hasPageLoaded()).thenReturn(true);
-    MessageListContract.ConfigureView messageListViewMock = Mockito.mock(MessageListContract.ConfigureView.class);
-    Whitebox.setInternalState(messageListContainerFragment, "mMessageListView", messageListViewMock);
+    MessageListContract.ConfigureView messageListViewMock = Mockito
+        .mock(MessageListContract.ConfigureView.class);
+    Whitebox.setInternalState(messageListContainerFragment, MESSAGE_LIST_FIELD, messageListViewMock);
 
     // Act
     messageListContainerFragment.showEmptyViewInMessageListingView();
@@ -281,11 +292,12 @@ public class MessageListContainerFragmentTest {
   }
 
   @Test
-  public void testShowErrorViewInMessageListingView() {
+  public void showErrorViewInMessageListingView() {
     // Arrange
     PowerMockito.when(messageListContainerFragment.hasPageLoaded()).thenReturn(true);
-    MessageListContract.ConfigureView messageListViewMock = Mockito.mock(MessageListContract.ConfigureView.class);
-    Whitebox.setInternalState(messageListContainerFragment, "mMessageListView", messageListViewMock);
+    MessageListContract.ConfigureView messageListViewMock = Mockito
+        .mock(MessageListContract.ConfigureView.class);
+    Whitebox.setInternalState(messageListContainerFragment, MESSAGE_LIST_FIELD, messageListViewMock);
 
     // Act
     messageListContainerFragment.showErrorViewInMessageListingView();
@@ -296,11 +308,12 @@ public class MessageListContainerFragmentTest {
   }
 
   @Test
-  public void testShowLoadingViewInMessageListingView() {
+  public void showLoadingViewInMessageListingView() {
     // Arrange
     PowerMockito.when(messageListContainerFragment.hasPageLoaded()).thenReturn(true);
-    MessageListContract.ConfigureView messageListViewMock = Mockito.mock(MessageListContract.ConfigureView.class);
-    Whitebox.setInternalState(messageListContainerFragment, "mMessageListView", messageListViewMock);
+    MessageListContract.ConfigureView messageListViewMock = Mockito
+        .mock(MessageListContract.ConfigureView.class);
+    Whitebox.setInternalState(messageListContainerFragment, MESSAGE_LIST_FIELD, messageListViewMock);
 
     // Act
     messageListContainerFragment.showLoadingViewInMessageListingView();
@@ -311,11 +324,12 @@ public class MessageListContainerFragmentTest {
   }
 
   @Test
-  public void testHasUserInteractedWithList() {
+  public void hasUserInteractedWithList() {
     // Arrange
     PowerMockito.when(messageListContainerFragment.hasPageLoaded()).thenReturn(true);
-    MessageListContract.ConfigureView messageListViewMock = Mockito.mock(MessageListContract.ConfigureView.class);
-    Whitebox.setInternalState(messageListContainerFragment, "mMessageListView", messageListViewMock);
+    MessageListContract.ConfigureView messageListViewMock = Mockito
+        .mock(MessageListContract.ConfigureView.class);
+    Whitebox.setInternalState(messageListContainerFragment, MESSAGE_LIST_FIELD, messageListViewMock);
 
     // Act
     messageListContainerFragment.hasUserInteractedWithList();
@@ -326,11 +340,12 @@ public class MessageListContainerFragmentTest {
   }
 
   @Test
-  public void testHideReplyBox() {
+  public void hideReplyBox() {
     // Arrange
     PowerMockito.when(messageListContainerFragment.hasPageLoaded()).thenReturn(true);
-    ReplyBoxContract.ConfigureView replyBoxMock = Mockito.mock(ReplyBoxContract.ConfigureView.class);
-    Whitebox.setInternalState(messageListContainerFragment, "mReplyBoxView", replyBoxMock);
+    ReplyBoxContract.ConfigureView replyBoxMock = Mockito
+        .mock(ReplyBoxContract.ConfigureView.class);
+    Whitebox.setInternalState(messageListContainerFragment, REPLY_BOX_FIELD, replyBoxMock);
 
     // Act
     messageListContainerFragment.hideReplyBox();
@@ -341,11 +356,12 @@ public class MessageListContainerFragmentTest {
   }
 
   @Test
-  public void testShowReplyBox() {
+  public void showReplyBox() {
     // Arrange
     PowerMockito.when(messageListContainerFragment.hasPageLoaded()).thenReturn(true);
-    ReplyBoxContract.ConfigureView replyBoxMock = Mockito.mock(ReplyBoxContract.ConfigureView.class);
-    Whitebox.setInternalState(messageListContainerFragment, "mReplyBoxView", replyBoxMock);
+    ReplyBoxContract.ConfigureView replyBoxMock = Mockito
+        .mock(ReplyBoxContract.ConfigureView.class);
+    Whitebox.setInternalState(messageListContainerFragment, REPLY_BOX_FIELD, replyBoxMock);
 
     // Act
     messageListContainerFragment.showReplyBox();
@@ -356,11 +372,11 @@ public class MessageListContainerFragmentTest {
   }
 
   @Test
-  public void testFocusOnReplyBox() {
+  public void focusOnReplyBox() {
     // Arrange
     PowerMockito.when(messageListContainerFragment.hasPageLoaded()).thenReturn(true);
     ReplyBoxContract.ConfigureView replyBoxMock = Mockito.mock(ReplyBoxContract.ConfigureView.class);
-    Whitebox.setInternalState(messageListContainerFragment, "mReplyBoxView", replyBoxMock);
+    Whitebox.setInternalState(messageListContainerFragment, REPLY_BOX_FIELD, replyBoxMock);
 
     // Act
     messageListContainerFragment.focusOnReplyBox();
@@ -371,11 +387,11 @@ public class MessageListContainerFragmentTest {
   }
 
   @Test
-  public void testSetReplyBoxHintMessage() {
+  public void setReplyBoxHintMessage() {
     // Arrange
     PowerMockito.when(messageListContainerFragment.hasPageLoaded()).thenReturn(true);
     ReplyBoxContract.ConfigureView replyBoxMock = Mockito.mock(ReplyBoxContract.ConfigureView.class);
-    Whitebox.setInternalState(messageListContainerFragment, "mReplyBoxView", replyBoxMock);
+    Whitebox.setInternalState(messageListContainerFragment, REPLY_BOX_FIELD, replyBoxMock);
 
     // Act
     messageListContainerFragment.setReplyBoxHintMessage(HINT_MESSAGE);
@@ -383,21 +399,6 @@ public class MessageListContainerFragmentTest {
     // Assert
     Mockito.verify(messageListContainerFragment).setReplyBoxHintMessage(HINT_MESSAGE);
     Mockito.verify(replyBoxMock).setReplyBoxHintText(HINT_MESSAGE);
-  }
-
-  @Test
-  public void testCollapseToolbar() {
-    // Arrange
-    PowerMockito.when(messageListContainerFragment.hasPageLoaded()).thenReturn(true);
-    MessengerToolbarContract.ConfigureView toolbarViewMock = Mockito.mock(MessengerToolbarContract.ConfigureView.class);
-    Whitebox.setInternalState(messageListContainerFragment, "mToolbarView", toolbarViewMock);
-
-    // Act
-    messageListContainerFragment.collapseToolbar();
-
-    // Assert
-    Mockito.verify(messageListContainerFragment).collapseToolbar();
-    Mockito.verify(toolbarViewMock).collapseToolbarView();
   }
 
 }
