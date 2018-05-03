@@ -6,17 +6,14 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
-
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedback;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedbackRatingListItem;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.view.InputFeedbackRatingViewHolder;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-
 import java.lang.reflect.Method;
 
 import static org.junit.Assert.assertEquals;
@@ -58,7 +55,7 @@ public class InputFieldFeedbackRatingHelperTest {
     private Spanned spanned;
 
     @Test
-    public void givenViewHolderListItemWhenConfigureInputFeedbackThenSetRating(){
+    public void givenViewHolderListItemWhenConfigureInputFeedbackThenSetRating() {
         //Arrange
         inputFeedbackRatingViewHolder.messageInstruction = textView;
         inputFeedbackRatingViewHolder.submittedLayout = linearLayout;
@@ -74,14 +71,15 @@ public class InputFieldFeedbackRatingHelperTest {
         inputFeedbackRatingViewHolder.selectedGoodRatingView = view;
 
         //Act
-        InputFieldFeedbackRatingHelper.configureInputFeedbackField(inputFeedbackRatingViewHolder, inputFeedbackRatingListItem);
+        InputFieldFeedbackRatingHelper.configureInputFeedbackField
+                (inputFeedbackRatingViewHolder, inputFeedbackRatingListItem);
 
         //Assert
         verify(viewSwitcher, times(2)).showNext();
     }
 
     @Test
-    public void givenViewHolderListItemWhenConfigureInputFeedbackThenEnableSubmittedLayout(){
+    public void givenViewHolderListItemWhenConfigureInputFeedbackThenEnableSubmittedLayout() {
         //Arrange
         inputFeedbackRatingViewHolder.messageInstruction = textView;
         inputFeedbackRatingViewHolder.submittedLayout = linearLayout;
@@ -95,14 +93,15 @@ public class InputFieldFeedbackRatingHelperTest {
         when(Html.fromHtml(INSTRUCTION_MESSAGE)).thenReturn(spanned);
 
         //Act
-        InputFieldFeedbackRatingHelper.configureInputFeedbackField(inputFeedbackRatingViewHolder, inputFeedbackRatingListItem);
+        InputFieldFeedbackRatingHelper.configureInputFeedbackField
+                (inputFeedbackRatingViewHolder, inputFeedbackRatingListItem);
 
         //Assert
         verify(textView).setText(spanned);
     }
 
     @Test
-    public void givenRatingViewHolderWhenSetRatingViewThenShowNext(){
+    public void givenRatingViewHolderWhenSetRatingViewThenShowNext() {
         //Arrange
         inputFeedbackRatingViewHolder.badRatingViewSwitcher = viewSwitcher;
         inputFeedbackRatingViewHolder.goodRatingViewSwitcher = viewSwitcher;
@@ -111,14 +110,15 @@ public class InputFieldFeedbackRatingHelperTest {
         inputFeedbackRatingViewHolder.selectedGoodRatingView = differentView;
 
         //Act
-        InputFieldFeedbackRatingHelper.setRatingView(InputFeedback.RATING.GOOD, inputFeedbackRatingViewHolder);
+        InputFieldFeedbackRatingHelper.setRatingView
+                (InputFeedback.RATING.GOOD, inputFeedbackRatingViewHolder);
 
         //Assert
         verify(viewSwitcher, times(2)).showNext();
     }
 
     @Test
-    public void givenRatingViewHolderWhenBadSetRatingViewThenShowNext(){
+    public void givenRatingViewHolderWhenBadSetRatingViewThenShowNext() {
         //Arrange
         inputFeedbackRatingViewHolder.badRatingViewSwitcher = viewSwitcher;
         inputFeedbackRatingViewHolder.goodRatingViewSwitcher = viewSwitcher;
@@ -127,23 +127,54 @@ public class InputFieldFeedbackRatingHelperTest {
         inputFeedbackRatingViewHolder.selectedGoodRatingView = view;
 
         //Act
-        InputFieldFeedbackRatingHelper.setRatingView(InputFeedback.RATING.BAD, inputFeedbackRatingViewHolder);
+        InputFieldFeedbackRatingHelper.setRatingView
+                (InputFeedback.RATING.BAD, inputFeedbackRatingViewHolder);
 
         //Assert
         verify(viewSwitcher, times(2)).showNext();
     }
 
     @Test
-    public void givenViewHolderWhenGetRatingThenReturnInputFeedback() throws Exception {
+    public void givenViewHolderWhenGetRatingThenReturnInputFeedback()
+            throws Exception {
         //Arrange
+        inputFeedbackRatingViewHolder.badRatingViewSwitcher = viewSwitcher;
+        inputFeedbackRatingViewHolder.goodRatingViewSwitcher = viewSwitcher;
+        when(viewSwitcher.getCurrentView()).thenReturn(view);
+        inputFeedbackRatingViewHolder.selectedBadRatingView = differentView;
+        inputFeedbackRatingViewHolder.selectedGoodRatingView = view;
         spy(InputFieldFeedbackRatingHelper.class);
-        Method privateMethod = InputFieldFeedbackRatingHelper.class.getDeclaredMethod("getRating", InputFeedbackRatingViewHolder.class);
+        Method privateMethod = InputFieldFeedbackRatingHelper.class
+                .getDeclaredMethod("getRating", InputFeedbackRatingViewHolder.class);
         privateMethod.setAccessible(true);
 
         //Act
-        InputFeedback.RATING returnedValue = (InputFeedback.RATING)privateMethod.invoke(inputFeedbackRatingViewHolder);
+        InputFeedback.RATING returnedValue = (InputFeedback.RATING) privateMethod
+                .invoke(privateMethod, inputFeedbackRatingViewHolder);
 
         //Assert
         assertEquals(InputFeedback.RATING.GOOD, returnedValue);
+    }
+
+    @Test
+    public void givenViewHolderWhenGetRatingBadThenReturnInputFeedback()
+            throws Exception {
+        //Arrange
+        inputFeedbackRatingViewHolder.badRatingViewSwitcher = viewSwitcher;
+        inputFeedbackRatingViewHolder.goodRatingViewSwitcher = viewSwitcher;
+        when(viewSwitcher.getCurrentView()).thenReturn(view);
+        inputFeedbackRatingViewHolder.selectedBadRatingView = view;
+        inputFeedbackRatingViewHolder.selectedGoodRatingView = differentView;
+        spy(InputFieldFeedbackRatingHelper.class);
+        Method privateMethod = InputFieldFeedbackRatingHelper.class
+                .getDeclaredMethod("getRating", InputFeedbackRatingViewHolder.class);
+        privateMethod.setAccessible(true);
+
+        //Act
+        InputFeedback.RATING returnedValue = (InputFeedback.RATING) privateMethod
+                .invoke(privateMethod, inputFeedbackRatingViewHolder);
+
+        //Assert
+        assertEquals(InputFeedback.RATING.BAD, returnedValue);
     }
 }
