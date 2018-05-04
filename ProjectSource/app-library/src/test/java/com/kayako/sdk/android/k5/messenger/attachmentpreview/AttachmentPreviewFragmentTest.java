@@ -72,8 +72,10 @@ import static org.powermock.reflect.Whitebox.setInternalState;
 
 })
 public class AttachmentPreviewFragmentTest {
+    private static final String SESSION_ID = "sessionId";
+    private static final String USER_AGENT = "userAgent";
     @Rule
-    public ExpectedException expectedException = ExpectedException.none();
+    public final ExpectedException expectedException = ExpectedException.none();
     private AttachmentPreviewFragment underTest;
     @Mock
     private View loadingView;
@@ -141,7 +143,6 @@ public class AttachmentPreviewFragmentTest {
     public void givenOnActivityCreatedWhenActivityNotKayakoAttachmentPreviewActivityThenThrowIllegalStateException() {
         expectedException.expect(Exception.class);
         expectedException.expectMessage("This fragment is meant to be used with KayakoAttachmentPreviewActivity");
-        FragmentActivity activity = mock(FragmentActivity.class);
         when(underTest.getActivity()).thenReturn(eq(activity));
         underTest.onActivityCreated(bundle);
     }
@@ -153,7 +154,7 @@ public class AttachmentPreviewFragmentTest {
         String filePath = null;
         boolean showSendButton = true;
         View exitButton = mock(View.class);
-        when(bundle.getString(anyString())).thenReturn(imageUrl, filePath, "sessionId", "userAgent");
+        when(bundle.getString(anyString())).thenReturn(imageUrl, filePath, SESSION_ID, USER_AGENT);
         when(bundle.getBoolean(anyString(), anyBoolean())).thenReturn(true, true, true, true);
         doReturn(showSendButton).when(bundle).getBoolean(KayakoAttachmentPreviewActivity.ARG_SHOW_SEND_BUTTON, false);
         doReturn(exitButton).when(mRoot).findViewById(R.id.ko__button_exit);
@@ -172,7 +173,7 @@ public class AttachmentPreviewFragmentTest {
         FileAttachment fileAttachment = mock(FileAttachment.class);
         TextView attachmentTime = mock(TextView.class);
         when(FileAttachmentUtil.generateFileAttachment(anyString(), any(File.class))).thenReturn(fileAttachment);
-        when(bundle.getString(anyString())).thenReturn(imageUrl, filePath, "sessionId", "userAgent",
+        when(bundle.getString(anyString())).thenReturn(imageUrl, filePath, SESSION_ID, USER_AGENT,
                 "attachment_name", "attachment_download_url");
         when(bundle.getLong(anyString(), anyLong())).thenReturn(0L, 0L);
         when(bundle.getBoolean(anyString(), anyBoolean())).thenReturn(true, true, true, true, true, true, true, true);
@@ -200,15 +201,15 @@ public class AttachmentPreviewFragmentTest {
     @Test
     public void givenExtractAuthInfoWhenBundleContainsSessionInfoThenReturnSessionAuth() throws Exception {
         when(bundle.containsKey(anyString())).thenReturn(true, true);
-        when(bundle.getString(KayakoAttachmentPreviewActivity.ARG_AGENT_SESSION_ID, null)).thenReturn("sessionId");
-        when(bundle.getString(KayakoAttachmentPreviewActivity.ARG_AGENT_USER_AGENT, null)).thenReturn("userAgent");
+        when(bundle.getString(KayakoAttachmentPreviewActivity.ARG_AGENT_SESSION_ID, null)).thenReturn(SESSION_ID);
+        when(bundle.getString(KayakoAttachmentPreviewActivity.ARG_AGENT_USER_AGENT, null)).thenReturn(USER_AGENT);
         SessionAuth sessionAuth = Whitebox.<SessionAuth>invokeMethod(underTest, "extractAuthInfo", bundle);
         Assert.assertNotNull(sessionAuth);
     }
 
     @Test
     public void
-    givenConfigureImageForUrlAttachmentShouldSetImageViewAndLoadingViewVisibleAndAttachmentPlaceHolderGone() throws
+    givenConfigureImageForUrlAttachmentShouldSetImageViewAndLoadingViewVisibleAndAttachmentPlaceholderGone() throws
             Exception {
         ImageView imageView = mock(ImageView.class);
         View attachmentPlaceholder = mock(View.class);
