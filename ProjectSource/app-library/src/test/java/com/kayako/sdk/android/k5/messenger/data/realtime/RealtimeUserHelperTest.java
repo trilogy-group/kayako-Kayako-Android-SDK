@@ -45,6 +45,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
         TextUtils.class
 })
 public class RealtimeUserHelperTest {
+
     private static final String USER_PRESENCE_CHANNEL = "userPresenceChannel";
     private static final long USER_ID = 1;
 
