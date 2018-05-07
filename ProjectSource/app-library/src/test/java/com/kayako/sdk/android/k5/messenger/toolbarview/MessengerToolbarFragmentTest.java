@@ -29,7 +29,6 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import static com.kayako.sdk.android.k5.messenger.toolbarview.MessengerToolbarContract.MessengerToolbarType.ASSIGNED_AGENT;
@@ -37,6 +36,7 @@ import static com.kayako.sdk.android.k5.messenger.toolbarview.MessengerToolbarCo
 import static com.kayako.sdk.android.k5.messenger.toolbarview.MessengerToolbarContract.MessengerToolbarType.SIMPLE_TITLE;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -87,46 +87,46 @@ public class MessengerToolbarFragmentTest {
     private MessengerToolbarFragment messengerToolbarFragment;
 
     @Mock
-    Bundle bundle;
+    private Bundle bundle;
 
     @Mock
-    LayoutInflater inflater;
+    private LayoutInflater inflater;
 
     @Mock
-    ViewGroup container;
+    private ViewGroup container;
 
     @Mock
-    MessengerToolbarContract.Presenter presenter;
+    private MessengerToolbarContract.Presenter presenter;
 
     @Mock
-    View view;
+    private View view;
 
     @Mock
-    MessengerToolbarCollapsedFragment messengerToolbarCollapsedFragment;
+    private MessengerToolbarCollapsedFragment messengerToolbarCollapsedFragment;
 
     @Mock
-    MessengerToolbarExpandedFragment messengerToolbarExpandedFragment;
+    private MessengerToolbarExpandedFragment messengerToolbarExpandedFragment;
 
     @Mock
-    LastActiveAgentsData lastActiveAgentsData;
+    private LastActiveAgentsData lastActiveAgentsData;
 
     @Mock
-    AssignedAgentData assignedAgentData;
+    private AssignedAgentData assignedAgentData;
 
     @Mock
-    FragmentActivity fragmentActivity;
+    private FragmentActivity fragmentActivity;
 
     @Mock
-    FragmentHostCallback fragmentHostCallback;
+    private FragmentHostCallback fragmentHostCallback;
 
     @Mock
-    Looper looper;
+    private Looper looper;
 
     @Mock
-    Handler handler;
+    private Handler handler;
 
     @Rule
-    public final ExpectedException thrown = ExpectedException.none();
+    private final ExpectedException thrown = ExpectedException.none();
 
     @Before
     public void setUp() throws Exception {
@@ -272,6 +272,13 @@ public class MessengerToolbarFragmentTest {
 
         // Act
         messengerToolbarFragment.configureForLastActiveUsersView(lastActiveAgentsData, true);
+
+        // Assert
+        Object lastActiveAgentsDataInternal = Whitebox.getInternalState(messengerToolbarFragment, "mLastActiveAgentsData");
+        assertNull(lastActiveAgentsDataInternal);
+
+        Object toolbarTypeInternal = Whitebox.getInternalState(messengerToolbarFragment, "mToolbarType");
+        assertNull(toolbarTypeInternal);
     }
 
     @Test
@@ -397,7 +404,7 @@ public class MessengerToolbarFragmentTest {
     }
 
     @Test
-    public void removeAddedTransactedFragment() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void removeAddedTransactedFragment() throws Exception {
         // Arrange
         prepareMessengerToolbarFragment();
         messengerToolbarFragment.configureForSimpleTitle(TEST_TEXT, true);
@@ -411,7 +418,7 @@ public class MessengerToolbarFragmentTest {
     }
 
     @Test
-    public void commitTransactionWithAnimationWhenLastActiveAgents() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void commitTransactionWithAnimationWhenLastActiveAgents() throws Exception {
         // Arrange
         prepareMessengerToolbarFragment();
         messengerToolbarFragment.configureForLastActiveUsersView(lastActiveAgentsData, true);
@@ -425,7 +432,7 @@ public class MessengerToolbarFragmentTest {
     }
 
     @Test
-    public void commitTransactionWithAnimationWhenAssignedAgents() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void commitTransactionWithAnimationWhenAssignedAgents() throws Exception {
         // Arrange
         prepareMessengerToolbarFragment();
         messengerToolbarFragment.configureForAssignedAgentView(assignedAgentData, true);
@@ -439,7 +446,7 @@ public class MessengerToolbarFragmentTest {
     }
 
     @Test
-    public void commitTransactionWithAnimationWhenSimpleTitle() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void commitTransactionWithAnimationWhenSimpleTitle() throws Exception {
         // Arrange
         prepareMessengerToolbarFragment();
         messengerToolbarFragment.configureForSimpleTitle(TEST_TEXT, true);
@@ -453,7 +460,7 @@ public class MessengerToolbarFragmentTest {
     }
 
     @Test
-    public void commitTransactionWithAnimationWhenConfigureViewEmpty() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void commitTransactionWithAnimationWhenConfigureViewEmpty() throws Exception {
         // Arrange
         prepareMessengerToolbarFragment();
         messengerToolbarFragment.configureForSimpleTitle(TEST_TEXT, true);
@@ -468,7 +475,7 @@ public class MessengerToolbarFragmentTest {
     }
 
     @Test
-    public void commitTransactionWithAnimationWhenAndroidKitKat() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void commitTransactionWithAnimationWhenAndroidKitKat() throws Exception {
         // Arrange
         prepareMessengerToolbarFragment();
         messengerToolbarFragment.configureForSimpleTitle(TEST_TEXT, true);
