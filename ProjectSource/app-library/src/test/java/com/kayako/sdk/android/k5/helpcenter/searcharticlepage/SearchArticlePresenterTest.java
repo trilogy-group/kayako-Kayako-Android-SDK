@@ -34,7 +34,7 @@ public class SearchArticlePresenterTest {
     @Mock
     private SearchArticle searchArticle;
 
-    private final static String TEST_VALUE = "test";
+    private static final String TEST_VALUE = "test";
 
     private List<SearchArticle> searchArticleList;
 
@@ -144,7 +144,7 @@ public class SearchArticlePresenterTest {
     }
 
     @Test
-    public void onDataLoadedEmoty() throws Exception {
+    public void onDataLoadedEmpty() throws Exception {
         // Arrange
         Whitebox.setInternalState(searchArticlePresenter, "mListItems", new
                 ArrayList<BaseListItem>());
