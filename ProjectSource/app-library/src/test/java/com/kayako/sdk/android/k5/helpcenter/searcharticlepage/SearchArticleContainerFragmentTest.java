@@ -182,6 +182,9 @@ public class SearchArticleContainerFragmentTest {
         searchArticleContainerFragment.clearSearchResults();
 
         //Assert
+        final SearchArticleFragment searchArticleFragmentLocal =
+                Whitebox.getInternalState(searchArticleContainerFragment, "mSearchArticleResult");
+        assertEquals(searchArticleFragment, searchArticleFragmentLocal);
         verify(searchArticleFragment, times(1)).clearSearchResults();
     }
 
