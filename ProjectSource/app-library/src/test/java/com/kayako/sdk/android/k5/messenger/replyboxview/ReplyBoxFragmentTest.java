@@ -53,6 +53,8 @@ import java.lang.reflect.Method;
 @RunWith(PowerMockRunner.class)
 public class ReplyBoxFragmentTest {
 
+    private static final String FIELD_M_PRESENTER = "mPresenter";
+    private static final String FIELD_M_ROOT = "mRoot";
     private final ReplyBoxFragment replyBoxFragment = new ReplyBoxFragment();
     private Uri uri;
 
@@ -115,7 +117,7 @@ public class ReplyBoxFragmentTest {
         //Act
         replyBoxFragment.onCreate(bundle);
         final ReplyBoxContract.Presenter mPresenter =
-                Whitebox.getInternalState(replyBoxFragment, "mPresenter");
+                Whitebox.getInternalState(replyBoxFragment, FIELD_M_PRESENTER);
 
         //Assert
         assertNotNull(mPresenter);
@@ -126,10 +128,9 @@ public class ReplyBoxFragmentTest {
         //Arrange
         when(layoutInflater.inflate(R.layout.ko__fragment_reply_box, viewGroup, false)).thenReturn(view);
 
-
         //Act
         replyBoxFragment.onCreateView(layoutInflater, viewGroup, bundle);
-        final View mRoot = Whitebox.getInternalState(replyBoxFragment, "mRoot");
+        final View mRoot = Whitebox.getInternalState(replyBoxFragment, FIELD_M_ROOT);
 
         //Assert
         assertEquals(view, mRoot);
@@ -143,8 +144,8 @@ public class ReplyBoxFragmentTest {
         mockStatic(KayakoCreditsHelper.class);
         mockStatic(Uri.class);
         uri = mock(Uri.class);
-        Whitebox.setInternalState(replyBoxFragment, "mRoot", view);
-        Whitebox.setInternalState(replyBoxFragment, "mPresenter", presenter);
+        Whitebox.setInternalState(replyBoxFragment, FIELD_M_ROOT, view);
+        Whitebox.setInternalState(replyBoxFragment, FIELD_M_PRESENTER, presenter);
         when(view.findViewById(R.id.ko__reply_box_send_button)).thenReturn(view);
         when(view.findViewById(R.id.reply_box_edittext)).thenReturn(editText);
         when(keyEvent.getKeyCode()).thenReturn(KeyEvent.KEYCODE_ENTER);
@@ -158,9 +159,9 @@ public class ReplyBoxFragmentTest {
         doAnswer(new Answer() {
             @Override
             public Object answer(InvocationOnMock invocation) throws Throwable {
-                Object arguments[] = invocation.getArguments();
-                View.OnClickListener listener = (View.OnClickListener)arguments[0];
-                listener.onClick(view);
+                Object[] arguments = invocation.getArguments();
+                View.OnClickListener listenerLocal = (View.OnClickListener)arguments[0];
+                listenerLocal.onClick(view);
                 return null;
             }
         }).when(view).setOnClickListener(any(View.OnClickListener.class));
@@ -168,7 +169,7 @@ public class ReplyBoxFragmentTest {
         doAnswer(new Answer() {
             @Override
             public Object answer(InvocationOnMock invocation) throws Throwable {
-                Object arguments[] = invocation.getArguments();
+                Object[] arguments = invocation.getArguments();
                 TextView.OnEditorActionListener actionListener = (TextView.OnEditorActionListener)arguments[0];
                 actionListener.onEditorAction(textView, 1, keyEvent);
                 return null;
@@ -178,7 +179,7 @@ public class ReplyBoxFragmentTest {
         doAnswer(new Answer() {
             @Override
             public Object answer(InvocationOnMock invocation) throws Throwable {
-                Object arguments[] = invocation.getArguments();
+                Object[] arguments = invocation.getArguments();
                 View.OnClickListener onClickListener = (View.OnClickListener)arguments[0];
                 onClickListener.onClick(view);
                 return null;
@@ -188,7 +189,7 @@ public class ReplyBoxFragmentTest {
         doAnswer(new Answer() {
             @Override
             public Object answer(InvocationOnMock invocation) throws Throwable {
-                Object arguments[] = invocation.getArguments();
+                Object[] arguments = invocation.getArguments();
                 View.OnClickListener clickListener = (View.OnClickListener)arguments[0];
                 clickListener.onClick(view);
                 return null;
@@ -211,7 +212,7 @@ public class ReplyBoxFragmentTest {
     @Test
     public void onActivityCreated() {
         //Arrange
-        Whitebox.setInternalState(replyBoxFragment, "mPresenter", presenter);
+        Whitebox.setInternalState(replyBoxFragment, FIELD_M_PRESENTER, presenter);
 
         //Act
         replyBoxFragment.onActivityCreated(bundle);
@@ -321,7 +322,7 @@ public class ReplyBoxFragmentTest {
     @Test
     public void setReplyBoxListener() {
         //Act
-        Whitebox.setInternalState(replyBoxFragment, "mPresenter", presenter);
+        Whitebox.setInternalState(replyBoxFragment, FIELD_M_PRESENTER, presenter);
         replyBoxFragment.setReplyBoxListener(listener);
         verify(presenter).setReplyBoxListener(replyBoxListenerArgumentCaptor.capture());
 
@@ -330,7 +331,7 @@ public class ReplyBoxFragmentTest {
     }
 
     private void invokeSetUpMethod() throws NoSuchMethodException {
-        Whitebox.setInternalState(replyBoxFragment, "mRoot", view);
+        Whitebox.setInternalState(replyBoxFragment, FIELD_M_ROOT, view);
         Method superGetActivity = Fragment.class.getMethod("getActivity");
         Method superIsAdded = Fragment.class.getMethod("isAdded");
         replace(superGetActivity).with(new InvocationHandler() {
