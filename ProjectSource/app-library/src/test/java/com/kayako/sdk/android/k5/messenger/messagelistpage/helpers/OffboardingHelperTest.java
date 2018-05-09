@@ -30,14 +30,16 @@ import java.util.concurrent.atomic.AtomicLong;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.doNothing;
+import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.spy;
+import static org.powermock.api.mockito.PowerMockito.verifyPrivate;
 import static org.powermock.api.mockito.PowerMockito.when;
 import static org.powermock.api.support.membermodification.MemberMatcher.method;
+import static org.powermock.reflect.Whitebox.getInternalState;
 import static org.powermock.reflect.Whitebox.invokeMethod;
 import static org.powermock.reflect.Whitebox.setInternalState;
 
@@ -48,6 +50,14 @@ import static org.powermock.reflect.Whitebox.setInternalState;
 })
 public class OffboardingHelperTest {
     private OffboardingHelper underTest;
+    private static final String feedbackNull = null;
+    private static final String feedbackGood = "good";
+    private static final Rating.SCORE scoreNull = null;
+    private static final Rating.SCORE scoreGood = Rating.SCORE.GOOD;
+    private static final Rating.SCORE scoreBad = Rating.SCORE.BAD;
+    private static final InputFeedback.RATING inputFeedbackRatingNull = InputFeedback.RATING.BAD;
+    private static final InputFeedback.RATING inputFeedbackRatingBad = InputFeedback.RATING.BAD;
+    private static final InputFeedback.RATING inputFeedbackRatingGood = InputFeedback.RATING.GOOD;
     @Rule
     private ExpectedException expectedException = ExpectedException.none();
     @Mock
@@ -71,10 +81,10 @@ public class OffboardingHelperTest {
         // Arrange
         when(rating.getId()).thenReturn(42L);
         when(rating.getScore()).thenReturn(Rating.SCORE.GOOD);
-        when(rating.getComment()).thenReturn("good");
+        when(rating.getComment()).thenReturn(feedbackGood);
 
         doNothing().when(underTest, method(OffboardingHelper.class, "removeFromQueue"))
-                .withArguments(offboardingHelperViewCallback, Rating.SCORE.GOOD, "good");
+                .withArguments(offboardingHelperViewCallback, Rating.SCORE.GOOD, feedbackGood);
         // Act
         underTest.onUpdateRating(rating, offboardingHelperViewCallback);
         // Assert
@@ -84,19 +94,32 @@ public class OffboardingHelperTest {
     }
 
     @Test
-    public void onFailureToUpdateRating() {
+    public void onFailureToUpdateRating() throws Exception {
         // Act
-        underTest.onFailureToUpdateRating(Rating.SCORE.GOOD, "feedback",
+        underTest.onFailureToUpdateRating(Rating.SCORE.GOOD, feedbackGood,
                 offboardingHelperViewCallback);
-        // Assert cannot be done due to private calls
+        // Assert
+        ArgumentCaptor<OffboardingHelper.OffboardingHelperViewCallback> argumentCaptor1 =
+                ArgumentCaptor.forClass(OffboardingHelper.OffboardingHelperViewCallback.class);
+        ArgumentCaptor<OffboardingHelper.OffboardingHelperViewCallback> argumentCaptor2 =
+                ArgumentCaptor.forClass(OffboardingHelper.OffboardingHelperViewCallback.class);
+        verifyPrivate(underTest).invoke("resetRatingSendingState", argumentCaptor1.capture());
+        verifyPrivate(underTest).invoke("runNextInQueueIfReady", argumentCaptor2.capture());
+        assertEquals(offboardingHelperViewCallback, argumentCaptor1.getValue());
+        assertEquals(offboardingHelperViewCallback, argumentCaptor2.getValue());
     }
 
     @Test
     public void givenOnLoadConversationWhenMWasConversationOriginallyCompletedNull() {
+        // Arrange
+        AtomicBoolean mIsConversationCompleted = mock(AtomicBoolean.class);
+        setInternalState(underTest, "mIsConversationCompleted", mIsConversationCompleted);
         // Act
-        boolean isConversationCompleted = true;
-        underTest.onLoadConversation(isConversationCompleted, offboardingHelperViewCallback);
-        // Assert cannot be done due to private calls
+        underTest.onLoadConversation(true, offboardingHelperViewCallback);
+        // Assert
+        ArgumentCaptor<Boolean> argumentCaptor = ArgumentCaptor.forClass(Boolean.class);
+        verify(mIsConversationCompleted).set(argumentCaptor.capture());
+        assertTrue(argumentCaptor.getValue());
     }
 
     @Test
@@ -106,8 +129,7 @@ public class OffboardingHelperTest {
         setInternalState(underTest, "mWasConversationOriginallyCompleted", true);
         setInternalState(underTest, "mIsConversationCompleted", new AtomicBoolean(false));
         // Act
-        boolean isConversationCompleted = true;
-        underTest.onLoadConversation(isConversationCompleted, offboardingHelperViewCallback);
+        underTest.onLoadConversation(true, offboardingHelperViewCallback);
         // Assert
         ArgumentCaptor<Boolean> argumentCaptor = ArgumentCaptor.forClass(Boolean.class);
         verify(offboardingHelperViewCallback).onRefreshListView(argumentCaptor.capture());
@@ -135,8 +157,7 @@ public class OffboardingHelperTest {
     public void
     givenGetOffboardingListItemsWhenCurrentRatingSubmittedViaUINullThenGetOffboardingItemsToSelectRating() {
         // Arrange
-        Rating.SCORE currentRatingSubmittedViaUI = null;
-        setInternalState(underTest, "currentRatingSubmittedViaUI", currentRatingSubmittedViaUI);
+        setInternalState(underTest, "currentRatingSubmittedViaUI", scoreNull);
         when(Kayako.getApplicationContext()).thenReturn(context);
         when(context.getString(R.string.ko__messenger_input_feedback_rating_instruction_message))
                 .thenReturn("message");
@@ -151,9 +172,8 @@ public class OffboardingHelperTest {
     public void
     givenGetOffboardingListItemsWhenCurrentFeedSubmittedViaUINullThenGetOffboardingItemsToSelectRating() {
         // Arrange
-        Rating.SCORE currentRatingSubmittedViaUI = Rating.SCORE.GOOD;
-        setInternalState(underTest, "currentRatingSubmittedViaUI", currentRatingSubmittedViaUI);
-        String currentFeedbackSubmittedViaUI = null;
+        setInternalState(underTest, "currentRatingSubmittedViaUI", scoreGood);
+        final String currentFeedbackSubmittedViaUI = null;
         setInternalState(underTest, "currentFeedbackSubmittedViaUI", currentFeedbackSubmittedViaUI);
         when(Kayako.getApplicationContext()).thenReturn(context);
         when(context.getResources()).thenReturn(resources);
@@ -171,10 +191,8 @@ public class OffboardingHelperTest {
     givenGetOffboardingListItemsWhenFeedbackAndRatingNotNullThenGetOffboardingItemsToSelectRating
             () {
         // Arrange
-        Rating.SCORE currentRatingSubmittedViaUI = Rating.SCORE.GOOD;
-        setInternalState(underTest, "currentRatingSubmittedViaUI", currentRatingSubmittedViaUI);
-        String currentFeedbackSubmittedViaUI = "good";
-        setInternalState(underTest, "currentFeedbackSubmittedViaUI", currentFeedbackSubmittedViaUI);
+        setInternalState(underTest, "currentRatingSubmittedViaUI", scoreGood);
+        setInternalState(underTest, "currentFeedbackSubmittedViaUI", feedbackGood);
         // Act
         List<BaseListItem> result = underTest.getOffboardingListItems("name", true,
                 offboardingHelperViewCallback);
@@ -195,80 +213,69 @@ public class OffboardingHelperTest {
 
     @Test
     public void givenConvertWhenScoreBadThenInputFeedbackRatingBad() throws Exception {
-        // Arrange
-        Rating.SCORE score = Rating.SCORE.BAD;
         // Act
-        InputFeedback.RATING result = invokeMethod(underTest, "convert", score);
+        InputFeedback.RATING result = invokeMethod(underTest, "convert", scoreBad);
         // Assert
         assertEquals(InputFeedback.RATING.BAD, result);
     }
 
     @Test
     public void givenConvertWhenScoreNullThenException() throws Exception {
-        // Arrange
-        Rating.SCORE score = null;
         // Assert
         expectedException.expect(Exception.class);
         // Act
-        invokeMethod(underTest, "convert", score);
+        invokeMethod(underTest, "convert", scoreNull);
     }
 
     @Test
     public void givenConvertFromInputFieldRatingWhenRatingBadThenScoreBad() throws Exception {
-        // Arrange
-        InputFeedback.RATING rating = InputFeedback.RATING.BAD;
         // Act
-        Rating.SCORE result = invokeMethod(underTest, "convertFromInputFieldRating", rating);
+        Rating.SCORE result = invokeMethod(underTest, "convertFromInputFieldRating",
+                inputFeedbackRatingBad);
         // Assert
         assertEquals(Rating.SCORE.BAD, result);
     }
 
     @Test
     public void givenConvertFromInputFieldRatingWhenRatingGoodThenScoreGood() throws Exception {
-        // Arrange
-        InputFeedback.RATING rating = InputFeedback.RATING.GOOD;
         // Act
-        Rating.SCORE result = invokeMethod(underTest, "convertFromInputFieldRating", rating);
+        Rating.SCORE result = invokeMethod(underTest, "convertFromInputFieldRating",
+                inputFeedbackRatingGood);
         // Assert
         assertEquals(Rating.SCORE.GOOD, result);
     }
 
     @Test
     public void givenConvertFromInputFieldRatingWhenRatingNullThenException() throws Exception {
-        // Arrange
-        InputFeedback.RATING rating = null;
         // Assert
         expectedException.expect(Exception.class);
         // Act
-        invokeMethod(underTest, "convert", rating);
+        invokeMethod(underTest, "convert", inputFeedbackRatingNull);
     }
 
     @Test
     public void givenAddOrUpdateRatingWhenIdOfLastRatingZeroThenOnAddRating() throws Exception {
-        // Arrange
-        String feedback = "good";
         // Act
         invokeMethod(underTest, "addOrUpdateRating", offboardingHelperViewCallback, Rating.SCORE
-                .GOOD, feedback);
+                .GOOD, feedbackGood);
         // Assert
         ArgumentCaptor<Rating.SCORE> argumentCaptor1 = ArgumentCaptor.forClass(Rating.SCORE.class);
         ArgumentCaptor<String> argumentCaptor2 = ArgumentCaptor.forClass(String.class);
         verify(offboardingHelperViewCallback).onAddRating(argumentCaptor1.capture(),
                 argumentCaptor2.capture());
         assertEquals(Rating.SCORE.GOOD, argumentCaptor1.getValue());
-        assertEquals(feedback, argumentCaptor2.getValue());
+        assertEquals(feedbackGood, argumentCaptor2.getValue());
     }
 
     @Test
     public void givenAddOrUpdateRatingWhenFeedbackNullThenOnUpdateRating() throws Exception {
         // Arrange
-        String feedback = null;
         AtomicLong mIdOfLastRatingAdded = new AtomicLong();
         mIdOfLastRatingAdded.set(42L);
         setInternalState(underTest, "mIdOfLastRatingAdded", mIdOfLastRatingAdded);
         // Act
         invokeMethod(underTest, "addOrUpdateRating", offboardingHelperViewCallback, Rating.SCORE
-                .GOOD, feedback);
+                .GOOD, feedbackNull);
         // Assert
         ArgumentCaptor<Long> argumentCaptor1 = ArgumentCaptor.forClass(Long.class);
         ArgumentCaptor<Rating.SCORE> argumentCaptor2 = ArgumentCaptor.forClass(Rating.SCORE.class);
@@ -282,13 +289,12 @@ public class OffboardingHelperTest {
     public void givenAddOrUpdateRatingWhenFeedbackNotNullAndLastAddedIdNotZeroThenOnUpdateRating
             () throws Exception {
         // Arrange
-        String feedback = "feedback";
         AtomicLong mIdOfLastRatingAdded = new AtomicLong();
         mIdOfLastRatingAdded.set(42L);
         setInternalState(underTest, "mIdOfLastRatingAdded", mIdOfLastRatingAdded);
         // Act
         invokeMethod(underTest, "addOrUpdateRating", offboardingHelperViewCallback, Rating.SCORE
-                .GOOD, feedback);
+                .GOOD, feedbackGood);
         // Assert
         ArgumentCaptor<Long> argumentCaptor1 = ArgumentCaptor.forClass(Long.class);
         ArgumentCaptor<Rating.SCORE> argumentCaptor2 = ArgumentCaptor.forClass(Rating.SCORE.class);
@@ -297,28 +303,31 @@ public class OffboardingHelperTest {
                 argumentCaptor2.capture(), argumentCaptor3.capture());
         assertEquals(Long.valueOf(42L), argumentCaptor1.getValue());
         assertEquals(Rating.SCORE.GOOD, argumentCaptor2.getValue());
-        assertEquals("feedback", argumentCaptor3.getValue());
+        assertEquals(feedbackGood, argumentCaptor3.getValue());
     }
 
     @Test
-    public void givenAddToQueue() throws Exception {
+    public void givenAddToQueueThenCurrentRatingAndFeedbackReassigned() throws Exception {
         // Arrange
-        String feedback = "good";
+        setInternalState(underTest, "currentRatingSubmittedViaUI", Rating.SCORE.BAD);
+        setInternalState(underTest, "currentFeedbackSubmittedViaUI", "bad");
         // Act
         invokeMethod(underTest, "addToQueue", offboardingHelperViewCallback, Rating.SCORE.GOOD,
-                feedback);
-        // Assert cannot be done due to private calls
+                feedbackGood);
+        // Assert
+        Rating.SCORE scoreAfter = getInternalState(underTest, "currentRatingSubmittedViaUI");
+        String feedbackAfter = getInternalState(underTest, "currentFeedbackSubmittedViaUI");
+        assertEquals(Rating.SCORE.GOOD, scoreAfter);
+        assertEquals(feedbackGood, feedbackAfter);
     }
 
     @Test
     public void givenRemoveFromQueueThenException() throws Exception {
-        // Arrange
-        String feedback = "good";
         // Assert
         expectedException.expect(Exception.class);
         // Act
         invokeMethod(underTest, "removeFromQueue", offboardingHelperViewCallback, Rating.SCORE
-                .GOOD, feedback);
+                .GOOD, feedbackGood);
     }
 
     private void staticMock() {
