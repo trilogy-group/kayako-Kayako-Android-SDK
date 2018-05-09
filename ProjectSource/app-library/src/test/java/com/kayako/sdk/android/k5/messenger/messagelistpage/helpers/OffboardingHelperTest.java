@@ -53,7 +53,7 @@ public class OffboardingHelperTest {
     @Mock
     private Rating rating;
     @Mock
-    Resources resources;
+    private Resources resources;
     @Mock
     private Context context;
     @Mock
@@ -75,7 +75,6 @@ public class OffboardingHelperTest {
 
         doNothing().when(underTest, method(OffboardingHelper.class, "removeFromQueue"))
                 .withArguments(offboardingHelperViewCallback, Rating.SCORE.GOOD, "good");
-
         // Act
         underTest.onUpdateRating(rating, offboardingHelperViewCallback);
         // Assert
@@ -156,7 +155,6 @@ public class OffboardingHelperTest {
         setInternalState(underTest, "currentRatingSubmittedViaUI", currentRatingSubmittedViaUI);
         String currentFeedbackSubmittedViaUI = null;
         setInternalState(underTest, "currentFeedbackSubmittedViaUI", currentFeedbackSubmittedViaUI);
-
         when(Kayako.getApplicationContext()).thenReturn(context);
         when(context.getResources()).thenReturn(resources);
         when(resources.getString(R.string
