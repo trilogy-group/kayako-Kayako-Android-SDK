@@ -89,3 +89,4 @@ public class SearchArticleContainerPresenterTest {
         assertEquals(query, stringArgumentCaptor.getValue());
     }
 }
+
