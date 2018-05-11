@@ -1,13 +1,10 @@
 package com.kayako.sdk.android.k5.helpcenter.sectionbycategorypage;
 
-import android.app.Fragment;
-import android.app.FragmentHostCallback;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-
+import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.activities.KayakoSearchArticleActivity;
 import com.kayako.sdk.android.k5.common.adapter.BaseListItem;
 import com.kayako.sdk.android.k5.common.adapter.list.ListItem;
@@ -15,17 +12,15 @@ import com.kayako.sdk.android.k5.common.adapter.loadmorelist.EndlessRecyclerView
 import com.kayako.sdk.android.k5.common.fragments.ActivityNavigationResourceCallback;
 import com.kayako.sdk.android.k5.common.fragments.BaseListFragment;
 import com.kayako.sdk.android.k5.common.task.BackgroundTask;
-import com.kayako.sdk.android.k5.messenger.style.type.Background;
+import com.kayako.sdk.android.k5.common.viewhelpers.CustomStateViewHelper;
+import com.kayako.sdk.android.k5.common.viewhelpers.DefaultStateViewHelper;
 import com.kayako.sdk.helpcenter.section.Section;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +30,6 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
-import static org.powermock.api.mockito.PowerMockito.whenNew;
 import static org.powermock.api.support.membermodification.MemberMatcher.method;
 import static org.powermock.api.support.membermodification.MemberModifier.suppress;
 
@@ -47,35 +41,46 @@ import static org.powermock.api.support.membermodification.MemberModifier.suppre
         SectionByCategoryListFragment.class
 })
 public class SectionByCategoryListFragmentTest {
-    @Mock
-    Context context;
+    private static final String M_ROOT = "mRoot";
+    private static final String M_CUSTOM_STATE_VIEW_HELPER = "mCustomStateViewHelper";
+    private static final String M_DEFAULT_STATE_VIEW_HELPER = "mDefaultStateViewHelper";
+    private static final String INIT_LIST = "initList";
 
     @Mock
-    Bundle bundle;
+    private Context context;
 
     @Mock
-    SectionByCategoryContract.Presenter presenter;
+    private Bundle bundle;
 
     @Mock
-    View view;
+    private SectionByCategoryContract.Presenter presenter;
 
     @Mock
-    Section section;
+    private View view;
 
     @Mock
-    ActivityNavigationResourceCallback activityNavigationResourceCallback;
+    private Section section;
 
     @Mock
-    Intent intent;
+    private ActivityNavigationResourceCallback activityNavigationResourceCallback;
 
     @Mock
-    BackgroundTask backgroundTask;
+    private Intent intent;
 
     @Mock
-    BaseListItem baseListItem;
+    private BackgroundTask backgroundTask;
 
     @Mock
-    ListItem listItem;
+    private BaseListItem baseListItem;
+
+    @Mock
+    private ListItem listItem;
+
+    @Mock
+    private CustomStateViewHelper customStateViewHelper;
+
+    @Mock
+    private DefaultStateViewHelper defaultStateViewHelper;
 
     @Test
     public void givenClassWhenNewInstanceThenReturnNewInstance(){
@@ -143,7 +148,7 @@ public class SectionByCategoryListFragmentTest {
     }
 
     @Test
-    public void givenClassWhenOpenArticleListingPageThenExecuteTask() throws Exception {
+    public void givenClassWhenOpenArticleListingPageThenExecuteTask() {
         //Arrange
         SectionByCategoryListFragment sectionByCategoryListFragment = new SectionByCategoryListFragment();
         sectionByCategoryListFragment.mActivityNavigation = activityNavigationResourceCallback;
@@ -200,7 +205,8 @@ public class SectionByCategoryListFragmentTest {
         SectionByCategoryListFragment sectionByCategoryListFragment = new SectionByCategoryListFragment();
         List<BaseListItem> listLocal = new ArrayList<>();
         listLocal.add(baseListItem);
-        suppress(method(BaseListFragment.class, "initList", EndlessRecyclerViewScrollAdapter.class));
+        suppress(method(BaseListFragment.class, INIT_LIST,
+                EndlessRecyclerViewScrollAdapter.class));
 
         //Act
         sectionByCategoryListFragment.setUpList(listLocal);
@@ -209,10 +215,24 @@ public class SectionByCategoryListFragmentTest {
         assertNotNull(sectionByCategoryListFragment.listItemRecyclerViewAdapter);
     }
 
-    @Test(expected = java.lang.NullPointerException.class)
-    public void givenClassWhenShowOnlyListViewThenShowViews(){
+    @Test
+    public void givenClassWhenShowOnlyListViewThenShowViews() throws Exception {
         //Arrange
-        SectionByCategoryListFragment sectionByCategoryListFragment = new SectionByCategoryListFragment();
+        SectionByCategoryListFragment sectionByCategoryListFragment =
+                new SectionByCategoryListFragment();
+        Field f = sectionByCategoryListFragment.getClass().getSuperclass()
+                .getDeclaredField(M_ROOT);
+        f.setAccessible(true);
+        f.set(sectionByCategoryListFragment, view);
+        when(view.findViewById(R.id.ko__list)).thenReturn(view);
+        f = sectionByCategoryListFragment.getClass().getSuperclass()
+                .getDeclaredField(M_CUSTOM_STATE_VIEW_HELPER);
+        f.setAccessible(true);
+        f.set(sectionByCategoryListFragment, customStateViewHelper);
+        f = sectionByCategoryListFragment.getClass().getSuperclass()
+                .getDeclaredField(M_DEFAULT_STATE_VIEW_HELPER);
+        f.setAccessible(true);
+        f.set(sectionByCategoryListFragment, defaultStateViewHelper);
 
         //Act
         sectionByCategoryListFragment.showOnlyListView();
@@ -221,10 +241,24 @@ public class SectionByCategoryListFragmentTest {
         assertNull(sectionByCategoryListFragment.mActivityNavigation);
     }
 
-    @Test(expected = java.lang.NullPointerException.class)
-    public void givenClassWhenShowOnlyEmptyViewThenShowViews(){
+    @Test
+    public void givenClassWhenShowOnlyEmptyViewThenShowViews() throws Exception{
         //Arrange
-        SectionByCategoryListFragment sectionByCategoryListFragment = new SectionByCategoryListFragment();
+        SectionByCategoryListFragment sectionByCategoryListFragment =
+                new SectionByCategoryListFragment();
+        Field f = sectionByCategoryListFragment.getClass().getSuperclass()
+                .getDeclaredField(M_ROOT);
+        f.setAccessible(true);
+        f.set(sectionByCategoryListFragment, view);
+        when(view.findViewById(R.id.ko__list)).thenReturn(view);
+        f = sectionByCategoryListFragment.getClass().getSuperclass()
+                .getDeclaredField(M_CUSTOM_STATE_VIEW_HELPER);
+        f.setAccessible(true);
+        f.set(sectionByCategoryListFragment, customStateViewHelper);
+        f = sectionByCategoryListFragment.getClass().getSuperclass()
+                .getDeclaredField(M_DEFAULT_STATE_VIEW_HELPER);
+        f.setAccessible(true);
+        f.set(sectionByCategoryListFragment, defaultStateViewHelper);
 
         //Act
         sectionByCategoryListFragment.showOnlyEmptyView();
@@ -233,10 +267,24 @@ public class SectionByCategoryListFragmentTest {
         assertNull(sectionByCategoryListFragment.mActivityNavigation);
     }
 
-    @Test(expected = java.lang.NullPointerException.class)
-    public void givenClassWhenShowOnlyErrorViewThenShowViews(){
+    @Test
+    public void givenClassWhenShowOnlyErrorViewThenShowViews() throws Exception{
         //Arrange
-        SectionByCategoryListFragment sectionByCategoryListFragment = new SectionByCategoryListFragment();
+        SectionByCategoryListFragment sectionByCategoryListFragment =
+                new SectionByCategoryListFragment();
+        Field f = sectionByCategoryListFragment.getClass().getSuperclass()
+                .getDeclaredField(M_ROOT);
+        f.setAccessible(true);
+        f.set(sectionByCategoryListFragment, view);
+        when(view.findViewById(R.id.ko__list)).thenReturn(view);
+        f = sectionByCategoryListFragment.getClass().getSuperclass()
+                .getDeclaredField(M_CUSTOM_STATE_VIEW_HELPER);
+        f.setAccessible(true);
+        f.set(sectionByCategoryListFragment, customStateViewHelper);
+        f = sectionByCategoryListFragment.getClass().getSuperclass()
+                .getDeclaredField(M_DEFAULT_STATE_VIEW_HELPER);
+        f.setAccessible(true);
+        f.set(sectionByCategoryListFragment, defaultStateViewHelper);
 
         //Act
         sectionByCategoryListFragment.showOnlyErrorView();
@@ -245,10 +293,24 @@ public class SectionByCategoryListFragmentTest {
         assertNull(sectionByCategoryListFragment.mActivityNavigation);
     }
 
-    @Test(expected = java.lang.NullPointerException.class)
-    public void givenClassWhenShowOnlyLoadingViewThenShowViews(){
+    @Test
+    public void givenClassWhenShowOnlyLoadingViewThenShowViews() throws Exception{
         //Arrange
-        SectionByCategoryListFragment sectionByCategoryListFragment = new SectionByCategoryListFragment();
+        SectionByCategoryListFragment sectionByCategoryListFragment =
+                new SectionByCategoryListFragment();
+        Field f = sectionByCategoryListFragment.getClass().getSuperclass()
+                .getDeclaredField(M_ROOT);
+        f.setAccessible(true);
+        f.set(sectionByCategoryListFragment, view);
+        when(view.findViewById(R.id.ko__list)).thenReturn(view);
+        f = sectionByCategoryListFragment.getClass().getSuperclass()
+                .getDeclaredField(M_CUSTOM_STATE_VIEW_HELPER);
+        f.setAccessible(true);
+        f.set(sectionByCategoryListFragment, customStateViewHelper);
+        f = sectionByCategoryListFragment.getClass().getSuperclass()
+                .getDeclaredField(M_DEFAULT_STATE_VIEW_HELPER);
+        f.setAccessible(true);
+        f.set(sectionByCategoryListFragment, defaultStateViewHelper);
 
         //Act
         sectionByCategoryListFragment.showOnlyLoadingView();
@@ -260,7 +322,8 @@ public class SectionByCategoryListFragmentTest {
     @Test
     public void givenLisItemWhenOnClickListItemThenPresenterOnClick(){
         //Arrange
-        SectionByCategoryListFragment sectionByCategoryListFragment = new SectionByCategoryListFragment();
+        SectionByCategoryListFragment sectionByCategoryListFragment =
+                new SectionByCategoryListFragment();
         sectionByCategoryListFragment.mPresenter = presenter;
 
         //Act
@@ -273,7 +336,8 @@ public class SectionByCategoryListFragmentTest {
     @Test
     public void givenClassWhenOnClickSearchThenOnClickSearch(){
         //Arrange
-        SectionByCategoryListFragment sectionByCategoryListFragment = new SectionByCategoryListFragment();
+        SectionByCategoryListFragment sectionByCategoryListFragment =
+                new SectionByCategoryListFragment();
         sectionByCategoryListFragment.mPresenter = presenter;
 
         //Act
