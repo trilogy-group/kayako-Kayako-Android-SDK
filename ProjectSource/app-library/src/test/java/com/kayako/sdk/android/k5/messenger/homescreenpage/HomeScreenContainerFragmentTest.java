@@ -172,9 +172,9 @@ public class HomeScreenContainerFragmentTest {
 
         //Act
         homeScreenContainerFragment.onViewCreated(view, bundle);
-        verify(presenter).onScrollList(booleanArgumentCaptor.capture());
 
         //Assert
+        verify(presenter).onScrollList(booleanArgumentCaptor.capture());
         errorCollector.checkThat(booleanArgumentCaptor.getValue(), is(true));
     }
 

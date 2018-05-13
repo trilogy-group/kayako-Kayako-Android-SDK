@@ -1,6 +1,6 @@
 package com.kayako.sdk.android.k5.messenger.homescreenpage;
 
-import junit.framework.Assert;
+import static junit.framework.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,7 +31,7 @@ public class HomeScreenContainerPresenterTest {
                 Whitebox.getInternalState(homeScreenContainerPresenter, "mView");
 
         //Assert
-        Assert.assertEquals(view, viewLocal);
+        assertEquals(view, viewLocal);
         verify(view).showNewConversationButton();
         verify(view).openNewConversationPage();
     }
@@ -45,13 +45,14 @@ public class HomeScreenContainerPresenterTest {
         verify(view).hideNewConversationButton();
     }
 
-
     @Test
     public void onScrollListWhenNotScrolling() {
         //Act
         homeScreenContainerPresenter.onScrollList(false);
+        final HomeScreenContainerContract.View newView = Whitebox.getInternalState(homeScreenContainerPresenter, "mView");
 
         //Assert
+        assertEquals(view, newView);
         verify(view).showNewConversationButton();
     }
 }

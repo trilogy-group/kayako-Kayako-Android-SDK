@@ -36,14 +36,7 @@ public class KreCaseChangeHelperTest {
     public void addRawCaseChangeListener() {
         //Arrange
         final String event = "testEvent";
-        final String jsonBody = "{\n" +
-                "\t\"resource_url\": \"https://kayako-mobile-testing.kayako.com/api/v1/cases/posts/2191\",\n" +
-                "\t\"resource_type\": \"post\",\n" +
-                "\t\"resource_id\": 2191,\n" +
-                "\t\"customer_resource_url\": \"https://kayako-mobile-testing.kayako.com/api/v1/conversations/258/message/2191\",\n" +
-                "\t\"changed_properties\": [],\n" +
-                "\t\"agent_resource_url\": \"https://kayako-mobile-testing.kayako.com/api/v1/cases/posts/2191\"\n" +
-                "}";
+        final String jsonBody = "jsonMockString";
         doAnswer(new Answer() {
             @Override
             public Object answer(InvocationOnMock invocation) throws Throwable {
