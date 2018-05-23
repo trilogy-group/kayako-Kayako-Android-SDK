@@ -31,6 +31,8 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.spy;
@@ -81,7 +83,7 @@ public class BaseMessengerActivityTest {
     private Bundle savedInstanceState;
 
     @Rule
-    public ExpectedException thrown = ExpectedException.none();
+    public final ExpectedException thrown = ExpectedException.none();
 
     @Captor
     private ArgumentCaptor<View.OnDragListener> dragListnerCaptor;
@@ -107,6 +109,7 @@ public class BaseMessengerActivityTest {
         Window winMock = mock(Window.class);
         doReturn(winMock).when((Activity)baseMessengerActivityMock).getWindow();
         Transition transition = mock(Transition.class);
+        transition.setDuration(200);
         doNothing().when(winMock).setSharedElementEnterTransition(eq(transition));
         when(Class.forName(eq(RealtimeCurrentUserTrackerHelper.class.getName()))).thenThrow(ClassNotFoundException.class);
         when(Class.forName(eq(RealtimeConversationHelper.class.getName()))).thenThrow(ClassNotFoundException.class);
@@ -116,6 +119,7 @@ public class BaseMessengerActivityTest {
         baseMessengerActivityMock.onCreate(savedInstanceState);
         //Assert
         verify(managerMock, times(1)).findFragmentByTag(FRAGMENT_TAG);
+        assertNotNull(transition.getDuration());
     }
 
     @Test
@@ -131,6 +135,7 @@ public class BaseMessengerActivityTest {
         thrown.expectMessage(EXCEPTION_MSG);
         //Act
         baseMessengerActivityMock.onCreate(savedInstanceState);
+        assertNull(baseMessengerActivityMock.getContainerFragment());
     }
 
     @Test
@@ -154,6 +159,7 @@ public class BaseMessengerActivityTest {
         //Assert
         verify(managerMock, times(1)).findFragmentByTag(FRAGMENT_TAG);
         verify(fragmentTransactionForReplaceMock, times(1)).commitAllowingStateLoss();
+        assertNotNull(fragmentTransactionForReplaceMock.commitAllowingStateLoss());
     }
 
     @Test
@@ -200,6 +206,7 @@ public class BaseMessengerActivityTest {
         baseMessengerActivityMock.onPause();
         //Assert
         verify(fragmentTransactionForRemoveMock, times(1)).commit();
+        assertNotNull(fragmentTransactionForRemoveMock.commit());
     }
 
     @Test
@@ -235,10 +242,11 @@ public class BaseMessengerActivityTest {
         doReturn(null).when(activityMock).findViewById(eq(R.id.ko__messenger_toolbar_back_button));
         mockStatic(ActivityOptionsCompat.class);
         //Act
-        ActivityOptionsCompat returnedOb = baseMessengerActivityMock.getAnimation(activityMock);
+        baseMessengerActivityMock.getAnimation(activityMock);
         //Assert
         verifyStatic(ActivityOptionsCompat.class);
         ActivityOptionsCompat.makeSceneTransitionAnimation(eq(activityMock));
+        assertNotNull(backgroundView);
     }
 
     @Test
@@ -253,10 +261,12 @@ public class BaseMessengerActivityTest {
         Pair<View, String> pairBackground = new Pair<>(backgroundView, "ko__messenger_background");
         Pair<View, String> pairBackButton = new Pair<>(backButton, "ko__messenger_toolbar_back_button");
         //Act
-        ActivityOptionsCompat returnedOb = baseMessengerActivityMock.getAnimation(activityMock);
+        baseMessengerActivityMock.getAnimation(activityMock);
         //Assert
         verifyStatic(ActivityOptionsCompat.class);
         ActivityOptionsCompat.makeSceneTransitionAnimation(eq(activityMock), eq(pairBackground), eq(pairBackButton));
+        assertNotNull(backgroundView);
+        assertNotNull(backButton);
     }
 
     @Test
