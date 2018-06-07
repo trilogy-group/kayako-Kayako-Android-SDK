@@ -71,6 +71,7 @@ pipeline {
     }
     post {
         always {
+            // PUSH TO BUILD
             script {
                 sh("echo 'CURRENT BUILD RESULT: ${currentBuild.currentResult}'")
                 sh("echo 'CURRENT GITHUB URL: ${env.GIT_URL}'")
@@ -81,7 +82,10 @@ pipeline {
                     def githubCommit = new com.aurea.setGitHubCommitStatus()
                     githubCommit.setGitHubCommitStatus("Build ${env.BUILD_NUMBER}", "${currentBuild.currentResult}", "${env.GIT_URL}", "${commitToSetStatusOn}", "${env.GITHUB_CONTEXT}")
                 }
+
             }
+
+            // mailer
             script {
 
                 def comitterEmail = sh (
