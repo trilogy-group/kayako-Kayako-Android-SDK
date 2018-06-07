@@ -24,16 +24,7 @@ pipeline {
         stage('Build') {
             steps {
                 dir('ProjectSource') {
-                    // devfactory (
-                    //     portfolio: 'TestPFAurea',
-                    //     product: 'Kayako',
-                    //     productVersion: "${env.ALINE_PRODUCT_VERSION}",
-                    //     types: 'Java',
-                    //     scmRelativeDir: '../',
-                    //     processTests: false
-                    // ) {
-                        sh "${env.GRADLE_HOME}/bin/gradle clean test --rerun-tasks --stacktrace"
-                    // }
+                    sh "${env.GRADLE_HOME}/bin/gradle clean test --rerun-tasks --stacktrace"
                 }
                 dir('ProjectSource') {
                     script {
