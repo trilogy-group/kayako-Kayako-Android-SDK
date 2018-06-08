@@ -8,13 +8,21 @@ pipeline {
         timestamps()
     }
     stages {
-        stage('Make Report') {
+        stage('Checkout') {
             steps {
-                sh 'rm -rf ./scancode && mkdir ./scancode'
-                sh "/scancode/scancode-toolkit-2.2.1/scancode --format html --diag --verbose -n 4 --timeout ${env.SCANCODE_TIMEOUT}  --ignore '*.zip' --ignore '*.log' --ignore '*.jar' --ignore '*.war' --ignore '*.class' --ignore '*.pdf' --ignore '*.jpg' --ignore '*.png' --ignore '*.tmp' --ignore '*.gif' . ./scancode/oss-report.html"
+                script {
+                    deleteDir()
+                }
+                git branch: "${env.GIT_BRANCH_PRODUCT}", url: 'git@github.com:trilogy-group/ignite-firstrain-api.git', credentialsId: "${env.GITHUB_CREDENTIALS_ID}"
             }
         }
-        stage("Publish Report") {
+        stage('OSS Report') {
+            steps {
+                sh 'rm -rf ./scancode && mkdir ./scancode'
+                sh "scancode --format html --diag --verbose -n 4 --timeout ${env.SCANCODE_TIMEOUT}  --ignore '*.zip' --ignore '*.log' --ignore '*.jar' --ignore '*.war' --ignore '*.class' --ignore '*.pdf' --ignore '*.jpg' --ignore '*.png' --ignore '*.tmp' --ignore '*.gif' . ./scancode/oss-report.html"
+            }
+        }
+        stage("Publish OSS Report") {
             steps {
                 publishHTML (target: [
                     allowMissing: false,
