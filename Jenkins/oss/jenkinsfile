@@ -8,21 +8,25 @@ pipeline {
         timestamps()
     }
     stages {
-        stage('Checkout') {
+        stage('Provisioning') {
             steps {
-                script {
-                    deleteDir()
-                }
-                git branch: "${env.GIT_BRANCH_PRODUCT}", url: 'git@github.com:trilogy-group/ignite-firstrain-api.git', credentialsId: "${env.GITHUB_CREDENTIALS_ID}"
+                sh "apt-get install --assume-yes build-essential"
+                sh "apt-get install --assume-yes python-dev"
+                sh "pip install --upgrade pip"
+                sh "pip install scancode-toolkit==2.2.1"
             }
         }
-        stage('OSS Report') {
+        stage('Clean') {
             steps {
                 sh 'rm -rf ./scancode && mkdir ./scancode'
+            }
+        }
+        stage('Make') {
+            steps {
                 sh "scancode --format html --diag --verbose -n 4 --timeout ${env.SCANCODE_TIMEOUT}  --ignore '*.zip' --ignore '*.log' --ignore '*.jar' --ignore '*.war' --ignore '*.class' --ignore '*.pdf' --ignore '*.jpg' --ignore '*.png' --ignore '*.tmp' --ignore '*.gif' . ./scancode/oss-report.html"
             }
         }
-        stage("Publish OSS Report") {
+        stage('Publish') {
             steps {
                 publishHTML (target: [
                     allowMissing: false,
