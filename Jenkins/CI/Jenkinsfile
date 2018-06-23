@@ -62,6 +62,7 @@ pipeline {
     }
     post {
         always {
+            // push build
             // set gitHub status
             script {
                 sh("echo 'CURRENT BUILD RESULT: ${currentBuild.currentResult}'")
