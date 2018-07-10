@@ -30,6 +30,7 @@ public class AttachmentHelper {
                     thumbnailImageView.setVisibility(View.VISIBLE);
 
                     configureAttachmentImage(thumbnailImageView, imageUrl);
+
                 } else {
                     attachmentPlaceholder.setVisibility(View.VISIBLE);
                     thumbnailImageView.setVisibility(View.GONE);
@@ -56,15 +57,12 @@ public class AttachmentHelper {
                     if (type2 != null && type2 == AttachmentFileType.IMAGE) {
                         attachmentPlaceholder.setVisibility(View.GONE);
                         thumbnailImageView.setVisibility(View.VISIBLE);
-
-                        ImageUtils.loadFileAsAttachmentImage(attachmentPlaceholder.getContext(), thumbnailImageView, attachmentFile, true, true);
+                       // ImageUtils.loadFileAsAttachmentImage(attachmentPlaceholder.getContext(), thumbnailImageView, attachmentFile, true, true);
                     } else {
                         attachmentPlaceholder.setVisibility(View.VISIBLE);
                         thumbnailImageView.setVisibility(View.GONE);
-
                         configureAttachmentPlaceholder(attachmentPlaceholder, type2, attachmentFile.getName());
                     }
-
                 } finally {
                     // Ensure caption is always shown
                     String attachmentFileCaption = ((com.kayako.sdk.android.k5.common.adapter.messengerlist.AttachmentFileType) attachment).getCaption();
@@ -134,7 +132,7 @@ public class AttachmentHelper {
     }
 
     private static void configureAttachmentImage(ImageView imageView, String imageUrl) {
-        ImageUtils.loadUrlAsAttachmentImage(Kayako.getApplicationContext(), imageView, imageUrl, true, true, null, null);
+      //  ImageUtils.loadUrlAsAttachmentImage(Kayako.getApplicationContext(), imageView, imageUrl, true, true, null, null);
     }
 
     public enum AttachmentFileType {

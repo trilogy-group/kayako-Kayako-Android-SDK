@@ -6,14 +6,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
-import com.bumptech.glide.DrawableTypeRequest;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
+
+import com.bumptech.glide.request.RequestOptions;
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.ChannelDecoration;
 import com.kayako.sdk.android.k5.common.view.CircleImageView;
@@ -37,19 +36,20 @@ public class ImageUtils {
      */
     public static void setAvatarImage(Context context, ImageView avatarView, String avatarUrl) {
         if (avatarUrl != null) {
+
+
             Glide.with(context)
                     .load(avatarUrl)
-                    .dontAnimate()
-                    .placeholder(R.drawable.ko__placeholder_avatar)
-                    .bitmapTransform(new CropCircleTransformation(context))
-                    .centerCrop()
-                    .skipMemoryCache(false) // false because avatars are repeatedly used in message listing, case listing, etc - when true, it shows placeholders
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .apply(RequestOptions.placeholderOf(R.drawable.ko__placeholder_avatar))
+                    .apply(RequestOptions.bitmapTransform(new CropCircleTransformation(context)))
+                    .apply(RequestOptions.centerCropTransform())
+                    .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL))
                     .into(avatarView);
+
         } else {
             Glide.with(context)
                     .load(R.color.ko__avatar_image_background)
-                    .bitmapTransform(new CropCircleTransformation(context))
+                 //   .bitmapTransform(new CropCircleTransformation(context))
                     .into(avatarView);
         }
     }
@@ -64,6 +64,22 @@ public class ImageUtils {
      */
     public static void setImage(Context context, ImageView imageView, String imageUrl, int placeholderDrawable) {
         if (imageUrl != null) {
+
+            RequestOptions options = new RequestOptions();
+            options.centerCrop();
+            options.dontAnimate();
+            options.placeholder(R.drawable.ko__placeholder_avatar);
+            options.bitmapTransform(new CropCircleTransformation(context));
+            options.centerCrop();
+            options.skipMemoryCache(false); // false because avatars are repeatedly used in message listing, case listing, etc - when true, it shows placeholders
+            options.diskCacheStrategy(DiskCacheStrategy.DATA);
+
+            Glide.with(context)
+                    .load(imageUrl)
+                    .apply(options)
+                    .into(imageView);
+
+            /*
             Glide.with(context)
                     .load(imageUrl)
                     .dontAnimate()
@@ -71,7 +87,7 @@ public class ImageUtils {
                     .centerCrop()
                     .skipMemoryCache(true)
                     .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                    .into(imageView);
+                    .into(imageView);*/
         } else {
             Glide.with(context)
                     .load(placeholderDrawable)
@@ -88,6 +104,21 @@ public class ImageUtils {
      */
     public static void setAvatarImage(Context context, CircleImageView avatarView, String avatarUrl) {
         if (avatarUrl != null) {
+
+            RequestOptions options = new RequestOptions();
+            options.centerCrop();
+            options.dontAnimate();
+            options.placeholder(R.drawable.ko__placeholder_avatar);
+            options.bitmapTransform(new CropCircleTransformation(context));
+            options.centerCrop();
+            options.skipMemoryCache(false); // false because avatars are repeatedly used in message listing, case listing, etc - when true, it shows placeholders
+            options.diskCacheStrategy(DiskCacheStrategy.DATA);
+
+            Glide.with(context)
+                    .load(avatarUrl)
+                    .apply(options)
+                    .into(avatarView);
+            /*
             Glide.with(context)
                     .load(avatarUrl)
                     .dontAnimate()
@@ -95,7 +126,7 @@ public class ImageUtils {
                     .centerCrop()
                     .skipMemoryCache(false) // false because avatars are repeatedly used in message listing, case listing, etc - when true, it shows placeholders
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .into(avatarView);
+                    .into(avatarView);*/
         } else {
             Glide.with(context)
                     .load(R.drawable.ko__placeholder_avatar)
@@ -111,12 +142,27 @@ public class ImageUtils {
      * @param avatarResId
      */
     public static void setAvatarImage(Context context, ImageView avatarView, int avatarResId) {
+
+        RequestOptions options = new RequestOptions();
+        options.centerCrop();
+        options.dontAnimate();
+        options.placeholder(R.drawable.ko__placeholder_avatar);
+        options.bitmapTransform(new CropCircleTransformation(context));
+        options.centerCrop();
+        options.skipMemoryCache(false); // false because avatars are repeatedly used in message listing, case listing, etc - when true, it shows placeholders
+        options.diskCacheStrategy(DiskCacheStrategy.DATA);
+
+        Glide.with(context)
+                .load(avatarResId)
+                .apply(options)
+                .into(avatarView);
+        /*
         Glide.with(context)
                 .load(avatarResId)
                 .centerCrop()
                 .skipMemoryCache(false) // false because avatars are repeatedly used in message listing, case listing, etc - when true, it shows placeholders
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .into(avatarView);
+                .into(avatarView);*/
     }
 
     /**
@@ -134,12 +180,15 @@ public class ImageUtils {
         }
     }
 
+
     /**
      * Set image from file resource
      *
      * @param imageView
      * @param file
      */
+
+    /*
     public static void loadFileAsAttachmentImage(@NonNull Context context, @NonNull ImageView imageView, @NonNull File file, boolean showPlaceholder, boolean configureSize) {
 
         DrawableTypeRequest<File> request = Glide.with(context).load(file);
@@ -154,8 +203,7 @@ public class ImageUtils {
                     .fitCenter();
         }
 
-        request
-                .dontAnimate()
+        request .dontAnimate()
                 .skipMemoryCache(false)
                 .diskCacheStrategy(DiskCacheStrategy.RESULT) // RESULT messes up when image resizes to fit into imageview with wrap_content
                 .into(imageView);
@@ -187,8 +235,7 @@ public class ImageUtils {
                     .fitCenter();
         }
 
-        request
-                .listener(new RequestListener<GlideUrl, GlideDrawable>() {
+        request.listener(new RequestListener<GlideUrl, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, GlideUrl model, Target<GlideDrawable> target, boolean isFirstResource) {
                         if (listener != null) {
@@ -207,10 +254,11 @@ public class ImageUtils {
                 })
                 .dontAnimate()
                 .skipMemoryCache(false)
-                .diskCacheStrategy(DiskCacheStrategy.RESULT) //  RESULT messes up when image resizes to fit into imageview with wrap_content
+                .diskCacheStrategy(DiskCacheStrategy.DATA) //  RESULT messes up when image resizes to fit into imageview with wrap_content
                 .into(imageView);
     }
 
+*/
 
     private static AsyncTask clearDiskCacheTask;
 
