@@ -1,18 +1,23 @@
 package com.kayako.sdk.android.k5.common.utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
-
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
-
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.kayako.sdk.android.k5.R;
 import com.kayako.sdk.android.k5.common.adapter.messengerlist.ChannelDecoration;
 import com.kayako.sdk.android.k5.common.view.CircleImageView;
@@ -24,6 +29,8 @@ import java.io.File;
 
 public class ImageUtils {
 
+    private static RequestBuilder<Bitmap> theBitmap = null;
+    RequestListener listener;
     private static final int height = 600;
     private static final int width = 300;
 
@@ -37,7 +44,6 @@ public class ImageUtils {
     public static void setAvatarImage(Context context, ImageView avatarView, String avatarUrl) {
         if (avatarUrl != null) {
 
-
             Glide.with(context)
                     .load(avatarUrl)
                     .apply(RequestOptions.placeholderOf(R.drawable.ko__placeholder_avatar))
@@ -49,7 +55,7 @@ public class ImageUtils {
         } else {
             Glide.with(context)
                     .load(R.color.ko__avatar_image_background)
-                 //   .bitmapTransform(new CropCircleTransformation(context))
+                    .apply(RequestOptions.bitmapTransform(new CropCircleTransformation(context)))
                     .into(avatarView);
         }
     }
@@ -65,29 +71,14 @@ public class ImageUtils {
     public static void setImage(Context context, ImageView imageView, String imageUrl, int placeholderDrawable) {
         if (imageUrl != null) {
 
-            RequestOptions options = new RequestOptions();
-            options.centerCrop();
-            options.dontAnimate();
-            options.placeholder(R.drawable.ko__placeholder_avatar);
-            options.bitmapTransform(new CropCircleTransformation(context));
-            options.centerCrop();
-            options.skipMemoryCache(false); // false because avatars are repeatedly used in message listing, case listing, etc - when true, it shows placeholders
-            options.diskCacheStrategy(DiskCacheStrategy.DATA);
-
             Glide.with(context)
                     .load(imageUrl)
-                    .apply(options)
+                    .apply(RequestOptions.placeholderOf(R.drawable.ko__placeholder_avatar))
+                    .apply(RequestOptions.bitmapTransform(new CropCircleTransformation(context)))
+                    .apply(RequestOptions.centerCropTransform())
+                    .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL))
                     .into(imageView);
 
-            /*
-            Glide.with(context)
-                    .load(imageUrl)
-                    .dontAnimate()
-                    .placeholder(placeholderDrawable)
-                    .centerCrop()
-                    .skipMemoryCache(true)
-                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                    .into(imageView);*/
         } else {
             Glide.with(context)
                     .load(placeholderDrawable)
@@ -105,28 +96,14 @@ public class ImageUtils {
     public static void setAvatarImage(Context context, CircleImageView avatarView, String avatarUrl) {
         if (avatarUrl != null) {
 
-            RequestOptions options = new RequestOptions();
-            options.centerCrop();
-            options.dontAnimate();
-            options.placeholder(R.drawable.ko__placeholder_avatar);
-            options.bitmapTransform(new CropCircleTransformation(context));
-            options.centerCrop();
-            options.skipMemoryCache(false); // false because avatars are repeatedly used in message listing, case listing, etc - when true, it shows placeholders
-            options.diskCacheStrategy(DiskCacheStrategy.DATA);
-
             Glide.with(context)
                     .load(avatarUrl)
-                    .apply(options)
+                    .apply(RequestOptions.placeholderOf(R.drawable.ko__placeholder_avatar))
+                    .apply(RequestOptions.bitmapTransform(new CropCircleTransformation(context)))
+                    .apply(RequestOptions.centerCropTransform())
+                    .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL))
                     .into(avatarView);
-            /*
-            Glide.with(context)
-                    .load(avatarUrl)
-                    .dontAnimate()
-                    .placeholder(R.drawable.ko__placeholder_avatar)
-                    .centerCrop()
-                    .skipMemoryCache(false) // false because avatars are repeatedly used in message listing, case listing, etc - when true, it shows placeholders
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .into(avatarView);*/
+
         } else {
             Glide.with(context)
                     .load(R.drawable.ko__placeholder_avatar)
@@ -143,26 +120,14 @@ public class ImageUtils {
      */
     public static void setAvatarImage(Context context, ImageView avatarView, int avatarResId) {
 
-        RequestOptions options = new RequestOptions();
-        options.centerCrop();
-        options.dontAnimate();
-        options.placeholder(R.drawable.ko__placeholder_avatar);
-        options.bitmapTransform(new CropCircleTransformation(context));
-        options.centerCrop();
-        options.skipMemoryCache(false); // false because avatars are repeatedly used in message listing, case listing, etc - when true, it shows placeholders
-        options.diskCacheStrategy(DiskCacheStrategy.DATA);
-
         Glide.with(context)
                 .load(avatarResId)
-                .apply(options)
+                .apply(RequestOptions.placeholderOf(R.drawable.ko__placeholder_avatar))
+                .apply(RequestOptions.bitmapTransform(new CropCircleTransformation(context)))
+                .apply(RequestOptions.centerCropTransform())
+                .apply(RequestOptions.skipMemoryCacheOf(false))
+                .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL))
                 .into(avatarView);
-        /*
-        Glide.with(context)
-                .load(avatarResId)
-                .centerCrop()
-                .skipMemoryCache(false) // false because avatars are repeatedly used in message listing, case listing, etc - when true, it shows placeholders
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .into(avatarView);*/
     }
 
     /**
@@ -188,24 +153,25 @@ public class ImageUtils {
      * @param file
      */
 
-    /*
+
     public static void loadFileAsAttachmentImage(@NonNull Context context, @NonNull ImageView imageView, @NonNull File file, boolean showPlaceholder, boolean configureSize) {
 
-        DrawableTypeRequest<File> request = Glide.with(context).load(file);
+        RequestBuilder<Drawable> requestBuilder = Glide.with(context)
+                .load(file);
 
         if (showPlaceholder) {
-            request.placeholder(R.drawable.ko__loading_attachment);
+            requestBuilder.apply(RequestOptions.placeholderOf(R.drawable.ko__loading_attachment));
         }
-
         if (configureSize) {
-            request
-                    .override(width, height)
-                    .fitCenter();
+            requestBuilder.apply(RequestOptions.overrideOf(width,height).fitCenter());
         }
-
-        request .dontAnimate()
-                .skipMemoryCache(false)
-                .diskCacheStrategy(DiskCacheStrategy.RESULT) // RESULT messes up when image resizes to fit into imageview with wrap_content
+        requestBuilder
+                .load(file)
+                .apply(RequestOptions.placeholderOf(R.drawable.ko__placeholder_avatar))
+                .apply(RequestOptions.bitmapTransform(new CropCircleTransformation(context)))
+                .apply(RequestOptions.centerCropTransform())
+                .apply(RequestOptions.skipMemoryCacheOf(false))
+                .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL))
                 .into(imageView);
     }
 
@@ -223,42 +189,40 @@ public class ImageUtils {
             glideUrl = new GlideUrl(imageUrl, lazyHeaderBuilder.build());
         }
 
-        DrawableTypeRequest<GlideUrl> request = Glide.with(context).load(glideUrl);
+
+
+
+        RequestBuilder<Drawable> requestBuilder = Glide.with(context)
+                .load(glideUrl);
 
         if (showPlaceholder) {
-            request.placeholder(R.drawable.ko__loading_attachment);
+            requestBuilder.apply(RequestOptions.placeholderOf(R.drawable.ko__placeholder_avatar));
         }
-
         if (configureSize) {
-            request
-                    .override(width, height)
-                    .fitCenter();
+            requestBuilder.apply(RequestOptions.overrideOf(width,height).fitCenter());
         }
 
-        request.listener(new RequestListener<GlideUrl, GlideDrawable>() {
-                    @Override
-                    public boolean onException(Exception e, GlideUrl model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        if (listener != null) {
-                            listener.onImageFailedToLoad();
-                        }
-                        return false;
-                    }
+        requestBuilder.listener(new RequestListener<Drawable>() {
+            @Override
+            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                if (listener != null) {
+                    listener.onImageFailedToLoad();
+                }
+                return false;
+            }
 
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource, GlideUrl model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        if (listener != null) {
-                            listener.onImageLoaded();
-                        }
-                        return false;
-                    }
-                })
-                .dontAnimate()
-                .skipMemoryCache(false)
-                .diskCacheStrategy(DiskCacheStrategy.DATA) //  RESULT messes up when image resizes to fit into imageview with wrap_content
+            @Override
+            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                if (listener != null) {
+                    listener.onImageLoaded();
+                }
+                return false;
+            }})
+
+                .apply(RequestOptions.skipMemoryCacheOf(false))
+                .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL))
                 .into(imageView);
     }
-
-*/
 
     private static AsyncTask clearDiskCacheTask;
 

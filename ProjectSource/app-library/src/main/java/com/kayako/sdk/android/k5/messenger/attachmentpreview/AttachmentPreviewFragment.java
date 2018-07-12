@@ -1,5 +1,6 @@
 package com.kayako.sdk.android.k5.messenger.attachmentpreview;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -28,7 +29,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
+@SuppressLint("NewApi")
 public class AttachmentPreviewFragment extends Fragment implements PopupMenu.OnMenuItemClickListener {
 
     private View mRoot;
@@ -56,9 +57,61 @@ public class AttachmentPreviewFragment extends Fragment implements PopupMenu.OnM
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         // Assertion
-        throw new IllegalStateException("This fragment is meant to be used with KayakoAttachmentPreviewActivity");
+        if (!(getActivity() instanceof KayakoAttachmentPreviewActivity)) {
+            throw new IllegalStateException("This fragment is meant to be used with KayakoAttachmentPreviewActivity");
+        }
+
         // Extract info
+        Bundle bundle = getActivity().getIntent().getExtras();
+        boolean showSendButton = bundle.getBoolean(KayakoAttachmentPreviewActivity.ARG_SHOW_SEND_BUTTON, false);
+        String imageUrl = bundle.getString(KayakoAttachmentPreviewActivity.ARG_IMAGE_URL);
+        String filePath = bundle.getString(KayakoAttachmentPreviewActivity.ARG_FILE_PATH);
+
+        // Extract Agent App Specific Info
+        boolean useSessionAuth = bundle.getBoolean(KayakoAttachmentPreviewActivity.ARG_REQ_SESSION_AUTH, false);
+        Auth auth = useSessionAuth ? extractAuthInfo(bundle) : null;
+
+        // Configure the Image Preview
+        View attachmentPlaceholder = mRoot.findViewById(R.id.ko__attachment_placeholder);
+        ImageView imageView = ((ImageView) mRoot.findViewById(R.id.ko__attachment_image));
+        View loadingView = mRoot.findViewById(R.id.ko__attachment_loader);
+        if (imageUrl != null) { // Load Image Preview via URL
+            configureImageForUrlAttachment(imageView, attachmentPlaceholder, loadingView, imageUrl, auth);
+
+        } else if (filePath != null) { // Load Preview via local FILE
+            configureImageForFileAttachment(imageView, attachmentPlaceholder, filePath);
+
+        } else {
+            throw new IllegalStateException("INVALID STATE - need at least imageUrl or filePath");
+        }
+        // Configure Exit / back Button
+        View exitButton = mRoot.findViewById(R.id.ko__button_exit);
+        exitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finishByExit();
+            }
+        });
+
+        // Configure View depending on whether it's for previewing an Unsent attachment or Sent attachment
+        View sendButton = mRoot.findViewById(R.id.ko__reply_box_send_button);
+        View attachmentDetails = mRoot.findViewById(R.id.ko__attachment_details);
+        View optionsButton = mRoot.findViewById(R.id.ko__button_options);
+        if (showSendButton) {
+            // Configure View
+            configureViewForConfirmingAttachmentBeforeSending(sendButton, optionsButton, attachmentDetails);
+        } else {
+            // Extract values
+            Long time = bundle.containsKey(KayakoAttachmentPreviewActivity.ARG_ATTACHMENT_NAME) ? bundle.getLong(KayakoAttachmentPreviewActivity.ARG_ATTACHMENT_TIME, 0) : null;
+            String name = bundle.containsKey(KayakoAttachmentPreviewActivity.ARG_ATTACHMENT_NAME) ? bundle.getString(KayakoAttachmentPreviewActivity.ARG_ATTACHMENT_NAME, null) : null;
+            String downloadUrl = bundle.containsKey(KayakoAttachmentPreviewActivity.ARG_ATTACHMENT_DOWNLOAD_URL) ? bundle.getString(KayakoAttachmentPreviewActivity.ARG_ATTACHMENT_DOWNLOAD_URL, null) : null;
+            Long fileSize = bundle.containsKey(KayakoAttachmentPreviewActivity.ARG_ATTACHMENT_NAME) ? bundle.getLong(KayakoAttachmentPreviewActivity.ARG_ATTACHMENT_TIME, 0) : null;
+
+            // Configure View
+            configureViewForPreviewingUploadedAttachments(sendButton, optionsButton, attachmentDetails, time, name, downloadUrl, fileSize, auth);
+        }
     }
 
     private Auth extractAuthInfo(Bundle bundle) {
@@ -74,17 +127,13 @@ public class AttachmentPreviewFragment extends Fragment implements PopupMenu.OnM
         return null;
     }
 
-    /*
-
     private void configureImageForUrlAttachment(@NonNull final ImageView imageView, @NonNull final View attachmentPlaceholder, @NonNull final View loadingView, @NonNull final String imageUrl, @Nullable final Auth auth) {
         if (imageView == null || attachmentPlaceholder == null || loadingView == null || imageUrl == null) {
             throw new IllegalStateException();
         }
-
         // Show imageView
         imageView.setVisibility(View.VISIBLE);
         attachmentPlaceholder.setVisibility(View.GONE);
-
         // Show loading
         loadingView.setVisibility(View.VISIBLE);
 
@@ -94,25 +143,19 @@ public class AttachmentPreviewFragment extends Fragment implements PopupMenu.OnM
                 if (getActivity() == null || !isAdded()) {
                     return;
                 }
-
                 loadingView.setVisibility(View.GONE);
             }
-
             @Override
             public void onImageFailedToLoad() {
                 if (getActivity() == null || !isAdded()) {
                     return;
                 }
-
                 loadingView.setVisibility(View.GONE);
-
                 getActivity().onBackPressed(); // not finish() to retain animation
-
                 Toast.makeText(getContext(), R.string.ko__messenger_attachment_preview_failed_to_load, Toast.LENGTH_SHORT).show();
             }
         });
     }
-    */
 
     private void showAttachmentMenu(View v) {
         PopupMenu popup = new PopupMenu(getActivity(), v);
@@ -164,7 +207,7 @@ public class AttachmentPreviewFragment extends Fragment implements PopupMenu.OnM
             imageView.setVisibility(View.VISIBLE);
             attachmentPlaceholder.setVisibility(View.GONE);
 
-            //ImageUtils.loadFileAsAttachmentImage(getContext(), imageView, new File(filePath), false, false);
+            ImageUtils.loadFileAsAttachmentImage(getContext(), imageView, new File(filePath), false, false);
 
         } else { // Load other file
             imageView.setVisibility(View.GONE);
