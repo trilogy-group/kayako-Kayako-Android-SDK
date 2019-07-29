@@ -17,7 +17,7 @@ public abstract class BackgroundTask extends AsyncTask<Void, Void, Boolean> {
     }
 
     @Override
-    final protected Boolean doInBackground(Void... voids) {
+    protected final Boolean doInBackground(Void... voids) {
         return performInBackground();
     }
 
@@ -26,7 +26,7 @@ public abstract class BackgroundTask extends AsyncTask<Void, Void, Boolean> {
      * @param aBoolean
      */
     @Override
-    final protected void onPostExecute(Boolean aBoolean) {
+    protected final void onPostExecute(Boolean aBoolean) {
         if (aBoolean == null) {
             aBoolean = false;
         }

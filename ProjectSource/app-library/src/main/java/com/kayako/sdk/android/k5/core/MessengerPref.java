@@ -4,15 +4,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class MessengerPref {
-    final private static String PREF_NAME = "kayako_messenger_info";
-    final private static String KEY_FINGERPRINT_ID = "fingerprint_id";
-    final private static String KEY_REALTIME_URL = "realtime_url";
-    final private static String KEY_BRAND_NAME = "brand_name";
-    final private static String KEY_TITLE = "title";
-    final private static String KEY_DESCRIPTION = "description";
-    final private static String KEY_URL = "url";
-    final private static String KEY_EMAIL_ID = "email_id";
-    final private static String KEY_USER_NAME = "user_name";
+    private static final String PREF_NAME = "kayako_messenger_info";
+    private static final String KEY_FINGERPRINT_ID = "fingerprint_id";
+    private static final String KEY_REALTIME_URL = "realtime_url";
+    private static final String KEY_BRAND_NAME = "brand_name";
+    private static final String KEY_TITLE = "title";
+    private static final String KEY_DESCRIPTION = "description";
+    private static final String KEY_URL = "url";
+    private static final String KEY_EMAIL_ID = "email_id";
+    private static final String KEY_USER_NAME = "user_name";
 
     private static MessengerPref sInstance;
     private static SharedPreferences sPrefs;

@@ -5,12 +5,12 @@ import android.content.SharedPreferences;
 
 public class MessengerUserPref {
 
-    final private static String PREF_NAME = "kayako_messenger_user_info";
+    private static final String PREF_NAME = "kayako_messenger_user_info";
 
-    final private static String KEY_CURRENT_USER_ID = "current_user_id";
-    final private static String KEY_FULL_NAME = "full_name";
-    final private static String KEY_AVATAR = "avatar";
-    final private static String KEY_PRESENCE_CHANNEL = "presence_channel";
+    private static final String KEY_CURRENT_USER_ID = "current_user_id";
+    private static final String KEY_FULL_NAME = "full_name";
+    private static final String KEY_AVATAR = "avatar";
+    private static final String KEY_PRESENCE_CHANNEL = "presence_channel";
 
     private static MessengerUserPref sInstance;
     private static SharedPreferences sPrefs;

@@ -11,10 +11,10 @@ import java.util.Locale;
  * @author Neil Mathew <neil.mathew@kayako.com>
  */
 public class HelpCenterPref {
-    final private String PREF_NAME = "kayako_help_center_info";
-    final private String KEY_HELP_CENTER_URL = "help_center_url";
-    final private String KEY_LOCALE_LANGUAGE = "locale_language";
-    final private String KEY_LOCALE_REGION = "locale_region";
+    private final String PREF_NAME = "kayako_help_center_info";
+    private final String KEY_HELP_CENTER_URL = "help_center_url";
+    private final String KEY_LOCALE_LANGUAGE = "locale_language";
+    private final String KEY_LOCALE_REGION = "locale_region";
 
     private static HelpCenterPref mInstance;
     private static SharedPreferences mPrefs;
