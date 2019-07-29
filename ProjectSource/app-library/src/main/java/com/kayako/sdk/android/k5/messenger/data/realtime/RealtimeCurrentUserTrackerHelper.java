@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class RealtimeCurrentUserTrackerHelper {
 
-    private final static AtomicBoolean sIsTrackingUser = new AtomicBoolean(false);
+    private static final AtomicBoolean sIsTrackingUser = new AtomicBoolean(false);
 
     private static RealtimeUserHelper.UserPresenceListener userPresenceListener = new RealtimeUserHelper.UserPresenceListener() {
         @Override

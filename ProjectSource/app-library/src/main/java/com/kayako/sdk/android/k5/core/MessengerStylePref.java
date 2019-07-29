@@ -10,10 +10,10 @@ import com.kayako.sdk.android.k5.messenger.style.type.Foreground;
 
 public class MessengerStylePref extends JsonStore {
 
-    final static private String PREF_NAME = "kayako_messenger_style_info";
+    private static final String PREF_NAME = "kayako_messenger_style_info";
 
-    final static private String KEY_FOREGROUND = "key_foreground";
-    final static private String KEY_BACKGROUND = "key_background";
+    private static final String KEY_FOREGROUND = "key_foreground";
+    private static final String KEY_BACKGROUND = "key_background";
 
     private static MessengerStylePref sInstance;
 

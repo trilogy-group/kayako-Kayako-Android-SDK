@@ -12,7 +12,7 @@ import java.util.Set;
 public class MessengerActivityTracker {
 
     // TODO?: Create a condition - "Tap again outside to close Messenger" so that accidental clicks won't trigger a close
-    private final static List<WeakReference<BaseMessengerActivity>> openMessengerActivities = new ArrayList<>();
+    private static final List<WeakReference<BaseMessengerActivity>> openMessengerActivities = new ArrayList<>();
 
     public static void addActivity(final BaseMessengerActivity activity) {
         addToMessageQueue(new Runnable() {

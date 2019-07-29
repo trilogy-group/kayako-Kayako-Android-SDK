@@ -14,9 +14,9 @@ public abstract class Foreground {
         return type;
     }
 
-    abstract public Drawable getDrawableForDarkBackground();
+    public abstract Drawable getDrawableForDarkBackground();
 
-    abstract public Drawable getDrawableForLightBackground();
+    public abstract Drawable getDrawableForLightBackground();
 
     public enum ForegroundType {
         NONE,

@@ -14,7 +14,7 @@ public abstract class BaseToolbarFragment extends Fragment {
     private boolean hasActivityBeenCreated = false;
 
     @Override
-    final public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public final void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         // Callback added to ensure view configuration code is called and not lost due to inconsistent fragment & activity life cycles
@@ -31,12 +31,12 @@ public abstract class BaseToolbarFragment extends Fragment {
         removeOnViewLoadedListener();
     }
 
-    final protected boolean isPageReadyButView() {
+    protected final boolean isPageReadyButView() {
         return isAdded() && getActivity() != null && !getActivity().isFinishing();
     }
 
 
-    final public void setOnViewLoadedListener(OnViewLoadedListener onViewLoadedListener) {
+    public final void setOnViewLoadedListener(OnViewLoadedListener onViewLoadedListener) {
         this.mOnViewLoadedListener = onViewLoadedListener;
 
         if (hasActivityBeenCreated && onViewLoadedListener != null) {
@@ -44,7 +44,7 @@ public abstract class BaseToolbarFragment extends Fragment {
         }
     }
 
-    final public void removeOnViewLoadedListener() {
+    public final void removeOnViewLoadedListener() {
         this.mOnViewLoadedListener = null;
     }
 

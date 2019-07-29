@@ -54,7 +54,7 @@ public class ConversationStore {
         return new Messenger(url, fingerprintAuth);
     }
 
-    public synchronized static ConversationStore getInstance() {
+    public static synchronized ConversationStore getInstance() {
         if (mInstance == null) {
             synchronized (key) {
                 if (mInstance == null) {

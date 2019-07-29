@@ -10,9 +10,9 @@ public abstract class Background {
         this.type = type;
     }
 
-    abstract public boolean isDarkBackground();
+    public abstract boolean isDarkBackground();
 
-    abstract public Drawable getBackgroundDrawable();
+    public abstract Drawable getBackgroundDrawable();
 
     public BackgroundType getType() {
         return type;

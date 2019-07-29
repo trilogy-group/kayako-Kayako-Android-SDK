@@ -7,8 +7,8 @@ import java.util.Set;
 
 public class MessengerOpenTracker {
 
-    private final static Set<OnCloseMessengerListener> onCloseMessengerListenerSet = new HashSet<>();
-    private final static Set<OnOpenMessengerListener> onOpenMessengerListeners = new HashSet<>();
+    private static final Set<OnCloseMessengerListener> onCloseMessengerListenerSet = new HashSet<>();
+    private static final Set<OnOpenMessengerListener> onOpenMessengerListeners = new HashSet<>();
 
     /**
      * Use this to release resources on Messenger close

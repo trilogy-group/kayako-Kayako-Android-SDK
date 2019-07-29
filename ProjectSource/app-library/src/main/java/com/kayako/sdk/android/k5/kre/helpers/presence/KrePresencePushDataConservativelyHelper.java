@@ -17,8 +17,8 @@ public class KrePresencePushDataConservativelyHelper {
         mPerformTriggerOperationCallback = performTriggerOperationCallback;
     }
 
-    private final static long TWO_SECONDS = 2 * 1000;
-    private final static long FIVE_SECONDS = 5 * 1000;
+    private static final long TWO_SECONDS = 2 * 1000;
+    private static final long FIVE_SECONDS = 5 * 1000;
 
     private AtomicLong mLastTimeEventSent = new AtomicLong(0);
     private AtomicBoolean mLastStateSent = new AtomicBoolean(false);
