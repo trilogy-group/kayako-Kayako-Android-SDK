@@ -124,7 +124,7 @@ public abstract class BaseMessengerActivity extends AppCompatActivity {
 
     protected abstract Fragment getContainerFragment();
 
-    final public void finishFinal() {
+    public final void finishFinal() {
         super.finish();
         overrideFinalPendingTransitionExit(this);
     }
