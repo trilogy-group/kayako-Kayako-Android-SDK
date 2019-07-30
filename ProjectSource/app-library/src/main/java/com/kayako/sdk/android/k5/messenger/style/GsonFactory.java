@@ -23,17 +23,19 @@ public class GsonFactory {
     private GsonFactory() {
     }
 
-    private static Gson gson;
+    private static volatile Gson gson;
 
     public static Gson getGson() {
         if (gson == null) {
-            gson = new GsonBuilder()
-                    .excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC) // Fixes a GSON bug which causes app to fail on Android M
-                    .registerTypeAdapter(Background.class, new BackgroundAdapter())
-                    .registerTypeAdapter(Foreground.class, new ForegroundAdapter()) // TODO; ForegroundAdapter
-                    .create();
+            synchronized (GsonFactory.class) {
+                if (gson == null) {
+                    gson = new GsonBuilder()
+                            .excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC)
+                            .registerTypeAdapter(Background.class, new BackgroundAdapter())
+                            .registerTypeAdapter(Foreground.class, new ForegroundAdapter()).create();
+                }
+            }
         }
-
         return gson;
     }
 

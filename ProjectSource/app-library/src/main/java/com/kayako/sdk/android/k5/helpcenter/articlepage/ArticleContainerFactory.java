@@ -5,14 +5,18 @@ package com.kayako.sdk.android.k5.helpcenter.articlepage;
  */
 public class ArticleContainerFactory {
 
-    private static ArticleContainerContract.Presenter mPresenter;
+    private static volatile ArticleContainerContract.Presenter mPresenter;
 
     public static ArticleContainerContract.Presenter getPresenter(ArticleContainerContract.View view) {
         if (mPresenter == null) {
-            return mPresenter = new ArticleContainerPresenter(view);
-        } else {
-            mPresenter.setView(view);
-            return mPresenter;
+            synchronized (ArticleContainerFactory.class) {
+                if (mPresenter == null) {
+                    return mPresenter = new ArticleContainerPresenter(view);
+                } else {
+                    mPresenter.setView(view);
+                    return mPresenter;
+                }
+            }
         }
     }
 }

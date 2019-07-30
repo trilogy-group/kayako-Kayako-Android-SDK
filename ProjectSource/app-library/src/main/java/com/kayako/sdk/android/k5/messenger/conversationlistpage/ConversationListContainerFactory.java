@@ -5,13 +5,17 @@ public class ConversationListContainerFactory {
     private ConversationListContainerFactory() {
     }
 
-    private static ConversationListContainerContract.Presenter mPresenter;
+    private static volatile ConversationListContainerContract.Presenter mPresenter;
 
     public static ConversationListContainerContract.Presenter getPresenter(ConversationListContainerContract.View view) {
         if (mPresenter == null) {
-            mPresenter = new ConversationListContainerPresenter(view);
-        } else {
-            mPresenter.setView(view);
+            synchronized (ConversationListContainerFactory.class) {
+                if (mPresenter == null) {
+                    mPresenter = new ConversationListContainerPresenter(view);
+                } else {
+                    mPresenter.setView(view);
+                }
+            }
         }
         return mPresenter;
     }

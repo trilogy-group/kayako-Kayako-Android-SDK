@@ -28,11 +28,15 @@ public class DataItemHelper {
 
     public static final long MINIMUM_MILLISECONDS_TO_GROUP = 3 * 60 * 1000L;
 
-    private static DataItemHelper mDataItemHelper;
+    private static volatile DataItemHelper mDataItemHelper;
 
     public static DataItemHelper getInstance() {
         if (mDataItemHelper == null) {
-            mDataItemHelper = new DataItemHelper();
+            synchronized (DataItemHelper.class) {
+                if (mDataItemHelper == null) {
+                    mDataItemHelper = new DataItemHelper();
+                }
+            }
         }
         return mDataItemHelper;
     }

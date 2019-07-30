@@ -9,20 +9,23 @@ import java.util.Locale;
  */
 public class SectionByCategoryContainerFactory {
 
-    static SectionByCategoryContainerContract.Presenter mPresenter;
+    static volatile SectionByCategoryContainerContract.Presenter mPresenter;
     static SectionByCategoryContainerContract.Data mData;
 
     public static SectionByCategoryContainerContract.Presenter getPresenter(SectionByCategoryContainerContract.View view) {
         if (mData == null || !mData.doHelpCenterPreferencesMatch()) {
             mData = SectionByCategoryContainerFactory.getDataSource(HelpCenterPref.getInstance().getHelpCenterUrl(), HelpCenterPref.getInstance().getLocale());
         }
-
         if (mPresenter == null) {
-            return mPresenter = new SectionByCategoryContainerPresenter(view, mData);
-        } else {
-            mPresenter.setView(view);
-            mPresenter.setData(mData);
-            return mPresenter;
+            synchronized (SectionByCategoryContainerFactory.class) {
+                if (mPresenter == null) {
+                    return mPresenter = new SectionByCategoryContainerPresenter(view, mData);
+                } else {
+                    mPresenter.setView(view);
+                    mPresenter.setData(mData);
+                    return mPresenter;
+                }
+            }
         }
     }
 

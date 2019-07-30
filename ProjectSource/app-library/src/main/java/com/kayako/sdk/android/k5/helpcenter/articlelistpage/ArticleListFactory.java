@@ -9,20 +9,23 @@ import java.util.Locale;
  */
 public class ArticleListFactory {
 
-    private static ArticleListContract.Presenter mPresenter;
+    private static volatile ArticleListContract.Presenter mPresenter;
     private static ArticleListContract.Data mData;
 
     public static ArticleListContract.Presenter getPresenter(ArticleListContract.View view) {
         if (mData == null || !mData.doesHelpCenterPreferencesMatch()) {
             mData = ArticleListFactory.getDataSource(HelpCenterPref.getInstance().getHelpCenterUrl(), HelpCenterPref.getInstance().getLocale());
         }
-
         if (mPresenter == null) {
-            return mPresenter = new ArticleListPresenter(view, mData);
-        } else {
-            mPresenter.setView(view);
-            mPresenter.setData(mData);
-            return mPresenter;
+            synchronized (ArticleListFactory.class) {
+                if (mPresenter == null) {
+                    return mPresenter = new ArticleListPresenter(view, mData);
+                } else {
+                    mPresenter.setView(view);
+                    mPresenter.setData(mData);
+                    return mPresenter;
+                }
+            }
         }
     }
 

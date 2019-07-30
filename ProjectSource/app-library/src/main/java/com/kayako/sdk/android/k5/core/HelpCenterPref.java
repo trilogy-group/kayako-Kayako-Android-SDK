@@ -17,7 +17,7 @@ public class HelpCenterPref {
     final private String KEY_LOCALE_REGION = "locale_region";
 
     private static HelpCenterPref mInstance;
-    private static SharedPreferences mPrefs;
+    private static volatile SharedPreferences mPrefs;
     private Context mContext;
 
     public static void createInstance(Context context) {
@@ -34,7 +34,11 @@ public class HelpCenterPref {
     private HelpCenterPref(Context context) {
         mContext = context.getApplicationContext();
         if (mPrefs == null) {
-            mPrefs = mContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+            synchronized (HelpCenterPref.class) {
+                if (mPrefs == null) {
+                    mPrefs = mContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+                }
+            }
         }
     }
 

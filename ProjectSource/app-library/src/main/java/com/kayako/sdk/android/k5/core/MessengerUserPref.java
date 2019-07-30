@@ -13,12 +13,16 @@ public class MessengerUserPref {
     final private static String KEY_PRESENCE_CHANNEL = "presence_channel";
 
     private static MessengerUserPref sInstance;
-    private static SharedPreferences sPrefs;
+    private static volatile SharedPreferences sPrefs;
 
     private MessengerUserPref(Context context) {
         context = context.getApplicationContext();
         if (sPrefs == null) {
-            sPrefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+            synchronized (MessengerUserPref.class) {
+                if (sPrefs == null) {
+                    sPrefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+                }
+            }
         }
     }
 

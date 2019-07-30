@@ -15,12 +15,16 @@ public class MessengerPref {
     final private static String KEY_USER_NAME = "user_name";
 
     private static MessengerPref sInstance;
-    private static SharedPreferences sPrefs;
+    private static volatile SharedPreferences sPrefs;
 
     private MessengerPref(Context context) {
         context = context.getApplicationContext();
         if (sPrefs == null) {
-            sPrefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+            synchronized (MessengerPref.class) {
+                if (sPrefs == null) {
+                    sPrefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+                }
+            }
         }
     }
 

@@ -8,11 +8,15 @@ public class MessengerRepoFactory {
     private MessengerRepoFactory() {
     }
 
-    private static IConversationStarterRepository mConversationStarterData;
+    private static volatile IConversationStarterRepository mConversationStarterData;
 
     public static IConversationStarterRepository getConversationStarterRepository() {
         if (mConversationStarterData == null) {
-            return mConversationStarterData = new ConversationStarterRepositoryManyListeners();
+            synchronized (MessengerRepoFactory.class) {
+                if (mConversationStarterData == null) {
+                    return mConversationStarterData = new ConversationStarterRepositoryManyListeners();
+                }
+            }
         }
         return mConversationStarterData;
     }
