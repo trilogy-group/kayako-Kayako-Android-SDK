@@ -70,6 +70,8 @@ public class BackgroundFactory {
 
             case RED:
                 return new SolidColor("#FF3B30", true);
+        default:
+            break;
         }
 
         return null;

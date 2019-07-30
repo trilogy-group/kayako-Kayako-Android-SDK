@@ -43,6 +43,8 @@ public class ConversationStarterHelper {
                     user2 = convert(conversationStarter.getLastActiveAgents().get(1));
                 case 1:
                     user1 = convert(conversationStarter.getLastActiveAgents().get(0));
+                break;
+            default:
                     break;
             }
         }

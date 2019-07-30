@@ -59,6 +59,8 @@ public class FileDownloadUtil {
                             break;
                         case DownloadManager.ERROR_UNKNOWN:
                             message.append("ERROR_UNKNOWN");
+                        break;
+                    default:
                             break;
                     }
                     break;
@@ -76,6 +78,8 @@ public class FileDownloadUtil {
                             break;
                         case DownloadManager.PAUSED_WAITING_TO_RETRY:
                             message.append("PAUSED_WAITING_TO_RETRY");
+                        break;
+                    default:
                             break;
                     }
                     break;
@@ -87,6 +91,8 @@ public class FileDownloadUtil {
                     break;
                 case DownloadManager.STATUS_SUCCESSFUL:
                     message.append(context.getString(R.string.ko__attachment_msg_download_successful));
+                break;
+            default:
                     break;
             }
         }

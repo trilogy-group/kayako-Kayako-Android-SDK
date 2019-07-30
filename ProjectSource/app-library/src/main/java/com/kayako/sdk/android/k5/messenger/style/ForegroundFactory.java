@@ -63,6 +63,8 @@ public class ForegroundFactory {
 
             case ZIGZAG:
                 return new Texture(R.drawable.ko__texture_10_dark, R.drawable.ko__texture_10_light);
+        default:
+            break;
 
         }
 

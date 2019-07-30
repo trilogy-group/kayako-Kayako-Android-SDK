@@ -99,12 +99,10 @@ public class ConversationListFragment extends BaseListFragment implements Conver
                     mPresenter.onLoadMoreItems();
                 }
             });
-
             super.setScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                     super.onScrolled(recyclerView, dx, dy);
-
                     if (mScrollListener == null) {
                         return;
                     }
@@ -118,15 +116,15 @@ public class ConversationListFragment extends BaseListFragment implements Conver
                 @Override
                 public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                     super.onScrollStateChanged(recyclerView, newState);
-
                     if (mScrollListener == null) {
                         return;
                     }
-
                     switch (newState) {
-                        case SCROLL_STATE_IDLE:
-                            mScrollListener.onScroll(false);
-                            break;
+                    case SCROLL_STATE_IDLE:
+                        mScrollListener.onScroll(false);
+                        break;
+                    default:
+                        break;
                     }
                 }
             });

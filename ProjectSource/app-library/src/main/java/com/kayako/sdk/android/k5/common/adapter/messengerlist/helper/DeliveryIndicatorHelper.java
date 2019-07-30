@@ -22,6 +22,8 @@ public class DeliveryIndicatorHelper {
 
             case FAILED_TO_SEND:
                 return new DeliveryIndicator(R.drawable.ko__delivery_indicator_failed, R.string.ko__messenger_delivery_indicators_failed_to_send, null);
+        default:
+            break;
         }
 
         return null;
@@ -44,6 +46,8 @@ public class DeliveryIndicatorHelper {
 
             case SENT:
                 return new DeliveryIndicator(R.drawable.ko__delivery_indicator_sent, R.string.ko__messenger_delivery_indicators_sent, message.getMessageStatusUpdatedAt());
+        default:
+            break;
         }
 
         return null;

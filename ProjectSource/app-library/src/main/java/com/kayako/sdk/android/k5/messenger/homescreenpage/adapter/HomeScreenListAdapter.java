@@ -65,6 +65,8 @@ public class HomeScreenListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 View recentConversationWidgetView = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.ko__list_messenger_home_screen_widget, parent, false);
                 return new RecentConversationsWidgetViewHolder(recentConversationWidgetView);
+        default:
+            break;
         }
         return null;
     }
@@ -133,6 +135,8 @@ public class HomeScreenListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                             }
                         }
                 ));
+            break;
+        default:
                 break;
         }
     }

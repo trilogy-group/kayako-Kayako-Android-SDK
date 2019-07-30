@@ -48,6 +48,8 @@ public class ConversationListContainerPresenter implements ConversationListConta
                 case ERROR:
                 case LOADING:
                     mView.hideNewConversationButton();
+                break;
+            default:
                     break;
             }
         } else {
@@ -78,6 +80,9 @@ public class ConversationListContainerPresenter implements ConversationListConta
             case RequestCodes.REQUEST_CODE_CREATE_NEW_CONVERSATION:
             case RequestCodes.REQUEST_CODE_OPEN_EXISTING_CONVERSATION:
                 mView.reloadConversations();
+            break;
+        default:
+            break;
         }
     }
 }

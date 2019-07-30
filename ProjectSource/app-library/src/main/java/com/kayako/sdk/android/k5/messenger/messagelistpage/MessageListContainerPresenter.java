@@ -112,6 +112,9 @@ public class MessageListContainerPresenter implements MessageListContainerContra
                 case UP:
                 case DOWN:
                     mView.collapseToolbar();
+                break;
+            default:
+                break;
             }
         }
     }
@@ -495,6 +498,8 @@ public class MessageListContainerPresenter implements MessageListContainerContra
 
             case HIDDEN:
                 mView.hideReplyBox();
+            break;
+        default:
                 break;
         }
 

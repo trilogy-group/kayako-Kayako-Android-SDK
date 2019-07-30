@@ -106,6 +106,8 @@ public class SearchArticleContainerFragment extends Fragment implements SearchAr
             case android.R.id.home:
                 getActivity().onBackPressed();
                 return true;
+        default:
+            break;
         }
         return false;
     }

@@ -283,6 +283,8 @@ public class FileAttachmentUtil {
             case FileAttachmentUtil.STATUS_FAIL_NO_HANDLER:
                 KayakoLogHelper.e(TAG, context.getString(R.string.ko__attachment_msg_no_handler_for_file_type));
                 Toast.makeText(context, R.string.ko__attachment_msg_no_handler_for_file_type, Toast.LENGTH_LONG).show();
+            break;
+        default:
                 break;
 
         }

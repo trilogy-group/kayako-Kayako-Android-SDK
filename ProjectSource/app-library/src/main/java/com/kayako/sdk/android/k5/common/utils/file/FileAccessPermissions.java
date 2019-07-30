@@ -52,6 +52,8 @@ public class FileAccessPermissions {
                 }
                 return;
             }
+        default:
+            break;
         }
     }
 }

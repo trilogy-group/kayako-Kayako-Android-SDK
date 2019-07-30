@@ -63,6 +63,8 @@ public class GsonFactory {
 
                 case SOLID_COLOR:
                     return context.serialize(src, SolidColor.class);
+            default:
+                break;
             }
 
             return null;
@@ -95,6 +97,8 @@ public class GsonFactory {
 
                 case NONE:
                     return context.serialize(src, BlankForground.class);
+            default:
+                break;
             }
 
             return null;
