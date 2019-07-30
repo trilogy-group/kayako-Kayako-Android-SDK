@@ -34,7 +34,7 @@ public class KreConnection extends SocketConnection {
      * @param kreCredentials
      * @param listener
      */
-    public synchronized void connect(@NonNull KreCredentials kreCredentials, final @NonNull String channelName, @NonNull final KreConnection.OnOpenConnectionListener listener) {
+    public synchronized void connect(@NonNull KreCredentials kreCredentials, @NonNull final String channelName, @NonNull final KreConnection.OnOpenConnectionListener listener) {
         connect(kreCredentials, channelName, listener, null);
     }
 
@@ -111,10 +111,12 @@ public class KreConnection extends SocketConnection {
         }
     }
 
+    @Override
     public void configureReconnectOnFailure(boolean reconnect) {
         super.configureReconnectOnFailure(reconnect);
     }
 
+    @Override
     public boolean isConnected() {
         return super.isConnected();
     }
